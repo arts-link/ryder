@@ -1,0 +1,23 @@
+{{- with resources.Get "js/main.js" }}
+  {{- if eq hugo.Environment "development" }}
+    {{- with . | js.Build }}
+      <script src="{{ .RelPermalink }}"></script>
+    {{- end }}
+  {{- else }}
+    {{- $opts := dict "minify" true }}
+    {{- with . | js.Build $opts | fingerprint }}
+      <script src="{{ .RelPermalink }}" integrity="{{- .Data.Integrity }}" crossorigin="anonymous"></script>
+    {{- end }}
+  {{- end }}
+{{- end }}
+<script>
+// On page load or when changing themes, best to add inline in `head` to avoid FOUC
+//if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+  // alert("dark")
+//  document.documentElement.classList.add('dark')
+//  localStorage.setItem('theme', 'dark');
+//} else {
+  // alert("light")
+ // document.documentElement.classList.remove('dark')
+//}
+</script>

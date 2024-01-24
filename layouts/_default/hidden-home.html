@@ -1,0 +1,13 @@
+{{ define "main" }}
+<div class="bg-hidden-home bg-cover fixed inset-0 flex items-center justify-center">
+  <div class="p-4 m-5 items-center rounded-xl bg-gray-800/75">
+      <div class="text-xl text-center font-bold text-slate-200">{{ .Title }}</div>
+      <div class=" text-slate-200 m-1">
+          {{ .Content }}
+      </div>
+      <div class="text-slate-200 m-1 text-center">
+        {{- partial "socialslist.html" . }}
+      </div>
+  </div>
+</div>
+{{ end }}

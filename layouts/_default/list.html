@@ -1,0 +1,22 @@
+{{ define "main" }}
+  <div class="prose lg:prose-xl prose-invert rounded-xl bg-gray-800/75 p-4">
+    <h1>{{ .Title }}</h1>
+    {{ .Content }}
+  </div>
+  {{ with .Pages }}
+  <div class="container grid grid-cols-1 gap-6 p-2 sm:p-4 sm:grid-cols-2 not-prose">
+  {{ range . }}
+  <a href="{{ .RelPermalink }}" class="rounded-2xl bg-sky-100 dark:bg-sky-800 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:hover:brightness-110 no-underline" title="{{ .Title }}">
+    <div class="h-100">
+      <div class="p-5">
+        <h2 class="mb-2 mt-1 text-2xl">{{ .LinkTitle }}</h2>
+        <p class="text-sm font-normal">
+          {{ .Summary }}
+        </p>
+      </div>
+    </div>
+  </a>
+  {{ end }}
+  </div>
+  {{ end }}
+{{ end }}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="{{ or site.Language.LanguageCode site.Language.Lang }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center bg-white text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
+  <header class="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 w-full">
+    {{- partial "header.html" . }}
+  </header>
+  {{- if (.Param "isAlpha") }}
+    {{- .Scratch.Set "alertType" "info"}}
+    {{- .Scratch.Set "alertTitle" "Alpha Release" }}
+    {{- .Scratch.Set "alertMessage" "You are viewing an alpha version of this site redesign. Things may be broken at times or just in a state of flux." }}
+    {{- partial "alert.html" . }}
+  {{- end }}
+  <main class="container flex-1 p-5 overflow-y-auto">
+    {{- block "main" . }}{{- end }}
+  </main>
+  <footer class="p-4">
+    {{ partial "footer.html" . }}
+  </footer>
+</body>
+</html>

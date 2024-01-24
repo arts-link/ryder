@@ -1,0 +1,12 @@
+{{- $extended := (resources.Match "css/extended/*.css") | resources.Concat "assets/css/extended.css" }}
+{{- $css := resources.Get "/css/main.css" | resources.PostCSS (dict "inlineImports" true) }}
+{{- $mergedCss := slice $extended $css | resources.Concat "css/merged.css" }}
+{{- if eq hugo.Environment "development" }}
+{{- with $mergedCss | fingerprint }}
+  <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
+{{- end }}
+{{- else }}
+{{- with $mergedCss | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
+{{- end }}
+{{- end }}

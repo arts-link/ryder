@@ -1,0 +1,21 @@
+{{/*  
+  thanks to https://www.ii.com/hugo-call-partial-from-shortcode/ 
+  Usage: {{< alert-wrapper >}}  
+*/}}
+{{ $alertType := "" }}
+{{ $alertTitle := "" }}
+{{ $alertMessage := "" }}
+{{ with .Get "alertType" }}
+{{ $alertType = . }}
+{{ end }}
+{{ with .Get "alertTitle" }}
+{{ $alertTitle = . }}
+{{ end }}
+{{ with .Get "alertMessage" }}
+{{ $alertMessage = . }}
+{{ end }}
+    
+{{- $.Scratch.Set "alertType" $alertType }}
+{{- $.Scratch.Set "alertTitle" $alertTitle }}
+{{- $.Scratch.Set "alertMessage" $alertMessage }}
+{{ partial "alert" . }}

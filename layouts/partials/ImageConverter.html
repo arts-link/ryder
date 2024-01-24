@@ -1,0 +1,14 @@
+{{/* Step 1: A default image as fallback */}}
+{{ $image := "/images/placeholder.png" }} 
+
+{{/* Step 2: now check if passed image exists with same as title */}}
+{{ $image_url := resources.Get .ImageSrc }}
+{{ $img_param := .ImgParam }}
+{{/*  This is dumb and backwards. Fix this so it returns the image, it got an image it should return an image  */}}
+{{ if $image_url }} 
+    {{/* Resize and convert the image  */}}
+    {{ $image_url = $image_url.Process $img_param }}
+    {{ $image = $image_url.RelPermalink }}             
+{{end}}
+
+{{return $image}}

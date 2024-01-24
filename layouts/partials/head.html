@@ -1,0 +1,18 @@
+<meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <link rel="canonical" href="{{ .Permalink }}" />
+  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}" />
+  {{ hugo.Generator }}
+  {{- if hugo.IsProduction | or (eq site.Params.env "production") | and (ne .Params.robotsNoIndex true) }}
+  <meta name="robots" content="index, follow">
+  {{- else }}
+  <meta name="robots" content="noindex, nofollow">
+  {{- end }}
+  {{- partialCached "head/css.html" . }}
+  {{- partialCached "head/js.html" . }}
+
+  {{- if hugo.IsProduction | or (eq site.Params.env "production") }}
+    {{ template "_internal/google_analytics.html" . }}
+    {{ partialCached "head/opengraph.html" . }}
+  {{- end -}}

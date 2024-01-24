@@ -1,0 +1,22 @@
+# Hugo
+/public/
+/resources/
+/themes/*/exampleSite/
+*.log
+/_ignore/
+/node_modules
+
+# frontmatter
+.frontmatter/
+frontmatter.json
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Editor-specific
+.vscode/
+.idea/

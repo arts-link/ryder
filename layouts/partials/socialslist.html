@@ -1,0 +1,13 @@
+{{ with .Site.Params.social }}
+<ul class="flex justify-center items-center list-none">
+{{ range sort . "weight" }}
+  {{ if .faClasses}} {{ if .url }}
+  <li class="p-2">
+    <a class="hover:underline cursor-pointer" href="{{ .url | safeURL }}" aria-label="{{ .title }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} {{ if .type }}type="{{ .type }}"{{ end }}>
+      <i class="text-3xl {{ .faClasses }}"></i>
+    </a>
+  </li>
+  {{ end }} {{ end }} 
+{{ end }}
+</ul>
+{{ end }}
