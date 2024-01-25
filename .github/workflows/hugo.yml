@@ -44,7 +44,7 @@ jobs:
         with:
           submodules: recursive
       - name: Change to exampleSite
-        run: cd exampleSite
+        run: cd ryder/exampleSite
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
