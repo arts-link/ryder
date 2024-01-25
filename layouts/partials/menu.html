@@ -9,7 +9,7 @@ Renders a menu for the given menu ID.
 {{- $page := .page }}
 {{- $menuID := .menuID }}
 {{- with index site.Menus $menuID }}
-      <nav class="flex items-center justify-between">
+      <nav class="flex items-center justify-between mt-4">
         <ul class="flex space-x-4">
           {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
         </ul>
