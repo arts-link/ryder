@@ -1,6 +1,6 @@
-# Hugo Theme Mini Example Site
+# Ryder Example Site
 
-This repository offers an example site for [Hugo Theme mini](https://github.com/arts-link/ryder) and also it provides the default content for [Online Demo](https://arts-link.github.io/ryder/).
+This repository offers an example site for [Ryder](https://github.com/arts-link/ryder) and also it provides the default content for [Online Demo](https://arts-link.github.io/ryder/).
 
 # Using
 

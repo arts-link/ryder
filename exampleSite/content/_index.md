@@ -4,9 +4,9 @@
   
 ##### Info: 
 ```go
-{{</* alert-wrapper alertType="info" alertTitle="will" alertMessage="robinson" */>}}
+{{</* alert-wrapper alertType="info" alertTitle="will" alertMessage="robinson" alertIconClass="fa-solid fa-snowflake" */>}}
 ```
-{{< alert-wrapper alertType="info" alertTitle="will" alertMessage="robinson" >}}  
+{{< alert-wrapper alertType="info" alertTitle="will" alertMessage="robinson" alertIconClass="fa-solid fa-snowflake">}}  
 ##### Success: 
 ```go
 {{</* alert-wrapper alertType="success" alertTitle="will" alertMessage="robinson" */>}}

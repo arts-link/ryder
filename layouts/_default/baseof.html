@@ -8,10 +8,15 @@
     {{- partial "header.html" . }}
   </header>
   {{- if (.Param "isAlpha") }}
-    {{- .Scratch.Set "alertType" "info"}}
-    {{- .Scratch.Set "alertTitle" "Alpha Release" }}
-    {{- .Scratch.Set "alertMessage" "You are viewing an alpha version of this site redesign. Things may be broken at times or just in a state of flux." }}
-    {{- partial "alert.html" . }}
+  {{ with .Site.Params.alphaAlert}}
+  {{ range sort . "weight" }}
+    {{- $.Scratch.Set "alertType" .alertType }}
+    {{- $.Scratch.Set "alertTitle" .alertTitle }}
+    {{- $.Scratch.Set "alertMessage" .alertMessage }}
+    {{- $.Scratch.Set "alertIconClass" .alertIconClass }}
+    {{- partial "alert.html" $.Page }}
+  {{- end }}
+  {{- end }}
   {{- end }}
   <main class="container flex-1 p-5 overflow-y-auto">
     {{- block "main" . }}{{- end }}

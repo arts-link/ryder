@@ -5,6 +5,7 @@
 {{ $alertType := "" }}
 {{ $alertTitle := "" }}
 {{ $alertMessage := "" }}
+{{ $alertIconClass := "" }}
 {{ with .Get "alertType" }}
 {{ $alertType = . }}
 {{ end }}
@@ -14,8 +15,12 @@
 {{ with .Get "alertMessage" }}
 {{ $alertMessage = . }}
 {{ end }}
+{{ with .Get "alertIconClass" }}
+{{ $alertIconClass = . }}
+{{ end }}
     
 {{- $.Scratch.Set "alertType" $alertType }}
 {{- $.Scratch.Set "alertTitle" $alertTitle }}
 {{- $.Scratch.Set "alertMessage" $alertMessage }}
+{{- $.Scratch.Set "alertIconClass" $alertIconClass}}
 {{ partial "alert" . }}
