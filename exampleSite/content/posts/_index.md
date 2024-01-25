@@ -6,6 +6,6 @@ author = "Hugo Authors"
 enableComments = false
 menu = "main"
 homeFeature = true
-homeFeatureTitle = "All About Hugo!"
-homeFeatureIcon = "fa-solid fa-shop"
+homeFeatureTitle = "Posts About Hugo!"
+homeFeatureIcon = "fa-regular fa-paper-plane"
 +++
