@@ -2,45 +2,45 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Ryder example site</title>
-    <link>https://example.com/tags/</link>
+    <link>https://arts-link.github.io/ryder/tags/</link>
     <description>Recent content in Tags on Ryder example site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 11 Mar 2019 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://arts-link.github.io/ryder/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>css</title>
-      <link>https://example.com/tags/css/</link>
+      <link>https://arts-link.github.io/ryder/tags/css/</link>
       <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
-      <guid>https://example.com/tags/css/</guid>
+      <guid>https://arts-link.github.io/ryder/tags/css/</guid>
       <description></description>
     </item>
     <item>
       <title>html</title>
-      <link>https://example.com/tags/html/</link>
+      <link>https://arts-link.github.io/ryder/tags/html/</link>
       <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
-      <guid>https://example.com/tags/html/</guid>
+      <guid>https://arts-link.github.io/ryder/tags/html/</guid>
       <description></description>
     </item>
     <item>
       <title>markdown</title>
-      <link>https://example.com/tags/markdown/</link>
+      <link>https://arts-link.github.io/ryder/tags/markdown/</link>
       <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
-      <guid>https://example.com/tags/markdown/</guid>
+      <guid>https://arts-link.github.io/ryder/tags/markdown/</guid>
       <description></description>
     </item>
     <item>
       <title>text</title>
-      <link>https://example.com/tags/text/</link>
+      <link>https://arts-link.github.io/ryder/tags/text/</link>
       <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
-      <guid>https://example.com/tags/text/</guid>
+      <guid>https://arts-link.github.io/ryder/tags/text/</guid>
       <description></description>
     </item>
     <item>
       <title>emoji</title>
-      <link>https://example.com/tags/emoji/</link>
+      <link>https://arts-link.github.io/ryder/tags/emoji/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
-      <guid>https://example.com/tags/emoji/</guid>
+      <guid>https://arts-link.github.io/ryder/tags/emoji/</guid>
       <description></description>
     </item>
   </channel>
