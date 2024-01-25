@@ -1,4 +1,4 @@
 <div class="container mx-auto px-5 py-5">
-    <h1 class="text-3xl font-bold"><a href="/">{{ site.Title }}</a></h1>
+    <h1 class="text-3xl font-bold"><a href="{{ .Site.Home.RelPermalink }}">{{ site.Title }}</a></h1>
     {{- partial "menu.html" (dict "menuID" "main" "page" .) }}
 </div>
