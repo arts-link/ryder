@@ -1,6 +1,6 @@
 # Hugo Theme Mini Example Site
 
-This repository offers an example site for [Hugo Theme mini](https://github.com/nodejh/hugo-theme-mini) and also it provides the default content for [Online Demo](http://nodejh.github.io/hugo-theme-mini).
+This repository offers an example site for [Hugo Theme mini](https://github.com/arts-link/ryder) and also it provides the default content for [Online Demo](https://arts-link.github.io/ryder/).
 
 # Using
 
@@ -8,7 +8,7 @@ This repository offers an example site for [Hugo Theme mini](https://github.com/
 2. Clone this repository
 
     ```bash
-    $ git clone https://github.com/nodejh/hugo-theme-mini
+    $ git clone https://github.com/arts-link/ryder
     $ cd exampleSite
     ```
 3. Install npm packages.
