@@ -2,7 +2,11 @@
 <meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ if .IsPage }}{{ .Summary }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end }}" />
 <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
 <meta property="og:url" content="{{ .Permalink }}" />
-<meta property="og:image" content="{{ .Permalink }}{{ .Params.featured_image }}" />
+{{- $images := $.Resources.ByType "image" -}}
+{{ $featured := ($images.GetMatch (.Params.featured_image | default "*feature*")) | default (index $images 0) }}
+{{- with $featured -}}
+  <meta property="og:image" content="{{ $featured.Permalink }}" />
+{{- end -}}
 
 {{- if .IsPage }}
   {{- $iso8601 := "2006-01-02T15:04:05-07:00" -}}
