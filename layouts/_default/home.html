@@ -19,9 +19,11 @@
       </a>
     {{- end }}
   </div>
+  {{ if .Content }}
   <div class="flex-1 p-5 items-center justify-center">
     <div class="prose lg:prose-xl prose-invert rounded-xl bg-red-800/75 p-4 mx-auto">
         {{ .Content }}
     </div>
   </div>
+  {{ end }}
 {{- end }}

@@ -1,10 +1,8 @@
 # Hugo
 /public/
 /resources/
-/themes/*/exampleSite/
 *.log
-/_ignore/
-/node_modules
+**/node_modules
 
 # frontmatter
 .frontmatter/

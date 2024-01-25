@@ -1,0 +1,8 @@
+baseURL: https://example.com
+languageCode: en-us
+title: Ryder example site 
+theme: ryder 
+
+# !!! exampleSite only, you may need to delete the line: `themesDir: ../../` 
+themesDir: ../../
+
