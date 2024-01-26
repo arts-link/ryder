@@ -11,25 +11,63 @@ I decided to name it after my late friend and companion, the rhodesian ridgeback
 
 ## Features
 
-- tailwindcss configured and ready to go pretty much out of the box (see below)
-- fontawesome integrated and ready to go with svg icons
-- homeFeature param creates featured boxes for those pages on the home page.
-- alert shortcode to insert fun css boxes into your code.
-
-### Some included partials 
-
-- social icons partial
-- alerts partial
-- toc (table of contents) partial
-- SEO Friendly
+- Alert banners
+- Dark Mode
+- Featured Item blocks on home page
+- Special hidden-home template to display only a short message and a large bg image cover
+- tailwindcss setup and pre-configured with simple copy config setup
+- fontawesome icons setup
+- toc setup as partial to be included from front matter param
 
 ## Installation
 
-- npm install
+### As Git Submodule
+
+Inside the folder of your Hugo site run:
+
+```
+$ git submodule add https://github.com/arts-link/ryder.git themes/ryder
+```
+For more information read the official [setup guide](//gohugo.io/getting-started/quick-start/) of Hugo.
+
+## Getting started
+
+After installing the theme successfully you need to follow a few steps in order to get your site running.
+
+
+### The config files
+
+#### Hugo's config.toml
+Take a look inside the [`exampleSite`](https://github.com/arts-link/ryder/tree/main/exampleSite) folder of this theme. You'll find a file called [`config.toml`](https://github.com/arts-link/ryder/blob/main/exampleSite/config.toml). To use it, copy the [`config.toml`](https://github.com/arts-link/ryder/blob/main/exampleSite/config.toml) in the root folder of your Hugo site. Feel free to change the strings in this theme.
+
+Depending on your deplpoyment setup I recommend using layered config directories. Instead of putting `config.toml` into the root directory, create a new directory `config`, with a subdirectory `_default` and place the `config.toml` file in there. When it comes time to deploy, create a subdirectory `production` which will contain things like a google analytics configuration setting, things you want to only be activate in production or production-like environments. Any other environment may be added in this layered way... _default is always used, and anything in the environment folder is layered over, not merged. I use this to have a different title to the site in development and production so it is easy to see what you are looking at.
+
+```
+config/
+-- _default/
+  -- config.toml
+-- production/
+  -- config.toml
+```
+
+- You need to delete the line: `themesDir = "../.."` from your new `config.toml` file.
+
+#### Tailwind.css
+
+In order to have tailwind run, copy `tailwind.config.js` and `postcss.config.js` from `exampleSite` to the root of your site. 
+
+## Installation
+
+```
+mkdir -p config/{_default,production}  
+cp themes/ryder/exampleSite/config.toml config/_default/.
+cp themes/ryder/exampleSite/*.config.js .
+npm install
+```
 
 ## Configuration
 
-- go over all the variables -- see papermod's WIKI 
+- TODO: Document all the variables  
 
 ## TODO
 
