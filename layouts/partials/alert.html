@@ -14,19 +14,19 @@
 {{ $alertIconClass := .Scratch.Get "alertIconClass" }}
 {{ $alertClasses := "" }}
 {{ if eq $alertType "info" }}
-  {{ $alertClasses = "text-blue-800 border-blue-300 bg-blue-50 dark:text-blue-400 dark:border-blue-800" }}
+  {{ $alertClasses = "text-blue-800 border-blue-300 bg-blue-50 dark:text-blue-400 dark:border-blue-800 dark:bg-blue-900" }}
 {{ else if eq $alertType "danger" }}
-  {{ $alertClasses = "text-red-800 border-red-300 bg-red-50 dark:text-red-400 dark:border-red-800" }}
+  {{ $alertClasses = "text-red-800 border-red-300 bg-red-50 dark:text-red-400 dark:border-red-800 dark:bg-red-900" }}
 {{ else if eq $alertType "success" }}
-  {{ $alertClasses = "text-green-800 border-green-300 bg-green-50 dark:text-green-400 dark:border-green-800" }}
+  {{ $alertClasses = "text-green-800 border-green-300 bg-green-50 dark:text-green-400 dark:border-green-800 dark:bg-green-900" }}
 {{ else if eq $alertType "warning" }}
-  {{ $alertClasses = "text-yellow-800 border-yellow-300 bg-yellow-50 dark:text-yellow-400 dark:border-yellow-800" }}
+  {{ $alertClasses = "text-yellow-800 border-yellow-300 bg-yellow-50 dark:text-yellow-400 dark:border-yellow-800 dark:bg-yellow-900" }}
 {{ else }}
-  {{ $alertClasses = "text-gray-800 border-gray-300 bg-gray-50 dark:text-gray-400 dark:border-gray-800" }}
+  {{ $alertClasses = "text-gray-800 border-gray-300 bg-gray-50 dark:text-gray-400 dark:border-gray-800 dark:bg-gray-900" }}
 {{ end }}
 {{/*  ONLY SHOW THE BOX if it has a Title OR a Message OR both  */}}
-{{ if or ($alertTitle) ($alertMessage) }}
-<div class="flex items-center p-4 mb-4 text-sm border rounded-lg  dark:bg-gray-800 {{ $alertClasses }}" role="alert">
+{{ if or ($alertTitle) ($alertMessage) ($alertIconClass) }}
+<div class="flex items-center p-4 mb-4 text-sm border rounded-lg {{ $alertClasses }}" role="alert">
   <i class="{{ if $alertIconClass }}{{ $alertIconClass }}{{ else }}fa-solid fa-circle-info{{ end }} flex-shrink-0 inline w-6 h-6 me-3"></i>
   <span class="sr-only">{{ $alertType }}</span>
   <div>

@@ -2,7 +2,15 @@ baseURL= "https://arts-link.github.io/ryder/"
 languageCode= "en-us"
 title= "Ryder example site"
 theme= "ryder"
+summaryLength = 15
 
 # !!! exampleSite only, you may need to delete the line: `themesDir: ../../` 
 themesDir= "../../"
-
+[params]
+  description = "Lightning Fast Portfolios for Artists"
+  isAlpha = true
+[[params.alphaAlert]]
+  alertType = "danger"
+  alertTitle = "Special Banner add-on"
+  alertMessage = "You can even have a banner added to the top of EVERY page on the site!"
+  alertIconClass = "fa-solid fa-camera-retro"

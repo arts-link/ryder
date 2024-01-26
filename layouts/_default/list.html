@@ -13,6 +13,9 @@
         <p class="text-sm font-normal">
           {{ .Summary }}
         </p>
+        {{ if .Truncated }}
+        <p>Read more...</p>
+        {{ end }}
       </div>
     </div>
   </a>
