@@ -11,7 +11,7 @@ date = 2024-01-26T15:22:11-08:00
 
 I use front matter in this blog to create the simple menu here.
 
-I modified it to use the tailwindcss `group-hover` syntax. I made the children menu inside a container div so it is a sibling to the main anchor and on hover it show. Still needs style work.
+I modified it to use the tailwindcss `group-hover` syntax. I made the children menu inside a container div so it is a sibling to the main anchor and on hover it appears. Still needs style work.
 
 ```go
 +++
