@@ -7,6 +7,18 @@ date = 2024-01-26T12:55:50-08:00
   weight = 2
   parent = 'posts'
 +++
+
+All of the params are optional, but if neither alertTitle or alertMessage are passed they will not render. The default icon if no `alertIconClass` is passed is info. The `alertIconClass` must be a valid [fontawesome icon class](https://fontawesome.com/search?o=r&m=free), or class defined in your custom css.
+
+```go
+{{</* alert-wrapper 
+  alertType="info" 
+  alertTitle="will" 
+  alertMessage="robinson" 
+  alertIconClass="fa-solid fa-snowflake"
+*/>}}
+```
+
 ## Alert shortcode examples:
   
 ### Info: 
@@ -40,12 +52,3 @@ Does not pass `alertType`, defaults to gray.
 
 {{< alert-wrapper alertTitle="will" alertMessage="robinson" >}}
 
-All of the params are optional, but if neither alertTitle or alertMessage are passed they will not render. The default icon if no `alertIconClass` is passed is info. The `alertIconClass` must be a valid [fontawesome icon class](https://fontawesome.com/search?o=r&m=free), or class defined in your custom css.
-```go
-{{</* alert-wrapper 
-  alertType="info" 
-  alertTitle="will" 
-  alertMessage="robinson" 
-  alertIconClass="fa-solid fa-snowflake"
-*/>}}
-```
