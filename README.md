@@ -58,11 +58,22 @@ In order to have tailwind run, copy `tailwind.config.js` and `postcss.config.js`
 
 ## Installation
 
-```
-mkdir -p config/{_default,production}  
-cp themes/ryder/exampleSite/config.toml config/_default/.
-cp themes/ryder/exampleSite/*.config.js .
-npm install
+This starts from the very top with no hugo website yet created.
+
+```bash
+➜ hugo new site grrquarterly
+➜ cd grrquarterly
+➜ git init
+➜ git submodule add https://github.com/arts-link/ryder.git themes/ryder
+➜ mkdir -p config/{_default,production}
+➜ cp themes/ryder/exampleSite/config.toml config/_default/hugo.toml
+# edit the config to setup for your own project and needs
+➜ cp themes/ryder/exampleSite/*.config.js .
+# edit the tailwindcss.config.js file to include the files it needs to watch
+# probably something like ... content: ["./hugo_stats.json", "./layouts/**/*.html", "./themes/ryder/layouts/**/*.html"],
+➜ cp themes/ryder/exampleSite/package.json .
+➜ npm install
+➜ hugo server
 ```
 
 ## Configuration
