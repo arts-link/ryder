@@ -40,7 +40,7 @@ Renders a menu for the given menu ID.
         {{- end -}}
       >{{ $name }}</a>
       {{- with .Children }}
-            <ul class="flex space-x-4 absolute ml-4 p-4 bg-green-50 dark:bg-green-900 hidden group-hover:block">
+            <ul class="flex space-x-4 absolute ml-4 p-4 bg-green-300 dark:bg-green-900 hidden group-hover:block">
               {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
             </ul>
       {{- end }}

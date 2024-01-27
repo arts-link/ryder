@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'hidden-home': " url('/images/hidden-home-cover.webp')",
+        'hidden-home': " url('/ryder/images/hidden-home-cover.webp')",
       },},
   },
   plugins: [require("@tailwindcss/typography")],
