@@ -5,10 +5,15 @@ date = "2019-02-28"
 aliases = ["about-us", "about-hugo", "contact"]
 author = "Hugo Authors"
 enableComments = false
-menu = "main"
+ShowToc = true
 homeFeature = true
 homeFeatureTitle = "All About Hugo!"
-homeFeatureIcon = "fa-solid fa-shop"
+homeFeatureIcon = "fa-solid fa-dungeon"
+
+[menu]
+ [menu.main]
+  weight = 32
+  name = 'About Hugo'
 +++
 
 ## Background  

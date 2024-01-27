@@ -2,8 +2,10 @@
 title = 'Alerts'
 date = 2024-01-26T12:55:50-08:00
 # draft = true
-menus = 'main'
-
+[menu]
+ [menu.main]
+  weight = 2
+  parent = 'posts'
 +++
 ## Alert shortcode examples:
   
@@ -31,9 +33,10 @@ Uses `fa-solid fa-dumpster-fire`.
 
 {{< alert-wrapper alertType="danger" alertTitle="will" alertMessage="robinson"  alertIconClass="fa-solid fa-dumpster-fire" >}}
 
-##### Neutral: 
+### Neutral: 
 
-Does not pass alertIconClass, defaults to info icon.
+Does not pass `alertIconClass`, defaults to info icon.
+Does not pass `alertType`, defaults to gray.
 
 {{< alert-wrapper alertTitle="will" alertMessage="robinson" >}}
 

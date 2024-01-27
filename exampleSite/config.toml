@@ -1,4 +1,4 @@
-baseURL= "https://arts-link.github.io/ryder/"
+baseURL= "https://arts-link.github.io/"
 languageCode= "en-us"
 title= "Ryder example site"
 theme= "ryder"
@@ -12,5 +12,17 @@ themesDir= "../../"
 [[params.alphaAlert]]
   alertType = "danger"
   alertTitle = "Special Banner add-on"
-  alertMessage = "You can even have a banner added to the top of EVERY page on the site!"
+  alertMessage = "This theme is a work in progress!"
   alertIconClass = "fa-solid fa-camera-retro"
+[[params.social]]
+  faClasses = "fa-solid fa-envelope"
+  title = "Email me"
+  url   = "mailto:hello@arts-link.com?subject=web"
+  target= "_blank"
+  weight = 30 
+[[params.social]]
+  faClasses = "fa-brands fa-github"
+  title = "GitHub"
+  url   = "https://www.github.com/arts-link"
+  target= "_blank"
+  weight = 20
