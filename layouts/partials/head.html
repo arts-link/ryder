@@ -1,6 +1,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
   <link rel="canonical" href="{{ .Permalink }}" />
+  <link rel="icon" href="/favicon.ico?v=2" type="image/x-icon" />
   <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
   <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}" />
   {{ hugo.Generator }}
