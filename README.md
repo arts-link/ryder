@@ -1,3 +1,6 @@
+![exampleSite build](https://github.com/github/docs/actions/workflows/hugo.yml/badge.svg)
+
+
 # the ryder theme  
 
 v0.1 - This theme is pretty barebones, with a few additions to get things setup quickly.
