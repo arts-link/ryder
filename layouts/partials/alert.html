@@ -26,7 +26,7 @@
 {{ end }}
 {{/*  ONLY SHOW THE BOX if it has a Title OR a Message OR both  */}}
 {{ if or ($alertTitle) ($alertMessage) ($alertIconClass) }}
-<div class="flex items-center p-4 mb-4 text-sm border rounded-lg {{ $alertClasses }}" role="alert">
+<div class="flex items-center p-4 mb-4 container text-sm border rounded-lg {{ $alertClasses }}" role="alert">
   <i class="{{ if $alertIconClass }}{{ $alertIconClass }}{{ else }}fa-solid fa-circle-info{{ end }} flex-shrink-0 inline w-6 h-6 me-3"></i>
   <span class="sr-only">{{ $alertType }}</span>
   <div>
