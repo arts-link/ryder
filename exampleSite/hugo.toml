@@ -9,7 +9,7 @@ themesDir= "../../"
 [params]
   description = "Lightning Fast Portfolios for Artists"
   isAlpha = true
-  headerGradientClasses = "bg-gradient-to-r from-emerald-500 to-emerald-800" 
+  headerGradientClasses = "bg-gradient-to-r from-rose-500 to-rose-800" 
 [[params.alphaAlert]]
   alertType = "danger"
   alertTitle = "Special Banner add-on"

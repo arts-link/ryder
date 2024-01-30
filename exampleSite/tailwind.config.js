@@ -4,14 +4,16 @@ module.exports = {
   content: [
     "./hugo_stats.json", 
     "./hugo.toml",
-    "./layouts/**/*.html", 
+    "./layouts/**/*.html",
+    "./../layouts/**/*.html", 
   ],
-  content: ["../layouts/**/*.html"],
   darkMode: 'class',
   theme: {
     extend: {
       backgroundImage: {
-        'hidden-home': " url('/ryder/images/hidden-home-cover.webp')",
+        // change for github hosting...
+        // 'hidden-home': " url('/ryder/images/hidden-home-cover.webp')",
+        'hidden-home': " url('../images/hidden-home-cover.webp')",
       },},
   },
   plugins: [require("@tailwindcss/typography")],
