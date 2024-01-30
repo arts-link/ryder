@@ -1,7 +1,7 @@
 {{ define "main" }}
   {{- partial "breadcrumb.html" . }}
-  <div class="prose lg:prose-xl prose-invert rounded-xl bg-gray-800/75 p-4">
-    <h1>{{- if .Params.homeFeatureIcon }}
+  <div class="prose lg:prose-xl dark:prose-invert rounded-xl p-4">
+    <h1 class="capitalize">{{- if .Params.homeFeatureIcon }}
     <i class="{{ .Params.homeFeatureIcon }} mr-2 mb-1 text-4xl"></i>
     {{- end }}
    {{ .Title }}</h1>

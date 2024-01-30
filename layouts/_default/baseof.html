@@ -5,10 +5,10 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center bg-white text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
   {{ $headerClass := "bg-gradient-to-r from-cyan-500 to-cyan-800" }} 
-  {{/* The problem with this idea is you can't set a class in hugo.toml and have tailwind use it... or can you? i don't know how to do that yet.  
-  {{ with .Param "headerGradientClass" }}
+  {{/*  The problem with this idea is you can't set a class in hugo.toml and have tailwind use it... or can you? i don't know how to do that yet.    */}}
+  {{ with .Param "headerGradientClasses" }}
   {{ $headerClass = . }}
-  {{ end }}  */}}
+  {{ end }}
   <header class="{{ $headerClass }} w-full">
     {{- partial "header.html" . }}
   </header>

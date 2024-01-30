@@ -1,4 +1,3 @@
-
 {{ $taxonomy := "states" }}
 <h2 class="text-3xl capitalize">Explore {{ $taxonomy }}</h2>
   <ul>
@@ -6,7 +5,7 @@
       {{ with index . $taxonomy }}
         {{ range $name, $taxonomyEntry := . }}
           <li class="ml-4">
-            <a class="py-4 capitalize" href="/{{ $taxonomy }}/{{ $name | urlize }}">{{ $name }}</a>
+            <a class="py-4 capitalize" href="/{{ $taxonomy }}/{{ $name | urlize }}">{{ $name }} ({{ $taxonomyEntry.Len }})</a>
           </li>
         {{ end }}
       {{ end }}
