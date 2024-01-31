@@ -1,4 +1,5 @@
-baseURL= "https://arts-link.github.io/"
+# !!! exampleSite only, set this to your own site URL
+baseURL= "https://arts-link.github.io/ryder/"
 languageCode= "en-us"
 title= "Ryder example site"
 theme= "ryder"

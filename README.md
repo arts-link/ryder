@@ -60,7 +60,9 @@ Depending on your deplpoyment setup I recommend using layered config directories
 ➜ cp -r themes/ryder/exampleSite/config/ ./config
 ```
 
+#### IMPORTANT DO NOT SKIP
 Delete the line: `themesDir = "../.."` from your new `/config/_default/hugo.toml` file.
+Update the `baseURL= "https://arts-link.github.io/ryder/"` to point to your own URL
 
 ### NPM package installation
 Next you will need to install the packages that are used for this theme. These are all nodejs modules which are installed from the npm package registry. These are all open source files. This is defined in the [`package.json`](https://github.com/arts-link/ryder/tree/main/exampleSite/package.json) file
