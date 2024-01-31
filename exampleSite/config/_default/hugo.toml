@@ -11,6 +11,7 @@ themesDir= "../../"
   # show the global site banner, must set params.alphaAlert to configure.
   isAlpha = true
   # dark mode switch defaults to hidden, remove this line or set to false to hide
+  # alternatively, and probably more useful, use system dark mode by removing darkMode: 'class', from tailwind.config.js
   showDarkToggle = true 
   headerGradientClasses = "bg-gradient-to-r from-rose-500 to-rose-800" 
 [[params.alphaAlert]]
