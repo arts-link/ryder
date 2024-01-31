@@ -1,29 +1,28 @@
 {{ define "main" }}
   {{- partial "breadcrumb.html" . }}
-  <div class="prose lg:prose-xl dark:prose-invert rounded-xl p-4">
+  <div class="prose lg:prose-xl dark:prose-invert rounded-xl">
     <h1 class="capitalize">{{- if .Params.homeFeatureIcon }}
     <i class="{{ .Params.homeFeatureIcon }} mr-2 mb-1 text-4xl"></i>
     {{- end }}
    {{ .Title }}</h1>
     {{ .Content }}
   </div>
-  {{ with .Pages }}
-  <div class="container grid grid-cols-1 gap-6 p-2 sm:p-4 sm:grid-cols-2 not-prose">
-  {{ range . }}
-  <a href="{{ .RelPermalink }}" class="rounded-2xl bg-sky-100 dark:bg-sky-800 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:hover:brightness-110 no-underline" title="{{ .Title }}">
+  {{ template "_internal/pagination.html" . }}
+  <div class="container grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 not-prose">
+  {{ range .Paginator.Pages }}
+  <div class="rounded-2xl bg-sky-100 dark:bg-sky-800 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:hover:brightness-110 no-underline" title="{{ .Title }}">
     <div class="h-100">
       <div class="p-5">
-        <h2 class="mb-2 mt-1 text-2xl">{{ .LinkTitle }}</h2>
+        <h2 class="mb-2 mt-1 text-2xl"><a href="{{ .RelPermalink }}" >{{ .LinkTitle }}</a></h2>
         <p class="text-sm font-normal">
           {{ .Summary }}
         </p>
         {{ if .Truncated }}
-        <p>Read more...</p>
+        <p class="mt-4"><a href="{{ .RelPermalink }}" >Read more...</a></p>
         {{ end }}
       </div>
     </div>
-  </a>
-  {{ end }}
   </div>
   {{ end }}
+  </div>
 {{ end }}

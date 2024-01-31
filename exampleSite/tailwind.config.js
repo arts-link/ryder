@@ -3,7 +3,7 @@ module.exports = {
   // content: ["./hugo_stats.json", "./layouts/**/*.html", "./themes/ryder/layouts/**/*.html"],
   content: [
     "./hugo_stats.json", 
-    "./hugo.toml",
+    "./config/**/*.toml",
     "./layouts/**/*.html",
     "./../layouts/**/*.html", 
   ],

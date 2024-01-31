@@ -30,7 +30,7 @@
   <i class="{{ if $alertIconClass }}{{ $alertIconClass }}{{ else }}fa-solid fa-circle-info{{ end }} flex-shrink-0 inline w-6 h-6 me-3"></i>
   <span class="sr-only">{{ $alertType }}</span>
   <div>
-    {{ if ne $alertTitle "" }} <span class="font-bold">{{ $alertTitle }}{{ if ne $alertMessage "" }}:{{ end }}</span> {{ end }}{{ $alertMessage }}
+    {{ if ne $alertTitle "" }} <span class="font-bold">{{ $alertTitle }}{{ if ne $alertMessage "" }}:{{ end }}</span> {{ end }}{{ $alertMessage | safeHTML }}
   </div>
 </div>
 {{ end }}

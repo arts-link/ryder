@@ -6,7 +6,7 @@ author = "Hugo Authors"
 enableComments = false
 
 homeFeature = true
-homeFeatureTitle = "Posts About Hugo!"
+homeFeatureTitle = "An example Posts index page"
 homeFeatureIcon = "fa-regular fa-paper-plane"
 
 [menu]
@@ -15,4 +15,5 @@ homeFeatureIcon = "fa-regular fa-paper-plane"
   identifier = 'posts'
 +++
 
-Some posts go here.
+
+A list of all your content under posts will go here on this paginated section. If you only want to show the posts, just have no content on the `index.md` file.

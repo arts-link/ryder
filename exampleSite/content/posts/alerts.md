@@ -6,9 +6,36 @@ date = 2024-01-26T12:55:50-08:00
  [menu.main]
   weight = 2
   parent = 'posts'
+
 +++
 
-All of the params are optional, but if neither alertTitle or alertMessage are passed they will not render. The default icon if no `alertIconClass` is passed is info. The `alertIconClass` must be a valid [fontawesome icon class](https://fontawesome.com/search?o=r&m=free), or class defined in your custom css.
+## The global alert
+
+This is setup in your `hugo.toml` configuration file.  
+```toml
+[params]
+  isAlpha = true
+[[params.alphaAlert]]
+  alertType = "danger"
+  alertTitle = "Special Banner add-on included"
+  alertMessage = "This theme is a work in progress!"
+  alertIconClass = "fa-solid fa-camera-retro"
+```
+
+For `alertType` options include:
+- `info` (blue)
+- `success` (green)
+- `warning` (yellow)
+- `danger` (red)
+- `dark` (dark)  
+
+It defaults to `dark`.
+
+For `alertIconClass` any [fontawesome-free icon class](https://fontawesome.com/search?o=r&m=free) will work.
+
+## From the content directory, called as a shortcode.
+
+All of the params are optional, but if neither alertTitle or alertMessage are passed they will not render. The `alertIconClass` must be a valid [fontawesome icon class](https://fontawesome.com/search?o=r&m=free).
 
 ```go
 {{</* alert-wrapper 
@@ -25,7 +52,7 @@ All of the params are optional, but if neither alertTitle or alertMessage are pa
 
 Uses `fa-solid fa-snowflake`.
 
-{{< alert-wrapper alertType="info" alertTitle="will" alertMessage="robinson" alertIconClass="fa-solid fa-snowflake">}}  
+{{< alert-wrapper alertType="info" alertTitle="will" alertMessage="robinson <a href='/posts/alerts'>test</a>" alertIconClass="fa-solid fa-snowflake">}}  
 
 ### Success: 
 

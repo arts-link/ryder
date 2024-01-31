@@ -3,6 +3,7 @@ languageCode= "en-us"
 title= "Ryder example site"
 theme= "ryder"
 summaryLength = 15
+# paginate = 4
 
 # !!! exampleSite only, you may need to delete the line: `themesDir: ../../` 
 themesDir= "../../"
@@ -12,8 +13,8 @@ themesDir= "../../"
   headerGradientClasses = "bg-gradient-to-r from-rose-500 to-rose-800" 
 [[params.alphaAlert]]
   alertType = "danger"
-  alertTitle = "Special Banner add-on"
-  alertMessage = "This theme is a work in progress!"
+  alertTitle = "Global Banners"
+  alertMessage = "This theme is a work in progress! <a href='/posts/alerts' class='underline'>learn more about them!</a>"
   alertIconClass = "fa-solid fa-camera-retro"
 [[params.social]]
   faClasses = "fa-solid fa-envelope"

@@ -2,3 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+.pagination {
+  @apply flex list-none;
+}
+.page-item {
+  @apply mr-2; 
+}

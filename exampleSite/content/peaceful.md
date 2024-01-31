@@ -2,7 +2,7 @@
 title = 'A Peaceful Page'
 date = 2024-01-26T14:32:26-08:00
 # draft = true
-layout = 'hidden-home'
+type = 'hidden-home'
 [menu]
  [menu.main]
   weight = 22

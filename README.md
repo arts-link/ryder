@@ -17,19 +17,29 @@ I decided to name it after my late friend and companion, the rhodesian ridgeback
 - Alert banners
 - Dark Mode
 - Featured Item blocks on home page
-- Special hidden-home template to display only a short message and a large bg image cover
+- Special hidden-home template to display only a short message and a large background image cover
 - tailwindcss setup and pre-configured with simple copy config setup
 - fontawesome icons setup
 - toc setup as partial to be included from front matter param
 
 ## Installation
 
+### If you don't have a hugo site setup yet
+
+This starts from the very top with no hugo website yet created.
+
+```bash
+➜ hugo new site <your-site>
+➜ cd <your-site>
+➜ git init
+```
+
 ### As Git Submodule
 
 Inside the folder of your Hugo site run:
 
-```
-$ git submodule add https://github.com/arts-link/ryder.git themes/ryder
+```bash
+➜ git submodule add https://github.com/arts-link/ryder.git themes/ryder
 ```
 For more information read the official [setup guide](//gohugo.io/getting-started/quick-start/) of Hugo.
 
@@ -37,55 +47,69 @@ For more information read the official [setup guide](//gohugo.io/getting-started
 
 After installing the theme successfully you need to follow a few steps in order to get your site running.
 
-
 ### The config files
 
 #### Hugo's config.toml
-Take a look inside the [`exampleSite`](https://github.com/arts-link/ryder/tree/main/exampleSite) folder of this theme. You'll find a file called [`config.toml`](https://github.com/arts-link/ryder/blob/main/exampleSite/config.toml). To use it, copy the [`config.toml`](https://github.com/arts-link/ryder/blob/main/exampleSite/config.toml) in the root folder of your Hugo site. Feel free to change the strings in this theme.
+Take a look inside the [`exampleSite`](https://github.com/arts-link/ryder/tree/main/exampleSite) folder of this theme. You'll find a file called [`hugo.toml`](https://github.com/arts-link/ryder/blob/main/exampleSite/config/_default/hugo.toml).
 
-Depending on your deplpoyment setup I recommend using layered config directories. Instead of putting `config.toml` into the root directory, create a new directory `config`, with a subdirectory `_default` and place the `config.toml` file in there. When it comes time to deploy, create a subdirectory `production` which will contain things like a google analytics configuration setting, things you want to only be activate in production or production-like environments. Any other environment may be added in this layered way... _default is always used, and anything in the environment folder is layered over, not merged. I use this to have a different title to the site in development and production so it is easy to see what you are looking at.
 
-```
-config/
--- _default/
-  -- config.toml
--- production/
-  -- config.toml
-```
-
-- You need to delete the line: `themesDir = "../.."` from your new `config.toml` file.
-
-#### Tailwind.css
-
-In order to have tailwind run, copy `tailwind.config.js` and `postcss.config.js` from `exampleSite` to the root of your site. 
-
-## Installation
-
-This starts from the very top with no hugo website yet created.
+Depending on your deplpoyment setup I recommend using layered config directories. Instead of putting `hugo.toml` into the root directory, create a new directory `config`, with a subdirectory `_default` and place the `config.toml` file in there. When it comes time to deploy, create a subdirectory `production` which will contain things like a google analytics configuration setting or a different title in development and production, so it is easy to see where you are, any things you want to only be active in production or production-like environments. Any other environment may be added in this layered way. _default is always used, and anything in the environment folder is layered over, not merged. [See more about this setup](https://gohugo.io/getting-started/configuration/#configuration-directory)
 
 ```bash
-➜ hugo new site grrquarterly
-➜ cd grrquarterly
-➜ git init
-➜ git submodule add https://github.com/arts-link/ryder.git themes/ryder
-➜ mkdir -p config/{_default,production}
-➜ cp themes/ryder/exampleSite/config.toml config/_default/hugo.toml
-# edit the config to setup for your own project and needs
-➜ cp themes/ryder/exampleSite/*.config.js .
-# edit the tailwindcss.config.js file to include the files it needs to watch
-# probably something like ... content: ["./hugo_stats.json", "./layouts/**/*.html", "./themes/ryder/layouts/**/*.html"],
+# this will also get you a production config directory 
+➜ cp -r themes/ryder/exampleSite/config/ ./config
+```
+
+Delete the line: `themesDir = "../.."` from your new `/config/_default/hugo.toml` file.
+
+### NPM package installation
+Next you will need to install the packages that are used for this theme. These are all nodejs modules which are installed from the npm package registry. These are all open source files. This is defined in the [`package.json`](https://github.com/arts-link/ryder/tree/main/exampleSite/package.json) file
+- [@fortawesome/fontawesome-free version](https://www.npmjs.com/package/@fortawesome/fontawesome-free): ^6.5.1
+- [@tailwindcss/typography version](https://www.npmjs.com/package/@tailwindcss/typography): ^0.5.10
+- [autoprefixer version](https://www.npmjs.com/package/autoprefixer): ^10.4.16
+- [postcss version](https://www.npmjs.com/package/postcss): ^8.4.33
+- [postcss-cli version](https://www.npmjs.com/package/postcss-cli): ^11.0.0
+- [postcss-import version](https://www.npmjs.com/package/postcss-import): ^16.0.0
+- [tailwindcss version](https://www.npmjs.com/package/tailwindcss): ^3.4.1
+
+```bash
 ➜ cp themes/ryder/exampleSite/package.json .
 ➜ npm install
-➜ hugo server
+```
+
+#### tailwind and postcss have their own config files, copy them over
+
+```bash
+➜ cp themes/ryder/exampleSite/*.config.js .
 ```
 
 ## Configuration
 
-- TODO: Document all the variables  
+- TODO: Finish Documenting all the variables  
+Defined in `/config/_default/hugo.toml`
+```toml
+[params]
+  isAlpha = true
+  headerGradientClasses = "bg-gradient-to-r from-rose-500 to-rose-800" 
+[[params.alphaAlert]]
+  alertType = "danger"
+  alertTitle = "Special Banner add-on"
+  alertMessage = "This theme is a work in progress!"
+  alertIconClass = "fa-solid fa-camera-retro"
+[[params.social]]
+  faClasses = "fa-solid fa-envelope"
+  title = "Email me"
+  url   = "mailto:hello@arts-link.com?subject=web"
+  target= "_blank"
+  weight = 30 
+```
 
 ## TODO
 
-- document alert.html partial
+## Sites that are using the ryder hugo theme 
+
+[arts-link.com](https://www.arts-link.com)
+[grrquarterly](https://www.grrquarterly.com)
 
 ## THANK YOU
 
