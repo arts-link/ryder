@@ -4,14 +4,14 @@ date = 2024-01-26T12:55:50-08:00
 # draft = true
 [menu]
  [menu.main]
-  weight = 2
+  weight = 1
   parent = 'posts'
 
 +++
 
 ## The global alert
 
-This is setup in your `hugo.toml` configuration file.  
+This is setup in your `hugo.toml` configuration file. Multiple banners will be displayed for however many `[[params.alphaAlert]]` blocks you configure. 
 ```toml
 [params]
   isAlpha = true

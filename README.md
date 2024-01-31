@@ -89,12 +89,21 @@ Next you will need to install the packages that are used for this theme. These a
 Defined in `/config/_default/hugo.toml`
 ```toml
 [params]
+  # show the global site banner, must set params.alphaAlert to configure.
   isAlpha = true
+  # dark mode switch defaults to hidden, remove this line or set to false to hide
+  # alternatively, and probably more useful, use system dark mode by removing darkMode: 'class', from tailwind.config.js
+  showDarkToggle = true 
   headerGradientClasses = "bg-gradient-to-r from-rose-500 to-rose-800" 
 [[params.alphaAlert]]
   alertType = "danger"
-  alertTitle = "Special Banner add-on"
-  alertMessage = "This theme is a work in progress!"
+  alertTitle = "Global Banners"
+  alertMessage = "This theme is a work in progress! <a href='/posts/alerts' class='underline'>learn more about them!</a>"
+  alertIconClass = "fa-solid fa-camera-retro"
+[[params.alphaAlert]]
+  alertType = "info"
+  alertTitle = "2 Global Banners are possible"
+  alertMessage = "This theme is a work in progress! <a href='/posts/alerts' class='underline'>learn more about them!</a>"
   alertIconClass = "fa-solid fa-camera-retro"
 [[params.social]]
   faClasses = "fa-solid fa-envelope"
@@ -102,14 +111,22 @@ Defined in `/config/_default/hugo.toml`
   url   = "mailto:hello@arts-link.com?subject=web"
   target= "_blank"
   weight = 30 
+[[params.social]]
+  faClasses = "fa-brands fa-github"
+  title = "GitHub"
+  url   = "https://www.github.com/arts-link"
+  target= "_blank"
+  weight = 20
 ```
 
 ## TODO
 
 ## Sites that are using the ryder hugo theme 
 
-[arts-link.com](https://www.arts-link.com)
-[grrquarterly](https://www.grrquarterly.com)
+If you are using the ryder hugo theme, [let us know](mailto://hello@arts-link.com?subject=ryder) and you will be added here.
+
+- [arts-link.com](https://www.arts-link.com)
+- [grrquarterly](https://www.grrquarterly.com)
 
 ## THANK YOU
 

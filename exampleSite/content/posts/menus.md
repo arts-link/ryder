@@ -3,7 +3,7 @@ title = 'Menus'
 date = 2024-01-26T15:22:11-08:00
 [menu]
  [menu.main]
-  weight = 52
+  weight = 2
   name = 'Create a Menu'
   parent = 'posts'
 # draft = true

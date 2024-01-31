@@ -5,7 +5,7 @@ date = "2019-03-10"
 description = "A brief description of Hugo Shortcodes"
 [menu]
  [menu.main]
-  weight = 1
+  weight = 10
   parent = 'posts'
 tags = [
     "shortcodes",
