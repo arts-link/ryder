@@ -1,0 +1,8 @@
+<p class="text-center">{{ .Site.Copyright }} {{ now.Year }}. All rights reserved.</p>
+<p class="text-center">Theme created by <a href="https://www.arts-link.com/" class="underline">arts-link.com</a></p>
+{{- partial "socialslist.html" . }}
+{{- if (.Param "showDarkToggle") }}
+  {{- partial "dark-toggle.html" . }}
+{{- end }}
+{{- partial "menu.html" (dict "menuID" "footer" "page" .) }}
+
