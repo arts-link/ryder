@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html lang="{{ or site.Language.LanguageCode site.Language.Lang }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
 <head>
+  <!-- Include the backgroundChanger.js file -->
+  {{- with resources.Get "/js/backgroundChanger.js" }}
+    {{- if eq hugo.Environment "development" }}
+      {{- with . | js.Build }}
+    <script defer src="{{ .RelPermalink }}"></script>
+      {{- end }}
+    {{- else }}
+      {{- $opts := dict "minify" true }}
+      {{- with . | js.Build $opts | fingerprint }}
+    <script defer src="{{ .RelPermalink }}" integrity="{{- .Data.Integrity }}" crossorigin="anonymous"></script>
+      {{- end }}
+    {{- end }}
+  {{- end }}
   {{ partial "head.html" . }}
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center bg-white text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
   
   <main>
     <div class="bg-hidden-home bg-cover fixed inset-0 flex items-center justify-center">
-      <div class="md:w-1/2 p-4 m-5 items-center rounded-xl bg-gray-200/75 dark:bg-gray-800/75">
+      <div class="md:w-1/2 p-4 m-5 items-center rounded-xl bg-gray-200/55 dark:bg-gray-800/50">
           <div class=" m-1 prose dark:prose-invert max-w-none">
           <h1 class="text-3xl text-center font-bold">{{ .Title }}</h1>
               {{ .Content }}
@@ -20,4 +33,5 @@
   </main>
   
 </body>
+
 </html>

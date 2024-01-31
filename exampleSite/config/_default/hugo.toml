@@ -1,9 +1,10 @@
 # !!! exampleSite only, set this to your own site URL
 baseURL= "https://arts-link.github.io/ryder/"
 languageCode= "en-us"
-title= "Ryder example site"
+title= "Ryder hugo theme example site"
 theme= "ryder"
 summaryLength = 15
+enableRobotsTXT = true
 # paginate = 4
 
 # !!! exampleSite only, you may need to delete the line: `themesDir: ../../` 
