@@ -1,5 +1,5 @@
 {{ with .Site.Params.social }}
-<ul class="flex justify-center items-center list-none">
+<ul class="flex justify-center items-center list-none not-prose">
 {{ range sort . "weight" }}
   {{ if .faClasses}} {{ if .url }}
   <li class="p-2">
