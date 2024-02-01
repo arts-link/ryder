@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ or site.Language.LanguageCode site.Language.Lang }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
 <head>
+  
+  {{- if .Params.randomizeBackground }}
   <!-- Include the backgroundChanger.js file -->
   {{- with resources.Get "/js/backgroundChanger.js" }}
     {{- if eq hugo.Environment "development" }}
@@ -14,7 +16,9 @@
       {{- end }}
     {{- end }}
   {{- end }}
+  {{- end }}
   {{ partial "head.html" . }}
+  
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center bg-white text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
   
@@ -23,6 +27,14 @@
       <div class="md:w-1/2 p-4 m-5 items-center rounded-xl bg-gray-200/55 dark:bg-gray-800/50">
           <div class=" m-1 prose dark:prose-invert max-w-none">
           <h1 class="text-3xl text-center font-bold">{{ .Title }}</h1>
+          {{ with .Params.randomizeBackground }}
+          {{ if . }}
+              <!-- Do something when randomizeBackground is true -->
+          {{ else }}
+              oh?
+              <!-- Do something when randomizeBackground is false or not set -->
+          {{ end }}
+          {{ end }}
               {{ .Content }}
           </div>
           <div class=" m-1 text-center prose dark:prose-invert max-w-none">
