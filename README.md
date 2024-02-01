@@ -132,6 +132,8 @@ If you are using the ryder hugo theme, [let us know](mailto://hello@arts-link.co
 
 ## THANK YOU
 
-- For the help I found on the internet thank you to these pages:
+For the help I found on the internet thank you to these pages:
+
+- [Hugo discourse forum and users](https://discourse.gohugo.io/)
 - [Hugo-papermod theme](https://github.com/adityatelange/hugo-PaperMod)
 - [hugo-theme-gallery theme](https://github.com/nicokaiser/hugo-theme-gallery)

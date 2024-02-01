@@ -30,7 +30,7 @@ Renders a menu for the given menu ID.
         {{- $name = . }}
       {{- end }}
     {{- end }}
-          <li>
+          <li class="border-b border-rose-400">
             {{- if .Children }}<div class="relative group">{{- end }}
             <a class="text-white hover:text-gray-300 active:text-gray-500" 
         {{- range $k, $v := $attrs }}
@@ -40,9 +40,10 @@ Renders a menu for the given menu ID.
         {{- end -}}
       >{{ $name }}</a>
       {{- with .Children }}
-            <ul class="flex absolute rounded-lg w-24 md:w-52 ml-4 p-4 bg-rose-500 dark:bg-rose-900 hidden group-hover:block">
-              {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
-            </ul>
+        <i class="fa-solid fa-angles-down text-white"></i>
+        <ul class="flex absolute top-auto left-0 rounded-lg w-24 md:w-52 ml-4 p-4 bg-rose-600 dark:bg-rose-900 hidden group-hover:block">
+                {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
+        </ul>
       {{- end }}
       {{- if .Children }}</div>{{ end }}</li>
   {{- end }}
