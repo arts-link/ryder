@@ -1,28 +1,43 @@
 {{- define "main" }}
-  <div class="container grid grid-cols-1 gap-6 p-2 sm:p-4 sm:grid-cols-2 ">
-    {{- $features := where .Pages "Params.homeFeature" "eq" true }}
+    
+  <div class=" grid grid-cols-1 gap-6 sm:grid-cols-2 ">
+    {{- $pctx := . }}
+    {{- if .IsHome }}{{ $pctx = .Site }}{{ end }}
+    {{- $pages := slice }}
+    {{- if or $.IsHome $.IsSection }}
+    {{- $pages = $pctx.RegularPages }}
+    {{- else }}
+    {{- $pages = $pctx.Pages }}
+    {{- end }}
+    {{/*  {{- range $pages }}
+    {{ .Title }}, 
+    {{- end }}  */}} 
+    {{- $features := where $pages "Params.homeFeature" "eq" true }}
     {{- range first 2 $features }}
-      <div class="rounded-2xl bg-sky-100 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:bg-sky-800 dark:hover:brightness-110 no-underline" title="{{ .Title }}">
+    <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="flex items-center">
+      <div class=" rounded-2xl bg-sky-100 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:bg-sky-800 dark:hover:brightness-110">
         <div class="h-100">
           <div class="p-5">
-            <h2 class="mb-2 mt-1 text-2xl"><a href="{{ .RelPermalink }}">
+            <h2 class="mb-2 mt-1 text-3xl">
               {{- if .Params.homeFeatureIcon }}
                 <i class="{{ .Params.homeFeatureIcon }} mr-4 text-4xl"></i>
               {{- end }}
               {{ or .Params.homeFeatureTitle .Title }}
-            </a></h2>
+            </h2>
             <p class="text-sm font-normal">
               {{ .Summary }}
             </p>
           </div>
         </div>
       </div>
+    </a>
     {{- end }}
   </div>
   {{ if .Content }}
-  <div class="flex-1 items-center justify-center">
+  <div class="p-4 flex-1 items-center justify-center">
     <div class="prose lg:prose-xl dark:prose-invert rounded-xl mx-auto">
-        {{ .Content }}
+      <h1>{{ .Title }}</h1>
+      {{ .Content }}
     </div>
   </div>
   {{ end }}

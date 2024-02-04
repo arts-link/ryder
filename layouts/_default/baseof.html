@@ -3,31 +3,41 @@
 <head>
   {{ partial "head.html" . }}
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center bg-white text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
+<body class="bg-white text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
+
+<div class="min-h-screen flex flex-col items-center justify-center ">
+
   {{ $headerClass := "bg-gradient-to-r from-cyan-500 to-cyan-800" }} 
-  {{/*  The problem with this idea is you can't set a class in hugo.toml and have tailwind use it... or can you? i don't know how to do that yet.    */}}
+  {{/*  make sure to remember you point tailwind.config.js to your config file  */}}
   {{ with .Param "headerGradientClasses" }}
   {{ $headerClass = . }}
   {{ end }}
   <header class="{{ $headerClass }} w-full">
     {{- partial "header.html" . }}
   </header>
-  {{- if (.Param "isAlpha") }}
-  {{ with .Site.Params.alphaAlert }}
-  {{ range sort . "weight" }}
-    {{- $.Scratch.Set "alertType" .alertType }}
-    {{- $.Scratch.Set "alertTitle" .alertTitle }}
-    {{- $.Scratch.Set "alertMessage" .alertMessage }}
-    {{- $.Scratch.Set "alertIconClass" .alertIconClass }}
-    {{- partial "alert.html" $.Page }}
-  {{- end }}
-  {{- end }}
-  {{- end }}
-  <main class="container flex-1 p-5 overflow-y-auto">
+  <div id="banners">
+    {{ with .Site.Params.alphaAlert }}
+    {{ range sort . "weight" }}
+      {{- $.Scratch.Set "alertType" .alertType }}
+      {{- $.Scratch.Set "alertTitle" .alertTitle }}
+      {{- $.Scratch.Set "alertMessage" .alertMessage }}
+      {{- $.Scratch.Set "alertIconClass" .alertIconClass }}
+      {{- partial "alert.html" $.Page }}
+    {{- end }}
+    {{- end }}
+  </div>
+  <main class="container flex-1 max-w-4xl ">
     {{- block "main" . }}{{- end }}
   </main>
-  <footer class="p-4">
+  <footer class="{{ $headerClass }} p-4 w-full">
     {{ partial "footer.html" . }}
   </footer>
+
+</div>
+
+{{- if or (.Params.enabledebugpanel) (and (not .Params.enabledebugpanel) (site.Params.enabledebugpanel)) }}
+{{ partial "debug-panel.html" . }}
+{{- end }}
+
 </body>
 </html>

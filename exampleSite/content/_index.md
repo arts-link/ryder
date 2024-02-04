@@ -1,5 +1,5 @@
 +++
-title = 'A Peaceful Page'
+title = 'The Ryder Theme'
 date = 2024-01-26T14:32:26-08:00
 # draft = true
 # type = 'hidden-home'

@@ -1,12 +1,12 @@
 {{ define "main" }}
-  <div class="prose lg:prose-xl dark:prose-invert rounded-xl p-4">
+  <div class="border border-rose-500 p-4 mx-auto flex-1 items-center justify-center prose lg:prose-xl dark:prose-invert">
+    {{- partial "breadcrumb.html" . }}
     <h1>
       {{- if .Params.homeFeatureIcon }}
       <i class="{{ .Params.homeFeatureIcon }} mr-2 mb-1 text-4xl"></i>
       {{- end }}
       {{ .Title }}
     </h1>
-
     {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
     {{ $dateHuman := .Date | time.Format ":date_long" }}
     <time datetime="{{ $dateMachine }}" class="hidden">{{ $dateHuman }}</time>

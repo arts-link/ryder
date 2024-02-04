@@ -1,0 +1,131 @@
+
+<div>
+
+  <div id="draggable" class="fixed border-l-2 top-0 right-0 w-1/3 bg-white p-5 ml-5 h-screen overflow-auto">
+  <div id="handle" class="w-10 h-10 absolute rounded-full top-1/2 left-[-10px] cursor-move bg-gray-300 hover:bg-gray-400"></div>
+  
+  <div class="w-full ">
+    <!-- thanks https://flowbite.com/docs/components/tabs/ -->
+      <!-- Tabs -->
+      <ul class="flex flex-wrap border-b border-slate-500 w-full -mb-px">
+        <li class="me-1">
+          <a href="#" for="tab1" class="tab-btn inline-block p-2 border-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500" aria-current="page">  .</a>
+        </li>
+        <li class="me-1">
+          <a href="#" for="tab2" class="tab-btn inline-block p-2 border-2 border-gray-300 rounded-t-lg hover:text-gray-500 hover:border-gray-400 dark:hover:text-gray-300"> .Params</a>
+        </li>
+        <li class="me-1">
+          <a href="#" for="tab3" class="tab-btn inline-block p-2 border-2 border-gray-300 rounded-t-lg hover:text-gray-500 hover:border-gray-400 dark:hover:text-gray-300"> site.Params</a>
+        </li>
+        <li class="me-1">
+          <a href="#" for="tab4" class="tab-btn inline-block p-2 border-2 border-gray-300 rounded-t-lg hover:text-gray-500 hover:border-gray-400 dark:hover:text-gray-300"> site.Menus</a>
+        </li>
+        <li class="me-1">
+          <a href="#" for="tab5" class="tab-btn inline-block p-2 border-2 border-gray-300 rounded-t-lg hover:text-gray-500 hover:border-gray-400 dark:hover:text-gray-300"> .GitInfo</a>
+        </li>
+        <li class="me-1">
+          <a href="#" for="tab6" class="tab-btn inline-block p-2 border-2 border-gray-300 rounded-t-lg hover:text-gray-500 hover:border-gray-400 dark:hover:text-gray-300"> .Resources</a>
+        </li>
+        <li class="me-1">
+          <a href="#" for="tab7" class="tab-btn inline-block p-2 border-2 border-gray-300 rounded-t-lg hover:text-gray-500 hover:border-gray-400 dark:hover:text-gray-300"> .File</a>
+        </li>
+      </ul>
+
+    <!-- Tab Content -->
+    <div id="content-tab1" class="tab-content">
+      <h2 class="text-2xl mb-2">`.`</h2>
+      {{ partial "debugprint" . }}
+    </div>
+    <div id="content-tab2" class="hidden tab-content">
+      <h2 class="text-2xl mb-2">`.Params`</h2>
+      {{ partial "debugprint.html" .Params }}
+    </div>
+    <div id="content-tab3" class="hidden tab-content">
+      <h2 class="text-2xl mb-2">`site.Params`</h2>
+      {{ partial "debugprint.html" site.Params }}
+    </div>
+    <div id="content-tab4" class="hidden tab-content">
+      <h2 class="text-2xl mb-2">`site.Menus`</h2>
+      {{ partial "debugprint.html" site.Menus }}
+    </div>
+    <div id="content-tab5" class="hidden tab-content">
+      <h2 class="text-2xl mb-2">`.GitInfo`</h2>
+      {{ partial "debugprint.html" .GitInfo }}
+    </div>
+    <div id="content-tab6" class="hidden tab-content">
+      <h2 class="text-2xl mb-2">`.Resources`</h2>
+      {{ partial "debugprint.html" .Resources }}
+    </div>
+    <div id="content-tab7" class="hidden tab-content">
+      <h2 class="text-2xl">`.File`</h2>
+      {{ partial "debugprint.html" .File }}
+    </div>
+    
+  </div>
+   
+  <script>
+    // JavaScript to handle tab switching
+    const tabs = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => {
+            // Reset currently active tab
+            const currentActiveTab = document.querySelector('.tab-btn.active');
+            if (currentActiveTab) {
+                currentActiveTab.classList.remove('border-blue-600', 'active', 'dark:text-blue-500', 'dark:border-blue-500');
+                currentActiveTab.classList.add('border-gray-300', 'hover:text-gray-500', 'hover:border-gray-400', 'dark:hover:text-gray-300');
+            }
+
+            // Hide all tab contents
+            tabContents.forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // Show the selected tab content
+            tabContents[index].classList.remove('hidden');
+
+            // Update the class for the clicked tab
+            tab.classList.add('border-blue-600', 'active', 'dark:text-blue-500', 'dark:border-blue-500');
+            tab.classList.remove('border-gray-300', 'hover:text-gray-500', 'hover:border-gray-400', 'dark:hover:text-gray-300');
+        });
+    });
+  </script>
+  
+  <script>
+    // JavaScript for making the div draggable
+    const draggableDiv = document.getElementById('draggable');
+    const handleDiv = document.getElementById('handle');
+
+    let isResizing = false;
+
+    handleDiv.addEventListener('mousedown', (event) => {
+      isResizing = true;
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', () => {
+        isResizing = false;
+        document.removeEventListener('mousemove', handleMouseMove);
+      });
+    });
+
+    handleDiv.addEventListener('dblclick', () => {
+    // Double-click event handler to toggle the panel
+    if (draggableDiv.style.width === '0px' || draggableDiv.style.width === '') {
+      // If the panel is closed or not set, open it
+      draggableDiv.style.width = '33%'; // You can set the desired width
+    } else {
+      // If the panel is open, close it
+      draggableDiv.style.width = '0';
+    }
+  });
+
+    function handleMouseMove(event) {
+      if (isResizing) {
+        const newWidth = event.clientX;
+        draggableDiv.style.width = `${window.innerWidth - newWidth}px`;
+      }
+    }
+  </script>
+
+  </div>
+</div>

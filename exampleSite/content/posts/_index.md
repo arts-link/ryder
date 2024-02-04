@@ -5,10 +5,6 @@ date = "2024-01-24"
 author = "Hugo Authors"
 enableComments = false
 
-homeFeature = true
-homeFeatureTitle = "An example Posts index page"
-homeFeatureIcon = "fa-regular fa-paper-plane"
-
 [menu]
  [menu.main]
   weight = 32

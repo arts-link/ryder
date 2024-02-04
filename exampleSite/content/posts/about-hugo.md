@@ -6,14 +6,13 @@ aliases = ["about-us", "about-hugo", "contact"]
 author = "Hugo Authors"
 enableComments = false
 ShowToc = true
-homeFeature = true
-homeFeatureTitle = "All About Hugo!"
-homeFeatureIcon = "fa-solid fa-dungeon"
+
 
 [menu]
  [menu.main]
   weight = 32
   name = 'About Hugo'
+  parent = 'posts'
 +++
 
 ## Background  

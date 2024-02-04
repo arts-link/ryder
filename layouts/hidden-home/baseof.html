@@ -20,21 +20,13 @@
   {{ partial "head.html" . }}
   
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center bg-white text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
+<body class="bg-hidden-home bg-cover h-screen">
   
   <main>
-    <div class="bg-hidden-home bg-cover fixed inset-0 flex items-center justify-center">
-      <div class="md:w-1/2 p-4 m-5 items-center rounded-xl bg-gray-200/55 dark:bg-gray-800/50">
-          <div class=" m-1 prose dark:prose-invert max-w-none">
+    <div class="flex items-center justify-center overflow-auto">
+      <div class="w-4/5 md:w-1/2 p-4 m-5 rounded-xl bg-gray-200/55 dark:bg-gray-800/50">
+          <div class="m-1 prose dark:prose-invert max-w-none">
           <h1 class="text-3xl text-center font-bold">{{ .Title }}</h1>
-          {{ with .Params.randomizeBackground }}
-          {{ if . }}
-              <!-- Do something when randomizeBackground is true -->
-          {{ else }}
-              oh?
-              <!-- Do something when randomizeBackground is false or not set -->
-          {{ end }}
-          {{ end }}
               {{ .Content }}
           </div>
           <div class=" m-1 text-center prose dark:prose-invert max-w-none">
@@ -43,7 +35,9 @@
       </div>
     </div>
   </main>
-  
+{{- if or (.Params.enabledebugpanel) (and (not .Params.enabledebugpanel) (site.Params.enabledebugpanel)) }}
+{{ partial "debug-panel.html" . }}
+{{- end }}
 </body>
 
 </html>

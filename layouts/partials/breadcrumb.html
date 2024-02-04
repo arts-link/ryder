@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb" class="flex items-center justify-between">
-  <ol class="flex space-x-4">
-    {{ range after 1 .Ancestors.Reverse }}
+  <ul class="flex space-x-4">
+    {{ range .Ancestors.Reverse }}
       <li>
         <a href="{{ .RelPermalink }}" class="text-xl"><i class="fa-solid fa-angles-left"></i>{{ .LinkTitle }}</a>
       </li>
@@ -8,5 +8,5 @@
     {{/*  <li class="active">
       <a aria-current="page" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
     </li>  */}}
-  </ol>
+  </ul>
 </nav>
