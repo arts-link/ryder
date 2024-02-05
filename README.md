@@ -1,4 +1,4 @@
-![exampleSite build](https://github.com/arts-link/ryder/actions/workflows/hugo.yml/badge.svg)
+[![exampleSite build](https://github.com/arts-link/ryder/actions/workflows/hugo.yml/badge.svg)](https://arts-link.github.io/ryder/)
 
 
 # the ryder theme  
