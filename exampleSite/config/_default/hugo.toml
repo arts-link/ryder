@@ -5,6 +5,7 @@ title= "Ryder hugo theme example site"
 theme= ["ryder"]
 summaryLength = 15
 enableRobotsTXT = true
+copyright = "©️ Ryder Theme 2024"
 # paginate = 4
 
 # !!! exampleSite only, you may need to delete the line: `themesDir: ../../` 
@@ -13,30 +14,23 @@ themesDir= "../../"
   # dark mode switch defaults to hidden, remove this line or set to false to hide
   # alternatively, and probably more useful, use system dark mode by removing darkMode: 'class', from tailwind.config.js
   showDarkToggle = true 
-  headerGradientClasses = "bg-gradient-to-r from-rose-500 to-rose-800" 
+  headerGradientClasses = "bg-gradient-to-r from-rose-500 to-rose-800 text-neutral-100" 
   # defaults to false if not set.
   # enableDebugPanel = true 
 [[params.alphaAlert]]
   weight = 11
   alertType = "danger"
   alertTitle = "Global Banners"
-  alertMessage = "This theme is a work in progress! <a href='/posts/alerts' class='underline'>learn more about them!</a>"
-  alertIconClass = "fa-solid fa-camera-retro"
+  alertMessage = "This theme is a work in progress! <a href='/ryder/posts/alerts' class='underline'>learn more about them!</a>"
+  alertIconClass = "fa-solid fa-magnifying-glass"
 [[params.alphaAlert]]
   weight = 1
   alertType = "info"
-  alertTitle = "2 Global Banners are possible"
-  alertMessage = "Just add them to [params.alphaAlert] in hugo.toml. <a href='/posts/alerts' class='underline'>learn more about them!</a>"
+  alertTitle = "Multiple Global Banners are possible"
+  alertMessage = "Just add them to [params.alphaAlert] in hugo.toml. <a href='/ryder/posts/alerts' class='underline'>learn more about them!</a>"
   alertIconClass = "fa-solid fa-camera-retro"
-[[params.social]]
-  faClasses = "fa-solid fa-envelope"
-  title = "Email me"
-  url   = "mailto:hello@arts-link.com?subject=web"
-  target= "_blank"
-  weight = 30 
-[[params.social]]
-  faClasses = "fa-brands fa-github"
-  title = "GitHub"
-  url   = "https://www.github.com/arts-link"
-  target= "_blank"
-  weight = 20
+[menus]
+[[menus.footer]]
+    name = 'Contact Us'
+    pageRef = '/'
+    weight = 10

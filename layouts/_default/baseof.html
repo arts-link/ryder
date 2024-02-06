@@ -6,15 +6,7 @@
 <body class="bg-white text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
 
 <div class="min-h-screen flex flex-col items-center justify-center ">
-
-  {{ $headerClass := "bg-gradient-to-r from-cyan-500 to-cyan-800" }} 
-  {{/*  make sure to remember you point tailwind.config.js to your config file  */}}
-  {{ with .Param "headerGradientClasses" }}
-  {{ $headerClass = . }}
-  {{ end }}
-  <header class="{{ $headerClass }} w-full">
-    {{- partial "header.html" . }}
-  </header>
+  {{- partial "header.html" . }}
   <div id="banners">
     {{ with .Site.Params.alphaAlert }}
     {{ range sort . "weight" }}
@@ -29,9 +21,14 @@
   <main class="container flex-1 max-w-4xl ">
     {{- block "main" . }}{{- end }}
   </main>
-  <footer class="{{ $headerClass }} p-4 w-full">
+  <!-- cache partial only in production -->
+  {{/*  <footer class="{{ $headerClass }} p-4 w-full">  */}}
+  {{ if hugo.IsProduction }}
+    {{ partialCached "footer.html" . }}
+  {{ else }}
     {{ partial "footer.html" . }}
-  </footer>
+  {{ end }}
+
 
 </div>
 

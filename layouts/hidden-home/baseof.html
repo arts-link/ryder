@@ -20,12 +20,11 @@
   {{ partial "head.html" . }}
   
 </head>
-<body class="bg-hidden-home bg-cover h-screen">
-  
+<body class="bg-hidden-home bg-cover">
   <main>
-    <div class="flex items-center justify-center overflow-auto">
-      <div class="w-4/5 md:w-1/2 p-4 m-5 rounded-xl bg-gray-200/55 dark:bg-gray-800/50">
-          <div class="m-1 prose dark:prose-invert max-w-none">
+    <div class="h-lvh flex items-center justify-center">
+      <div class="max-h-lvh w-4/5 md:w-1/2 p-4 m-5 rounded-xl bg-gray-200/55 dark:bg-gray-800/50">
+          <div class="max-h-lvh m-1 prose dark:prose-invert max-w-none overflow-auto">
           <h1 class="text-3xl text-center font-bold">{{ .Title }}</h1>
               {{ .Content }}
           </div>

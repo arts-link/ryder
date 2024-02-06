@@ -4,10 +4,13 @@
     {{ with .Site.Taxonomies }}
       {{ with index . $taxonomy }}
         {{ range $name, $taxonomyEntry := . }}
-          <li class="ml-4">
-            <a class="py-4 capitalize" href="/{{ $taxonomy }}/{{ $name | urlize }}">{{ $name }} ({{ $taxonomyEntry.Len }})</a>
+          <li class="inline-block">
+            <a class="hover:bg-primary dark:bg-darkmode-body dark:hover:bg-darkmode-primary dark:hover:text-dark m-1 block rounded bg-white px-3 py-1 hover:text-white capitalize" href="/{{ $taxonomy }}/{{ $name | urlize }}">{{ $name }} ({{ $taxonomyEntry.Len }})</a>
           </li>
         {{ end }}
       {{ end }}
     {{ end }}
   </ul>
+
+
+  

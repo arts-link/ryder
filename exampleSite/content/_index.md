@@ -7,6 +7,8 @@ date = 2024-01-26T14:32:26-08:00
 
 ### Welcome to the Ryder theme example site!
 
+
+
 To get started and learn more about how to use this theme, check out the [README file on github](https://github.com/arts-link/ryder).
 
 Here is the theme namesake:
