@@ -20,16 +20,17 @@
   {{ partial "head.html" . }}
   
 </head>
-<body class="bg-hidden-home bg-cover">
+<body class="bg-hidden-home bg-cover text-neutral-900 dark:text-neutral-100">
   {{ if not hugo.IsProduction }}
   <!-- tailwind size indicator -->
     {{ partial "tw-size-indicator.html" . }}
   {{ end }}
   <main>
     <div class="h-lvh flex items-center justify-center">
-      <div class="max-h-lvh w-4/5 md:w-1/2 p-4 m-5 rounded-xl bg-gray-200/55 dark:bg-gray-800/50">
+      <div class="max-h-lvh w-4/5 md:w-1/2 p-4 m-5 rounded-xl bg-gray-200/55 dark:bg-gray-800/75">
           <div class="max-h-lvh m-1 prose dark:prose-invert max-w-none overflow-auto">
-            <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-7xl text-center font-bold">{{ .Title }}</h1>
+            {{/*  <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-7xl text-center font-bold">{{ .Title }}</h1>  */}}
+            {{- partial "logo.html" . }}
             {{ .Content }}
           </div>
           <div class=" m-1 text-center prose dark:prose-invert max-w-none">

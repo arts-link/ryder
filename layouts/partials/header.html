@@ -4,8 +4,11 @@
 {{ $headerClass = . }}
 {{ end }}
 <header class="{{ $headerClass }} w-full">
-<div class="container mx-auto px-5 py-5">
-    <h1 class="text-3xl font-bold"><a href="{{ .Site.Home.RelPermalink }}">{{ site.Title }}</a></h1>
+<div class="p-1 sm:p-4 flex flex-row justify-between">
+    {{- partial "logo.html" . }}
+    <div class="flex items-center pr-2 sm:hidden text-3xl"><i class="fa-solid fa-burger cursor-pointer"></i></div>
+    <div class="hidden sm:block">
     {{- partial "menu.html" (dict "menuID" "main" "page" .) }}
+    </div>
 </div>
 </header>
