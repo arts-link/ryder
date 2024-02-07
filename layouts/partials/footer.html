@@ -1,6 +1,6 @@
-<footer class="border-t w-full">
+<footer class="border-t w-full py-2 dark:bg-emerald-950">
   <div class="flex justify-between flex-row">
-    <div class="grid grid-cols-1 px-2">
+    <div class="grid grid-cols-1 px-2 text-xs">
       <div class="flex items-center">
       {{- with .Site.Copyright}}
       <p class="flex items-center">{{ . }}</p>
@@ -8,7 +8,8 @@
       </div>
       {{- partial "attribution.html" . }}
     </div>
-    <div class="flex justify-center items-center">
+    <div class="flex justify-center items-center text-xs md:text-base">
+      this could be a problem
       {{- partial "menu.html" (dict "menuID" "footer" "page" .) }} 
     </div>
     <div class="flex justify-center items-center">
