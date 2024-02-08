@@ -22,6 +22,7 @@
     </div>
     {{- end }}
     <main class="border container flex-1 max-w-screen-lg ">
+{{- partial "breadcrumb.html" . }}
       {{- block "main" . }}{{- end }}
     </main>
     <!-- cache partial only in production -->
