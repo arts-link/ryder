@@ -1,8 +1,11 @@
-<nav aria-label="breadcrumb" class="flex items-center justify-between">
-  <ul class="flex space-x-4">
-    {{ range .Ancestors.Reverse }}
+<nav aria-label="breadcrumb" class="flex items-center justify-between ">
+  <ul class="flex space-x-4 ml-2">
+    {{ range after 1 .Ancestors.Reverse }}
       <li>
-        <a href="{{ .RelPermalink }}" class="text-xl"><i class="fa-solid fa-angles-left"></i>{{ .LinkTitle }}</a>
+        <a href="{{ .RelPermalink }}" class="text-xl">
+          <i class="text-base fa-solid fa-angles-left"></i>
+          {{ .LinkTitle }}
+        </a>
       </li>
     {{ end }}
     {{/*  <li class="active">
