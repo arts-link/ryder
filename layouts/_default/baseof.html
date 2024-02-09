@@ -5,10 +5,10 @@
 </head>
 <body class="bg-white font-titillium text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
   {{ if not hugo.IsProduction }}
-  <!-- tailwind size indicator -->
+    <!-- tailwind size indicator -->
     {{ partial "tw-size-indicator.html" . }}
   {{ end }}
-  <div class="min-h-screen flex flex-col items-center justify-center ">
+  <div class="min-h-lvh flex flex-col ">
     {{- partial "header.html" . }}
     {{ with .Site.Params.alphaAlert }}
     <div id="banners">
@@ -21,24 +21,23 @@
       {{- end }}
     </div>
     {{- end }}
-    <main class="border container flex-1 max-w-screen-lg ">
-{{- partial "breadcrumb.html" . }}
+    <main class="container max-h-max ">
+      {{- partial "breadcrumb.html" . }}
       {{- block "main" . }}{{- end }}
     </main>
     <!-- cache partial only in production -->
-    {{/*  <footer class="{{ $headerClass }} p-4 w-full">  */}}
     {{ if hugo.IsProduction }}
       {{ partialCached "footer.html" . }}
     {{ else }}
       {{ partial "footer.html" . }}
     {{ end }}
         {{- if (.Param "ShowToc") }}
-    <div class="fixed z-20 top-[3.8125rem] bottom-0 right-[max(0px,calc(50%-65rem))] lg:right-[max(0px,calc(50%-45rem))] w-[17rem] lg:w-[19.5rem] py-10 overflow-y-auto hidden lg:block">
-      <div class="px-8">
-          {{- partial "toc.html" . }}
-      </div>
-    </div>
-        {{- end }}
+        <div class="fixed z-20 top-[3.8125rem] bottom-0 left-[75ch] lg:left-[80ch] w-[17rem] lg:w-[19.5rem] py-10 overflow-y-auto hidden md:block">
+          <div class="px-8">
+              {{- partial "toc.html" . }}
+          </div>
+        </div>
+    {{- end }}
 </div>
 
 {{/*  {{- if or (.Params.) (and (not .Params.enabledebugpanel) (site.Params.enabledebugpanel)) }}  */}}
