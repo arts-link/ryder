@@ -9,8 +9,8 @@ Renders a menu for the given menu ID.
 {{- $page := .page }}
 {{- $menuID := .menuID }}
 {{- with index site.Menus $menuID }}
-      <nav class="flex items-center justify-between">
-        <ul class="flex space-x-4">
+      <nav class="main-menu-nav">
+        <ul class="main-menu-ul">
           {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
         </ul>
       </nav>
@@ -30,8 +30,9 @@ Renders a menu for the given menu ID.
         {{- $name = . }}
       {{- end }}
     {{- end }}
-          <li class="border-b border-rose-400">
-            {{- if .Children }}<div class="relative group">{{- end }}
+          <li class="">
+            {{/*  TODO -- replace n with nesting level  */}}
+            {{- if .Children }}<div class="relative group/sub-n">{{- end }}
             <a 
         {{- range $k, $v := $attrs }}
           {{- with $v }}
@@ -41,7 +42,7 @@ Renders a menu for the given menu ID.
       >{{ $name }}</a>
       {{- with .Children }}
         <i class="fa-solid fa-angles-down"></i>
-        <ul class="flex absolute top-auto right-0 rounded-lg w-24 md:w-52 ml-4 p-4 bg-rose-600 dark:bg-rose-900 hidden group-hover:block">
+        <ul class="main-menu-child-ul group-hover/sub-n:block">
                 {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
         </ul>
       {{- end }}

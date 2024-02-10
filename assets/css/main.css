@@ -8,3 +8,61 @@
 .page-item {
   @apply mr-2; 
 }
+
+@layer base {
+  h1 {
+    @apply text-3xl;
+  }
+  h2 {
+    @apply text-2xl;
+  }
+  /* ... */
+}
+
+@layer components {
+
+  /*  navbar toggler */
+  input#nav-toggle:checked + label #show-button {
+    @apply hidden;
+  }
+
+  input#nav-toggle:checked + label #hide-button {
+    @apply block;
+  }
+
+  input#nav-toggle:checked ~ #nav-menu {
+    @apply block;
+  }
+
+  .main-menu-ul {
+    @apply flex;
+    @apply space-x-4;
+    @apply text-nowrap;
+  }
+
+  .main-menu-ul > li {
+    @apply border-b;
+    @apply border-orange-900;
+  }
+
+  .main-menu-child-ul {
+    @apply rounded-lg;
+    @apply bg-orange-600;
+
+    /* should this shit just be in the menu? */
+    @apply absolute;
+    @apply top-auto;
+    @apply right-0;
+    @apply max-w-52;
+    @apply md:max-w-60;
+    @apply ml-4;
+    @apply p-2;
+    @apply hidden;
+  }
+
+  .main-menu-child-ul > li {
+    @apply border-b;
+    @apply border-cyan-800;
+  }
+  /* ... */
+}

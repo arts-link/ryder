@@ -1,7 +1,7 @@
 # !!! exampleSite only, set this to your own site URL
 baseURL= "https://arts-link.github.io/ryder/"
 languageCode= "en-us"
-title= "Ryder hugo theme example site"
+title= "Ryder theme"
 theme= ["ryder"]
 summaryLength = 15
 enableRobotsTXT = true
@@ -15,6 +15,7 @@ themesDir= "../../"
   # alternatively, and probably more useful, use system dark mode by removing darkMode: 'class', from tailwind.config.js
   showDarkToggle = true 
   headerGradientClasses = "bg-gradient-to-r from-rose-500 to-rose-800 text-neutral-100" 
+  menuTwShade = "rose"
   # defaults to false if not set.
   # enableDebugPanel = true 
 [[params.alphaAlert]]
