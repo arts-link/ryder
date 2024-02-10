@@ -10,18 +10,18 @@
   {{ end }}
   <div class="min-h-lvh flex flex-col ">
     {{- partial "header.html" . }}
-    {{ with .Site.Params.alphaAlert }}
-    <div id="banners">
-      {{ range sort . "weight" }}
-        {{- $.Scratch.Set "alertType" .alertType }}
-        {{- $.Scratch.Set "alertTitle" .alertTitle }}
-        {{- $.Scratch.Set "alertMessage" .alertMessage }}
-        {{- $.Scratch.Set "alertIconClass" .alertIconClass }}
-        {{- partial "alert.html" $.Page }}
-      {{- end }}
-    </div>
+    {{- with .Site.Params.alphaAlert }}
+      <div id="banners">
+        {{- range sort . "weight" }}
+          {{- $.Scratch.Set "alertType" .alertType }}
+          {{- $.Scratch.Set "alertTitle" .alertTitle }}
+          {{- $.Scratch.Set "alertMessage" .alertMessage }}
+          {{- $.Scratch.Set "alertIconClass" .alertIconClass }}
+          {{- partial "alert.html" $.Page }}
+        {{- end }}
+      </div>
     {{- end }}
-    <main class="container max-h-max ">
+    <main class="container max-h-max mx-auto ">
       {{- partial "breadcrumb.html" . }}
       {{- block "main" . }}{{- end }}
     </main>
@@ -31,13 +31,7 @@
     {{ else }}
       {{ partial "footer.html" . }}
     {{ end }}
-        {{- if (.Param "ShowToc") }}
-        <div class="fixed z-20 top-[3.8125rem] bottom-0 left-[75ch] lg:left-[80ch] w-[17rem] lg:w-[19.5rem] py-10 overflow-y-auto hidden md:block">
-          <div class="px-8">
-              {{- partial "toc.html" . }}
-          </div>
-        </div>
-    {{- end }}
+    
 </div>
 
 {{/*  {{- if or (.Params.) (and (not .Params.enabledebugpanel) (site.Params.enabledebugpanel)) }}  */}}

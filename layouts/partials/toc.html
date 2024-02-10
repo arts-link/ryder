@@ -25,7 +25,7 @@
             {{- $.Scratch.Set "bareul" slice -}}
             <ul class="">
                 {{- range seq (sub $firstHeaderLevel $largest) -}}
-                <ul class="ml-5">
+                <ul class="ml-2 lg:ml-4">
                     {{- $.Scratch.Add "bareul" (sub (add $largest .) 1) -}}
                     {{- end -}}
                     {{- range $i, $header := $headers -}}
@@ -44,7 +44,7 @@
                     {{- $prevHeaderLevel := len (seq $prevHeaderLevel) -}}
                     {{- if gt $headerLevel $prevHeaderLevel -}}
                     {{- range seq $prevHeaderLevel (sub $headerLevel 1) -}}
-                    <ul class="ml-5">
+                    <ul class="ml-2 lg:ml-4">
                         {{/* the first should not be recorded */}}
                         {{- if ne $prevHeaderLevel . -}}
                         {{- $.Scratch.Add "bareul" . -}}
