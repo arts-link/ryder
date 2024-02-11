@@ -8,7 +8,7 @@
     <!-- tailwind size indicator -->
     {{ partial "tw-size-indicator.html" . }}
   {{ end }}
-  <div class="min-h-lvh flex flex-col ">
+  <div class="min-h-lvh flex flex-col border">
     {{- partial "header.html" . }}
     {{- with .Site.Params.alphaAlert }}
       <div id="banners">

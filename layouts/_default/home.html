@@ -33,11 +33,15 @@
     </a>
     {{- end }}
   </div>
-  {{ if .Content }}
+  {{ if or .Title .Content }}
   <div class="p-4 flex-1 items-center justify-center">
     <div class="prose lg:prose-xl dark:prose-invert rounded-xl mx-auto">
+  {{ if .Title }}
       <h1>{{ .Title }}</h1>
+  {{ end }}
+  {{ if .Content }}
       {{ .Content }}
+  {{ end }}
     </div>
   </div>
   {{ end }}

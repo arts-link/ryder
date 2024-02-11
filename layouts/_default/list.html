@@ -1,5 +1,5 @@
 {{ define "main" }}
-<div class="p-4 flex-1 items-center justify-center">
+<div class="p-4 flex-1 max-w-screen-lg relative mx-auto">
   <div class="prose lg:prose-xl dark:prose-invert">
     <h1>{{- if .Params.homeFeatureIcon }}
     <i class="{{ .Params.homeFeatureIcon }} mr-2 mb-1 text-4xl"></i>
@@ -8,20 +8,21 @@
     {{ .Content }}
   </div>
   {{ template "_internal/pagination.html" . }}
-  <div class="grid grid-cols-1 gap-6 p-2 sm:p-4 sm:grid-cols-2">
-  {{ range .Paginator.Pages }}
+  <div class="grid grid-cols-1 gap-6 p-2 sm:p-4 sm:grid-cols-2 lg:grid-cols-3">
+  {{ $pages := .Pages.ByDate }}
+  {{ range (.Paginator $pages 2).Pages }}
   <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="flex items-center">
-    <div class=" rounded-2xl bg-sky-100 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:bg-sky-800 dark:hover:brightness-110">
-      <div class="h-100">
+    <div class=" rounded-2xl bg-sky-100 transition-[filter] hover:brightness-90  dark:bg-sky-800 dark:hover:brightness-110 w-full h-full">
+      <div class="">
         <div class="p-5">
-          <h2 class="mb-2 mt-1 text-3xl">
+          <h2 class="">
             {{- if .Params.homeFeatureIcon }}
               <i class="{{ .Params.homeFeatureIcon }} mr-4 text-4xl"></i>
             {{- end }}
-            {{ or .Params.homeFeatureTitle .Title }}
+            {{ .Title }}
           </h2>
-          <p class="text-sm font-normal">
-            {{ .Summary }}
+          <p class="break-all bg-rose-400">
+            {{ .Summary | safeHTML }}
           </p>
         </div>
       </div>
@@ -29,5 +30,6 @@
   </a>
   {{ end }}
   </div>
+  {{ template "_internal/pagination.html" . }}
 </div>
 {{ end }}
