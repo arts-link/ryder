@@ -1,12 +1,13 @@
 {{- define "main" }}
     
-  <div class=" grid grid-cols-1 gap-6 sm:grid-cols-2 ">
+  <div class="max-w-screen-lg p-4 mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2 ">
     {{- $pctx := . }}
     {{- if .IsHome }}{{ $pctx = .Site }}{{ end }}
     {{- $pages := slice }}
     {{- if or $.IsHome $.IsSection }}
     {{- $pages = $pctx.RegularPages }}
     {{- else }}
+    ho ho home
     {{- $pages = $pctx.Pages }}
     {{- end }}
     {{/*  {{- range $pages }}

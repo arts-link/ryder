@@ -9,8 +9,10 @@
   </div>
   {{ template "_internal/pagination.html" . }}
   <div class="grid grid-cols-1 gap-6 p-2 sm:p-4 sm:grid-cols-2 lg:grid-cols-3">
-  {{ $pages := .Pages.ByDate }}
-  {{ range (.Paginator $pages 2).Pages }}
+  
+  {{/*  {{ range (.Paginate .RegularPagesRecursive).Pages }}  */}}
+  {{ range .Pages }}
+
   <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="flex items-center">
     <div class=" rounded-2xl bg-sky-100 transition-[filter] hover:brightness-90  dark:bg-sky-800 dark:hover:brightness-110 w-full h-full">
       <div class="">
@@ -32,4 +34,5 @@
   </div>
   {{ template "_internal/pagination.html" . }}
 </div>
+
 {{ end }}

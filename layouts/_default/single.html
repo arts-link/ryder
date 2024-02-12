@@ -1,5 +1,5 @@
 {{ define "main" }}
-  <div class="border p-4 flex max-w-screen-lg relative mx-auto">
+  <div class="p-4 flex max-w-screen-lg relative mx-auto">
     <div class=" prose lg:prose-lg dark:prose-invert ">
       <h1>
         {{- if .Params.homeFeatureIcon }}
@@ -12,21 +12,18 @@
       <time datetime="{{ $dateMachine }}" class="hidden">{{ $dateHuman }}</time>
       {{ .Content }}
     </div>
-      <div class="absolute top-0 right-0 flex-auto w-[10rem] lg:w-[19.5rem] overflow-y-auto hidden md:block">
-        <div class="px-4">
+      <div class="absolute top-0 right-0 flex-auto py-4 w-[10rem] lg:w-[19.5rem] overflow-y-auto hidden md:block">
+        <div class="px-4 grid grid-cols-1">
           {{- if (.Param "ShowToc") }}
-            <div class="mb-2">
+            <div class="">
               {{- partial "toc.html" . }}
             </div>
           {{- end }}
-          <details open>
-            <summary accesskey="t" title="(Alt + T)">
-              <span class="details text-rose-500">Tags</span>
-            </summary>
-            <div class="inner">
-              {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
-            </div>
-          </details>
+          <div class="">
+            
+                {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+              
+          </div>
         </div>
       </div>
   </div>
