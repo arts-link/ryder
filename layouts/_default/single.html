@@ -1,30 +1,36 @@
 {{ define "main" }}
-  <div class="p-4 flex max-w-screen-lg relative mx-auto">
-    <div class=" prose lg:prose-lg dark:prose-invert ">
-      <h1>
-        {{- if .Params.homeFeatureIcon }}
-        <i class="{{ .Params.homeFeatureIcon }} mr-2 mb-1 "></i>
-        {{- end }}
-        {{ .Title }}
-      </h1>
-      {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
-      {{ $dateHuman := .Date | time.Format ":date_long" }}
-      <time datetime="{{ $dateMachine }}" class="hidden">{{ $dateHuman }}</time>
-      {{ .Content }}
-    </div>
-      <div class="absolute top-0 right-0 flex-auto py-4 w-[10rem] lg:w-[19.5rem] overflow-y-auto hidden md:block">
-        <div class="px-4 grid grid-cols-1">
-          {{- if (.Param "ShowToc") }}
-            <div class="">
-              {{- partial "toc.html" . }}
-            </div>
+  <div class="p-4 max-w-screen-lg relative mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-x-12 xl:gap-x-24">
+      <div class="md:col-span-2  prose lg:prose-lg dark:prose-invert ">
+        <h1 class="flex items-center">
+          {{- if .Params.homeFeatureIcon }}
+          <i class="{{ .Params.homeFeatureIcon }} mr-2 mb-1 text-4xl"></i>
           {{- end }}
-          <div class="">
-            
-                {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+          {{ .Title }}
+        </h1>
+        {{- if .Params.showDate}}
+          {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
+          {{ $dateHuman := .Date | time.Format ":date_long" }}
+          <time datetime="{{ $dateMachine }}" class="">{{ $dateHuman }}</time>
+        {{- end }}
+        {{ .Content }}
+      </div>
+      <aside>
+        <div class="md:sticky md:top-24 flex-auto py-4 w-[10rem] lg:w-[19.5rem] overflow-y-auto hidden md:block">
+          <div class="px-4 grid grid-cols-1">
+            {{- if (.Param "ShowToc") }}
+              <div class="">
+                {{- partial "toc.html" . }}
+              </div>
+            {{- end }}
+            <div class="">
               
+                  {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+                
+            </div>
           </div>
         </div>
-      </div>
+      </aside>
+    </div>
   </div>
 {{ end }}

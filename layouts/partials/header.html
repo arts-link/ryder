@@ -7,13 +7,13 @@
 <header class="{{ $headerClass }} w-full {{ if site.Params.navbar_fixed }}sticky top-0{{ end }}">
 <div class=" p-3 sm:p-4 flex flex-row w-full">
     {{- partial "logo.html" . }}
-    <div class="ml-auto flex items-center relative">
+    <div class="ml-auto flex relative">
         <!-- navbar toggler -->
         <input id="nav-toggle" type="checkbox" class="hidden" />
         <label
             for="nav-toggle"
             class="cursor-pointer flex items-center sm:hidden">
-            <i id="show-button" class="text-2xl fa-solid fa-burger cursor-pointer"></i>
+            <i id="show-button" class="text-4xl fa-solid fa-burger cursor-pointer"></i>
               {{/*  <svg id="show-button" class="h-6 fill-current block" viewBox="0 0 20 20">
                 <title>Menu Open</title>
                 <path d="M0 3h20v2H0V3z m0 6h20v2H0V9z m0 6h20v2H0V0z"></path>
@@ -29,7 +29,7 @@
         {{/*  </div>  */}}
         </label>
   
-        <div id="nav-menu" class="ml-auto items-center hidden absolute top-12 right-2 sm:inline sm:top-auto sm:left-auto sm:text-xl ">
+        <div id="nav-menu" class="ml-auto hidden absolute top-12 right-2 sm:inline sm:top-auto sm:left-auto sm:right-0 sm:text-xl ">
 
             <div class="">
                 {{- partial "menu.html" (dict "menuID" "main" "page" . "shade" "rose") }}

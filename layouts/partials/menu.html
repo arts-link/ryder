@@ -41,7 +41,7 @@ Renders a menu for the given menu ID.
         {{- end -}}
       >{{ $name }}</a>
       {{- with .Children }}
-        <i class="fa-solid fa-angles-down"></i>
+        <i class="fa-solid fa-angle-down text-base"></i>
         <ul class="main-menu-child-ul group-hover/sub-n:block">
                 {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
         </ul>

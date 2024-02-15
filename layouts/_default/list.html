@@ -1,5 +1,5 @@
 {{ define "main" }}
-<div class="p-4 flex-1 max-w-screen-lg relative mx-auto">
+<div class="p-4 max-w-screen-lg mx-auto">
   <div class="prose lg:prose-xl dark:prose-invert">
     <h1>{{- if .Params.homeFeatureIcon }}
     <i class="{{ .Params.homeFeatureIcon }} mr-2 mb-1 text-4xl"></i>
@@ -7,27 +7,24 @@
     {{ .Title }}</h1>
     {{ .Content }}
   </div>
-  {{ template "_internal/pagination.html" . }}
   <div class="grid grid-cols-1 gap-6 p-2 sm:p-4 sm:grid-cols-2 lg:grid-cols-3">
-  
-  {{/*  {{ range (.Paginate .RegularPagesRecursive).Pages }}  */}}
-  {{ range .Pages }}
-
+  {{ $paginator := .Paginate (.Pages ) }}
+  {{ range $paginator.Pages }}
   <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="flex items-center">
     <div class=" rounded-2xl bg-sky-100 transition-[filter] hover:brightness-90  dark:bg-sky-800 dark:hover:brightness-110 w-full h-full">
-      <div class="">
         <div class="p-5">
-          <h2 class="">
+          <h2 class=" flex items-center">
             {{- if .Params.homeFeatureIcon }}
-              <i class="{{ .Params.homeFeatureIcon }} mr-4 text-4xl"></i>
+              <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>
             {{- end }}
             {{ .Title }}
           </h2>
-          <p class="break-all bg-rose-400">
+          {{ if .Summary }}
+          <p class="">
             {{ .Summary | safeHTML }}
           </p>
+          {{ end }}
         </div>
-      </div>
     </div>
   </a>
   {{ end }}

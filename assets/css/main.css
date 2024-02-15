@@ -38,16 +38,27 @@
     @apply flex;
     @apply space-x-4;
     @apply text-nowrap;
+    @apply p-3;
+    @apply bg-neutral-200;
+    @apply rounded-lg;
   }
 
   .main-menu-ul > li {
     @apply border-b;
     @apply border-orange-900;
+    @apply text-[#17729C];
+  }
+
+  .main-menu-ul li .active,
+  .main-menu-ul li .ancestor  {
+    @apply border-b;
+    @apply border-emerald-400;
+    @apply text-[#81B622];
   }
 
   .main-menu-child-ul {
     @apply rounded-lg;
-    @apply bg-orange-600;
+    @apply bg-neutral-300;
 
     /* should this shit just be in the menu? */
     @apply absolute;
@@ -63,6 +74,9 @@
   .main-menu-child-ul > li {
     @apply border-b;
     @apply border-cyan-800;
+  }
+  .main-menu-child-ul > li > .active {
+    @apply text-[#81B622];
   }
   /* ... */
 }
