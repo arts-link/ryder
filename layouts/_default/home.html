@@ -1,11 +1,11 @@
 {{- define "main" }}
-  <div class="max-w-screen-lg p-4 mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2 ">
+  <div class="max-w-screen-lg py-4 mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2 ">
     {{- $pages := slice }}
     {{- $pages = .Site.Pages }} 
     {{- $features := where $pages "Params.homeFeature" "eq" true }}
     {{- range first 5 $features }}
     {{/*  {{- range $features }}  */}}
-    <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="flex first:sm:col-span-2 even:sm:row-span-4 items-center rounded-2xl bg-sky-100 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:bg-sky-800 first:dark:bg-yellow-800 even:dark:bg-green-800 dark:hover:brightness-110">
+    <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="flex first:sm:col-span-2 items-center rounded-2xl bg-sky-100 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:bg-sky-800 first:bg-yellow-200 even:bg-green-200 dark:first:bg-yellow-800 dark:even:bg-green-800 dark:hover:brightness-110">
         <div class="h-full not:first:aspect-video">
           <div class="p-5 uppercase">
             <h2 class="mb-2 mt-1 text-3xl">
@@ -23,7 +23,7 @@
     {{- end }}
   </div>
   {{ if or .Title .Content }}
-  <div class="p-4 flex-1 items-center justify-center">
+  <div class="p-4 flex-1 items-center justify-center hidden">
     <div class="prose lg:prose-xl dark:prose-invert rounded-xl mx-auto">
   {{ if .Title }}
       <h1>{{ .Title }}</h1>

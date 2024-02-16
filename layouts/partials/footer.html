@@ -1,6 +1,10 @@
-<footer class="border-t w-full py-2 dark:bg-emerald-950 mt-auto">
+{{ $footerClass := "bg-gradient-to-r from-cyan-500 to-cyan-800" }} 
+{{ with .Param "twClasses.footerBackground" }}
+{{ $footerClass = . }}
+{{ end }}
+<footer class="border-t w-full py-2 mt-auto {{ $footerClass }}">
   <div class="flex justify-between flex-row">
-    <div class="grid grid-cols-1 px-2 text-xs">
+    <div class="grid grid-cols-1 px-2 text-sm">
       <div class="flex items-center">
       {{- with .Site.Copyright}}
       <p class="flex items-center">{{ . }}</p>

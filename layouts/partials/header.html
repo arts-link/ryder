@@ -1,6 +1,8 @@
 {{ $headerClass := "bg-gradient-to-r from-cyan-500 to-cyan-800" }} 
 {{/*  make sure to remember you point tailwind.config.js to your config file  */}}
-{{ with .Param "headerTWClasses" }}
+
+{{/*  {{ with .Param "headerTWClasses" }}  */}}
+{{ with .Param "twClasses.headerBackground" }}
 {{ $headerClass = . }}
 {{ end }}
 

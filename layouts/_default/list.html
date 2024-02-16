@@ -1,12 +1,12 @@
 {{ define "main" }}
 <div class="p-4 max-w-screen-lg mx-auto">
-  <div class="prose lg:prose-xl dark:prose-invert">
+  <header class="prose lg:prose-xl dark:prose-invert">
     <h1>{{- if .Params.homeFeatureIcon }}
     <i class="{{ .Params.homeFeatureIcon }} mr-2 mb-1 text-4xl"></i>
     {{- end }}
     {{ .Title }}</h1>
     {{ .Content }}
-  </div>
+  </header>
   <div class="grid grid-cols-1 gap-6 p-2 sm:p-4 sm:grid-cols-2 lg:grid-cols-3">
   {{ $paginator := .Paginate (.Pages ) }}
   {{ range $paginator.Pages }}
