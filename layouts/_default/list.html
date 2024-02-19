@@ -1,7 +1,7 @@
 {{ define "main" }}
 <div class="p-4 max-w-screen-lg mx-auto">
   <header class="prose lg:prose-xl dark:prose-invert">
-    <h1>{{- if .Params.homeFeatureIcon }}
+    <h1  class=" flex items-center">{{- if .Params.homeFeatureIcon }}
     <i class="{{ .Params.homeFeatureIcon }} mr-2 mb-1 text-4xl"></i>
     {{- end }}
     {{ .Title }}</h1>
