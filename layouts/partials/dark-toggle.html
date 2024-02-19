@@ -1,80 +1,44 @@
-<div class="px-2 items-center justify-center flex">
-  <div class="js-toggle touch-pan-x inline-block relative cursor-pointer">
-      <div class="js-toggle-track w-[50px] h-[24px] rounded-3xl bg-sky-950">
-          <div class="js-toggle-track-check absolute w-[17px] h-[17px] left-[5px] top-[0px] bottom-[0px] mt-auto mb-auto opacity-0 leading-none">
-            <i class="fa-regular fa-moon text-yellow-500"></i>
-          </div>
-          <div class="js-toggle-track-x absolute w-[17px] h-[17px] right-[5px] top-[0px] bottom-[0px] mt-auto mb-auto opacity-1 leading-none">
-            <i class="fa-regular fa-sun text-yellow-500"></i>
-          </div>
-      </div>
-      <div class="js-toggle-thumb absolute w-[22px] h-[22px] top-[1px] left-[1px] rounded-full bg-neutral-50 box-border"></div>
-      <input class="sr-only" type="checkbox" aria-label="Switch between Dark and Light mode">
-  </div>
+<div class="flex items-center justify-center grid-cols-1 ">
+  <button id="lightMode" class="dm-toggle p-2">
+    <i class="size-6 fa-regular fa-sun"></i>
+  </button>
+  <button id="darkMode" class="dm-toggle p-2">
+    <i class="size-6 fa-regular fa-moon"></i>
+  </button>
 </div>
-
-<style>
-  /*
-   * Dark Mode Toggle
-   * Copyright (c) 2015 instructure-react
-   * Forked from Dan Abramov's personal blog
-   * https://github.com/gaearon/overreacted.io/blob/master/src/components/Toggle.css
-   * MIT License
-  **/
-  .js-toggle-track {
-    transition: all 0.2s ease;
-  }
-  .js-toggle-track-check {
-    transition: opacity 0.25s ease;
-  }
-  .js-toggle--checked .js-toggle-track-check {
-    opacity: 1;
-    transition: opacity 0.25s ease;
-  }
-  .js-toggle-track-x {
-    transition: opacity 0.25s ease;
-  }
-  .js-toggle--checked .js-toggle-track-x {
-    opacity: 0;
-  }
-  .js-toggle-thumb {
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
-    transform: translateX(0);
-  }
-  .js-toggle--checked .js-toggle-thumb {
-    transform: translateX(26px);
-    border-color: #19ab27;
-  }
-  .js-toggle--focus .js-toggle-thumb {
-    box-shadow: 0px 0px 2px 3px rgb(255, 167, 196);
-  }
-  .js-toggle:active .js-toggle-thumb {
-    box-shadow: 0px 0px 5px 5px rgb(255, 167, 196);
-  }
-</style>
 <script>
-  var html = document.documentElement;
-	var switcher = document.getElementsByClassName('js-toggle')[0];
+  document.addEventListener("DOMContentLoaded", function() {
+    const lightModeButton = document.getElementById("lightMode");
+    const darkModeButton = document.getElementById("darkMode");
 
-	//Click on dark mode icon. Add dark mode classes and wrappers. Store user preference through sessions
-	switcher.addEventListener("click", function() {
-    this.classList.toggle('js-toggle--checked');
-    this.classList.add('js-toggle--focus');
-		//If dark mode is selected
-		if (this.classList.contains('js-toggle--checked')) {
-			html.classList.add('dark');
-			//Save user preference in storage
-			localStorage.setItem('theme', 'dark');
-		} else {
-			html.classList.remove('dark');
-			setTimeout(function() {
-				localStorage.removeItem('theme');
-			}, 100);
-		}
-	})
-	//Check Storage. Keep user preference on page reload
-	if (localStorage.getItem('theme')) {
-    switcher.classList.add('js-toggle--checked');
-    html.classList.add('dark');
-	}
+    // Check local storage for theme
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+      darkModeButton.classList.add('hidden');
+      lightModeButton.classList.remove('hidden');
+    } else {
+      document.documentElement.classList.remove('dark');
+      lightModeButton.classList.add('hidden');
+      darkModeButton.classList.remove('hidden');
+    }
+
+    // Toggle theme
+    function toggleTheme() {
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.theme = 'light';
+        lightModeButton.classList.add('hidden');
+        darkModeButton.classList.remove('hidden');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.theme = 'dark';
+        darkModeButton.classList.add('hidden');
+        lightModeButton.classList.remove('hidden');
+      }
+    }
+
+    // Add event listener to toggle theme
+    lightModeButton.addEventListener("click", toggleTheme);
+    darkModeButton.addEventListener("click", toggleTheme);
+  });
 </script>

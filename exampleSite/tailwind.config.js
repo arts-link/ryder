@@ -12,7 +12,13 @@ module.exports = {
     extend: {
       backgroundImage: {
         'hidden-home': " url('../images/hidden-home-cover.webp')",
-      },},
+      },
+      screens: {
+        'xs': '475px',
+        ...defaultTheme.screens,
+        '3xl': '1600px',
+      },
+    },
   },
   plugins: [require("@tailwindcss/typography")],
 }

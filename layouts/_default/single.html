@@ -1,6 +1,6 @@
 {{ define "main" }}
   <div class="p-4 max-w-screen-lg mx-auto ">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-x-2">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-x-1 ">
       <header class="md:col-span-12 prose lg:prose-xl max-w-max dark:prose-invert">
         <div class="">
           <h1 class="flex items-center">
@@ -19,12 +19,12 @@
           {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
         </div>
       </header>
-      <div class="md:col-span-10 lg:col-span-9 prose lg:prose-lg dark:prose-invert ">
+      <div class="md:col-span-10 prose max-w-max lg:prose-lg dark:prose-invert ">
         {{ .Content }}
       </div>
-      <aside class=" max-w-max md:col-span-2 lg:col-span-3 relative">
+      <aside class=" max-w-max md:col-span-2 relative">
         {{- if .Params.showToc }}
-        <div class="border md:sticky md:block top-0 flex-auto py-4 hidden">
+        <div class=" md:sticky md:block top-0 flex-auto py-4  hidden">
           <div class="px-4 grid grid-cols-1">
             {{- partial "toc.html" . }}
           </div>

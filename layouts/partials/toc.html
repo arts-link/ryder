@@ -23,9 +23,9 @@
             {{- $firstHeaderLevel := len (seq (index (findRE "[1-6]" (index $headers 0) 1) 0)) -}}
 
             {{- $.Scratch.Set "bareul" slice -}}
-            <ul class="">
+            <ul class="ml-2 lg:ml-4">
                 {{- range seq (sub $firstHeaderLevel $largest) -}}
-                <ul class="ml-2 lg:ml-4">
+                <ul class="">
                     {{- $.Scratch.Add "bareul" (sub (add $largest .) 1) -}}
                     {{- end -}}
                     {{- range $i, $header := $headers -}}

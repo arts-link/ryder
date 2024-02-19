@@ -1,8 +1,8 @@
 {{ $footerClass := "bg-gradient-to-r from-cyan-500 to-cyan-800" }} 
-{{ with .Param "twClasses.footerBackground" }}
+{{ with or (.Param "twClasses.footerBackground") (.Param "twClasses.headerBackgroundFrame") }}
 {{ $footerClass = . }}
 {{ end }}
-<footer class="border-t w-full py-2 mt-auto {{ $footerClass }}">
+<footer class="border-t w-full py-2 mt-auto {{ $footerClass }} border-b-0 text-neutral-100">
   <div class="flex justify-between flex-row">
     <div class="grid grid-cols-1 px-2 text-sm">
       <div class="flex items-center">
