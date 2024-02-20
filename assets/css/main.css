@@ -61,9 +61,12 @@
     @apply bg-neutral-300;
 
     /* should this shit just be in the menu? */
+    @apply cursor-pointer;
+    @apply mt-10;
     @apply absolute;
-    @apply top-auto;
-    @apply right-0;
+    @apply top-[-15px];
+    @apply right-[-12px];
+    @apply min-w-40;
     @apply max-w-52;
     @apply md:max-w-60;
     @apply ml-4;

@@ -8,7 +8,11 @@
     {{ .Content }}
   </header>
   <div class="grid grid-cols-1 gap-6 p-2 sm:p-4 sm:grid-cols-2 lg:grid-cols-3">
-  {{ $paginator := .Paginate (.Pages ) }}
+  {{ $myCollection := .Pages }}
+  {{ if eq .Section "posts" }}
+  {{ $myCollection = .RegularPagesRecursive }}
+  {{ end }}
+  {{ $paginator := .Paginate ($myCollection) }}
   {{ range $paginator.Pages }}
   <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="flex items-center">
     <div class=" rounded-2xl bg-sky-100 transition-[filter] hover:brightness-90  dark:bg-sky-800 dark:hover:brightness-110 w-full h-full">

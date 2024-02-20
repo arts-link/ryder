@@ -15,6 +15,7 @@ Renders a menu for the given menu ID.
         </ul>
       </nav>
 {{- end }}
+
 {{- define "partials/inline/menu/walk.html" }}
   {{- $page := .page }}
   {{- range .menuEntries }}
@@ -32,7 +33,7 @@ Renders a menu for the given menu ID.
     {{- end }}
           <li class="">
             {{/*  TODO -- replace n with nesting level  */}}
-            {{- if .Children }}<div class="relative group/sub-n">{{- end }}
+            {{- if .Children }}<div class=" flex flex-row items-center cursor-pointer relative group/sub-n">{{- end }}
             <a 
         {{- range $k, $v := $attrs }}
           {{- with $v }}
@@ -41,7 +42,7 @@ Renders a menu for the given menu ID.
         {{- end -}}
       >{{ $name }}</a>
       {{- with .Children }}
-        <i class="fa-solid fa-angle-down text-base"></i>
+        <i class="ml-1 fa-solid fa-angle-down text-base"></i>
         <ul class="main-menu-child-ul group-hover/sub-n:block">
                 {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
         </ul>
