@@ -2,8 +2,8 @@
 <ul class="flex justify-center items-center list-none not-prose">
 {{ range sort . "weight" }}
   {{ if .icon }} {{ if .link }}
-  <li class="p-1 sm:p-2">
-    <a class="hover:underline cursor-pointer" href="{{ .link | safeURL }}" aria-label="{{ .title }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} {{ if .type }}type="{{ .type }}"{{ end }}>
+  <li class="">
+    <a class="p-4 hover:underline cursor-pointer" href="{{ .link | safeURL }}" aria-label="{{ .title }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} {{ if .type }}type="{{ .type }}"{{ end }}>
       <i class="size-4 sm:size-6 {{ .icon }}"></i>
     </a>
   </li>

@@ -1,9 +1,7 @@
 {{ $image := resources.Get .Destination }}
 {{- if $image -}}
-{{/*  {{- $post_image_webp := partial "ImageConverter.html" (dict "ImageSrc" .Destination "ImgParam" (printf "resize %dx%d webp q100" $image.Width $image.Height)) -}}  */}}
-{{- $post_image_webp := partial "ImageConverter.html" (dict "ImageSrc" .Destination "ImgParam" "resize 600x webp q80") -}}
-{{/*  {{- $post_image_jpg := partial "ImageConverter.html" (dict "ImageSrc" .Destination "ImgParam" (printf "resize %dx%d jpg q100" $image.Width $image.Height)) -}}  */}}
-{{- $post_image_jpg := partial "ImageConverter.html" (dict "ImageSrc" .Destination "ImgParam" "resize 600x jpg q80") -}}
+{{- $post_image_webp := partial "ImageConverter.html" (dict "ImageSrc" .Destination "ImgParam" (printf "resize %dx%d webp q100" $image.Width $image.Height)) -}}
+{{- $post_image_jpg := partial "ImageConverter.html" (dict "ImageSrc" .Destination "ImgParam" (printf "resize %dx%d jpg q100" $image.Width $image.Height)) -}}
 <picture>
     <source srcset="{{ $post_image_webp }}" type="image/webp">
     <source srcset="{{ $post_image_jpg }}" type="image/jpeg">
