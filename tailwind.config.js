@@ -4,7 +4,7 @@ module.exports = {
   content: [
     "./hugo_stats.json",
     "content/**/*.md", 
-    "layouts/**/*.html"
+    "layouts/**/*.html",
     "./themes/ryder/layouts/**/*.html",
   ],
   darkMode: 'class',
