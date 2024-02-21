@@ -8,8 +8,12 @@ Renders a menu for the given menu ID.
 */}}
 {{- $page := .page }}
 {{- $menuID := .menuID }}
+   {{ $navClassName := "main-menu-nav" }}
+{{ if eq $menuID "footer" }}
+{{ $navClassName = "footer-menu-nav" }}
+{{ end }}
 {{- with index site.Menus $menuID }}
-      <nav class="main-menu-nav">
+      <nav class="{{ $navClassName }}">
         <ul class="main-menu-ul">
           {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
         </ul>
@@ -33,7 +37,7 @@ Renders a menu for the given menu ID.
     {{- end }}
           <li class="">
             {{/*  TODO -- replace n with nesting level  */}}
-            {{- if .Children }}<div class=" flex flex-row items-center cursor-pointer relative group/sub-n">{{- end }}
+            {{- if .Children }}<div class="child-nav-container relative group/sub-n">{{- end }}
             <a 
         {{- range $k, $v := $attrs }}
           {{- with $v }}
@@ -42,8 +46,8 @@ Renders a menu for the given menu ID.
         {{- end -}}
       >{{ $name }}</a>
       {{- with .Children }}
-        <i class="ml-1 fa-solid fa-angle-down text-base"></i>
-        <ul class="main-menu-child-ul group-hover/sub-n:block">
+        <i class="child-nav-icon fa-solid fa-angle-down"></i>
+        <ul class="main-menu-child-ul hidden group-hover/sub-n:block">
                 {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
         </ul>
       {{- end }}

@@ -1,13 +1,16 @@
 {{ with .Site.Data.social.main }}
-<ul class="flex justify-center items-center list-none not-prose">
-{{ range sort . "weight" }}
+{{/*  <ul class="flex flex-wrap justify-center border">  */}}
+<div class="flex mb-auto max-w-fit">
+  {{ range sort . "weight" }}
   {{ if .icon }} {{ if .link }}
-  <li class="">
-    <a class="p-4 hover:underline cursor-pointer" href="{{ .link | safeURL }}" aria-label="{{ .title }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} {{ if .type }}type="{{ .type }}"{{ end }}>
-      <i class="size-4 sm:size-6 {{ .icon }}"></i>
+  <button class="p-4">
+    <a class="hover:underline cursor-pointer" href="{{ .link | safeURL }}" aria-label="{{ .title }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} {{ if .type }}type="{{ .type }}"{{ end }}>
+      <i class="{{ .icon }}"></i>
+      {{/*  <span class="sr-only">{{ .title }}</span>  */}}
     </a>
-  </li>
+  </button>
   {{ end }} {{ end }} 
 {{ end }}
-</ul>
+</div>
+{{/*  </ul>  */}}
 {{ end }}

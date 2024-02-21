@@ -34,52 +34,43 @@
     @apply block;
   }
 
-  .main-menu-ul {
-    @apply flex;
-    @apply space-x-4;
-    @apply text-nowrap;
-    @apply p-3;
-    @apply bg-neutral-200;
-    @apply rounded-lg;
+  .main-menu-nav {
+    .main-menu-ul {
+      @apply flex space-x-4;
+      @apply p-3;
+      @apply bg-neutral-200;
+      @apply text-nowrap;
+      @apply rounded-lg;
+    }
+    .main-menu-ul > li {
+      @apply border-b border-sky-800;
+      @apply text-sky-800;
+    }
+    .main-menu-ul li .active,
+    .main-menu-ul li .ancestor  {
+      /* @apply border-b border-lime-800; */
+      @apply text-lime-800;
+    }
+    .main-menu-child-ul {
+      @apply absolute top-[-15px] right-[-12px];
+      @apply min-w-40 max-w-52 md:max-w-60;
+      @apply mt-10 ml-4 p-2;
+      @apply bg-neutral-300 rounded-lg cursor-pointer;
+    }
+    .child-nav-container {
+      @apply flex flex-row items-center cursor-pointer;
+    }
+    .child-nav-icon {
+      @apply ml-1 text-base;
+    }
+    .main-menu-child-ul > li {
+      @apply border-b border-sky-800;
+    }
   }
-
-  .main-menu-ul > li {
-    @apply border-b;
-    @apply border-orange-900;
-    @apply text-[#17729C];
-  }
-
-  .main-menu-ul li .active,
-  .main-menu-ul li .ancestor  {
-    @apply border-b;
-    @apply border-emerald-400;
-    @apply text-[#81B622];
-  }
-
-  .main-menu-child-ul {
-    @apply rounded-lg;
-    @apply bg-neutral-300;
-
-    /* should this shit just be in the menu? */
-    @apply cursor-pointer;
-    @apply mt-10;
-    @apply absolute;
-    @apply top-[-15px];
-    @apply right-[-12px];
-    @apply min-w-40;
-    @apply max-w-52;
-    @apply md:max-w-60;
-    @apply ml-4;
-    @apply p-2;
-    @apply hidden;
-  }
-
-  .main-menu-child-ul > li {
-    @apply border-b;
-    @apply border-cyan-800;
-  }
-  .main-menu-child-ul > li > .active {
-    @apply text-[#81B622];
+  .footer-menu-nav {
+    .child-nav-container > ul {
+      @apply ml-2
+    }
   }
   /* ... */
 }

@@ -2,9 +2,9 @@
 {{ with or (.Param "twClasses.footerBackground") (.Param "twClasses.headerBackgroundFrame") }}
 {{ $footerClass = . }}
 {{ end }}
-<footer class="border-t w-full py-2 mt-auto {{ $footerClass }} border-b-0 text-neutral-100">
-  <div class="flex justify-between flex-row">
-    <div class="grid grid-cols-1 px-2 text-sm">
+<footer class="border-t w-full mt-auto text-neutral-100 {{ $footerClass }} ">
+  <div class="flex">
+    <div class="mb-auto flex flex-col max-w-content px-2 py-4 text-sm ">
       <div class="flex items-center">
       {{- with .Site.Copyright}}
       <p class="flex items-center">{{ . }}</p>
@@ -12,10 +12,10 @@
       </div>
       {{- partial "attribution.html" . }}
     </div>
-    <div class="flex justify-center items-center text-xs md:text-base">
+    <div class="flex justify-center px-2 py-4 text-sm">
       {{- partial "menu.html" (dict "menuID" "footer" "page" .) }} 
     </div>
-    <div class="flex justify-center items-center">
+    <div class="  flex justify-end ml-auto mb-auto text-xl ">
       {{- partial "socialslist.html" . }}
       {{- if (.Param "showDarkToggle") }}
         {{- partial "dark-toggle.html" . }}

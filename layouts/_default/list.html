@@ -13,18 +13,23 @@
   {{ $myCollection = .RegularPagesRecursive }}
   {{ end }}
   {{ $paginator := .Paginate ($myCollection) }}
+  {{ $headerClass := "bg-gradient-to-r from-cyan-500 to-cyan-800 text-neutral-100" }} 
+  {{ $headerBackgroundFrameInner := "" }}
+  {{ with .Param "twClasses.headerBackgroundFrameOuter" }}
+  {{ $headerClass = . }}
+  {{ end }}
   {{ range $paginator.Pages }}
   <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="flex items-center">
-    <div class=" rounded-2xl bg-sky-100 transition-[filter] hover:brightness-90  dark:bg-sky-800 dark:hover:brightness-110 w-full h-full">
-        <div class="p-5">
-          <h2 class=" flex items-center">
+    <div class=" rounded-2xl bg-sky-200 transition-[filter] hover:brightness-90  dark:bg-sky-800 dark:hover:brightness-110 w-full h-full">
+        <div class="">
+          <h2 class=" p-3 flex items-center {{ $headerClass }}">
             {{- if .Params.homeFeatureIcon }}
               <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>
             {{- end }}
             {{ .Title }}
           </h2>
           {{ if .Summary }}
-          <p class="">
+          <p class="p-5">
             {{ .Summary | safeHTML }}
           </p>
           {{ end }}
