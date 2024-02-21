@@ -1,17 +1,21 @@
 /** @type {import('tailwindcss').Config} */
 const defaultTheme = require("tailwindcss/defaultTheme");
+
 module.exports = {
+  // content: ['./hugo_stats.json'],
+
   content: [
     "./hugo_stats.json",
-    "content/**/*.md", 
-    "layouts/**/*.html",
+    "./layouts/**/*.html",
+    "./config/**/*.toml",
+    "./content/**/*.md",
     "./themes/ryder/layouts/**/*.html",
   ],
   darkMode: 'class',
   theme: {
     extend: {
       backgroundImage: {
-        'hidden-home': " url('/images/hidden-home-cover.webp')",
+        "hidden-home": " url('/images/hidden-home-cover.webp')",
         "header-sunset": " url('/images/header-bg/sunset-playa-1.jpg')",
         "header-sunset-italy": " url('/images/header-bg/sunset-italy.jpg')",
         // "header-sunset-mb": " url('/images/header-bg/sunset-mission-bay.jpg')",
@@ -28,5 +32,4 @@ module.exports = {
     },
   },
   plugins: [require("@tailwindcss/typography")],
-}
-
+};

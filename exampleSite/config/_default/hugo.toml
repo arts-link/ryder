@@ -1,5 +1,5 @@
 # !!! exampleSite only, set this to your own site URL
-baseURL= "https://arts-link.github.io/ryder/"
+baseURL= "https://arts-link.github.io/ryder"
 languageCode= "en-us"
 title= "Ryder theme"
 theme= ["ryder"]
@@ -11,13 +11,24 @@ copyright = "©️ Ryder Theme 2024"
 # !!! exampleSite only, you may need to delete the line: `themesDir: ../../` 
 themesDir= "../../"
 [params]
-  # dark mode switch defaults to hidden, remove this line or set to false to hide
-  # alternatively, and probably more useful, use system dark mode by removing darkMode: 'class', from tailwind.config.js
-  showDarkToggle = true 
-  headerGradientClasses = "bg-gradient-to-r from-rose-500 to-rose-800 text-neutral-100" 
-  menuTwShade = "rose"
-  # defaults to false if not set.
-  # enableDebugPanel = true 
+  description = 'A theme for hugo'
+  TocOpen = true
+  # UseHugoToc = true
+  # enabledebugpanel = true 
+  # navbar_fixed = true
+  showDarkToggle = true
+  logo_firstWord = 'ben'
+  logo_lastWord = 'strawbridge'
+  logo_tagline = "DOT COM CONSULTING"
+  logo_fontClass = 'font-titillium'
+  [params.author]
+    email = 'ben@benstrawbridge.com'
+    name = 'Ben Strawbridge'
+  [params.twClasses]
+    headerBackgroundFrameOuter = "bg-gradient-to-r from-violet-950 to-rose-950 border-b border-fuchsia-600 text-neutral-100"
+    headerBackgroundFrameInner = "bg-header-sunset-mb h-[300px] bg-cover bg-left"
+    footerBackground = "bg-gradient-to-r from-violet-950 to-rose-950 border-fuchsia-600" 
+    # navbar_fixed = "sticky top-0"
 [[params.alphaAlert]]
   weight = 11
   alertType = "danger"
@@ -35,3 +46,29 @@ themesDir= "../../"
     name = 'Contact Us'
     pageRef = '/'
     weight = 10
+
+[module]
+  [module.hugoVersion]
+    extended = false
+    min = "0.121.1"
+  [[module.mounts]]
+    source = "assets"
+    target = "assets"
+  [[module.mounts]]
+    source = "hugo_stats.json"
+    target = "assets/watching/hugo_stats.json"
+
+[build]
+  writeStats = true
+  [[build.cachebusters]]
+    source = "assets/watching/hugo_stats\\.json"
+    target = "styles\\.css"
+  [[build.cachebusters]]
+    source = "(postcss|tailwind)\\.config\\.js"
+    target = "css"
+  [[build.cachebusters]]
+    source = "assets/.*\\.(js|ts|jsx|tsx)"
+    target = "js"
+  [[build.cachebusters]]
+    source = "assets/.*\\.(.*)$"
+    target = "$1"
