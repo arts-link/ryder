@@ -1,6 +1,6 @@
 {{ with .Site.Data.social.main }}
 {{/*  <ul class="flex flex-wrap justify-center border">  */}}
-<div class="flex mb-auto max-w-fit">
+<div class="flex flex-wrap mb-auto max-w-fit">
   {{ range sort . "weight" }}
   {{ if .icon }} {{ if .link }}
   <button class="p-4">

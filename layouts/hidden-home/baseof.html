@@ -29,9 +29,9 @@
     <div class="h-lvh flex flex-col items-center justify-center my-5">
       {{- partial "logo.html" . }}
       <div class="w-4/5 h-fit max-h-fit overflow-y-auto md:w-1/2 p-4 m-5 rounded-xl bg-gray-200/75 dark:bg-gray-800/75">
-        <div class="prose dark:prose-invert max-w-none">
+        <p class="prose justify-center dark:prose-invert max-w-none">
           {{ .Content }}
-        </div>
+        </p>
         <div class="mt-5 mx-auto max-w-fit text-2xl">
           {{- partial "socialslist.html" . }}
         </div>
