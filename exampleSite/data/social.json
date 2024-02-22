@@ -1,14 +1,22 @@
 {
   "main": [
     {
+      "title": "GitHub",
       "name": "github",
       "icon": "fab fa-github",
       "link": "https://www.github.com/arts-link/"
     },
     {
+      "title": "Email me",
       "name": "email",
       "icon": "fa-regular fa-envelope",
       "link": "mailto:hello@arts-link.com?subject=web"
+    },
+    {
+      "title": "RSS Feed",
+      "name": "feed",
+      "icon": "fa-solid fa-rss",
+      "link": "/ryder/index.xml"
     }
   ]
 }

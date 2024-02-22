@@ -17,7 +17,9 @@ By default it will have a background gradient in cayan.
 {{ end }}
 <header class=" w-full {{ $headerClass }}">
 <div class=" m-3 rounded-lg flex flex-row {{ $headerBackgroundFrameInner }}">
-    {{- partial "logo.html" . }}
+    <div class="mr-auto relative">
+        {{- partial "logo.html" . }}
+    </div>
     <div class="ml-auto flex relative  ">
         <!-- navbar toggler -->
         <input id="nav-toggle" type="checkbox" class="hidden" />

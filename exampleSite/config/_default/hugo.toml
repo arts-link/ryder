@@ -1,11 +1,12 @@
 # !!! exampleSite only, set this to your own site URL
 baseURL= "https://arts-link.github.io/ryder"
 languageCode= "en-us"
-title= "Ryder theme"
+title= "The Ryder Theme"
 theme= ["ryder"]
-summaryLength = 15
+# summaryLength = 15
 enableRobotsTXT = true
 copyright = "©️ Ryder Theme 2024"
+enableEmoji = true
 # paginate = 4
 
 # !!! exampleSite only, you may need to delete the line: `themesDir: ../../` 
@@ -42,9 +43,19 @@ themesDir= "../../"
   alertMessage = "Just add them to [params.alphaAlert] in hugo.toml. <a href='/ryder/posts/alerts' class='underline'>learn more about them!</a>"
   alertIconClass = "fa-solid fa-camera-retro"
 [menus]
+[[menus.main]]
+    name = 'Tags'
+    pageRef = '/tags'
+    parent = 'posts'
+    weight = 9990
+[[menus.footer]]
+    name = 'File a Bug or Feature Request'
+    URL = 'https://github.com/arts-link/ryder/issues/new/choose'
+    rel = '_blank'
+    weight = 10
 [[menus.footer]]
     name = 'Contact Us'
-    pageRef = '/'
+    pageRef = '/contact'
     weight = 10
 
 [module]

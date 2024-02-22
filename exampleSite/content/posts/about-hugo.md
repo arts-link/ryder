@@ -1,12 +1,12 @@
 +++
 title = "All About Hugo"
 description = "Hugo, the world's fastest framework for building websites"
-date = "2019-02-28"
+date = 2024-01-26T15:26:45-08:00
 aliases = ["about-us", "about-hugo", "contact"]
 author = "Hugo Authors"
 enableComments = false
 ShowToc = true
-
+tags = ["hugo"]
 
 [menu]
  [menu.main]

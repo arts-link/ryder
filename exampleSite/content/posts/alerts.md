@@ -5,6 +5,7 @@ date = 2024-01-26T12:55:50-08:00
 homeFeature = true
 homeFeatureTitle = "Alert boxes"
 homeFeatureIcon = "fa-solid fa-dungeon"
+tags = ["alerts","banners"]
 [menu]
  [menu.main]
   weight = 1

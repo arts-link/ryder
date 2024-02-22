@@ -6,6 +6,7 @@ enabledebugpanel = true
 homeFeature = true
 homeFeatureTitle = "Debug Panel"
 homeFeatureIcon = "fa-solid fa-binoculars"
+tags = ["debug","hugo"]
 [menu]
  [menu.main]
   weight = 8

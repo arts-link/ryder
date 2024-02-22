@@ -11,7 +11,7 @@
   <div class="min-h-lvh flex flex-col ">
     {{- partial "header.html" . }}
     {{- with .Site.Params.alphaAlert }}
-      <div id="banners">
+      <div id="banners" class="w-full mx-auto ">
         {{- range sort . "weight" }}
           {{- $.Scratch.Set "alertType" .alertType }}
           {{- $.Scratch.Set "alertTitle" .alertTitle }}

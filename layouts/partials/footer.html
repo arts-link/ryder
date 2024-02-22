@@ -3,19 +3,17 @@
 {{ $footerClass = . }}
 {{ end }}
 <footer class="border-t w-full mt-auto text-neutral-100 {{ $footerClass }} ">
-  <div class="flex">
-    <div class="mb-auto flex flex-col max-w-content px-2 py-4 text-sm ">
-      <div class="flex items-center">
+  <div class="flex justify-between border">
+    <div class="py-4 px-2 text-sm ">
       {{- with .Site.Copyright}}
       <p class="flex items-center">{{ . }}</p>
       {{- end }}
-      </div>
       {{- partial "attribution.html" . }}
     </div>
-    <div class="flex justify-center px-2 py-4 text-sm">
+    <div class="py-4 px-2 text-sm">
       {{- partial "menu.html" (dict "menuID" "footer" "page" .) }} 
     </div>
-    <div class="  flex justify-end ml-auto mb-auto text-xl ">
+    <div class="flex justify-end text-xl ">
       {{- partial "socialslist.html" . }}
       {{- if (.Param "showDarkToggle") }}
         {{- partial "dark-toggle.html" . }}

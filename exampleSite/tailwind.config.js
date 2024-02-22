@@ -14,9 +14,7 @@ module.exports = {
     extend: {
       backgroundImage: {
         "hidden-home": " url('/ryder/images/hidden-home-cover.webp')",
-        "header-sunset": " url('/ryder/images/header-bg/sunset-playa-1.jpg')",
-        "header-sunset-italy": " url('/ryder/images/header-bg/sunset-italy.jpg')",
-        "header-sunset-mb": " url('/ryder/images/header-bg/sunset-mission-bay_hu6f04b8530673b6e2cc009e9b6d51ea4d_1824404_1024x768_resize_q100_h2_box.webp')",
+        "header-sunset-mb": " url('/ryder/images/hidden-home-cover.webp')",
       },
       fontFamily: {
         titillium: ["Titillium Web", ...defaultTheme.fontFamily.sans],
