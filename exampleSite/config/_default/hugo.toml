@@ -3,7 +3,7 @@ baseURL= "https://arts-link.github.io/ryder"
 languageCode= "en-us"
 title= "The Ryder Theme"
 theme= ["ryder"]
-# summaryLength = 15
+summaryLength = 15
 enableRobotsTXT = true
 copyright = "©️ Ryder Theme 2024"
 enableEmoji = true
@@ -26,9 +26,9 @@ themesDir= "../../"
     email = 'ben@benstrawbridge.com'
     name = 'Ben Strawbridge'
   [params.twClasses]
-    headerBackgroundFrameOuter = "bg-gradient-to-r from-violet-950 to-rose-950 border-b border-fuchsia-600 text-neutral-100"
+    headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
     headerBackgroundFrameInner = "bg-header-sunset-mb h-[300px] bg-cover bg-left"
-    footerBackground = "bg-gradient-to-r from-violet-950 to-rose-950 border-fuchsia-600" 
+    # footerBackground = "bg-gradient-to-r from-violet-950 to-rose-950 border-fuchsia-600" 
     # navbar_fixed = "sticky top-0"
 [[params.alphaAlert]]
   weight = 11

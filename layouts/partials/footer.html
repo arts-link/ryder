@@ -1,5 +1,5 @@
 {{ $footerClass := "bg-gradient-to-r from-cyan-500 to-cyan-800" }} 
-{{ with or (.Param "twClasses.footerBackground") (.Param "twClasses.headerBackgroundFrame") }}
+{{ with or (.Param "twClasses.footerBackground") (.Param "twClasses.headerBackgroundFrameOuter") }}
 {{ $footerClass = . }}
 {{ end }}
 <footer class="border-t w-full mt-auto text-neutral-100 {{ $footerClass }} ">
