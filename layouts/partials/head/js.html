@@ -1,3 +1,7 @@
+<script>
+  // Default value for showDarkToggle
+  const showDarkToggle = {{ with .Param "showDarkToggle" }}{{ . }}{{ else }}false{{ end }};
+</script>
 {{- with resources.Get "js/main.js" }}
   {{- if eq hugo.Environment "development" }}
     {{- with . | js.Build }}
