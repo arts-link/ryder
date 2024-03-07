@@ -1,28 +1,35 @@
 {{- define "main" }}
-  <div class="max-w-screen-md py-4 mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2 ">
+  <div class="max-w-screen-md py-4 mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2 mb-5">
+    {{ $headerClass := "bg-gradient-to-r from-cyan-500 to-cyan-800 text-neutral-100" }} 
+    {{ with .Param "twClasses.headerBackgroundFrameOuter" }}
+    {{ $headerClass = . }}
+    {{ end }}
     {{- $pages := slice }}
     {{- $pages = .Site.Pages }} 
     {{- $features := where $pages "Params.homeFeature" "eq" true }}
-    {{- range first 5 $features }}
-    {{/*  {{- range $features }}  */}}
-    <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="flex aspect-video first:sm:col-span-2 items-center rounded-2xl bg-sky-100 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:bg-sky-800 first:bg-yellow-200 dark:first:bg-yellow-800 dark:even:bg-green-800 dark:hover:brightness-110">
+    {{ $counter := 0 }}
+    {{- range first 3 $features }}
+    {{ $counter = add $counter 1 }}
+    {{/*  {{- range $3eatures }}  */}}
+    <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="flex first:sm:col-span-2 items-center rounded-2xl bg-sky-100 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:bg-sky-800 first:bg-yellow-200 dark:first:bg-emerald-800 dark:hover:brightness-110">
         <div class="h-full ">
-          <div class="p-5">
-            <h2 class="mb-2 mt-1 text-3xl uppercase">
+          <div class="">
+            <h2 class="flex p-3 items-center mb-2 text-3xl uppercase {{ $headerClass }}">
               {{- if .Params.homeFeatureIcon }}
-                <i class="{{ .Params.homeFeatureIcon }} mr-1 text-4xl"></i>
+                <i class="{{ .Params.homeFeatureIcon }} mr-2 text-4xl"></i>
               {{- end }}
               {{ or .Params.homeFeatureTitle .Title }}
             </h2>
-            <p class="font-normal">
-              {{ .Summary }}
-            </p>
+            <div class="p-5 text-lg h-5/6 overflow-y-auto">
+              {{ or .Params.homeFeatureSummary .Summary }}
+            </div>
           </div>
         </div>
     </a>
     {{- end }}
   </div>
   
+  {{- if eq .Layout "hidden-home" -}}
   {{ if or .Title .Content }}
     <div class="p-4 flex-1 items-center justify-center">
       <div class="prose lg:prose-xl dark:prose-invert rounded-xl mx-auto">
@@ -35,5 +42,6 @@
       </div>
     </div>
   {{ end }}
+  {{- end -}}
   
 {{- end }}

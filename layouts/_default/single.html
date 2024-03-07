@@ -1,9 +1,13 @@
 {{ define "main" }}
   <div class="p-4 max-w-screen-lg mx-auto ">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-x-1 ">
-      <header class="md:col-span-12 prose lg:prose-xl max-w-max dark:prose-invert">
+    <div class=" grid grid-cols-1 md:grid-cols-12 gap-x-1 ">
+      <header class=" w-full md:col-span-12 prose lg:prose-xl max-w-screen-lg  dark:prose-invert">
         <div class="">
-          <h1 class="flex items-center">
+          {{ $headerClass := "bg-gradient-to-r from-cyan-500 to-cyan-800 text-neutral-100" }} 
+          {{ with .Param "twClasses.headerBackgroundFrameOuter" }}
+          {{ $headerClass = . }}
+          {{ end }}
+          <h1 class=" rounded-t-lg mb-1 p-3 flex items-center {{ $headerClass }}">
             {{- if .Params.homeFeatureIcon }}
             <i class="{{ .Params.homeFeatureIcon }} mr-2 text-4xl"></i>
             {{- end }}
@@ -15,7 +19,7 @@
             <time datetime="{{ $dateMachine }}" class="">{{ $dateHuman }}</time>
           {{- end }}
         </div>
-        <div class="not-prose mb-4">
+        <div class="p-3 not-prose">
           {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
         </div>
       </header>
