@@ -20,20 +20,19 @@ By default it will have a background gradient in cayan.
     <div class="mr-auto relative">
         {{- partial "logo.html" . }}
     </div>
-    <div class="ml-auto flex relative  ">
+    <div class="ml-auto flex relative " x-data="{ openMenu : false }">
         <!-- navbar toggler -->
-        <input id="nav-toggle" type="checkbox" class="hidden" />
-        <label
-            for="nav-toggle"
-            class="cursor-pointer flex sm:hidden">
-            {{/*  <i id="show-button" class="size-8 text-4xl fa-solid fa-burger cursor-pointer bg-neutral-200 p-3 rounded-full"></i>  */}}
-            <i id="show-button" class="size-8 text-2xl text-[#17729C] fa-solid fa-bars cursor-pointer bg-neutral-200 p-3 rounded-full"></i>
-            <i id="hide-button" class="size-8 text-2xl text-[#17729C] fa-solid fa-xmark cursor-pointer hidden bg-neutral-200 p-3 rounded-full"></i>
-        </label>
-        <div id="nav-menu" class="ml-auto hidden absolute top-12 right-2 sm:inline sm:top-auto sm:left-auto sm:right-0 sm:text-xl ">
-            <div class="">
-                {{- partial "menu.html" (dict "menuID" "main" "page" . "shade" "rose") }}
-            </div>
+        {{/*  <input id="nav-toggle" type="checkbox" class="hidden" />  */}}
+        <button
+            class="absolute right-0 z-50 cursor-pointer md:hidden p-3 text-[#17729C] bg-neutral-200 rounded-full "
+            @click="openMenu = ! openMenu">
+            <div x-bind:class="openMenu ? 'hidden' : 'visible'" class="flex flex-col text-xs"><i class="size-8 text-2xl fas fa-bars"></i>menu</div>
+            <div x-bind:class="openMenu ? 'visible' : 'hidden'" class="flex flex-col text-xs"><i class="size-8 text-2xl fas fa-xmark"></i>menu</div>
+        </button>
+        {{/*  <span x-text="openMenu"></span>  */}}
+        <div id="nav-menu"  x-bind:class="openMenu ? 'inline' : 'hidden'"
+             class="ml-auto absolute top-20 right-0 md:inline md:top-auto md:left-auto md:right-0 md:text-xl ">
+            {{- partial "menu.html" (dict "menuID" "main" "page" . "shade" "rose") }}
         </div>
     </div>
 </div>

@@ -20,7 +20,7 @@
 
 @layer components {
   /*  navbar toggler */
-  input#nav-toggle:checked + label #show-button {
+  /* input#nav-toggle:checked + label #show-button {
     @apply hidden;
   }
   input#nav-toggle:checked + label #hide-button {
@@ -28,10 +28,11 @@
   }
   input#nav-toggle:checked ~ #nav-menu {
     @apply block;
-  }
+  } */
   .main-menu-nav {
     .main-menu-ul {
-      @apply flex space-x-4;
+      @apply md:flex md:space-x-4;
+      @apply w-full;
       @apply p-3;
       @apply bg-neutral-200;
       @apply text-nowrap;
@@ -50,6 +51,9 @@
      @apply ml-4 p-2;
       @apply bg-neutral-300 rounded-lg cursor-pointer;
     }
+    .main-menu-child-ul > li {
+      @apply border-b border-sky-800;
+    }
 
     .child-nav-container {
       @apply flex flex-row items-center cursor-pointer;
@@ -61,9 +65,6 @@
       @apply absolute top-7 -right-2 pt-5;
       @apply min-w-40 max-w-52 md:max-w-60;
       @apply hidden;
-    }
-    .main-menu-child-ul > li {
-      @apply border-b border-sky-800;
     }
   }
   .footer-menu-nav {

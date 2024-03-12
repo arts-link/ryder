@@ -34,7 +34,6 @@
     
 </div>
 
-{{/*  {{- if or (.Params.) (and (not .Params.enabledebugpanel) (site.Params.enabledebugpanel)) }}  */}}
 {{ if .Param "enabledebugpanel" }}
 {{ partial "debug-panel.html" . }}
 {{- end }}
