@@ -34,7 +34,7 @@
   @keyup.left.window="imageGalleryPrev();"
   class="w-full h-full select-none">
   <div class="max-w-6xl mx-auto duration-1000 delay-300 opacity-0 select-none ease animate-fade-in-view" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
-  <ul x-ref="gallery" id="gallery" class="grid grid-cols-2 gap-5 lg:grid-cols-5">
+  <ul x-ref="gallery" id="gallery" class="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:grid-cols-4">
   <template x-for="(image, index) in imageGallery">
   <li><img x-on:click="imageGalleryOpen" :src="image.photo" :alt="image.alt" :data-index="index+1" class="object-cover select-none w-full h-auto bg-gray-200 rounded cursor-zoom-in aspect-[5/6] lg:aspect-[2/3] xl:aspect-[3/4]"></li>
   </template>
