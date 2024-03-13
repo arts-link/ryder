@@ -1,6 +1,6 @@
 {{ define "main" }}
 <div class="p-4 max-w-screen-lg mx-auto">
-  <header class="prose lg:prose-xl dark:prose-invert">
+  <header class="max-w-screen-lg prose lg:prose-xl dark:prose-invert">
     <h1  class=" flex items-center">{{- if .Params.homeFeatureIcon }}
     <i class="{{ .Params.homeFeatureIcon }} mr-2 text-4xl"></i>
     {{- end }}
@@ -20,7 +20,7 @@
   {{ end }}
   {{ range $paginator.Pages }}
   <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="flex items-center">
-    <div class=" rounded-2xl bg-sky-200 transition-[filter] hover:brightness-90  dark:bg-sky-800 dark:hover:brightness-110 w-full h-full">
+    <div class=" rounded-2xl bg-sky-50 transition-[filter] hover:brightness-90  dark:bg-sky-800 dark:hover:brightness-110 w-full h-full">
         <div class="">
           <h2 class=" p-3 flex items-center {{ $headerClass }}">
             {{- if .Params.homeFeatureIcon }}

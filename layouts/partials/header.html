@@ -20,7 +20,7 @@ By default it will have a background gradient in cayan.
     <div class="mr-auto relative">
         {{- partial "logo.html" . }}
     </div>
-    <div class="ml-auto flex relative " x-data="{ openMenu : false }">
+    <div class="ml-auto flex relative " x-data="{ openMenu : false }"  @click.away="openMenu = false">
         <!-- navbar toggler -->
         {{/*  <input id="nav-toggle" type="checkbox" class="hidden" />  */}}
         <button
@@ -31,7 +31,7 @@ By default it will have a background gradient in cayan.
         </button>
         {{/*  <span x-text="openMenu"></span>  */}}
         <div id="nav-menu"  x-bind:class="openMenu ? 'inline' : 'hidden'"
-             class="ml-auto absolute top-20 right-0 md:inline md:top-auto md:left-auto md:right-0 md:text-xl ">
+             class="ml-auto absolute top-20 right-0 md:inline md:top-auto md:left-auto md:right-0 text-xl ">
             {{- partial "menu.html" (dict "menuID" "main" "page" . "shade" "rose") }}
         </div>
     </div>
