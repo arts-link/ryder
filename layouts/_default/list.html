@@ -1,4 +1,7 @@
 {{ define "main" }}
+<div class="max-w-screen-lg mx-auto">
+  {{- partial "breadcrumb.html" . }}
+</div>
 <div class="p-4 max-w-screen-lg mx-auto">
   <header class="max-w-screen-lg prose lg:prose-xl dark:prose-invert">
     <h1  class=" flex items-center">{{- if .Params.homeFeatureIcon }}
