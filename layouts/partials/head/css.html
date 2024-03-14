@@ -3,12 +3,12 @@
 {{- if eq hugo.Environment "development" }}
 {{/*  TODO :: update this to use params enabledebugpanel vars  */}}
 {{- $debug := resources.Get "css/debugprint.css" }}
-{{- $mergedCss := slice $extended $css $debug | resources.Concat "css/main.css" }}
+{{- $mergedCss := slice $extended $css $debug | resources.Concat "css/busta-main.css" }}
 {{- with $mergedCss | fingerprint }}
   <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
 {{- end }}
 {{- else }}
-{{- $mergedCss := slice $extended $css | resources.Concat "css/main.css" }}
+{{- $mergedCss := slice $extended $css | resources.Concat "css/busta-main.css" }}
 {{- with $mergedCss | minify | fingerprint }}
   <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
 {{- end }}
