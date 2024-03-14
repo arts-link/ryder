@@ -20,7 +20,7 @@ themesDir= "../../"
   showDarkToggle = true
   logo_firstWord = 'ryder'
   logo_lastWord = 'theme'
-  logo_tagline = "A THEME FOR HUGO WEBSITES"
+  logo_tagline = "FOR HUGO WEBSITES"
   logo_fontClass = 'font-titillium'
   [params.author]
     email = 'ben@benstrawbridge.com'
