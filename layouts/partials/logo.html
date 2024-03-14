@@ -1,3 +1,50 @@
-<div class="flex space-x-4 p-3 bg-neutral-200 text-nowrap rounded-lg">
-  <h1 class="text-3xl text-violet-950"><a href="{{ .Site.Home.RelPermalink }}">{{ site.Title }}</a></h1>
-</div>
+{{- $fontClass := "" -}} 
+{{ with .Param "logo_fontClass" }} 
+  {{- $fontClass = . }} 
+{{- end }} 
+{{- $lettersClass := "inline" -}} 
+{{- $roundedClass := "rounded-lg" }} 
+{{ with .Param "logo_collapse" }} 
+{{- $lettersClass = "hidden sm:inline" -}} 
+{{- $roundedClass = "rounded-full sm:rounded-lg" }} 
+{{- end -}}
+  <div class="flex relative">
+  <a class="" href="{{ .Site.Home.RelPermalink }}" >
+    <div class="{{ $fontClass }} max-h-none max-w-max inline-block not-prose bg-neutral-200 {{ $roundedClass }} p-3 sm:p-3" >
+      <div class="flex flex-col">
+        {{ $fw := "" }} 
+        {{- $lw := .Param "logo_lastWord" }} 
+        {{- with .Param "logo_firstWord" -}} 
+        {{- $fw = . -}} 
+        {{- else -}} 
+        {{ $titSpl := split site.Title " " }} 
+        {{- $fw = index $titSpl 0 -}} 
+        {{- $lw = index $titSpl 1 -}} 
+        {{- end -}} 
+        {{ if $fw }} 
+        {{- $fw = split $fw "" -}} 
+        {{$fwLen := len $fw}} 
+        {{- $lw = split $lw "" -}}
+        <h1 class="text-4xl nowrap">
+          {{/*  <span class="text-[#17729C]">  */}}
+          <span class="text-sky-800">
+            {{- range $k, $v := $fw }}
+              {{- $v }}{{- if (eq $k 0) }}<span class="{{- $lettersClass }}" >{{- end }}{{- if (eq $k $fwLen) }}</span >{{- end }}
+            {{- end -}} 
+          </span >
+          <span class="{{- $lettersClass }}">&nbsp;</span >
+          <span class="text-lime-800">
+            {{- range $k, $v := $lw }}
+              {{- $v }}{{- if (eq $k 0) }}<span class="{{- $lettersClass }}" >{{- end }}{{- if (eq $k 10) }}</span >{{- end }}
+            {{- end -}}
+          </span>
+        </h1>
+        {{ end }} 
+        {{ with .Param "logo_tagline" }}
+        <span class="{{- $lettersClass }} text-stone-900 font-bold text-xs mt-[-0.25em] tracking-[0.4em]" >
+          {{ . }}
+        </span >
+        {{ end }}
+      </div>
+    </div></a >
+  </div>

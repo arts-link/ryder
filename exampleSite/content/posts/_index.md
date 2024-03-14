@@ -4,7 +4,8 @@ description = "Posts to show how that might look."
 date = "2024-01-24"
 author = "Hugo Authors"
 enableComments = false
-
+[cascade]
+  showToc = true
 [menu]
  [menu.main]
   weight = 32

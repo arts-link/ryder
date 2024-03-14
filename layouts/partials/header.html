@@ -31,7 +31,7 @@ By default it will have a background gradient in cayan.
         </button>
         {{/*  <span x-text="openMenu"></span>  */}}
         <div id="nav-menu"  x-bind:class="{ 'hidden': !openMenu, 'inline': openMenu }"
-             class="ml-auto absolute top-20 right-0 md:relative md:top-auto md:left-auto md:right-0 text-xl ">
+             class="ml-auto absolute top-20 right-0 md:inline md:relative md:top-auto md:left-auto md:right-0 text-xl ">
             {{- partial "menu.html" (dict "menuID" "main" "page" . "shade" "rose") }}
         </div>
     </div>

@@ -18,9 +18,9 @@ themesDir= "../../"
   # enabledebugpanel = true 
   # navbar_fixed = true
   showDarkToggle = true
-  logo_firstWord = 'ben'
-  logo_lastWord = 'strawbridge'
-  logo_tagline = "DOT COM CONSULTING"
+  logo_firstWord = 'ryder'
+  logo_lastWord = 'theme'
+  logo_tagline = "A THEME FOR HUGO WEBSITES"
   logo_fontClass = 'font-titillium'
   [params.author]
     email = 'ben@benstrawbridge.com'
@@ -28,8 +28,6 @@ themesDir= "../../"
   [params.twClasses]
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
     headerBackgroundFrameInner = "bg-header-sunset-mb h-[300px] bg-cover bg-left"
-    # footerBackground = "bg-gradient-to-r from-violet-950 to-rose-950 border-fuchsia-600" 
-    # navbar_fixed = "sticky top-0"
 [[params.alphaAlert]]
   weight = 11
   alertType = "danger"
