@@ -1,5 +1,5 @@
 {{- define "main" }}
-  <div class="max-w-screen-md p-4 mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2 mb-5">
+  <div class="max-w-screen-md p-4 mx-auto grid grid-cols-1 gap-12 sm:grid-cols-2 mb-5">
     {{ $headerClass := "bg-gradient-to-r from-cyan-500 to-cyan-800 text-neutral-100" }} 
     {{ with .Param "twClasses.headerBackgroundFrameOuter" }}
     {{ $headerClass = . }}
@@ -10,7 +10,6 @@
     {{ $counter := 0 }}
     {{- range first 3 $features }}
     {{ $counter = add $counter 1 }}
-    {{/*  {{- range $3eatures }}  */}}
     <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="flex first:sm:col-span-2 items-center rounded-2xl bg-sky-50 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:bg-sky-800 dark:hover:brightness-110">
         <div class="h-full ">
           <div class="">
