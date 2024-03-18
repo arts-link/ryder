@@ -29,9 +29,9 @@ I decided to name it after my late friend and companion, the rhodesian ridgeback
 This starts from the very top with no hugo website yet created.
 
 ```bash
-➜ hugo new site <your-site>
-➜ cd <your-site>
-➜ git init
+hugo new site <your-site>
+cd <your-site>
+git init
 ```
 
 ### As Git Submodule
@@ -39,7 +39,7 @@ This starts from the very top with no hugo website yet created.
 Inside the folder of your Hugo site run:
 
 ```bash
-➜ git submodule add https://github.com/arts-link/ryder.git themes/ryder
+git submodule add https://github.com/arts-link/ryder.git themes/ryder
 ```
 For more information read the official [setup guide](//gohugo.io/getting-started/quick-start/) of Hugo.
 
@@ -57,7 +57,7 @@ Depending on your deplpoyment setup I recommend using layered config directories
 
 ```bash
 # this will also get you a production config directory 
-➜ cp -r themes/ryder/exampleSite/config/ ./config
+cp -r themes/ryder/exampleSite/config/ ./config
 ```
 
 #### IMPORTANT DO NOT SKIP
@@ -75,14 +75,14 @@ Next you will need to install the packages that are used for this theme. These a
 - [tailwindcss version](https://www.npmjs.com/package/tailwindcss): ^3.4.1
 
 ```bash
-➜ cp themes/ryder/exampleSite/package.json .
-➜ npm install
+cp themes/ryder/exampleSite/package.json .
+npm install
 ```
 
 #### tailwind and postcss have their own config files, copy them over
 
 ```bash
-➜ cp themes/ryder/exampleSite/*.config.js .
+cp themes/ryder/exampleSite/*.config.js .
 ```
 
 ## Configuration
