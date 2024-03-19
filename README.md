@@ -151,7 +151,9 @@ Defined in `/config/_default/hugo.toml`
 
 If you are using the ryder hugo theme, [let us know](mailto://hello@arts-link.com?subject=ryder) and you will be added here.
 
+- [benstrawbridge.com](https://www.benstrawbridge.com)
 - [arts-link.com](https://www.arts-link.com)
+- [writingsos.com](https://www.writingsos.com)
 - [grrquarterly](https://www.grrquarterly.com)
 
 ## THANK YOU
