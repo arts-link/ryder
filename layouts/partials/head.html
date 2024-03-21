@@ -12,8 +12,5 @@
 {{- end }}
 {{- partialCached "head/css.html" . }}
 {{- partialCached "head/js.html" . }}
-{{- if hugo.IsProduction | or (eq site.Params.env "production") }}
-  {{ template "_internal/google_analytics.html" . }}
-{{- end -}}
 {{ partial "head/opengraph.html" . }}
 {{ partial "head/fonts.html" . }}
