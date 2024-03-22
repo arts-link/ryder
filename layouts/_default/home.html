@@ -13,11 +13,8 @@
     {{ $counter := 0 }}
     {{ if (.Param "contentTopBox") }}
       <div class="h-full first:sm:col-span-2 items-center rounded-2xl bg-sky-50 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:bg-sky-800 dark:hover:brightness-110">
-        <div class="hpContent prose max-w-max">
-          <style>
-
-          </style>
-        {{ .Content }}
+        <div class="hpContent prose max-w-max p-5 text-lg ">
+          {{ .Content }}
         </div>
       </div>
     {{ end }}

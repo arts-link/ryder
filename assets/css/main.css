@@ -31,7 +31,12 @@
     @apply block;
   } */
 
-
+  .hpContent h2 { 
+    @apply flex p-3 items-center mb-2 text-3xl uppercase  text-neutral-100 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500;
+  }
+  .hpContent h2 { 
+    @apply mt-0;
+  }
 
   .main-menu-nav {
     .main-menu-ul {
