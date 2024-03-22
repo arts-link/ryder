@@ -1,14 +1,14 @@
 {{- $extended := (resources.Match "css/extended/*.css") | resources.Concat "assets/css/extended.css" }}
-{{- $css := resources.Get "css/main.css" | resources.PostCSS (dict "inlineImports" true) }}
+{{- $css := resources.Get "css/main.css"}}
 {{- if eq hugo.Environment "development" }}
 {{/*  TODO :: update this to use params enabledebugpanel vars  */}}
 {{- $debug := resources.Get "css/debugprint.css" }}
-{{- $mergedCss := slice $extended $css $debug | resources.Concat "css/busta-main.css" }}
+{{- $mergedCss := slice $css $extended $debug | resources.Concat "css/busta-main.css" | resources.PostCSS (dict "inlineImports" true)  }}
 {{- with $mergedCss | fingerprint }}
   <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
 {{- end }}
 {{- else }}
-{{- $mergedCss := slice $extended $css | resources.Concat "css/busta-main.css" }}
+{{- $mergedCss := slice $css $extended | resources.Concat "css/busta-main.css" | resources.PostCSS (dict "inlineImports" true)  }}
 {{- with $mergedCss | minify | fingerprint }}
   <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
 {{- end }}

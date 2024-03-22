@@ -1,19 +1,32 @@
 {{- define "main" }}
   <div class="max-w-screen-md p-4 mx-auto grid grid-cols-1 gap-12 sm:grid-cols-2 mb-5">
-    {{ $headerClass := "bg-gradient-to-r from-cyan-500 to-cyan-800 text-neutral-100" }} 
-    {{ with .Param "twClasses.headerBackgroundFrameOuter" }}
-    {{ $headerClass = . }}
+    {{/*  Header classes  */}}
+    {{ $headerClass := split "bg-gradient-to-r from-cyan-500 to-cyan-800 text-neutral-100" " " }} 
+    {{ with or (.Param "twClasses.headerBackgroundFrameOuter") (.Param "headerGradientClasses") }}
+    {{ $headerClass = split . " " }}
     {{ end }}
+    {{ $headerClass = delimit $headerClass " " }}
+    {{/*  Set up the content loop  */}}
     {{- $pages := slice }}
     {{- $pages = .Site.Pages }} 
     {{- $features := where $pages "Params.homeFeature" "eq" true }}
     {{ $counter := 0 }}
+    {{ if (.Param "contentTopBox") }}
+      <div class="h-full first:sm:col-span-2 items-center rounded-2xl bg-sky-50 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:bg-sky-800 dark:hover:brightness-110">
+        <div class="hpContent prose max-w-max">
+          <style>
+
+          </style>
+        {{ .Content }}
+        </div>
+      </div>
+    {{ end }}
     {{- range first 3 $features }}
     {{ $counter = add $counter 1 }}
     <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="flex first:sm:col-span-2 items-center rounded-2xl bg-sky-50 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:bg-sky-800 dark:hover:brightness-110">
         <div class="h-full ">
           <div class="">
-            <h2 class="flex p-3 items-center mb-2 text-3xl uppercase {{ $headerClass }}">
+            <h2 class="flex p-3 items-center mb-2 text-3xl uppercase  text-neutral-100 {{ $headerClass }}">
               {{- if .Params.homeFeatureIcon }}
                 <i class="{{ .Params.homeFeatureIcon }} mr-2 text-4xl"></i>
               {{- end }}

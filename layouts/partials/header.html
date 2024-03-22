@@ -5,8 +5,8 @@ By default it will have a background gradient in cayan.
 {{/*  make sure to remember you point tailwind.config.js to your config file  */}}
 {{ $headerClass := split "bg-gradient-to-r from-cyan-500 to-cyan-800" " " }} 
 {{ $headerBackgroundFrameInner := "" }}
-{{ with .Param "twClasses.headerBackgroundFrameOuter" }}
-{{ $headerClass = split . " " }}
+{{ with or (.Param "twClasses.headerBackgroundFrameOuter") (.Param "headerGradientClasses") }}
+    {{ $headerClass = split . " " }}
 {{ end }}
 {{ with .Param "twClasses.navbar_fixed" }}
 {{ $headerClass = $headerClass | append . }}

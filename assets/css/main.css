@@ -18,6 +18,7 @@
   /* ... */
 }
 
+
 @layer components {
   /*  navbar toggler */
   /* input#nav-toggle:checked + label #show-button {
@@ -29,6 +30,9 @@
   input#nav-toggle:checked ~ #nav-menu {
     @apply block;
   } */
+
+
+
   .main-menu-nav {
     .main-menu-ul {
       @apply md:flex md:space-x-4;
@@ -74,3 +78,4 @@
   }
   /* ... */
 }
+
