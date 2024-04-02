@@ -37,16 +37,22 @@ I decided to name it after my late friend and companion, the rhodesian ridgeback
 [Github Pages hosted demo site](https://arts-link.github.io/ryder/)
 
 ## Features
-
-- Alert banners
+- Notification shortcode and partial 
 - Dark Mode
-- Featured Item blocks on home page
+- Featured Item blocks on home page can display summary of any page on site
 - Special hidden-home template to display only a short message and a large background image cover
 - tailwindcss setup and pre-configured with simple copy config setup
 - fontawesome icons setup
 - toc setup as partial to be included from front matter param
+- alpinejs setup configured for use
+- super simple photogallery using alpinejs
+- custom xslt stylized rss feed
+- social data file
+- hugo debugger template
 
 ## Installation
+
+[Get Hugo!](https://www.gethugo.io)
 
 ### If you don't have a hugo site setup yet
 
@@ -97,6 +103,7 @@ Next you will need to install the packages that are used for this theme. These a
 - [postcss-cli version](https://www.npmjs.com/package/postcss-cli): ^11.0.0
 - [postcss-import version](https://www.npmjs.com/package/postcss-import): ^16.0.0
 - [tailwindcss version](https://www.npmjs.com/package/tailwindcss): ^3.4.1
+- [alpinejs](https://www.npmjs.com/package/alpinejs)
 
 ```bash
 cp themes/ryder/exampleSite/package.json .
