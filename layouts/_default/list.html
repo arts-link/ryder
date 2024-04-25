@@ -30,7 +30,7 @@
     {{ end }}
     <div class=" rounded-2xl bg-sky-50 transition-[filter] hover:brightness-90 dark:bg-sky-800 dark:hover:brightness-110 w-full h-full">
         <div class="{{ $bgImgClass }}">
-          <h2 class=" p-3 flex items-center {{ $headerClass }}">
+          <h2 class=" p-3 flex items-center capitalize {{ $headerClass }}">
             {{- if .Params.homeFeatureIcon }}
               <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>
             {{- end }}
@@ -47,6 +47,10 @@
   {{ end }}
   </div>
   {{ template "_internal/pagination.html" . }}
+  {{ if .Param "photoGalleryTitle" }}
+    <h2 class=" rounded-t-lg mb-1 p-3 flex items-center {{ $headerClass }}">{{ .Param "photoGalleryTitle" }}</h2>
+    {{- partial "page_gallery.html" . -}}
+  {{ end }}
 </div>
 
 {{ end }}
