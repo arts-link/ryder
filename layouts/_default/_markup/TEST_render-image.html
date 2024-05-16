@@ -1,0 +1,12 @@
+{{ $image := resources.Get .Destination }}
+{{- if $image -}}
+{{- $post_image_webp := partial "ImageConverter.html" (dict "ImageSrc" .Destination "ImgParam" (printf "resize %dx%d webp q100" $image.Width $image.Height)) -}}
+{{- $post_image_jpg := partial "ImageConverter.html" (dict "ImageSrc" .Destination "ImgParam" (printf "resize %dx%d jpg q100" $image.Width $image.Height)) -}}
+<picture>
+    <source srcset="{{ $post_image_webp }}" type="image/webp">
+    <source srcset="{{ $post_image_jpg }}" type="image/jpeg">
+    <img loading="lazy" class="img-fluid" src="{{ $post_image_jpg }}" width="{{ $image.Width }}" height="{{ $image.Height  }}" {{ with .Text}} alt="{{ . }}" {{ else }} alt="{{ .Page.Title }}" {{ end }} {{ with .Title}} title="{{ . }}"{{ end }}>
+</picture>
+{{- else -}}
+  <img loading="lazy" class="img-fluid" src="{{ .Destination | safeURL }}" {{ with .Text}} alt="{{ . }}" {{ else }} alt="{{ .Page.Title }}" {{ end }} {{ with .Title}} title="{{ . }}"{{ end }} />
+{{- end -}}

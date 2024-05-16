@@ -1,0 +1,191 @@
+{{- $images := .Resources.ByType "image" -}}
+{{- $featured := ($images.GetMatch (.Params.featured_image | default "*feature*")) | default (resources.Get .Site.Params.og_image_default) }}
+{{/*  <br/>LALA:{{- $featured.RelPermalink }}  */}}
+          
+<script type="application/ld+json">
+  {{ if eq .Title .Site.Title }}
+      // homepage
+      {
+        "@context": "https://schema.org/",
+        "@type": "WebPage",
+        "name": "{{ .Title }}",
+        "url": "{{.Site.BaseURL}}",
+        "inLanguage": {{ .Site.LanguageCode }},
+        "isFamilyFriendly": "true",
+        "copyrightYear": "{{ .PublishDate.Format "2006" }}",
+        "copyrightHolder": {{ .Site.Params.author }},
+        "accountablePerson": {
+          "@type": "Person",
+          "name": {{ .Site.Params.author }},
+          "url": "{{.Site.BaseURL}}"
+        },
+        "author": {
+          "@type": "Person",
+          "name": {{ .Site.Params.author }},
+          "url": "{{.Site.BaseURL}}"
+        },
+        "creator": {
+          "@type": "Person",
+          "name": {{ .Site.Params.author }},
+          "url": "{{.Site.BaseURL}}"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": {{ .Site.Params.author }},
+          "url": "{{.Site.BaseURL}}",
+          "logo": {
+            "@type": "ImageObject",
+            "url": {{ .Site.Params.logo_png | absURL }}
+          }
+        },
+      }
+  {{ else if .Params.recipe }}
+      // schema for recipes
+      {
+           "@context": "https://schema.org/",
+           "@type": "Recipe",
+           "mainEntityOfPage": { "@type": "WebPage" },
+           "name": {{ .Title }},
+           {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
+           "author": {
+             "@type": "Person",
+             "name": {{ .Site.Params.author }}
+           },
+           "datePublished": {{ .PublishDate }},
+           "dateModified": {{ .Lastmod }},
+           "description": {{ .Description }},
+           "recipeCuisine": {{ .Params.recipeCuisine }},
+           "prepTime": {{ .Params.prepTime }},
+           "cookTime": {{ .Params.cookTime }},
+           "totalTime": {{ .Params.totalTime }},
+           "keywords": {{ .Params.tags }},
+           "recipeYield": [
+              {{ .Params.recipeYield }}
+            ],
+           "recipeCategory": {{ range last 1 .Params.categories }}{{ . }}{{ end }},
+           "nutrition": {
+             "@type": "NutritionInformation",
+             "calories": {{ .Params.calories }}
+           },
+           "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": "5",
+             "ratingCount": "25"
+           },
+           "recipeIngredient": [
+            {{ .Params.recipeIngredient }}
+           ],
+              "recipeInstructions": [
+                {
+                  "@type": "HowToStep",
+                  "name": "Method",
+                  {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
+                  "text": "{{ .Params.recipeInstructions }}",
+                  "url": "{{ .Permalink }}#method"
+                }
+              ]
+         }
+  {{ else }}
+      // schema for posts
+      {
+        "@context":"http://schema.org",
+        "@type": "BlogPosting",
+        "mainEntityOfPage": { "@type": "WebPage" },
+        "headline": {{ .Title | truncate 110 }},
+        {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
+        "url": {{ .Permalink }},
+        "datePublished": {{ .PublishDate }},
+        "dateModified": {{ .Lastmod }},
+        "inLanguage": {{ .Site.LanguageCode }},
+        "isFamilyFriendly": "true",
+        "copyrightYear": "{{ .PublishDate.Format "2006" }}",
+        "copyrightHolder": {{ .Site.Params.author }},
+        "accountablePerson": {
+          "@type": "Person",
+          "name": {{ .Site.Params.author }},
+          "url": "{{.Site.BaseURL}}"
+        },
+        "author": {
+          "@type": "Person",
+          "name": {{ .Site.Params.author }},
+          "url": "{{.Site.BaseURL}}"
+        },
+        "creator": {
+          "@type": "Person",
+          "name": {{ .Site.Params.author }},
+          "url": "{{.Site.BaseURL}}"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": {{ .Site.Params.author }},
+          "url": "{{.Site.BaseURL}}",
+          "logo": {
+            "@type": "ImageObject",
+            "url": {{ .Site.Params.logo_png | absURL }}
+          }
+        },
+        "articleBody": {{ .Content | safeJS | htmlUnescape | plainify }},
+        "description": {{ with .Description }}{{ . | plainify }}{{ else }}{{if .IsPage}}{{ .Summary | plainify | safeHTML }}{{ else }}{{ with .Site.Params.description }}{{ . | plainify }}{{ end }}{{ end }}{{ end }},
+        "keywords": [{{ range $i, $e := .Params.tags }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}]
+      }
+  {{ end }}
+  </script>
+      
+  {{ if .IsHome }}
+  <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "url": "{{ .Site.BaseURL }}",
+          "logo": "{{ .Site.Params.logo_png | absURL }}"
+        }
+  </script>
+  {{ end }}
+      
+  {{ if ne .Title .Site.Title }}
+  <script type="application/ld+json">
+      
+      //breadcrumb schema
+      {{ if .Params.categories }}
+          {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [{
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "{{.Site.BaseURL}}"
+          },
+          {{ range $i, $e := .Params.categories }}
+          {
+              "@type": "ListItem",
+              "position": 2,
+              "name": {{ $e }},
+              "item": "https://benstrawbridge.com/{{ $e | urlize }}"
+          },
+          {{ end }}
+          {
+              "@type": "ListItem",
+              "position": 3,
+              "name": {{.Title}}
+          }]
+          }
+      {{ else }}
+          {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [{
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "{{.Site.BaseURL}}"
+          },{
+              "@type": "ListItem",
+              "position": 2,
+              "name": {{.Title}}
+          }]
+          }
+      {{ end }}
+  
+  </script>
+  {{ end }}

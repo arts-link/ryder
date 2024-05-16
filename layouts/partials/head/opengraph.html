@@ -3,7 +3,9 @@
   <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
   <meta property="og:url" content="{{ .Permalink }}" />
 {{- $images := $.Resources.ByType "image" -}}
-{{- $featured := ($images.GetMatch (.Params.featured_image | default "*feature*")) | default (index $images 0) }}
+{{/*  {{- $featured := ($images.GetMatch (.Params.featured_image | default "*feature*")) | default (index $images 0) }}  */}}
+{{- $featured := ($images.GetMatch (.Params.featured_image | default "*feature*")) | default (resources.Get .Site.Params.og_image_default) }}
+
 {{- with $featured }}
   <meta property="og:image" content="{{ $featured.Permalink }}" />
 {{- end }}
@@ -16,7 +18,10 @@
 {{- with .Lastmod }}
   <meta property="article:modified_time" {{ .Format $iso8601 | printf "content=%q" | safeHTMLAttr }} />
 {{- end }}
+{{- with .Params.tags }}{{ range first 6 . }}
+  <meta property="article:tag" content="{{ . }}"> {{ end }}{{ end }}
 {{- end }}
+
 {{- with .Params.locale }}
   <meta property="og:locale" content="{{ . }}" />
 {{- end }}

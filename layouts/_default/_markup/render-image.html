@@ -1,12 +1,39 @@
-{{ $image := resources.Get .Destination }}
-{{- if $image -}}
-{{- $post_image_webp := partial "ImageConverter.html" (dict "ImageSrc" .Destination "ImgParam" (printf "resize %dx%d webp q100" $image.Width $image.Height)) -}}
-{{- $post_image_jpg := partial "ImageConverter.html" (dict "ImageSrc" .Destination "ImgParam" (printf "resize %dx%d jpg q100" $image.Width $image.Height)) -}}
-<picture>
-    <source srcset="{{ $post_image_webp }}" type="image/webp">
-    <source srcset="{{ $post_image_jpg }}" type="image/jpeg">
-    <img loading="lazy" class="img-fluid" src="{{ $post_image_jpg }}" width="{{ $image.Width }}" height="{{ $image.Height  }}" {{ with .Text}} alt="{{ . }}" {{ else }} alt="{{ .Page.Title }}" {{ end }} {{ with .Title}} title="{{ . }}"{{ end }}>
-</picture>
-{{- else -}}
-  <img loading="lazy" class="img-fluid" src="{{ .Destination | safeURL }}" {{ with .Text}} alt="{{ . }}" {{ else }} alt="{{ .Page.Title }}" {{ end }} {{ with .Title}} title="{{ . }}"{{ end }} />
-{{- end -}}
+{{ $image := .Page.Resources.Get .Destination }}
+{{ $image_webp := false }}
+{{ $image_fit := false }}
+
+{{ if not $image }}
+    {{/*  {{ errorf "Image %q not found on page %q" .Destination .Page }}  */}}
+    <img src="{{ .Destination | safeURL }}"
+      {{- with .Text }} alt="{{ . }}"{{ end -}}
+      {{- with .Title }} title="{{ . }}"{{ end -}}
+    >
+{{ else }}
+
+{{/* Can only resize raster images */}}
+{{ if ne $image.MediaType.SubType "svg" }}
+  {{ $image_fit = $image.Fit "1000x1000" | resources.Fingerprint }}
+  {{ $image_webp = $image.Fit "1000x1000 webp" | resources.Fingerprint }}
+{{ end }}
+
+{{ $image = $image | resources.Fingerprint }}
+
+<figure>
+    <picture>
+        {{ if $image_webp }}
+        <source loading="lazy" srcset="{{ $image_webp.Permalink }}" type="image/webp" alt="{{ .Text }}">
+        {{ end }}
+
+        {{ if $image_fit }}
+        <img loading="lazy" src="{{ $image_fit.Permalink }}" alt="{{ .Text }}">
+        {{ else}}
+        <img loading="lazy" src="{{ $image.Permalink }}" alt="{{ .Text }}">
+        {{ end }}
+    </picture>
+
+    {{ with .Text}}
+    <figcaption class="center">{{ . }}</figcaption>
+    {{ end }}
+</figure>
+
+{{ end }}
