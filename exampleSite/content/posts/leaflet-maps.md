@@ -1,6 +1,7 @@
 +++
 title = 'Leaflet Maps'
 date = 2024-05-10T14:29:11-07:00
+homeFeatureIcon = "fa-solid fa-map-location-dot"
 # draft = true 
 [menu]
  [menu.main]
