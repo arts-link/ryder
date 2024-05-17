@@ -9,3 +9,5 @@ draft = true
 +++
 
 You can add a leaflet map to your website through the use of the `leaflet` shortcode.
+
+{{< leaflet id="map1" lat="33.966613" lon="-118.426178" zoom="13.5" markerLat="33.9416" markerLon="-118.4085" markerPopup="Green Space right by LAX!" >}}
