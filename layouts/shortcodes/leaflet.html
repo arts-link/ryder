@@ -1,0 +1,22 @@
+{{- $id := .Get "id" | default "map1" }}
+{{- $lat := .Get "lat" | default "51.505" }} 
+{{- $lon := .Get "lon" | default "-0.09" }} 
+{{- $zoom := .Get "zoom" | default "13" }} 
+{{- $markerLat := .Get "markerLat" | default "51.5" }} 
+{{- $markerLon := .Get "markerLon" | default "-0.09" }} 
+{{- $markerPopup := .Get "markerPopup" | default "hi" }}
+
+<div id="{{ $id }}" style="height: 400px;"></div>
+<script>
+  var map = L.map('{{ $id }}').setView([{{ $lat }}, {{ $lon }}], {{ $zoom }});
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  {{ with $markerLat }}
+  L.marker([{{ $markerLat }}, {{ $markerLon }}]).addTo(map)
+    .bindPopup('{{ $markerPopup }}');
+  {{ end }}
+</script>
+<div>Debug Info: ID={{ .Get "id" }}, Lat={{ .Get "lat" }}, Lon={{ .Get "lon" }}, Zoom={{ .Get "zoom" }}</div>
