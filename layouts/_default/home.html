@@ -38,12 +38,11 @@
     {{- end }}
   </div>
   
-  {{- if eq .Layout "hidden-home" -}}
   {{ if or .Title .Content }}
     <div class="p-4 flex-1 items-center justify-center">
       <div class="prose lg:prose-xl dark:prose-invert rounded-xl mx-auto">
         {{ if .Title }}
-            <h1>{{ .Title }}</h1>
+            {{/*  <h3>{{ .Title }}</h3>  */}}
         {{ end }}
         {{ if .Content }}
             {{ .Content }}
@@ -51,6 +50,5 @@
       </div>
     </div>
   {{ end }}
-  {{- end -}}
   
 {{- end }}
