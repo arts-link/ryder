@@ -34,7 +34,7 @@ themesDir= "../../"
   weight = 1
   alertType = "success"
   alertTitle = "Ryder Theme for Hugo"
-  alertMessage = "Learn more about the them by checking out the README on github. <a href='https://github.com/arts-link/ryder' class='underline'>on github.com</a>"
+  alertMessage = "Learn more about the theme by checking out the README on <a href='https://github.com/arts-link/ryder' class='underline'>on github.com</a>."
   alertIconClass = "fa-solid fa-camera-retro"
 [menus]
 [[menus.main]]
