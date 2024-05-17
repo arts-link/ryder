@@ -15,14 +15,17 @@ module.exports = {
       backgroundImage: {
         "hidden-home": " url('/ryder/images/hidden-home-cover.webp')",
         "header-sunset-mb": " url('/ryder/images/hidden-home-cover.webp')",
+        "header-ryder": " url('/ryder/images/ryder-theme-og.jpg')",
       },
       fontFamily: {
         titillium: ["Titillium Web", ...defaultTheme.fontFamily.sans],
       },
       screens: {
-        'xs': '475px',
-        ...defaultTheme.screens,
-        '3xl': '1600px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1280',
       },
     },
   },

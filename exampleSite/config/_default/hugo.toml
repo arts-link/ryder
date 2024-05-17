@@ -18,6 +18,7 @@ themesDir= "../../"
   # enabledebugpanel = true 
   # navbar_fixed = true
   showDarkToggle = true
+  og_image_default = '/ryder/images/ryder-theme-og.jpg'
   logo_firstWord = 'ryder'
   logo_lastWord = 'theme'
   logo_tagline = "FOR HUGO WEBSITES"
@@ -27,7 +28,7 @@ themesDir= "../../"
     name = 'Ben Strawbridge'
   [params.twClasses]
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
-    headerBackgroundFrameInner = "bg-header-sunset-mb h-[300px] bg-cover bg-left"
+    headerBackgroundFrameInner = "bg-header-ryder h-[300px] bg-cover bg-left"
 [[params.alphaAlert]]
   weight = 11
   alertType = "danger"

@@ -30,7 +30,7 @@ hugo server -D
 v0.1 - This theme is pretty barebones, with a few additions to get things setup quickly.
 
 I decided to name it after my late friend and companion, the rhodesian ridgeback / mastiff dog named Ryder.
-![ryder](https://lh3.googleusercontent.com/pw/ABLVV86vT1B1GlVVA3-ZKPC7-SHC2KkvnhSgeJssyGi31xwtIvEL8-EzKxNSA9uMpJN8GtoTp3RkkVgEog-ZSJsKOJJtIvrB4S81UliRJl6pn8dzIlBTQn6ghn4NsYPIbe2zfJ5diuwzsLfIQco8WnHVgeKMnQ=w822-h617-s-no-gm?authuser=0)
+![ryder](https://arts-link.github.io/ryder/images/ryder-theme-og.jpg)
 
 ## Demo Site
 
