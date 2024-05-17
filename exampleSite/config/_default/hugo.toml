@@ -29,17 +29,12 @@ themesDir= "../../"
   [params.twClasses]
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
     headerBackgroundFrameInner = "bg-header-ryder h-[300px] bg-cover bg-left"
-[[params.alphaAlert]]
-  weight = 11
-  alertType = "danger"
-  alertTitle = "Global Banners"
-  alertMessage = "This theme is a work in progress! <a href='/ryder/posts/alerts' class='underline'>learn more about them!</a>"
-  alertIconClass = "fa-solid fa-magnifying-glass"
+
 [[params.alphaAlert]]
   weight = 1
-  alertType = "info"
-  alertTitle = "Multiple Global Banners are possible"
-  alertMessage = "Just add them to [params.alphaAlert] in hugo.toml. <a href='/ryder/posts/alerts' class='underline'>learn more about them!</a>"
+  alertType = "success"
+  alertTitle = "Ryder Theme for Hugo"
+  alertMessage = "Learn more about the them by checking out the README on github. <a href='https://github.com/arts-link/ryder' class='underline'>on github.com</a>"
   alertIconClass = "fa-solid fa-camera-retro"
 [menus]
 [[menus.main]]

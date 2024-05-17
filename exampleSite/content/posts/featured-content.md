@@ -8,8 +8,6 @@ Weight = 9999
 # draft = true
 +++
 
-{{< alert-wrapper alertType="danger" alertTitle="Under Construction" alertMessage="This Feature is in development, currently it works, but the home page display is clearly not good! You could edit the home.html template to fix them up."  alertIconClass="fa-solid fa-person-digging" >}}
-
 By adding these params to your front matter you can have the post show up in a special box on the home page of the website.
 
 ## Front Matter
