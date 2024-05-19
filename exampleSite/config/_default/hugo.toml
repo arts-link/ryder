@@ -25,6 +25,8 @@ themesDir= "../../"
   logo_lastWord = 'theme'
   logo_tagline = "FOR HUGO WEBSITES"
   logo_fontClass = 'font-titillium'
+  repository = "https://github.com/arts-link.com/ryder"
+
   [params.author]
     email = 'ben@benstrawbridge.com'
     name = 'Ben Strawbridge'

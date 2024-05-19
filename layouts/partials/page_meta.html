@@ -4,27 +4,27 @@
 {{ $dateLastmodMachine := .Lastmod | time.Format "2006-01-02T15:04:05-07:00" }}
 {{ $dateLastmodHuman := .Lastmod | time.Format ":date_long" }}
   {{/*  {{ printf "%#v" .GitInfo }}  */}}
-{{ $hash1 := "nope" }}
-{{ $hash2 := "noper" }}
-{{ $hash3 := "nopes" }}
+{{ $hash1 := "Commit" }}
+{{ $hash2 := "History" }}
+{{ $hash3 := "Blame" }}
 {{ $hashlink := "nope" }}
 
 {{ with .GitInfo }}
   {{- $hash1 = fmt.Printf "<a href=\"%s/commit/%s\">%s</a>"
-    "https://www.github.com/arts-link/ryder"
+    site.Params.repository
     .Hash
     .AbbreviatedHash
   -}}
-  {{- $hash2 := fmt.Printf "<a href=\"%s/commits/main/content%sindex.md\">%s</a>"
-    "https://www.github.com/arts-link/ryder"
+  {{/*  {{- $hash2 := fmt.Printf "<a href=\"%s/commits/main/content%sindex.md\">%s</a>"
+    site.Params.repository
     "postLink"
     "History"
   -}}
   {{- $hash3 := fmt.Printf "<a href=\"%s/blame/main/content/%s\">%s</a>"
-    "https://www.github.com/arts-link/ryder"
+    site.Params.repository
     "path"
     "Blame"
-  -}}
+  -}}  */}}
   {{- $hashlink = fmt.Printf "%s / %s / %s" $hash1 $hash2 $hash3 -}}
 
 {{ end }}
