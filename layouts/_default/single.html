@@ -1,8 +1,8 @@
 {{ define "main" }}
-  <div class="max-w-screen-lg mx-auto">
+  <div class="max-w-screen-xl mx-auto">
     {{- partial "breadcrumb.html" . }}
   </div>
-  <div class="p-4 max-w-screen-lg mx-auto ">
+  <div class="p-4 max-w-screen-xl mx-auto ">
     <div class=" grid grid-cols-1 md:grid-cols-12 gap-x-1 ">
       <header class=" w-full md:col-span-12 prose lg:prose-xl max-w-screen-lg  dark:prose-invert">
         <div class="">
@@ -51,6 +51,6 @@
 {{- if $image -}}
 {{- $post_image_webp := partial "ImageConverter.html" (dict "ImageSrc" "/images/sunset-mission-bay.jpg" "ImgParam" (printf "resize %dx%d webp q100" 1024 768)) -}}
 {{- end }}  */}}
-
+{{- partial "page_meta.html" . }}
 {{ end }}
 

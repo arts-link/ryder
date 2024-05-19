@@ -1,0 +1,57 @@
+{{/*  {{.GitInfo | jsonify}}  */}}
+{{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
+{{ $dateHuman := .Date | time.Format ":date_long" }}
+{{ $dateLastmodMachine := .Lastmod | time.Format "2006-01-02T15:04:05-07:00" }}
+{{ $dateLastmodHuman := .Lastmod | time.Format ":date_long" }}
+  {{/*  {{ printf "%#v" .GitInfo }}  */}}
+{{ $hash1 := "nope" }}
+{{ $hash2 := "noper" }}
+{{ $hash3 := "nopes" }}
+{{ $hashlink := "nope" }}
+
+{{ with .GitInfo }}
+  {{- $hash1 = fmt.Printf "<a href=\"%s/commit/%s\">%s</a>"
+    "https://www.github.com/arts-link/ryder"
+    .Hash
+    .AbbreviatedHash
+  -}}
+  {{- $hash2 := fmt.Printf "<a href=\"%s/commits/main/content%sindex.md\">%s</a>"
+    "https://www.github.com/arts-link/ryder"
+    "postLink"
+    "History"
+  -}}
+  {{- $hash3 := fmt.Printf "<a href=\"%s/blame/main/content/%s\">%s</a>"
+    "https://www.github.com/arts-link/ryder"
+    "path"
+    "Blame"
+  -}}
+  {{- $hashlink = fmt.Printf "%s / %s / %s" $hash1 $hash2 $hash3 -}}
+
+{{ end }}
+{{/*  {{- with $githash }}
+  {{- $hash1 := fmt.Printf "<a href=\"%s/commit/%s\">%s</a>"
+    $config.repository
+    $post.GitInfo.Hash
+    $githash
+  -}}
+  {{- $hash2 := fmt.Printf "<a href=\"%s/commits/main/content%sindex.md\">%s</a>"
+    $config.repository
+    $post.RelPermalink
+    "History"
+  -}}
+  {{- $hash3 := fmt.Printf "<a href=\"%s/blame/main/content/%s\">%s</a>"
+    $config.repository
+    $post.File.Path
+    "Blame"
+  -}}
+{{- end -}}  */}}
+<div>
+  <i class="fa-solid fa-calendar-days"></i> Published: <time datetime="{{ $dateMachine }}" class="">{{ $dateHuman }}</time>
+  {{/*  TODO only show lastmod if different...  */}}
+  (Last Modified: <time datetime="{{ $dateLastmodMachine }}" class="">{{ $dateLastmodHuman }}</time>)
+</div>
+<div>
+  <i class="fa-brands fa-github-alt"></i> {{ $hashlink | safe.HTML }}
+  
+
+</div>

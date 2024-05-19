@@ -1,15 +1,23 @@
 <nav aria-label="breadcrumb" class="flex items-center justify-between pt-3 ">
-  <ul class="flex space-x-4 ml-2">
+  <ul class="flex space-x-2 ml-2">
+      <li>
+        <a href="{{ .Site.Home.RelPermalink }}" class="text-md">
+          Home
+          <i class="mr-2 text-base fa-solid fa-angles-right"></i>
+        </a>
+      </li>
     {{ range after 1 .Ancestors.Reverse }}
       <li>
-        <a href="{{ .RelPermalink }}" class="text-xl">
-          <i class="text-base fa-solid fa-angles-left"></i>
+        <a href="{{ .RelPermalink }}" class="text-md">
           {{ .LinkTitle }}
+          <i class="text-base fa-solid fa-angles-right"></i>
         </a>
       </li>
     {{ end }}
-    {{/*  <li class="active">
-      <a aria-current="page" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
-    </li>  */}}
+    <li class="active">
+      <a aria-current="page" class="text-md" href="{{ .RelPermalink }}">
+        {{ .LinkTitle }}
+      </a>
+    </li>
   </ul>
 </nav>

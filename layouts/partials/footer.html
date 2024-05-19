@@ -2,6 +2,8 @@
 {{ with or (.Param "twClasses.footerBackground") (.Param "twClasses.headerBackgroundFrameOuter") (.Param "headerGradientClasses")}}
 {{ $footerClass = . }}
 {{ end }}
+
+
 <footer class="border-t w-full mt-auto text-neutral-100 {{ $footerClass }} ">
   <div class="flex justify-between ">
     <div class="py-4 px-2 text-sm ">
