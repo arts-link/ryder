@@ -12,7 +12,10 @@
   </header>
   <div class="grid grid-cols-1 gap-6 p-2 sm:p-4 sm:grid-cols-2 lg:grid-cols-3">
   {{ $myCollection := .Pages }}
-  {{ if eq .Section "posts" }}
+  {{/*  {{ .Section }}  */}}
+  {{/*  {{ if eq .Section "posts" }}  */}}
+  {{/*  {{ if or (eq .Section "posts") (eq .Section "projects") }}  */}}
+  {{ if eq .Params.listRecursive true }}
   {{ $myCollection = .RegularPagesRecursive }}
   {{ end }}
   {{ $paginator := .Paginate ($myCollection) }}
