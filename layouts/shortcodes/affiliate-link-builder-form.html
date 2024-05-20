@@ -58,7 +58,7 @@
       },
 
       generateAffiliateLink() {
-        this.affiliateLink = `<a href="https://www.amazon.com/dp/${this.asin}/ref=nosim?tag=${this.affiliateTag}">${this.productName || 'Your requested link is ready'}</a>`;
+        this.affiliateLink = `<a class="text-gray-700" href="https://www.amazon.com/dp/${this.asin}/ref=nosim?tag=${this.affiliateTag}">${this.productName || 'Your requested link is ready'}</a>`;
       }
     }));
   });
