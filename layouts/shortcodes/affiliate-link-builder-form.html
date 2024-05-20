@@ -36,14 +36,14 @@
       </div>
     </div>
   </form>
-  <div class="text-gray-700" id="affiliate-link" x-html="affiliateLink || 'Your requested link is ready'"></div>
+  <div class="text-gray-700" id="affiliate-link" x-html="affiliateLink || 'Enter an ASIN and click Generate Link to get started'"></div>
 </div>
 
 <script>
   document.addEventListener('alpine:init', () => {
     Alpine.data('affiliateLinkBuilder', () => ({
-      productName: 'Your requested link is ready',
-      asin: '',
+      productName: 'New Zero Gravity Massage Chair Airbag Full-Body Recliner Air Massage Chair',
+      asin: 'B0CYBMN914',
       affiliateTag: 'benstrawbridge-20',
       affiliateLink: '',
 
