@@ -5,8 +5,9 @@
 {{- $markerLat := .Get "markerLat" | default "51.5" }} 
 {{- $markerLon := .Get "markerLon" | default "-0.09" }} 
 {{- $markerPopup := .Get "markerPopup" | default "hi" }}
+{{- $divHeight := .Get "divHeight" | default "400px" }}
 
-<div id="{{ $id }}" style="height: 400px;"></div>
+<div id="{{ $id }}" style="height: {{ $divHeight }};"></div>
 <script>
   var map = L.map('{{ $id }}').setView([{{ $lat }}, {{ $lon }}], {{ $zoom }});
 

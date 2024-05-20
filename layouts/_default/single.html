@@ -51,6 +51,5 @@
 {{- if $image -}}
 {{- $post_image_webp := partial "ImageConverter.html" (dict "ImageSrc" "/images/sunset-mission-bay.jpg" "ImgParam" (printf "resize %dx%d webp q100" 1024 768)) -}}
 {{- end }}  */}}
-{{- partial "page_meta.html" . }}
 {{ end }}
 
