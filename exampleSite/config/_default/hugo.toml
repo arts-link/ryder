@@ -7,7 +7,7 @@ summaryLength = 15
 enableRobotsTXT = true
 copyright = "©️ Ryder Theme 2024"
 enableEmoji = true
-enableGitInfo = true
+# enableGitInfo = true
 
 # paginate = 4
 
