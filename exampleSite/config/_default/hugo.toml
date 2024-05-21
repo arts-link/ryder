@@ -7,7 +7,7 @@ summaryLength = 15
 enableRobotsTXT = true
 copyright = "©️ Ryder Theme 2024"
 enableEmoji = true
-# enableGitInfo = true
+enableGitInfo = true
 
 # paginate = 4
 
@@ -19,8 +19,9 @@ themesDir= "../../"
   # UseHugoToc = true
   # enabledebugpanel = true 
   # navbar_fixed = true
+  # showDate = true
   showDarkToggle = true
-  og_image_default = '/ryder/images/ryder-theme-og.jpg'
+  og_image_default = 'images/ryder-theme-og.jpg'
   logo_firstWord = 'ryder'
   logo_lastWord = 'theme'
   logo_tagline = "FOR HUGO WEBSITES"
