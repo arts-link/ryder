@@ -12,27 +12,15 @@
   <div>
     <i class="fa-solid fa-hashtag"></i>: [{{ .Hash }}]
   </div>
-  {{- $hash1 = fmt.Printf "<a href=\"%s/commit/%s\">%s</a>"
-    site.Params.repository
-    .Hash
-    .AbbreviatedHash
-  -}}
-  {{/*  {{- $hash2 := fmt.Printf "<a href=\"%s/commits/main/content%sindex.md\">%s</a>"
-    site.Params.repository
-    "postLink"
-    "History"
-  -}}
-  {{- $hash3 := fmt.Printf "<a href=\"%s/blame/main/content/%s\">%s</a>"
-    site.Params.repository
-    "path"
-    "Blame"
-  -}}  */}}
+  {{- $hash1 = fmt.Printf "<a href=\"%s/commit/%s\">%s</a>" site.Params.repository .Hash .AbbreviatedHash -}}
+  {{/*  {{- $hash2 := fmt.Printf "<a href=\"%s/commits/main/content%sindex.md\">%s</a>" site.Params.repository "postLink" "History" -}}
+  {{- $hash3 := fmt.Printf "<a href=\"%s/blame/main/content/%s\">%s</a>" site.Params.repository "path" "Blame" -}}  */}}
   {{- $hashlink = fmt.Printf "%s / %s / %s" $hash1 $hash2 $hash3 -}}
 {{ end }}
 
 <div>
-  {{/*  {{ .Date}}<br/>
-  {{ .Lastmod}}<br/>  */}}
+  {{ .Date}}<br/>
+  {{ .Lastmod}}<br/>
   <i class="fa-solid fa-calendar-days"></i> Published: <time datetime="{{ $dateMachine }}" class="">{{ $dateHuman }}</time>
   {{/*  TODO only show lastmod if different...  */}}
   {{ if ne .Lastmod .Date }}
