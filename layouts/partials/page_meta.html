@@ -9,6 +9,9 @@
 {{ $hash3 := "Blame" }}
 {{ $hashlink := "nope" }}
 {{ with .GitInfo }}
+  <div>
+    <i class="fa-solid fa-hashtag"></i>: [{{ .Hash }}]
+  </div>
   {{- $hash1 = fmt.Printf "<a href=\"%s/commit/%s\">%s</a>"
     site.Params.repository
     .Hash
