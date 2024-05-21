@@ -19,8 +19,8 @@
 {{ end }}
 
 <div>
-  {{ .Date}}<br/>
-  {{ .Lastmod}}<br/>
+  DATE: {{ .Date}}<br/>
+  LASTMOD: {{ .Lastmod}}<br/>
   <i class="fa-solid fa-calendar-days"></i> Published: <time datetime="{{ $dateMachine }}" class="">{{ $dateHuman }}</time>
   {{/*  TODO only show lastmod if different...  */}}
   {{ if ne .Lastmod .Date }}
