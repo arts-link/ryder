@@ -2,16 +2,8 @@
   <form>
     <div class="-mx-3 mb-6">
       <div class="w-full px-3">
-        <label class="block uppercase tracking-wide text-gray-700 font-bold mb-2" for="product-name">
-          Product Name
-        </label>
-        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="product-name" type="text" placeholder="Enter product name" x-model="productName">
-      </div>
-    </div>
-    <div class="-mx-3 mb-6">
-      <div class="w-full px-3">
         <label class="block uppercase tracking-wide text-gray-700 font-bold mb-2" for="asin">
-          ASIN
+          ASIN (<a href="#to-find-the-asin-to-use-for-this-form-look-at-the-url-in-the-product-page-on-amazon-and-look-for-dpxxxxxxxxxx-the-10-xs-are-the-asin-number">Help finding the ASIN</a>)
         </label>
         <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="asin" type="text" placeholder="Enter ASIN" x-model="asin" :class="{'border-red-500': !isValidAsin(asin)}" @input="validateAsin">
         <p class="text-red-500 text-xs italic" x-show="!isValidAsin(asin)">Please enter a valid ASIN.</p>
@@ -42,8 +34,8 @@
 <script>
   document.addEventListener('alpine:init', () => {
     Alpine.data('affiliateLinkBuilder', () => ({
-      productName: 'New Zero Gravity Massage Chair Airbag Full-Body Recliner Air Massage Chair',
-      asin: 'B0CYBMN914',
+      productName: 'Click this link to go to the Amazon Product page',
+      asin: '0143129252',
       affiliateTag: 'benstrawbridge-20',
       affiliateLink: '',
 

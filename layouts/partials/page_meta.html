@@ -8,7 +8,6 @@
 {{ $hash2 := "History" }}
 {{ $hash3 := "Blame" }}
 {{ $hashlink := "nope" }}
-
 {{ with .GitInfo }}
   {{- $hash1 = fmt.Printf "<a href=\"%s/commit/%s\">%s</a>"
     site.Params.repository
@@ -29,9 +28,13 @@
 {{ end }}
 
 <div>
+  {{/*  {{ .Date}}<br/>
+  {{ .Lastmod}}<br/>  */}}
   <i class="fa-solid fa-calendar-days"></i> Published: <time datetime="{{ $dateMachine }}" class="">{{ $dateHuman }}</time>
   {{/*  TODO only show lastmod if different...  */}}
+  {{ if ne .Lastmod .Date }}
   (Last Modified: <time datetime="{{ $dateLastmodMachine }}" class="">{{ $dateLastmodHuman }}</time>)
+  {{ end }}
 </div>
 <div>
   <i class="fa-brands fa-github-alt"></i> {{ $hashlink | safe.HTML }}
