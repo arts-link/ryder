@@ -53,7 +53,8 @@
            {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
            "author": {
              "@type": "Person",
-             "name": {{ .Site.Params.author }}
+             "name": {{ .Site.Params.author.name }},
+          "email": {{ .Site.Params.author.email }}
            },
            "datePublished": {{ .PublishDate }},
            "dateModified": {{ .Lastmod }},
@@ -106,22 +107,26 @@
         "copyrightHolder": {{ .Site.Params.author }},
         "accountablePerson": {
           "@type": "Person",
-          "name": {{ .Site.Params.author }},
+          "name": {{ .Site.Params.author.name }},
+          "email": {{ .Site.Params.author.email }},
           "url": "{{.Site.BaseURL}}"
         },
         "author": {
           "@type": "Person",
-          "name": {{ .Site.Params.author }},
+          "name": {{ .Site.Params.author.name }},
+          "email": {{ .Site.Params.author.email }},
           "url": "{{.Site.BaseURL}}"
         },
         "creator": {
           "@type": "Person",
-          "name": {{ .Site.Params.author }},
+          "name": {{ .Site.Params.author.name }},
+          "email": {{ .Site.Params.author.email }},
           "url": "{{.Site.BaseURL}}"
         },
         "publisher": {
           "@type": "Organization",
-          "name": {{ .Site.Params.author }},
+          "name": {{ .Site.Params.author.name }},
+          "email": {{ .Site.Params.author.email }},
           "url": "{{.Site.BaseURL}}",
           "logo": {
             "@type": "ImageObject",
