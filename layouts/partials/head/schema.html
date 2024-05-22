@@ -13,25 +13,29 @@
         "inLanguage": {{ .Site.LanguageCode }},
         "isFamilyFriendly": "true",
         "copyrightYear": "{{ .PublishDate.Format "2006" }}",
-        "copyrightHolder": {{ .Site.Params.author }},
+        "copyrightHolder": {{ .Site.Params.author.name }},
         "accountablePerson": {
           "@type": "Person",
-          "name": {{ .Site.Params.author }},
+          "name": {{ .Site.Params.author.name }},
+          "email": {{ .Site.Params.author.email }},
           "url": "{{.Site.BaseURL}}"
         },
         "author": {
           "@type": "Person",
-          "name": {{ .Site.Params.author }},
+          "name": {{ .Site.Params.author.name }},
+          "email": {{ .Site.Params.author.email }},
           "url": "{{.Site.BaseURL}}"
         },
         "creator": {
           "@type": "Person",
-          "name": {{ .Site.Params.author }},
+          "name": {{ .Site.Params.author.name }},
+          "email": {{ .Site.Params.author.email }},
           "url": "{{.Site.BaseURL}}"
         },
         "publisher": {
           "@type": "Organization",
-          "name": {{ .Site.Params.author }},
+          "name": {{ .Site.Params.author.name }},
+          "email": {{ .Site.Params.author.email }},
           "url": "{{.Site.BaseURL}}",
           "logo": {
             "@type": "ImageObject",
