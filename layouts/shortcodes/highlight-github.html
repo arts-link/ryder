@@ -1,0 +1,174 @@
+{{- /* Last modified: 2024-05-07T07:11:34-07:00 */}}
+
+{{- /*
+Copyright 2024 Veriphor LLC
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at
+
+https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations under
+the License.
+*/}}
+
+{{- /*
+Renders highlighted code from a file in a GitHub repository.
+
+@param {string} owner The repository owner.
+@param {string} repo The repository name.
+@param {string} path The path to the file.
+@param {string} [branch=default] The repository branch or commit hash.
+@param {string} [lines] The lines to include, in the format n-n (first-last).
+@param {string} [hl_lines] The lines to highlight, in the format n-n (first-last).
+@param {string} [lang] The code language, defaults to file extension, falling back to text.
+@param {any} [linenos=inline] One of true, false, inline, or table.
+@param {bool} [showlink=true] Whether to display a link to the file.
+@param {string} [style] The CSS styles to apply to the highlighted code.
+
+@returns {template.HTML}
+
+@ref https://gohugo.io/functions/transform/highlight/
+@ref https://xyproto.github.io/splash/docs/
+
+@examples
+
+  {{< highlight-github owner=torvalds repo=linux path=kernel/time/time.c >}}
+
+  {{< highlight-github
+      owner=torvalds
+      repo=linux
+      path=kernel/time/time.c
+      lines=55-73
+      lang=c
+      hl_lines=67-70
+      linenos=false
+      showlink=false
+      branch=b73f0c8f4ba810cd753031d18f4fab83bd9ac58f
+  >}}
+
+*/}}
+
+{{- /* Verify minimum required version. */}}
+{{- $minHugoVersion := "0.125.6" }}
+{{- if lt hugo.Version $minHugoVersion }}
+  {{- errorf "The %s shortcode requires Hugo v%s or later." .Name $minHugoVersion }}
+{{- end }}
+
+{{- /* Set defaults */}}
+{{- $lineNos := "inline" }}
+{{- $showLink := true }}
+
+{{- /* Set constants. */}}
+{{- $tld := "github.com" }}
+{{- $apiBase := "https://api.github.com" }}
+
+{{- /* Get required parameters. */}}
+{{- $owner := or (.Get "owner") "" }}
+{{- $repo := or (.Get "repo") "" }}
+{{- $path := or (.Get "path") "" }}
+
+{{- if and $owner $repo $path }}
+
+  {{- /* Get branch. */}}
+  {{- $apiEndPoint := urls.JoinPath $apiBase "repos" $owner $repo }}
+  {{- $data := "" }}
+  {{- with resources.GetRemote $apiEndPoint }}
+    {{- with .Err }}
+      {{- errorf "%s" . }}
+    {{- else }}
+      {{- $data = . | transform.Unmarshal }}
+    {{- end }}
+  {{- else }}
+    {{- errorf "Unable to get remote resource %q" $apiEndPoint }}
+  {{- end }}
+  {{- $branch := or (.Get "branch") $data.default_branch }}
+
+  {{- /* Get content. */}}
+  {{- $apiEndPoint := urls.JoinPath $apiBase "repos" $owner $repo "contents" $path }}
+  {{- $query := querify "ref" $branch }}
+  {{- $apiEndPoint = printf "%s?%s" $apiEndPoint $query }}
+  {{- $data := "" }}
+  {{- with resources.GetRemote $apiEndPoint }}
+    {{- with .Err }}
+      {{- errorf "%s" . }}
+    {{- else }}
+      {{- $data = . | transform.Unmarshal }}
+    {{- end }}
+  {{- else }}
+    {{- errorf "Unable to get remote resource %q" $apiEndPoint }}
+  {{- end }}
+  {{- $content := ($data.content | base64Decode) }}
+
+  {{- /* Get subset of content if lines parameter is set. */}}
+  {{- $lineNoStart := 1 }}
+  {{- $lineNoEnd := 0 }}
+  {{- with .Get "lines" }}
+    {{- if findRE `^\d+-\d+` . }}
+      {{- $lineNoStart = index (split . "-") 0 | int }}
+      {{- $lineNoEnd = index (split . "-") 1 | int }}
+      {{- $contentLines := split $content "\n" }}
+      {{- $contentLines = $contentLines | after (sub $lineNoStart 1) | first (add 1 (sub $lineNoEnd $lineNoStart ))}}
+      {{- $content = add (delimit $contentLines "\n") "\n" }}
+    {{- else }}
+      {{- errorf "The %q shortcode requires the lines parameter to have the format n-n. See %s" $.Name $.Position }}
+    {{- end }}
+  {{- end }}
+
+  {{- /* Determine which lines to highlight, if any. */}}
+  {{- $hl_lines := "" }}
+  {{- with .Get "hl_lines" }}
+    {{- if findRE `^\d+-\d+` . }}
+      {{- $hl_start := add 1 (sub (index (split . "-") 0 | int) $lineNoStart) }}
+      {{- $hl_end := add 1 (sub (index (split . "-") 1 | int) $lineNoStart) }}
+      {{- $hl_lines = printf "%d-%d" $hl_start $hl_end }}
+    {{- else }}
+      {{- errorf "The %q shortcode requires the lines parameter to have the format n-n. See %s" $.Name $.Position }}
+    {{- end }}
+  {{- end }}
+
+  {{- /* Set highlighting options. */}}
+  {{- $temp := .Get "linenos" }}
+  {{- if in (slice "false" false 0) $temp }}
+    {{- $lineNos = false }}
+  {{- else if in (slice "true" true 1) $temp }}
+    {{- $lineNos = true }}
+  {{- else if in (slice "inline" "table") $temp }}
+    {{- $lineNos = $temp }}
+  {{- end }}
+  {{- $opts := dict "linenostart" $lineNoStart "linenos" $lineNos }}
+  {{- with $hl_lines }}
+    {{- $opts = merge $opts (dict "hl_lines" $hl_lines) }}
+  {{- end }}
+  {{- with .Get "style" }}
+    {{- $opts = merge $opts (dict "style" .) }}
+  {{- end }}
+
+  {{- /* Determine language and highlight the code. */}}
+  {{- $lang := or (.Get "lang") (path.Ext $path | strings.TrimPrefix "." ) "text" }}
+  {{- highlight $content $lang $opts }}
+
+  {{- /* Render link to blob. */}}
+  {{- $temp := .Get "showlink" }}
+  {{- if in (slice "false" false 0) $temp }}
+    {{- $showLink = false }}
+  {{- else if in (slice "true" true 1) $temp }}
+    {{- $showLink = true }}
+  {{- end }}
+  {{- if $showLink }}
+    {{- $href := urls.JoinPath "https://" $tld $owner $repo "blob" $branch $path }}
+    {{- if $lineNoEnd }}
+      {{- $href = printf "%s#%s" $href (printf "L%d-L%d" $lineNoStart $lineNoEnd) }}
+    {{- end }}
+    <div class="highlight-github-link">
+      <a href="{{ $href }}">{{ $href }}</a>
+    </div>
+  {{- end }}
+
+{{- else }}
+  {{- errorf "The %q shortcode requires three named parameters: owner, repo, and path. See %s" .Name .Position }}
+{{- end }}
