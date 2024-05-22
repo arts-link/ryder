@@ -24,18 +24,11 @@
     <main class="container max-h-max mx-auto ">
       {{- block "main" . }}{{- end }}
     </main>
-    <!-- cache partial only in production -->
-    {{ if hugo.IsProduction }}
-      {{ partialCached "footer.html" . }}
-    {{ else }}
-      {{ partial "footer.html" . }}
-    {{ end }}
-    
+    {{ partial "footer.html" . }}
 </div>
 
 {{ if .Param "enabledebugpanel" }}
 {{ partial "debug-panel.html" . }}
 {{- end }}
-hmm
 </body>
 </html>
