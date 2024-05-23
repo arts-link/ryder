@@ -9,14 +9,17 @@
 {{ $hash3 := "Blame" }}
 {{ $hashlink := "nope" }}
 {{ $daPL := .RelPermalink }}
-{{ $daFP := .File.Path}}
+{{ $daFP := "" }}
+{{ with .File }}
+  {{ $daFP = .Path }}
+  {{- $hash2 = fmt.Printf "<a href=\"%s/commits/main/content/%s\">%s</a>" site.Params.repository $daFP "History" -}}
+  {{- $hash3 = fmt.Printf "<a href=\"%s/blame/main/content/%s\">%s</a>" site.Params.repository $daFP "Blame" -}}
+{{ end }}
 {{ with .GitInfo }}
   <!-- <div>
     <i class="fa-solid fa-hashtag"></i>: [{{ .Hash }}]
   </div> -->
   {{- $hash1 = fmt.Printf "<a href=\"%s/commit/%s\">%s</a>" site.Params.repository .Hash .AbbreviatedHash -}}
-  {{- $hash2 := fmt.Printf "<a href=\"%s/commits/main/content/%s\">%s</a>" site.Params.repository $daFP "History" -}}
-  {{- $hash3 := fmt.Printf "<a href=\"%s/blame/main/content/%s\">%s</a>" site.Params.repository $daFP "Blame" -}}
   {{- $hashlink = fmt.Printf "%s / %s / %s" $hash1 $hash2 $hash3 -}}
 {{ end }}
 
