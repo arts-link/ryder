@@ -1,7 +1,6 @@
 {{- $images := .Resources.ByType "image" -}}
 {{- $featured := ($images.GetMatch (.Params.featured_image | default "*feature*")) | default (resources.Get .Site.Params.og_image_default) }}
 {{/*  <br/>LALA:{{- $featured.RelPermalink }}  */}}
-[{{  .Params.recipe }}]
  
 <script type="application/ld+json">
   {{ if eq .Title .Site.Title }}
