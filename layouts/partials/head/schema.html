@@ -77,7 +77,7 @@
             "ratingValue": "5",
             "ratingCount": "25"
           },
-          "recipeIngredient": [{{ range .Params.recipeIngredient }} {{ if not (strings.HasPrefix . "**") }}"{{ . }}",{{ end }} {{ end }}],
+          "recipeIngredient": [{{ $len := len .Params.recipeIngredient }}{{ range $index, $ingredient := .Params.recipeIngredient }}{{ if not (strings.HasPrefix $ingredient "**") }}"{{ $ingredient }}"{{ if ne $index (sub $len 1) }},{{ end }}{{ end }}{{ end }}],
           "recipeInstructions": [
             {
               "@type": "HowToStep",
