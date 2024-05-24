@@ -1,7 +1,8 @@
 {{- $images := .Resources.ByType "image" -}}
 {{- $featured := ($images.GetMatch (.Params.featured_image | default "*feature*")) | default (resources.Get .Site.Params.og_image_default) }}
 {{/*  <br/>LALA:{{- $featured.RelPermalink }}  */}}
-          
+[{{  .Params.recipe }}]
+ 
 <script type="application/ld+json">
   {{ if eq .Title .Site.Title }}
       // homepage
@@ -46,50 +47,48 @@
   {{ else if .Params.recipe }}
       // schema for recipes
       {
-           "@context": "https://schema.org/",
-           "@type": "Recipe",
-           "mainEntityOfPage": { "@type": "WebPage" },
-           "name": {{ .Title }},
-           {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
-           "author": {
-             "@type": "Person",
-             "name": {{ .Site.Params.author.name }},
-          "email": {{ .Site.Params.author.email }}
-           },
-           "datePublished": {{ .PublishDate }},
-           "dateModified": {{ .Lastmod }},
-           "description": {{ .Description }},
-           "recipeCuisine": {{ .Params.recipeCuisine }},
-           "prepTime": {{ .Params.prepTime }},
-           "cookTime": {{ .Params.cookTime }},
-           "totalTime": {{ .Params.totalTime }},
-           "keywords": {{ .Params.tags }},
-           "recipeYield": [
-              {{ .Params.recipeYield }}
-            ],
-           "recipeCategory": {{ range last 1 .Params.categories }}{{ . }}{{ end }},
-           "nutrition": {
-             "@type": "NutritionInformation",
-             "calories": {{ .Params.calories }}
-           },
-           "aggregateRating": {
-             "@type": "AggregateRating",
-             "ratingValue": "5",
-             "ratingCount": "25"
-           },
-           "recipeIngredient": [
-            {{ .Params.recipeIngredient }}
-           ],
-              "recipeInstructions": [
-                {
-                  "@type": "HowToStep",
-                  "name": "Method",
-                  {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
-                  "text": "{{ .Params.recipeInstructions }}",
-                  "url": "{{ .Permalink }}#method"
-                }
-              ]
-         }
+          "@context": "https://schema.org/",
+          "@type": "Recipe",
+          "mainEntityOfPage": { "@type": "WebPage" },
+          "name": {{ .Title }},
+          {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
+          "author": {
+            "@type": "Person",
+            "name": {{ .Site.Params.author.name }},
+        "email": {{ .Site.Params.author.email }}
+          },
+          "datePublished": {{ .PublishDate }},
+          "dateModified": {{ .Lastmod }},
+          "description": {{ .Description }},
+          "recipeCuisine": {{ .Params.recipeCuisine }},
+          "prepTime": {{ .Params.prepTime }},
+          "cookTime": {{ .Params.cookTime }},
+          "totalTime": {{ .Params.totalTime }},
+          "keywords": {{ .Params.tags }},
+          "recipeYield": [
+            {{ .Params.recipeYield }}
+          ],
+          "recipeCategory": {{ range last 1 .Params.categories }}{{ . }}{{ end }},
+          "nutrition": {
+            "@type": "NutritionInformation",
+            "calories": {{ .Params.calories }}
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5",
+            "ratingCount": "25"
+          },
+          "recipeIngredient": [{{ range .Params.recipeIngredient }} {{ if not (strings.HasPrefix . "**") }}"{{ . }}",{{ end }} {{ end }}],
+          "recipeInstructions": [
+            {
+              "@type": "HowToStep",
+              "name": "Method",
+              {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
+              "text": "{{ .Params.recipeInstructions }}",
+              "url": "{{ .Permalink }}#method"
+            }
+          ]
+        }
   {{ else }}
       // schema for posts
       {

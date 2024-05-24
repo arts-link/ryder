@@ -12,7 +12,9 @@ git init
 git submodule add https://github.com/arts-link/ryder.git themes/ryder
 # copy configs from exampleSite
 cp -r themes/ryder/exampleSite/config/ ./config
-cp themes/ryder/exampleSite/*.config.js .
+# copy archetypes from example site if you want to use the themes archetypes
+# TODO exapand on this
+cp themes/ryder/exampleSite/archetypes/*.md ./archetypes
 #### IMPORTANT DO NOT SKIP
 # Delete the line: `themesDir = "../.."` from your new `/config/_default/hugo.toml` file.
 # install npm dependencies

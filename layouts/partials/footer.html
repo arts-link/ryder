@@ -7,7 +7,7 @@
 <footer class="border-t w-full mt-auto text-neutral-100 {{ $footerClass }} ">
   <div class="flex justify-between ">
     <div class="py-4 px-2 text-sm ">
-      {{- with .Site.Copyright}}
+      {{- with .Site.Copyright | safeHTML }}
       <p class="flex items-center">{{ . }}</p>
       {{- end }}
       {{- partial "attribution.html" . }}
