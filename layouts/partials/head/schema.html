@@ -153,6 +153,7 @@
   <script type="application/ld+json">
       
       //breadcrumb schema
+      // CHANGE THIS TO DO LIKE breadcrumb.html does
       {{ if .Params.categories }}
           {
           "@context": "https://schema.org",
@@ -174,7 +175,8 @@
           {
               "@type": "ListItem",
               "position": 3,
-              "name": {{.Title}}
+              "name": {{.Title}},
+              "item": "{{ .RelPermalink }}"
           }]
           }
       {{ else }}
@@ -189,7 +191,8 @@
           },{
               "@type": "ListItem",
               "position": 2,
-              "name": {{.Title}}
+              "name": {{.Title}},
+              "item": "{{.Site.BaseURL}}/{{ .RelPermalink }}"
           }]
           }
       {{ end }}
