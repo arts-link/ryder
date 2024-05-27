@@ -4,7 +4,7 @@
   {{ range sort . "weight" }}
   {{ if .icon }} {{ if .link }}
   <button class="p-4">
-    <a class="hover:underline cursor-pointer" href="{{ .link | safeURL }}" aria-label="{{ .title }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} {{ if .type }}type="{{ .type }}"{{ end }}>
+    <a class="hover:underline cursor-pointer" href="{{ .link | safeURL }}" aria-label="{{ .title }}" title="{{ .title }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} {{ if .type }}type="{{ .type }}"{{ end }}>
       <i class="{{ .icon }}"></i>
       {{/*  <span class="sr-only">{{ .title }}</span>  */}}
     </a>

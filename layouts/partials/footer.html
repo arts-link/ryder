@@ -11,6 +11,7 @@
       <p class="flex items-center">{{ . }}</p>
       {{- end }}
       {{- partial "attribution.html" . }}
+      {{- partial "page_meta.html" . }}
     </div>
     <div class="py-4 px-2 text-sm">
       {{- partial "menu.html" (dict "menuID" "footer" "page" .) }} 
