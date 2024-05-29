@@ -1,0 +1,28 @@
+{{ $page := .Page }}
+<div class="pl-2 grid">
+  {{ with .Page.Params.recipeInstructions }}
+
+    {{ $itemCount := 1 }}
+    {{ range $index, $element := . }}
+      {{ if findRE "^\\*\\*" $element.step }}
+        <h3 class="col-span-2" id="ingredient-sub">{{ replaceRE "^\\*\\*" "" $element.step }}</h3>
+      {{ else }}
+        {{- $opts := dict
+          "page" $page
+          "alt" $element.step
+          "title" $element.step
+          "src" $element.image
+          "overlay" "images/bs_full_wordmark.png"
+        }}
+        {{- partial "picture.html" $opts }}
+        <div class="relative flex items-start mb-2">
+          <span class="flex-none p-4 rounded-full flex items-center justify-center dark:bg-rose-950 dark:text-neutral-100 dark:border-neutral-200 bg-sky-300 border-violet-900 text-violet-900 border-2 text-4xl"><i class="fa-regular fa-hand-point-right"></i></span>
+          <span class="ml-2">{{ $element.text | markdownify }}</span>
+        </div>
+        {{ $itemCount = add $itemCount 1 }}
+      {{ end }}
+    {{ end }}
+  {{ else }}
+    <div>No How-To Steps listed.</div>
+  {{ end }}
+</div>

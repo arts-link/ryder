@@ -9,7 +9,7 @@
         "@context": "https://schema.org/",
         "@type": "WebPage",
         "name": "{{ .Title }}",
-        "url": "{{.Site.BaseURL}}",
+        "url": "{{ .Site.BaseURL }}",
         "inLanguage": {{ .Site.LanguageCode }},
         "isFamilyFriendly": "true",
         "copyrightYear": "{{ .PublishDate.Format "2006" }}",
@@ -37,9 +37,7 @@
           "name": {{ .Site.Params.author.name }},
           "email": {{ .Site.Params.author.email }},
           "url": "{{.Site.BaseURL}}",
-          "logo": {
-            "@type": "ImageObject",
-            "url": {{ .Site.Params.logo_png | absURL }}
+          "logo": {{ .Site.Params.logo_png | absURL }}
           }
         }
       }
@@ -126,9 +124,7 @@
           "name": {{ .Site.Params.author.name }},
           "email": {{ .Site.Params.author.email }},
           "url": "{{.Site.BaseURL}}",
-          "logo": {
-            "@type": "ImageObject",
-            "url": {{ .Site.Params.logo_png | absURL }}
+          "logo": {{ .Site.Params.logo_png | absURL }}
           }
         },
         "articleBody": {{ .Content | safeJS | htmlUnescape | plainify }},
@@ -144,7 +140,9 @@
           "@context": "https://schema.org",
           "@type": "Organization",
           "url": "{{ .Site.BaseURL }}",
-          "logo": "{{ .Site.Params.logo_png | absURL }}"
+          "logo": "{{ .Site.Params.logo_png | absURL }}",
+          {{ with .Site.Title }}"name": "{{ . }}",{{ end }}
+          {{ with .Site.Params.author.email }}"email": {{ . }}{{ end }}
         }
   </script>
   {{ end }}

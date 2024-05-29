@@ -6,10 +6,10 @@
       {{ if findRE "^\\*\\*" $element }}
         <h3 class="col-span-2" id="ingredient-sub">{{ replaceRE "^\\*\\*" "" $element }}</h3>
       {{ else }}
-      <div class="relative flex items-start mb-2">
-        <span class="flex-none w-8 h-8 rounded-full flex items-center justify-center dark:bg-rose-950 dark:text-neutral-100 dark:border-neutral-200 bg-sky-300 border-violet-900 text-violet-900 border-2 ">{{ $itemCount }}</span>
-        <span class="ml-2">{{ $element | markdownify }}</span>
-      </div>
+        <div class="relative flex items-start mb-2">
+          <span class="flex-none w-8 h-8 rounded-full flex items-center justify-center dark:bg-rose-950 dark:text-neutral-100 dark:border-neutral-200 bg-sky-300 border-violet-900 text-violet-900 border-2 ">{{ $itemCount }}</span>
+          <span class="ml-2">{{ $element | markdownify }}</span>
+        </div>
         {{ $itemCount = add $itemCount 1 }}
       {{ end }}
     {{ end }}
