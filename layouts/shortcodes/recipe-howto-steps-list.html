@@ -4,21 +4,23 @@
 
     {{ $itemCount := 1 }}
     {{ range $index, $element := . }}
-      {{ if findRE "^\\*\\*" $element.step }}
-        <h3 class="col-span-2" id="ingredient-sub">{{ replaceRE "^\\*\\*" "" $element.step }}</h3>
+      {{ if findRE "^\\*\\*" $element.name}}
+        <h3 class="" id="ingredient-sub-{{ $itemCount }}">{{ replaceRE "^\\*\\*" "" $element.name }}</h3>
       {{ else }}
+        {{ if $element.image }}
         {{- $opts := dict
           "page" $page
-          "alt" $element.step
-          "title" $element.step
+          "alt" $element.name
+          "title" $element.name
           "src" $element.image
           "overlay" "images/bs_full_wordmark.png"
         }}
         {{- partial "picture.html" $opts }}
-        <div class="relative flex items-start mb-2">
+        {{ end }}
+        <h4 class="relative flex items-start mb-2" id="{{ $element.name }}">
           <span class="flex-none p-4 rounded-full flex items-center justify-center dark:bg-rose-950 dark:text-neutral-100 dark:border-neutral-200 bg-sky-300 border-violet-900 text-violet-900 border-2 text-4xl"><i class="fa-regular fa-hand-point-right"></i></span>
-          <span class="ml-2">{{ $element.text | markdownify }}</span>
-        </div>
+          <span class="ml-2 font-normal">{{ $element.text | markdownify }}</span>
+        </h4>
         {{ $itemCount = add $itemCount 1 }}
       {{ end }}
     {{ end }}
