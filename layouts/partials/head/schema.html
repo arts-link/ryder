@@ -75,15 +75,22 @@
         //  "ratingValue": "5",
         //  "ratingCount": "25"
         // },  */}}
-        "recipeIngredient": [{{ $len := len .Params.recipeIngredient }}{{ range $index, $ingredient := .Params.recipeIngredient }}{{ if not (strings.HasPrefix $ingredient "**") }}"{{ $ingredient }}"{{ if ne $index (sub $len 1) }},{{ end }}{{ end }}{{ end }}],
+        "recipeIngredient": [{{ $len := len .Params.recipeIngredients }}{{ range $index, $ingredient := .Params.recipeIngredients }}{{ if not (strings.HasPrefix $ingredient "**") }}"{{ $ingredient }}"{{ if ne $index (sub $len 1) }},{{ end }}{{ end }}{{ end }}],
         "recipeInstructions": [
           {{- $link := .Permalink }}
           {{- $len := len .Params.recipeInstructions }}
           {{- $lastIndex := sub $len 1 }}
           {{- range $index, $instruction := .Params.recipeInstructions }}
+          {{ if findRE "^\\*\\*" $instruction.name }}
+            {{ continue }}
+          {{ end }}
           {
             "@type": "HowToStep",
             "name": "{{ $instruction.name }}",
+            {{/*  this is not working
+              TODO :: figure out how to reuse images with overlay
+              needs more thought right now...
+              */}}
             {{- if $instruction.featured }}"image": "{{ $instruction.featured.Permalink }}",{{ end }}
             "text": "{{ $instruction.text }}",
             "url": "{{ $link }}#{{ $instruction.name }}"

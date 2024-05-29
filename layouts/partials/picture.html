@@ -284,6 +284,7 @@ Add this CSS to your site to remove small gaps between adjacent elements:
 {{- end }}
 
 {{- /* Render. */}}
+<figure>
 <picture>
   {{- range $formats }}
     {{- with index $im . }}
@@ -314,6 +315,10 @@ Add this CSS to your site to remove small gaps between adjacent elements:
     {{- end -}}
   >
 </picture>
+{{ with $title }}
+<figcaption>{{ . }}</figcaption>
+{{ end }}
+</figure>
 
 {{- define "partials/inline/capture-resource.html" }}
   {{- /* Parse destination. */}}

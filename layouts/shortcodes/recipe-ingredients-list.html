@@ -1,6 +1,6 @@
 {{ .Page.Params.recipeIngredientsTitle | default "" }}
 <div class="pl-2 grid grid-cols-2 gap-x-4">
-  {{ with .Page.Params.recipeIngredient }}
+  {{ with .Page.Params.recipeIngredients }}
     {{ $itemCount := 1 }}
     {{ range $index, $element := . }}
       {{ if findRE "^\\*\\*" $element }}
