@@ -179,14 +179,14 @@
               "@type": "ListItem",
               "position": 2,
               "name": {{ $e }},
-              "item": "https://benstrawbridge.com/{{ $e | urlize }}"
+              "item": "https://benstrawbridge.com/categories/{{ $e | urlize }}"
           },
           {{ end }}
           {
               "@type": "ListItem",
               "position": 3,
               "name": {{.Title}},
-              "item": "{{ .RelPermalink }}"
+              "item": "{{.Site.BaseURL}}/{{ .RelPermalink }}"
           }]
           }
       {{ else }}
