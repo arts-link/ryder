@@ -77,16 +77,18 @@
         // },  */}}
         "recipeIngredient": [{{ $len := len .Params.recipeIngredient }}{{ range $index, $ingredient := .Params.recipeIngredient }}{{ if not (strings.HasPrefix $ingredient "**") }}"{{ $ingredient }}"{{ if ne $index (sub $len 1) }},{{ end }}{{ end }}{{ end }}],
         "recipeInstructions": [
-          {{ $link := .Permalink }}
-          {{ range .Params.recipeInstructions }}
+          {{- $link := .Permalink }}
+          {{- $len := len .Params.recipeInstructions }}
+          {{- $lastIndex := sub $len 1 }}
+          {{- range $index, $instruction := .Params.recipeInstructions }}
           {
             "@type": "HowToStep",
-            "name": {{ .name }},
-            {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
-            "text": "{{ .text }}",
-            "url": "{{ $link }}#{{ .name }}"
-          },
-          {{ end }}
+            "name": "{{ $instruction.name }}",
+            {{- if $instruction.featured }}"image": "{{ $instruction.featured.Permalink }}",{{ end }}
+            "text": "{{ $instruction.text }}",
+            "url": "{{ $link }}#{{ $instruction.name }}"
+          }{{ if ne $index $lastIndex }},{{ end }}
+          {{- end }}
         ]
       }
   {{ else }}
