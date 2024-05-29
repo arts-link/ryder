@@ -4,88 +4,90 @@
  
 <script type="application/ld+json">
   {{ if eq .Title .Site.Title }}
-      // homepage
-      {
+    // homepage
+    {
+      "@context": "https://schema.org/",
+      "@type": "WebPage",
+      "name": "{{ .Title }}",
+      "url": "{{ .Site.BaseURL }}",
+      "inLanguage": {{ .Site.LanguageCode }},
+      "isFamilyFriendly": "true",
+      "copyrightYear": "{{ .PublishDate.Format "2006" }}",
+      "copyrightHolder": {{ .Site.Params.author.name }},
+      "accountablePerson": {
+        "@type": "Person",
+        "name": {{ .Site.Params.author.name }},
+        "email": {{ .Site.Params.author.email }},
+        "url": "{{.Site.BaseURL}}"
+      },
+      "author": {
+        "@type": "Person",
+        "name": {{ .Site.Params.author.name }},
+        "email": {{ .Site.Params.author.email }},
+        "url": "{{.Site.BaseURL}}"
+      },
+      "creator": {
+        "@type": "Person",
+        "name": {{ .Site.Params.author.name }},
+        "email": {{ .Site.Params.author.email }},
+        "url": "{{.Site.BaseURL}}"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": {{ .Site.Params.author.name }},
+        "email": {{ .Site.Params.author.email }},
+        "url": "{{.Site.BaseURL}}",
+        "logo": {{ .Site.Params.logo_png | absURL }}
+        }
+      }
+    }
+  {{ else if .Params.recipe }}
+    // schema for recipes
+    {
         "@context": "https://schema.org/",
-        "@type": "WebPage",
-        "name": "{{ .Title }}",
-        "url": "{{ .Site.BaseURL }}",
-        "inLanguage": {{ .Site.LanguageCode }},
-        "isFamilyFriendly": "true",
-        "copyrightYear": "{{ .PublishDate.Format "2006" }}",
-        "copyrightHolder": {{ .Site.Params.author.name }},
-        "accountablePerson": {
-          "@type": "Person",
-          "name": {{ .Site.Params.author.name }},
-          "email": {{ .Site.Params.author.email }},
-          "url": "{{.Site.BaseURL}}"
-        },
+        "@type": "Recipe",
+        "mainEntityOfPage": { "@type": "WebPage" },
+        "name": {{ .Title }},
+        {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
         "author": {
           "@type": "Person",
           "name": {{ .Site.Params.author.name }},
-          "email": {{ .Site.Params.author.email }},
-          "url": "{{.Site.BaseURL}}"
+          "email": {{ .Site.Params.author.email }}
         },
-        "creator": {
-          "@type": "Person",
-          "name": {{ .Site.Params.author.name }},
-          "email": {{ .Site.Params.author.email }},
-          "url": "{{.Site.BaseURL}}"
+        "datePublished": {{ .PublishDate }},
+        "dateModified": {{ .Lastmod }},
+        "description": {{ .Summary }},
+        "recipeCuisine": {{ .Params.recipeCuisine }},
+        "prepTime": {{ .Params.prepTime }},
+        "cookTime": {{ .Params.cookTime }},
+        "totalTime": {{ .Params.totalTime }},
+        "keywords": {{ .Params.tags }},
+        "recipeYield": [
+          {{ .Params.recipeYield }}
+        ],
+        "recipeCategory": {{ range last 1 .Params.categories }}{{ . }}{{ end }},
+        "nutrition": {
+          "@type": "NutritionInformation",
+          "calories": {{ .Params.calories }}
         },
-        "publisher": {
-          "@type": "Organization",
-          "name": {{ .Site.Params.author.name }},
-          "email": {{ .Site.Params.author.email }},
-          "url": "{{.Site.BaseURL}}",
-          "logo": {{ .Site.Params.logo_png | absURL }}
-          }
-        }
+        {{/*  // "aggregateRating": {
+        //  "@type": "AggregateRating",
+        //  "ratingValue": "5",
+        //  "ratingCount": "25"
+        // },  */}}
+        "recipeIngredient": [{{ $len := len .Params.recipeIngredient }}{{ range $index, $ingredient := .Params.recipeIngredient }}{{ if not (strings.HasPrefix $ingredient "**") }}"{{ $ingredient }}"{{ if ne $index (sub $len 1) }},{{ end }}{{ end }}{{ end }}],
+        "recipeInstructions": [
+          {{ range .Params.recipeInstructions }}
+          {
+            "@type": "HowToStep",
+            "name": {{ .name }},
+            {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
+            "text": "{{ .text }}",
+            "url": "{{ .Permalink }}#{{ .name }}"
+          },
+          {{ end }}
+        ]
       }
-  {{ else if .Params.recipe }}
-      // schema for recipes
-      {
-          "@context": "https://schema.org/",
-          "@type": "Recipe",
-          "mainEntityOfPage": { "@type": "WebPage" },
-          "name": {{ .Title }},
-          {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
-          "author": {
-            "@type": "Person",
-            "name": {{ .Site.Params.author.name }},
-        "email": {{ .Site.Params.author.email }}
-          },
-          "datePublished": {{ .PublishDate }},
-          "dateModified": {{ .Lastmod }},
-          "description": {{ .Summary }},
-          "recipeCuisine": {{ .Params.recipeCuisine }},
-          "prepTime": {{ .Params.prepTime }},
-          "cookTime": {{ .Params.cookTime }},
-          "totalTime": {{ .Params.totalTime }},
-          "keywords": {{ .Params.tags }},
-          "recipeYield": [
-            {{ .Params.recipeYield }}
-          ],
-          "recipeCategory": {{ range last 1 .Params.categories }}{{ . }}{{ end }},
-          "nutrition": {
-            "@type": "NutritionInformation",
-            "calories": {{ .Params.calories }}
-          },
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "5",
-            "ratingCount": "25"
-          },
-          "recipeIngredient": [{{ $len := len .Params.recipeIngredient }}{{ range $index, $ingredient := .Params.recipeIngredient }}{{ if not (strings.HasPrefix $ingredient "**") }}"{{ $ingredient }}"{{ if ne $index (sub $len 1) }},{{ end }}{{ end }}{{ end }}],
-          "recipeInstructions": [
-            {
-              "@type": "HowToStep",
-              "name": "Method",
-              {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
-              "text": "{{ .Params.recipeInstructions }}",
-              "url": "{{ .Permalink }}#method"
-            }
-          ]
-        }
   {{ else }}
       // schema for posts
       {
