@@ -4,7 +4,7 @@
  */}}
 <div class="container tagcloud">
   {{ if ne (len $.Site.Taxonomies.tags) 0 }}
-    {{ $largestFontSize := 1.4 }}
+    {{ $largestFontSize := 1.8 }}
     {{ $smallestFontSize := 1.0 }}
     {{ $fontSpread := sub $largestFontSize $smallestFontSize }}
     {{ $max := add (len (index $.Site.Taxonomies.tags.ByCount 0).Pages) 1 }}
@@ -17,7 +17,7 @@
         {{ $weigth := div (sub (math.Log $tagCount) (math.Log $min)) (sub (math.Log $max) (math.Log $min)) }}
         {{ $currentFontSize := (add $smallestFontSize (mul (sub $largestFontSize $smallestFontSize) $weigth)) }}
           <a href="{{ "/tags/" | relURL }}{{ $name | urlize }}" 
-          class="tagcloud-item" style="font-size: {{ $currentFontSize }}rem;">
+          class="tagcloud-item px-2" style="font-size: {{ $currentFontSize }}rem;">
             {{ $name }}<sup>{{ $tagCount }}</sup>
           </a>
       {{ end }}
