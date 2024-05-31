@@ -1,6 +1,5 @@
 {{- $images := .Resources.ByType "image" -}}
 {{- $featured := ($images.GetMatch (.Params.featured_image | default "*feature*")) | default (resources.Get .Site.Params.og_image_default) }}
-{{/*  <br/>LALA:{{- $featured.RelPermalink }}  */}}
  
 <script type="application/ld+json">
   {{ if eq .Title .Site.Title }}
@@ -38,7 +37,6 @@
         "email": {{ .Site.Params.author.email }},
         "url": "{{.Site.BaseURL}}",
         "logo": {{ .Site.Params.logo_png | absURL }}
-        }
       }
     }
   {{ else if .Params.recipe }}
@@ -137,7 +135,6 @@
           "email": {{ .Site.Params.author.email }},
           "url": "{{.Site.BaseURL}}",
           "logo": {{ .Site.Params.logo_png | absURL }}
-          }
         },
         "articleBody": {{ .Content | safeJS | htmlUnescape | plainify }},
         "description": {{ with .Description }}{{ . | plainify }}{{ else }}{{if .IsPage}}{{ .Summary | plainify | safeHTML }}{{ else }}{{ with .Site.Params.description }}{{ . | plainify }}{{ end }}{{ end }}{{ end }},
