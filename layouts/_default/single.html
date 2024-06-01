@@ -2,7 +2,7 @@
   <div class="max-w-screen-xl mx-auto">
     {{- partial "breadcrumb.html" . }}
   </div>
-  <div class="sm:p-4 max-w-screen-xl mx-auto ">
+  <div class="p-4 max-w-screen-xl mx-auto ">
     <div class=" grid grid-cols-1 md:grid-cols-12 gap-x-1 ">
       <header class=" w-full md:col-span-12 prose lg:prose-xl {{ if .Params.hideAsideBar }}max-w-screen-xl{{ else }}max-w-screen-xl{{ end }}  dark:prose-invert">
         <div class="">
@@ -23,9 +23,9 @@
           
         </div>
       </header>
-      <div class="sm:p-4 {{ if .Params.hideAsideBar }}md:col-span-12{{ else }}md:col-span-10{{ end }} prose max-w-max lg:prose-lg dark:prose-invert ">
+      <div class=" {{ if .Params.hideAsideBar }}md:col-span-12{{ else }}md:col-span-10{{ end }} prose max-w-max lg:prose-lg dark:prose-invert ">
         {{/*  this is probably dumb :)  */}}
-        {{ .Content | replaceRE "<p>" "<p class=\"px-4 sm:px-0\">" | safeHTML }}
+        {{ .Content |  safeHTML }}
         {{/*  {{ .Content }}  */}}
       </div>
       {{ if ne .Params.hideAsideBar true}}
