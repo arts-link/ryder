@@ -11,11 +11,24 @@ tags = ["github","hightlighs"]
   parent = 'posts'
 +++
 
+If you put a lot of code sample in your projects this will simplify things by using the new content-adaptors feature to display code directly from github.
+
 [Joe Mooring posted this highlight-github jawn and it looks nifty!](https://www.veriphor.com/articles/syntax-highlighting-for-github-files/)
 
 It allows you to place code on your website directly from your github repo. This is an example from linux...
-
-  <!-- {{< highlight-github owner=torvalds repo=linux path=kernel/time/time.c >}} -->
+```go
+{{</* highlight-github 
+  owner=torvalds 
+  repo=linux 
+  path=kernel/time/time.c
+  lines=55-73
+  lang=c
+  hl_lines=67-70
+  linenos=false
+  showlink=false
+  branch=b73f0c8f4ba810cd753031d18f4fab83bd9ac58f
+*/>}}
+```
 
   {{< highlight-github
       owner=torvalds

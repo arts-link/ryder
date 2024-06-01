@@ -31,6 +31,8 @@ themesDir= "../../"
   [params.author]
     email = 'ben@benstrawbridge.com'
     name = 'Ben Strawbridge'
+  [params.footer]
+    tagCloud = true
   [params.twClasses]
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
     headerBackgroundFrameInner = "bg-header-ryder h-[300px] bg-cover bg-left"
@@ -40,7 +42,8 @@ themesDir= "../../"
   alertType = "success"
   alertTitle = "Ryder Theme for Hugo"
   alertMessage = "Learn more about the theme by checking out the README on <a href='https://github.com/arts-link/ryder' class='underline'>on github.com</a>."
-  alertIconClass = "fa-solid fa-camera-retro"
+  dismissable = true 
+  # alertIconClass = "fa-solid fa-camera-retro"
 [menus]
 [[menus.main]]
     name = 'Tags'

@@ -1,26 +1,16 @@
 {{/*  
-  thanks to https://www.ii.com/hugo-call-partial-from-shortcode/ 
-  Usage: {{< alert-wrapper alertType="danger" alertTitle="will" alertMessage="robinson" >}}  
+  Thanks to https://www.ii.com/hugo-call-partial-from-shortcode/ 
+  Usage: {{< alert-wrapper alertType="danger" alertTitle="will" alertMessage="robinson" dismissable=true >}}  
 */}}
-{{ $alertType := "" }}
-{{ $alertTitle := "" }}
-{{ $alertMessage := "" }}
-{{ $alertIconClass := "" }}
-{{ with .Get "alertType" }}
-{{ $alertType = . }}
-{{ end }}
-{{ with .Get "alertTitle" }}
-{{ $alertTitle = . }}
-{{ end }}
-{{ with .Get "alertMessage" }}
-{{ $alertMessage = . }}
-{{ end }}
-{{ with .Get "alertIconClass" }}
-{{ $alertIconClass = . }}
-{{ end }}
-    
-{{- $.Scratch.Set "alertType" $alertType }}
-{{- $.Scratch.Set "alertTitle" $alertTitle }}
-{{- $.Scratch.Set "alertMessage" $alertMessage }}
-{{- $.Scratch.Set "alertIconClass" $alertIconClass}}
+{{ $alertType := .Get "alertType" | default "" }}
+{{ $alertTitle := .Get "alertTitle" | default "" }}
+{{ $alertMessage := .Get "alertMessage" | default "" }}
+{{ $alertIconClass := .Get "alertIconClass" | default "" }}
+{{ $dismissable := .Get "dismissable" | default false }}
+
+{{ $.Scratch.Set "alertType" $alertType }}
+{{ $.Scratch.Set "alertTitle" $alertTitle }}
+{{ $.Scratch.Set "alertMessage" $alertMessage }}
+{{ $.Scratch.Set "alertIconClass" $alertIconClass }}
+{{ $.Scratch.Set "dismissable" $dismissable }}
 {{ partial "alert" . }}

@@ -17,6 +17,7 @@
           {{- $.Scratch.Set "alertTitle" .alertTitle }}
           {{- $.Scratch.Set "alertMessage" .alertMessage }}
           {{- $.Scratch.Set "alertIconClass" .alertIconClass }}
+          {{- $.Scratch.Set "dismissable" .dismissable}}
           {{- partial "alert.html" $.Page }}
         {{- end }}
       </div>
@@ -24,7 +25,11 @@
     <main class="container max-h-max mx-auto ">
       {{- block "main" . }}{{- end }}
     </main>
-    {{ partial "footer.html" . }}
+    {{- if .Site.Params.Footer.tagCloud }}
+      {{ partial "footer-tag-cloud.html" . }}
+    {{- else }}
+      {{ partial "footer.html" . }}
+    {{- end }}
 </div>
 
 {{ if .Param "enabledebugpanel" }}

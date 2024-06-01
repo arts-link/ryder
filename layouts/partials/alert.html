@@ -1,39 +1,55 @@
-{{/*  
-  Based on: https://flowbite.com/docs/components/alerts/  
-    
-  Usage::
-    allowed alertType values -- info, danger, success, warning, anything else gets the default "dark" mode alert bar.
-    {{- .Scratch.Set "alertType" "success"}}
+{{/*
+  Based on: https://flowbite.com/docs/components/alerts/
+
+  Usage:
+    Allowed alertType values: info, danger, success, warning. Anything else gets the default "dark" mode alert bar.
+    {{- .Scratch.Set "alertType" "success" }}
     {{- .Scratch.Set "alertTitle" "Alpha Release" }}
     {{- .Scratch.Set "alertMessage" "You are viewing an alpha version of this site redesign. Things may be broken at times or just in a state of flux." }}
+    {{- .Scratch.Set "dismissable" true }}
     {{- partial "alert.html" . }}
 */}}
-{{ $alertType := .Scratch.Get "alertType" }}
-{{ $alertTitle := .Scratch.Get "alertTitle" }}
-{{ $alertMessage := .Scratch.Get "alertMessage" }}
-{{ $alertIconClass := .Scratch.Get "alertIconClass" }}
+
+{{ $alertType := .Scratch.Get "alertType" | default "dark" }}
+{{ $alertTitle := .Scratch.Get "alertTitle" | default "" }}
+{{ $alertMessage := .Scratch.Get "alertMessage" | default "" }}
+{{ $alertIconClass := .Scratch.Get "alertIconClass" | default "" }}
+{{ $dismissable := .Scratch.Get "dismissable" | default false }}
+
 {{ $alertClasses := "" }}
+{{ $alertIcon := "fa-solid fa-circle-info" }}
+
 {{ if eq $alertType "info" }}
   {{ $alertClasses = "text-blue-800 border-blue-300 bg-blue-50 dark:text-blue-400 dark:border-blue-800 dark:bg-blue-900" }}
+  {{ $alertIcon = "fa-solid fa-circle-info" }}
 {{ else if eq $alertType "danger" }}
   {{ $alertClasses = "text-red-800 border-red-300 bg-red-50 dark:text-red-400 dark:border-red-800 dark:bg-red-900" }}
+  {{ $alertIcon = "fa-solid fa-circle-exclamation" }}
 {{ else if eq $alertType "success" }}
   {{ $alertClasses = "text-green-800 border-green-300 bg-green-50 dark:text-green-400 dark:border-green-800 dark:bg-green-900" }}
+  {{ $alertIcon = "fa-solid fa-circle-check" }}
 {{ else if eq $alertType "warning" }}
   {{ $alertClasses = "text-yellow-800 border-yellow-300 bg-yellow-50 dark:text-yellow-400 dark:border-yellow-800 dark:bg-yellow-900" }}
+  {{ $alertIcon = "fa-solid fa-triangle-exclamation" }}
 {{ else }}
   {{ $alertClasses = "text-gray-800 border-gray-300 bg-gray-50 dark:text-gray-400 dark:border-gray-800 dark:bg-gray-900" }}
+  {{ $alertIcon = "fa-solid fa-circle-info" }}
 {{ end }}
-{{/*  ONLY SHOW THE BOX if it has a Title OR a Message OR both  */}}
-{{ if or ($alertTitle) ($alertMessage) ($alertIconClass) }}
-<div class="flex items-center p-4 mb-4 mx-auto text-sm border rounded-lg max-w-screen-lg {{ $alertClasses }}" role="alert">
-  <i class="{{ if $alertIconClass }}{{ $alertIconClass }}{{ else }}fa-solid fa-circle-info{{ end }} flex-shrink-0 inline w-6 h-6 me-3"></i>
-  <span class="sr-only">{{ $alertType }}</span>
-  <div>
-    {{ if ne $alertTitle "" }} <span class="font-bold">{{ $alertTitle }}{{ if ne $alertMessage "" }}:{{ end }}</span> {{ end }}{{ $alertMessage | safeHTML }}
+
+{{/* ONLY SHOW THE BOX if it has a Title OR a Message OR both */}}
+{{ if or (ne $alertTitle "") (ne $alertMessage "") }}
+<div x-data="{ isOpen: true }" x-show="isOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform translate-y-2" class="relative flex items-start justify-between p-4 mb-4 mx-auto text-sm border rounded-lg max-w-screen-lg {{ $alertClasses }}" role="alert">
+  <div class="flex items-center">
+    <i class="{{ if ne $alertIconClass "" }}{{ $alertIconClass }}{{ else }}{{ $alertIcon }}{{ end }} flex-shrink-0 inline w-6 h-6 me-3"></i>
+    <span class="sr-only">{{ $alertType }}</span>
+    <div>
+      {{ if ne $alertTitle "" }} <span class="font-bold">{{ $alertTitle }}{{ if ne $alertMessage "" }}:{{ end }}</span> {{ end }}{{ $alertMessage | safeHTML }}
+    </div>
   </div>
+  {{ if $dismissable }}
+  <button @click="isOpen = false" class="absolute top-0 right-0 rounded-full p-2 hover:bg-gray-200 dark:hover:bg-gray-800 transition focus:outline-none focus:ring">
+    <i class="fas fa-times text-gray-500 dark:text-gray-400"></i>
+  </button>
+  {{ end }}
 </div>
 {{ end }}
-
-
-
