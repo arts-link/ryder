@@ -47,7 +47,9 @@
     </div>
     {{ if .Param "photoGalleryTitle" }}
       <h2 class=" rounded-t-lg mb-1 p-3 flex items-center {{ $headerClass }}">{{ .Param "photoGalleryTitle" }}</h2>
-      {{- partial "page_gallery.html" . -}}
+      {{- $params := dict "path" "images/moms-family-recipes-cookbook" -}}
+      {{- partial "page_gallery.html" $params -}}
+
     {{ end }}
   </div>
 {{/*  {{ $image := resources.Get "/images/sunset-mission-bay.jpg" }}

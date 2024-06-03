@@ -1,4 +1,10 @@
-{{- $photos := sort (.Resources.ByType "image") (index .Params "sort_by" | default "Name") (.Params.sort_order | default "asc") -}}
+{{ $photos := slice }}
+{{- if .path -}}
+    {{- $photos = sort (resources.Match (.path | relURL | printf "%s/*.*")) (index .page.Params "sort_by" | default "Name") (.page.Params.sort_order | default "asc") -}}
+{{- else -}}
+    {{- $photos = sort (.Resources.ByType "image") (index .page.Params "sort_by" | default "Name") (.page.Params.sort_order | default "asc") -}}
+{{- end -}}
+
 {{ $imageGallery := slice }}
 {{- range $index, $photo := $photos -}}
 {{/*  {{ $photo }}  */}}

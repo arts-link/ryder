@@ -1,0 +1,5 @@
+{{ $asin := default "B0BT488H6W" (.Page.Params.asin) }}
+{{ $button_label := .Get "button_label" }}
+{{ $affiliate_tag := default "benstrawbridge-20" (.Site.Params.amazon_associate_id) }}
+
+<a class="bg-yellow-400 text-black font-medium py-2 px-12 rounded-full border-2 border-yellow-500 hover:bg-yellow-500 hover:border-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 no-underline" href="https://www.amazon.com/dp/{{ $asin }}/ref=nosim?tag={{ $affiliate_tag }}">View {{ with $button_label }}{{ . }}{{ end }} on Amazon.com</a>
