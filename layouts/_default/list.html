@@ -10,6 +10,9 @@
     {{ .Title }}</h1>
     {{ .Content }}
   </header>
+  {{ if eq .Kind "taxonomy" }}
+  {{- partial "taxonomy-cloud.html" .}}
+  {{ else }}
   <div class="grid grid-cols-1 gap-6 p-2 sm:p-4 sm:grid-cols-2 lg:grid-cols-3">
   {{ $myCollection := .Pages }}
   {{/*  {{ .Section }}  */}}
@@ -54,6 +57,7 @@
     <h2 class=" rounded-t-lg mb-1 p-3 flex items-center {{ $headerClass }}">{{ .Param "photoGalleryTitle" }}</h2>
     {{- $params := dict "page" . "path" "images/moms-family-recipes-cookbook" -}}
     {{- partial "page_gallery.html" $params -}}  
+  {{ end }}
   {{ end }}
 </div>
 

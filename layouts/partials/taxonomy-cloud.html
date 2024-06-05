@@ -1,0 +1,45 @@
+{{/*  
+  I found this partial on Mert Bakir's personal website
+  https://mertbakir.gitlab.io/hugo/tag-cloud-in-hugo/
+  I have since modified suit to fit my needs.
+ */}}
+ {{/*  
+  By default the taxonomy uses "tags" but when it is on a taxonomy page
+  it uses the current section label, which is the name of the taxonomy
+ */}}
+ {{ $taxonomy := "tags" }}
+     {{ .Page.Kind }}
+     {{ if eq .Page.Kind "taxonomy" }}
+         {{ $taxonomy = .Section }}
+     {{ end }}
+ 
+
+ <div class="container tagcloud">
+   <h3>{{ len (index $.Site.Taxonomies $taxonomy) }} {{ $taxonomy }} for {{ $.Site.Title }}</h3>
+   {{ if ne (len (index $.Site.Taxonomies $taxonomy)) 0 }}
+     {{ $largestFontSize := 3.8 }}
+     {{ $smallestFontSize := 0.8 }}
+     {{ $fontSpread := sub $largestFontSize $smallestFontSize }}
+     {{ $max := add (len (index (index $.Site.Taxonomies $taxonomy).ByCount 0).Pages) 1 }}
+     {{ $min := len (index (index $.Site.Taxonomies $taxonomy).ByCount.Reverse 0).Pages }}
+     {{ $spread := sub $max $min }}
+     {{ $fontStep := div $fontSpread $spread }}
+       {{ range $name, $taxonomyPage := (index $.Site.Taxonomies $taxonomy) }}
+         {{ $tagCount := len $taxonomyPage.Pages }}
+         {{ $currentFontSize := (add $smallestFontSize (mul (sub $tagCount $min) $fontStep) ) }}
+         {{ $weigth := div (sub (math.Log $tagCount) (math.Log $min)) (sub (math.Log $max) (math.Log $min)) }}
+         {{ $currentFontSize := (add $smallestFontSize (mul (sub $largestFontSize $smallestFontSize) $weigth)) }}
+         {{ $baseURL := $.Site.BaseURL }}
+         
+         {{ $classes := "bg-gradient-to-r from-lime-400 to-lime-500 text-zinc-900 py-2 px-4 rounded-full border-2 border-yellow-500 hover:bg-yellow-500 hover:border-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 no-underline inline-block text-center break-words "}}
+         {{ $headerBackgroundFrameOuter := "" }}
+         {{ with $.Site.Param "twClasses.headerBackgroundFrameOuter" }}
+           {{ $headerBackgroundFrameOuter = . }}
+         {{ end }}
+         <a href="{{ printf "%s%s/%s" $baseURL $taxonomy ($name | urlize) }}" 
+            class="tagcloud-item px-2" style="font-size: {{ $currentFontSize }}rem;">
+            <span class="{{ $classes }} {{ $headerBackgroundFrameOuter }}">{{ $name }}<sup>{{ $tagCount }}</sup></span></a>
+       {{ end }}
+   {{ end }}
+ </div>
+ 
