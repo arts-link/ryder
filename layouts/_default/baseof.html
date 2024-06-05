@@ -10,7 +10,8 @@
   {{ end }}
   <div class="min-h-lvh flex flex-col container mx-auto">
     {{- partial "header.html" . }}
-    {{- with .Site.Params.alphaAlert }}
+    {{- $alphaAlert := .Params.alphaAlert | default .Site.Params.alphaAlert -}}
+    {{- with $alphaAlert }}
       <div id="banners" class="w-full mx-auto ">
         {{- range sort . "weight" }}
           {{- $.Scratch.Set "alertType" .alertType }}
