@@ -8,10 +8,9 @@
   it uses the current section label, which is the name of the taxonomy
  */}}
  {{ $taxonomy := "tags" }}
-     {{ .Page.Kind }}
-     {{ if eq .Page.Kind "taxonomy" }}
-         {{ $taxonomy = .Section }}
-     {{ end }}
+ {{ if eq .Page.Kind "taxonomy" }}
+   {{ $taxonomy = .Section }}
+ {{ end }}
  
 
  <div class="container tagcloud">
