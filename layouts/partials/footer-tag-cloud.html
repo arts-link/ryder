@@ -6,22 +6,21 @@
 
 <footer class="border-t w-full mt-auto text-neutral-100 {{ $footerClass }} ">
   <div class="flex flex-col items-center justify-center mx-auto">
-    <div class="flex mx-auto text-xl ">
-      {{- partial "socialslist.html" . }}
-      {{- if (.Param "showDarkToggle") }}
-        {{- partial "dark-toggle.html" . }}
-      {{- end }}
-    </div>
-    <div class="flex flex-col items-center justify-center mx-auto text-xl w-2/3">
-      <h4><a href="{{ .Site.BaseURL }}/tags">Tags</a></h4>
-      {{- partial "tag-cloud.html" . }}
-    </div>
     <div class="py-4 px-2 text-sm flex flex-col items-center">
       {{- with .Site.Copyright | safeHTML }}
       <p class="flex mx-auto items-center">{{ . }}</p>
       {{- end }}
       {{- partial "attribution.html" . }}
       {{- partial "page_meta.html" . }}
+    </div>
+    <div class="flex flex-col items-center justify-center mx-auto text-base w-2/3">
+      {{- partial "taxonomy-string.html" . }}
+    </div>
+    <div class="flex mx-auto text-xl ">
+      {{- partial "socialslist.html" . }}
+      {{- if (.Param "showDarkToggle") }}
+        {{- partial "dark-toggle.html" . }}
+      {{- end }}
     </div>
     {{ if .Site.Menus.footer }}
     <div class="py-4 px-2 mx-auto text-sm">
