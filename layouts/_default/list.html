@@ -53,11 +53,6 @@
   {{ end }}
   </div>
   {{ template "_internal/pagination.html" . }}
-  {{ if .Param "photoGalleryTitle" }}
-    <h2 class=" rounded-t-lg mb-1 p-3 flex items-center {{ $headerClass }}">{{ .Param "photoGalleryTitle" }}</h2>
-    {{- $params := dict "page" . "path" "images/moms-family-recipes-cookbook" -}}
-    {{- partial "page_gallery.html" $params -}}  
-  {{ end }}
   {{ end }}
 </div>
 

@@ -28,33 +28,23 @@
         {{ .Content |  safeHTML }}
         {{/*  {{ .Content }}  */}}
       </div>
-      {{ if ne .Params.hideAsideBar true}}
-      <aside class=" max-w-max md:col-span-2 relative">
+      
+      <aside class=" max-w-max {{ if ne .Params.hideAsideBar true}}md:col-span-2{{ else }}md:col-span-12{{ end }} relative">
         {{ if .Params.tags }}
           <div class="not-prose">
             {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
           </div>
         {{ end }}
         {{- if .Params.showToc }}
-        <div class=" md:sticky md:block top-0 flex-auto py-4  hidden">
+        <div class="{{ if ne .Params.hideAsideBar true}}md:sticky md:block{{ end }} top-0 flex-auto py-4 hidden">
           <div class="px-4 grid grid-cols-1">
             {{- partial "toc.html" . }}
           </div>
         </div>
         {{- end }}
       </aside>
-      {{ end }}
+      
     </div>
-    {{ if .Param "photoGalleryTitle" }}
-      <h2 class=" rounded-t-lg mb-1 p-3 flex items-center {{ $headerClass }}">{{ .Param "photoGalleryTitle" }}</h2>
-      {{- $params := dict "path" "images/moms-family-recipes-cookbook" -}}
-      {{- partial "page_gallery.html" $params -}}
-
-    {{ end }}
   </div>
-{{/*  {{ $image := resources.Get "/images/sunset-mission-bay.jpg" }}
-{{- if $image -}}
-{{- $post_image_webp := partial "ImageConverter.html" (dict "ImageSrc" "/images/sunset-mission-bay.jpg" "ImgParam" (printf "resize %dx%d webp q100" 1024 768)) -}}
-{{- end }}  */}}
 {{ end }}
 
