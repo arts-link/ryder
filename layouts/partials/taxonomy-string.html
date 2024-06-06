@@ -1,5 +1,5 @@
 {{ $taxonomy := "tags" }}
-<div class="">
+<div class="items-center justify-center text-center">
 {{ range $name, $taxonomyPage := (index $.Site.Taxonomies $taxonomy) }}
   {{ $tagCount := len $taxonomyPage.Pages }}
   {{ $baseURL := $.Site.BaseURL }}
