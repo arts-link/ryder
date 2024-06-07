@@ -31,7 +31,7 @@
       <span class="details px-6 mt-4 inline-block">
         {{/*  I am currenly not doing anything for author since it is only me but for Ryder author with be a taxonomy item and included in every page  */}}
         by <span itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span class="author" itemprop="name">{{ .Site.Params.author.name }}</span></span>
-        in <span itemprop="articleSection" class="source">{{ .Section }}</span>
+        in <span itemprop="articleSection" class="source font-bold">{{ .Section }}</span>
         on <time itemprop="datePublished" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
       </span>
       <div itemprop="articleBody" class="articleBody px-3">

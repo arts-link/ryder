@@ -56,7 +56,7 @@
   {{/*  Finally spit out everything here! all content newest first recursive  */}}
   <h2 class=" flex p-3 items-center mb-2 text-3xl uppercase">Latest stuff</h2>
   {{- $recent := where $pages "Summary" "!=" "" }} 
-  {{- range $recent.ByLastmod.Reverse.Limit 10  }}
+  {{- range $recent.ByLastmod.Reverse.Limit 20  }}
     {{ partial "card-category-color.html" . }}
   {{ end }}
   </div>
