@@ -4,8 +4,8 @@
 {{- $zoom := .Get "zoom" | default "13" }} 
 {{- $markerLat := .Get "markerLat" | default "51.5" }} 
 {{- $markerLon := .Get "markerLon" | default "-0.09" }} 
-{{- $markerPopup := .Get "markerPopup" | default "hi" }}
-{{- $divHeight := .Get "divHeight" | default "400px" }}
+{{- $markerPopup := .Get "markerPopup" | default "You are Here." }}
+{{- $divHeight := .Get "divHeight" | default "450px" }}
 
 <div id="{{ $id }}" style="height: {{ $divHeight }};"></div>
 <script>

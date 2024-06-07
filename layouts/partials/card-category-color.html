@@ -20,21 +20,21 @@
 
 <div itemscope="" itemtype="http://schema.org/Article" class="article">
   <div class="article-content relative p-1 rounded-t-xl {{ $headerStyle }}">
-    <a itemprop="url" href="{{ .RelPermalink }}" class="link-overlay"> </a>
-    <h2 itemprop="headline" class="text-2xl p-3 {{ $headerStyle }}"> 
-      {{- if .Params.homeFeatureIcon }}
-        <i class="text-black dark:text-white {{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>
-      {{- end }}
-      {{ .Title }}
-    </h2>
     <div class="w-full h-full bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
+      <a itemprop="url" href="{{ .RelPermalink }}" class="link-overlay"> </a>
+      <h2 itemprop="headline" class="text-2xl p-3 {{ $headerStyle }}"> 
+        {{- if .Params.homeFeatureIcon }}
+          <i class="text-black dark:text-white {{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>
+        {{- end }}
+        {{ .Title }}
+      </h2>
       <span class="details px-6 mt-4 inline-block">
         {{/*  I am currenly not doing anything for author since it is only me but for Ryder author with be a taxonomy item and included in every page  */}}
         by <span itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span class="author" itemprop="name">{{ .Site.Params.author.name }}</span></span>
         in <span itemprop="articleSection" class="source font-bold">{{ .Section }}</span>
         on <time itemprop="datePublished" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
       </span>
-      <div itemprop="articleBody" class="articleBody px-3">
+      <div itemprop="articleBody" class="articleBody px-3 pb-4">
         {{ or .Params.homeFeatureSummary .Summary }}
       </div>
     </div>
