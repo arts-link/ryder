@@ -34,7 +34,7 @@
         in <span itemprop="articleSection" class="source">{{ .Section }}</span>
         on <time itemprop="datePublished" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
       </span>
-      <div itemprop="articleBody" class="articleBody">
+      <div itemprop="articleBody" class="articleBody px-3">
         {{ or .Params.homeFeatureSummary .Summary }}
       </div>
     </div>
