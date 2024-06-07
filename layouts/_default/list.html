@@ -29,25 +29,19 @@
   {{ end }}
   {{ range $paginator.Pages }}
   <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="flex items-center">
-    {{ $bgImgClass := "bg-magazine-cover-ryder-bay" }} 
-    {{ with .Param "twClasses.magazineCover" }}
-    {{ $bgImgClass = . }}
-    {{ $bgImgClass = printf "%s %s" $bgImgClass " w-full aspect-[17/22] bg-cover"}}
-    {{ end }}
+   
     <div class=" rounded-2xl bg-sky-50 transition-[filter] hover:brightness-90 dark:bg-sky-800 dark:hover:brightness-110 w-full h-full">
-        <div class="{{ $bgImgClass }}">
-          <h2 class=" p-3 flex items-center capitalize {{ $headerClass }}">
-            {{- if .Params.homeFeatureIcon }}
-              <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>
-            {{- end }}
-            {{ .Title }}
-          </h2>
-          {{ if .Summary }}
-          <p class="p-5">
-            {{ .Summary | safeHTML }}
-          </p>
-          {{ end }}
-        </div>
+      <h2 class=" p-3 flex items-center capitalize {{ $headerClass }}">
+        {{- if .Params.homeFeatureIcon }}
+          <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>
+        {{- end }}
+        {{ .Title }}
+      </h2>
+      {{ if .Summary }}
+      <p class="p-5">
+        {{ .Summary | safeHTML }}
+      </p>
+      {{ end }}
     </div>
   </a>
   {{ end }}

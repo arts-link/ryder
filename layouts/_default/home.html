@@ -22,20 +22,19 @@
     {{ end }}
     {{- range first 3 $features }}
     {{ $counter = add $counter 1 }}
+    
     <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="flex first:sm:col-span-2 items-center rounded-2xl bg-sky-50 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:bg-sky-800 dark:hover:brightness-110">
-        <div class="h-full w-full">
-          <div class="">
-            <h2 class="flex p-3 items-center mb-2 text-3xl uppercase  text-neutral-100 {{ $headerClass }}">
-              {{- if .Params.homeFeatureIcon }}
-                <i class="{{ .Params.homeFeatureIcon }} mr-2 text-4xl"></i>
-              {{- end }}
-              {{ or .Params.homeFeatureTitle .Title }}
-            </h2>
-            <div class="p-5 text-lg h-5/6 overflow-y-auto">
-              {{ or .Params.homeFeatureSummary .Summary }}
-            </div>
-          </div>
+      <div class="h-full w-full">
+        <h2 class="flex p-3 items-center mb-2 text-3xl uppercase  text-neutral-100 {{ $headerClass }}">
+          {{- if .Params.homeFeatureIcon }}
+            <i class="{{ .Params.homeFeatureIcon }} mr-2 text-4xl"></i>
+          {{- end }}
+          {{ or .Params.homeFeatureTitle .Title }}
+        </h2>
+        <div class="p-5 text-lg h-5/6 overflow-y-auto">
+          {{ or .Params.homeFeatureSummary .Summary }}
         </div>
+      </div>
     </a>
     {{- end }}
   </div>
@@ -52,5 +51,14 @@
       </div>
     </div>
   {{ end }}
-  
+
+  <div class="max-w-screen-lg p-4 mx-auto grid grid-cols-1 gap-12  mb-5">
+  {{/*  Finally spit out everything here! all content newest first recursive  */}}
+  <h2 class=" flex p-3 items-center mb-2 text-3xl uppercase">Latest stuff</h2>
+  {{- $recent := where $pages "Summary" "!=" "" }} 
+  {{- range $recent.ByLastmod.Reverse.Limit 10  }}
+    {{ partial "card-category-color.html" . }}
+  {{ end }}
+  </div>
+    
 {{- end }}
