@@ -97,3 +97,40 @@ img {
   height: auto;
   max-width: 100%;
 }
+
+
+  .article .article-content a.link-overlay {
+    border: 5px;
+    border-color: #f505f5;
+    position: absolute;
+    display: block;
+    top: 0;
+    right: -10px;
+    bottom: -7.5px;
+    left: -10px;
+    z-index: 2;
+    margin: 0;
+  }
+  .article .articleBody h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-top: 0.83em;
+    margin-bottom: 0.83em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+  }
+  .article .articleBody p {
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .article .articleBody blockquote {
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 40px;
+    margin-right: 40px;
+  }

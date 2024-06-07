@@ -68,11 +68,11 @@
           "@type": "NutritionInformation",
           "calories": {{ .Params.calories }}
         },
-        {{/*  // "aggregateRating": {
-        //  "@type": "AggregateRating",
-        //  "ratingValue": "5",
-        //  "ratingCount": "25"
-        // },  */}}
+        {{/*  "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "5",
+          "ratingCount": "0"
+        },  */}}
         "recipeIngredient": [{{ $len := len .Params.recipeIngredients }}{{ range $index, $ingredient := .Params.recipeIngredients }}{{ if not (strings.HasPrefix $ingredient "**") }}"{{ $ingredient }}"{{ if ne $index (sub $len 1) }},{{ end }}{{ end }}{{ end }}],
         "recipeInstructions": [
           {{- $link := .Permalink }}
@@ -158,11 +158,9 @@
       
   {{ if ne .Title .Site.Title }}
   <script type="application/ld+json">
-      
       //breadcrumb schema
-      // CHANGE THIS TO DO LIKE breadcrumb.html does
       {{ if .Params.categories }}
-          {
+          [{
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [{
@@ -171,6 +169,7 @@
               "name": "Home",
               "item": "{{.Site.BaseURL}}"
           },
+          {{/*  This won't really work with multple categories...  */}}
           {{ range $i, $e := .Params.categories }}
           {
               "@type": "ListItem",
@@ -185,8 +184,8 @@
               "name": {{.Title}},
               "item": "{{.Site.BaseURL}}/{{ .RelPermalink }}"
           }]
-          }
-      {{ else }}
+          },
+      {{ end }}
           {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
@@ -195,14 +194,25 @@
               "position": 1,
               "name": "Home",
               "item": "{{.Site.BaseURL}}"
-          },{
+          },
+          {{ $counter := 2 }}
+          {{ range after 1 .Ancestors.Reverse }}
+          {
+            "@type": "ListItem",
+            "position": {{ $counter }},
+            "name": {{ .Title }},
+            "item": "{{.Site.BaseURL}}/{{ .RelPermalink }}"
+          },
+          {{ $counter = add $counter 1 }}
+          {{ end }}
+          {
               "@type": "ListItem",
-              "position": 2,
+              "position": {{ $counter }},
               "name": {{.Title}},
               "item": "{{.Site.BaseURL}}/{{ .RelPermalink }}"
           }]
           }
-      {{ end }}
+      {{ if .Params.categories }} ]{{ end }}
   
   </script>
   {{ end }}

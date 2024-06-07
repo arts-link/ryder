@@ -1,6 +1,6 @@
 {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
 {{ $dateHuman := .Date | time.Format ":date_long" }}
-{{ $headerStyle := "bg-gradient-to-r from-pink-500 to-yellow-500 bg-clip-text text-transparent" }}
+{{ $headerStyle := "bg-gradient-to-r from-pink-500 to-yellow-500" }}
 {{ with (eq .Section "posts") }} {{ $headerStyle = "bg-gradient-to-r from-emerald-500 to-lime-600" }} {{ end }}
 {{ with (eq .Section "projects") }} {{ $headerStyle = "bg-gradient-to-r from-red-400 to-red-900" }} {{ end }}
 {{ with (eq .Section "portfolio") }} {{ $headerStyle = "bg-gradient-to-r from-slate-500 to-slate-800" }} {{ end }}
@@ -17,62 +17,26 @@
             {{ end }}
         </ul>
       </div>*/}}
-<style>
-  .article .article-content a.link-overlay {
-    border: 5px;
-    border-color: #f505f5;
-    position: absolute;
-    display: block;
-    top: 0;
-    right: -10px;
-    bottom: -7.5px;
-    left: -10px;
-    z-index: 2;
-    margin: 0;
-  }
-  .article .articleBody h2 {
-    display: block;
-    font-size: 1.5em;
-    margin-top: 0.83em;
-    margin-bottom: 0.83em;
-    margin-left: 0;
-    margin-right: 0;
-    font-weight: bold;
-  }
-  .article .articleBody p {
-    display: block;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .article .articleBody blockquote {
-    display: block;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    margin-left: 40px;
-    margin-right: 40px;
-  }
-</style>
-<div itemscope="" itemtype="http://schema.org/Article" class="article">
-  <div class="article-content relative">
-      <a itemprop="url" href="{{ .RelPermalink }}" class="link-overlay"> </a>
-      <h2 itemprop="headline" class="text-2xl p-3 rounded-t-xl {{ $headerStyle }}"> 
-        {{- if .Params.homeFeatureIcon }}
-          <i class="text-black dark:text-white {{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>
-        {{- end }}
-        {{ .Title }}
-      </h2>
-      <span class="details px-6 my-4">
-          {{/*  I am currenly not doing anything for author since it is only me but for Ryder author with be a taxonomy item and included in every page  */}}
-          by <span itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span class="author" itemprop="name">{{ .Site.Params.author.name }}</span></span>
-          in <span itemprop="articleSection" class="source">{{ .Section }}</span>
-          on <time itemprop="datePublished" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
-      </span>
 
-      <div itemprop="articleBody" class="articleBody p-5">
-        {{/*  {{ .Content }}  */}}
+<div itemscope="" itemtype="http://schema.org/Article" class="article">
+  <div class="article-content relative p-1 rounded-t-xl {{ $headerStyle }}">
+    <a itemprop="url" href="{{ .RelPermalink }}" class="link-overlay"> </a>
+    <h2 itemprop="headline" class="text-2xl p-3 {{ $headerStyle }}"> 
+      {{- if .Params.homeFeatureIcon }}
+        <i class="text-black dark:text-white {{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>
+      {{- end }}
+      {{ .Title }}
+    </h2>
+    <div class="w-full h-full bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
+      <span class="details px-6 mt-4 inline-block">
+        {{/*  I am currenly not doing anything for author since it is only me but for Ryder author with be a taxonomy item and included in every page  */}}
+        by <span itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span class="author" itemprop="name">{{ .Site.Params.author.name }}</span></span>
+        in <span itemprop="articleSection" class="source">{{ .Section }}</span>
+        on <time itemprop="datePublished" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
+      </span>
+      <div itemprop="articleBody" class="articleBody">
         {{ or .Params.homeFeatureSummary .Summary }}
       </div>
+    </div>
   </div>
 </div>
