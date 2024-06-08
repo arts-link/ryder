@@ -1,8 +1,27 @@
 {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
 {{ $dateHuman := .Date | time.Format ":date_long" }}
 {{ $headerStyle := "bg-gradient-to-r from-pink-500 to-yellow-500" }}
-{{ with (eq .Section "posts") }} {{ $headerStyle = "bg-gradient-to-r from-emerald-500 to-lime-600" }} {{ end }}
-{{ with (eq .Section "projects") }} {{ $headerStyle = "bg-gradient-to-r from-red-400 to-red-900" }} {{ end }}
+{{ $articleSection := .Section }}
+{{ with (eq .Section "posts") }} {{ $headerStyle = "bg-gradient-to-r from-blue-300 to-yellow-300" }} {{ end }}
+{{ if eq .Section "projects" }}
+  {{ if or (in .Params.categories "hiking") (in .Params.categories "recipes") (in .Params.categories "catalog") }}
+    {{ if in .Params.categories "hiking" }}
+      {{ $headerStyle = "bg-gradient-to-r from-green-400 to-green-900" }} <!-- Style for hiking category -->
+      {{ $articleSection = "hiking" }}
+    {{ else if in .Params.categories "recipes" }}
+      {{ $headerStyle = "bg-gradient-to-r from-yellow-400 to-yellow-900" }} <!-- Style for recipes category -->
+      {{ $articleSection = "recipes" }}
+    {{ else if in .Params.categories "catalog" }}
+      {{ $headerStyle = "bg-gradient-to-r from-zinc-400 to-zinc-900" }} <!-- Style for catalog category -->
+      {{ $articleSection = "catalog" }}
+    {{ end }}
+  {{ else }}
+    {{ $headerStyle = "bg-gradient-to-r from-red-400 to-red-900" }} <!-- Default style for projects section -->
+  {{ end }}
+{{ end }}
+
+
+
 {{ with (eq .Section "portfolio") }} {{ $headerStyle = "bg-gradient-to-r from-slate-500 to-slate-800" }} {{ end }}
 {{ with (eq .Section "ingredients") }} {{ $headerStyle = "bg-gradient-to-r from-violet-600 to-indigo-600" }} {{ end }}
 {{ with (eq .Section "consulting") }} {{ $headerStyle = "bg-gradient-to-r from-amber-200 to-yellow-400" }} {{ end }}
@@ -31,7 +50,7 @@
       <span class="details px-6 mt-4 inline-block">
         {{/*  I am currenly not doing anything for author since it is only me but for Ryder author with be a taxonomy item and included in every page  */}}
         by <span itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span class="author" itemprop="name">{{ .Site.Params.author.name }}</span></span>
-        in <span itemprop="articleSection" class="source font-bold">{{ .Section }}</span>
+        in <span itemprop="articleSection" class="source font-bold">{{ $articleSection }}</span>
         on <time itemprop="datePublished" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
       </span>
       <div itemprop="articleBody" class="articleBody px-3 pb-4">
