@@ -1,3 +1,4 @@
+{{ $hideAuthor := true }}
 {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
 {{ $dateHuman := .Date | time.Format ":date_long" }}
 {{ $headerStyle := "bg-gradient-to-r from-pink-500 to-yellow-500" }}
@@ -19,23 +20,10 @@
     {{ $headerStyle = "bg-gradient-to-r from-red-400 to-red-900" }} <!-- Default style for projects section -->
   {{ end }}
 {{ end }}
-
-
-
 {{ with (eq .Section "portfolio") }} {{ $headerStyle = "bg-gradient-to-r from-slate-500 to-slate-800" }} {{ end }}
 {{ with (eq .Section "ingredients") }} {{ $headerStyle = "bg-gradient-to-r from-violet-600 to-indigo-600" }} {{ end }}
 {{ with (eq .Section "consulting") }} {{ $headerStyle = "bg-gradient-to-r from-amber-200 to-yellow-400" }} {{ end }}
-{{/*  {{ .Ancestors }}  
-      <div>
-        <h2>Ancestors</h2>
-        <ul class="ancestors-list">
-            {{ range .Ancestors }}
-            <li class="ancestor-item">
-                <a href="{{ .Permalink }}">{{ .Title }}</a>
-            </li>
-            {{ end }}
-        </ul>
-      </div>*/}}
+
 
 <div itemscope="" itemtype="http://schema.org/Article" class="article">
   <div class="article-content relative p-1 rounded-t-xl {{ $headerStyle }}">
@@ -47,10 +35,10 @@
         {{- end }}
         {{ .Title }}
       </h2>
-      <span class="details px-6 mt-4 inline-block">
+      <span class="details pl-5 mt-4 inline-block">
         {{/*  I am currenly not doing anything for author since it is only me but for Ryder author with be a taxonomy item and included in every page  */}}
-        by <span itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span class="author" itemprop="name">{{ .Site.Params.author.name }}</span></span>
-        in <span itemprop="articleSection" class="source font-bold">{{ $articleSection }}</span>
+         <span class="{{ with $hideAuthor }}hidden{{ end }}" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span class="author" itemprop="name">{{ .Site.Params.author.name }}</span></span>
+        In <span itemprop="articleSection" class="source font-bold">{{ $articleSection }}</span>
         on <time itemprop="datePublished" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
       </span>
       <div itemprop="articleBody" class="articleBody px-3 pb-4">

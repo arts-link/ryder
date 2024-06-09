@@ -24,18 +24,27 @@
     {{ partial "card-category-color.html" . }} 
     {{- end }}
   </div>
-{{/*    
+  
   {{ if or .Title .Content }}
     <div class="p-4 flex-1 items-center justify-center">
       {{ partial "card-category-color.html" . }}
     </div>
-  {{ end }}  */}}
+  {{ end }}
 
-  <div class="lg:grid-cols-2 p-4 mx-auto grid grid-cols-1 gap-12  mb-5">
+  <div class="lg:grid-cols-2  p-4 mx-auto grid grid-cols-1 gap-12  mb-5">
   {{/*  Finally spit out everything here! all content newest first recursive  */}}
   <h2 class="lg:col-span-2 flex p-3 items-center mb-2 text-3xl uppercase">Latest stuff</h2>
-  {{- $recent := where $pages "Summary" "!=" "" }} 
-  {{- range $recent.ByLastmod.Reverse.Limit 20  }}
+  {{/*  {{- $recent := where $pages "Summary" "!=" "" }}   */}}
+  {{- $recentWithSummary := where $pages "Summary" "!=" "" -}}
+{{- $filteredPages := slice -}}
+{{- range $recentWithSummary -}}
+  {{- $categories := .Params.categories -}}
+  {{- if not (in $categories "catalog") -}}
+    {{- $filteredPages = $filteredPages | append . -}}
+  {{- end -}}
+{{- end -}}
+
+      {{- range $filteredPages.ByLastmod.Reverse.Limit 40  }}
     {{ partial "card-category-color.html" . }}
   {{ end }}
   </div>

@@ -1,10 +1,13 @@
 {{/*  https://affiliate-program.amazon.com/help/node/topic/GP38PJ6EUR6PFBEC  */}}
 {{/*  http://www.amazon.com/dp/ASIN/ref=nosim?tag=YOURASSOCIATEID
-This link format qualifies for the direct link bonus.  */}}
+This link format qualifies for the direct link bonus.  
+for example::
+{{< amazon-associate-link button_label="BLUESTORM Cirrus 26 Inflatable Life Jacket PFD for Adults" >}}
+*/}}
 {{ $asin := default "B0BT488H6W" (.Page.Params.asin) }}
 {{ $button_label := .Get "button_label" }}
 {{ $affiliate_tag := default "benstrawbridge-20" (.Site.Params.amazon_associate_id) }}
 {{ $classes := "bg-yellow-400 text-black font-medium py-2 px-4 rounded-full border-2 border-yellow-500 hover:bg-yellow-500 hover:border-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 no-underline inline-block text-center break-words"}}
 <a class="" href="https://www.amazon.com/dp/{{ $asin }}/ref=nosim?tag={{ $affiliate_tag }}">
-  <span class="{{ $classes }}">View {{ with $button_label }}{{ . }} {{ end }}on Amazon.com</span>
+  <span class="{{ $classes }}">Buy {{ with $button_label }}{{ . }} {{ end }}on Amazon.com</span>
 </a>
