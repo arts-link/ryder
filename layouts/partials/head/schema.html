@@ -170,17 +170,19 @@
               "item": "{{.Site.BaseURL}}"
           },
           {{/*  This won't really work with multple categories...  */}}
+          {{ $counter := 1 }}
           {{ range $i, $e := .Params.categories }}
+          {{ $counter = add $counter 1 }}
           {
               "@type": "ListItem",
-              "position": 2,
+              "position": {{ $counter }},
               "name": {{ $e }},
               "item": "https://benstrawbridge.com/categories/{{ $e | urlize }}"
           },
           {{ end }}
           {
               "@type": "ListItem",
-              "position": 3,
+              "position": {{ add $counter 1 }},
               "name": {{.Title}},
               "item": "{{.Site.BaseURL}}/{{ .RelPermalink }}"
           }]

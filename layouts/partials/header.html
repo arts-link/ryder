@@ -24,6 +24,7 @@ By default it will have a background gradient in cayan.
         <!-- navbar toggler -->
         {{/*  <input id="nav-toggle" type="checkbox" class="hidden" />  */}}
         <button
+            aria-label="Toggle Menu"
             class="absolute right-0 z-50 cursor-pointer md:hidden p-3 text-[#17729C] bg-neutral-200 rounded-full "
             @click="openMenu = ! openMenu">
             <div x-bind:class="openMenu ? 'hidden' : 'visible'" class="flex flex-col text-xs"><i class="size-8 text-2xl fas fa-bars"></i></div>

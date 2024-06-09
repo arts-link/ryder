@@ -32,13 +32,13 @@
       this.theme = theme;
   }
 }" x-init="initThemeSwitcher()" id="themeSwitcher" class="flex justify-center mb-auto">
-<button x-show="theme === 'light'" x-on:click="toggleTheme('dark')" class="p-4 text-2xl">
+<button aria-label="Toggle Dark Mode" x-show="theme === 'light'" x-on:click="toggleTheme('dark')" class="p-4 text-2xl">
   <i class="aspect-square fa-solid fa-sun" title="Using Light Theme"></i>
 </button>
-<button x-show="theme === 'dark'" x-on:click="toggleTheme('system')" class="p-4 text-2xl">
+<button aria-label="Toggle Dark Mode" x-show="theme === 'dark'" x-on:click="toggleTheme('system')" class="p-4 text-2xl">
   <i class="aspect-square fa-solid fa-moon" title="Using Dark Theme"></i>
 </button>
-<button x-show="theme === 'system'" x-on:click="toggleTheme('light')" class="p-4 text-2xl">
+<button aria-label="Toggle Dark Mode" x-show="theme === 'system'" x-on:click="toggleTheme('light')" class="p-4 text-2xl">
   <i class="aspect-square fa-solid fa-computer" title="Using System Theme"></i>
 </button>
 </div>

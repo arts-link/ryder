@@ -47,7 +47,7 @@
     </div>
   </div>
   {{ if $dismissable }}
-  <button @click="isOpen = false; document.cookie = 'alertClosed=true; path=/;';" class="absolute top-0 right-0 rounded-full p-2 hover:bg-gray-200 dark:hover:bg-gray-800 transition focus:outline-none focus:ring">
+  <button aria-label="Dismiss" @click="isOpen = false; document.cookie = 'alertClosed=true; path=/;';" class="absolute top-0 right-0 rounded-full p-2 hover:bg-gray-200 dark:hover:bg-gray-800 transition focus:outline-none focus:ring">
     <i class="fas fa-times text-gray-500 dark:text-gray-400"></i>
   </button>
   {{ end }}

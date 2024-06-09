@@ -127,7 +127,7 @@ img {
     margin-left: 0;
     margin-right: 0;
   }
-  .article .articleBody blockquote {
+   blockquote, .prose blockquote {
     display: block;
     border-left: 3px solid grey;
     background-image: linear-gradient(to right, #ec4899, #f59e0b);
