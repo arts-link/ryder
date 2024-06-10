@@ -16,6 +16,7 @@
 {{ $articleLink := .Section }}
 {{ with (eq .Section "posts") }} {{ $headerStyle = "bg-blue-300 to-yellow-300" }} {{ end }}
 {{ if eq .Section "projects" }}
+    {{ $headerStyle = "bg-red-400 to-red-900" }} <!-- Default style for projects section -->
   {{ if or (in .Params.categories "hiking") (in .Params.categories "recipes") (in .Params.categories "catalog") }}
     {{ if in .Params.categories "hiking" }}
       {{ $headerStyle = "bg-green-400 to-green-900" }} <!-- Style for hiking category -->
@@ -28,8 +29,6 @@
       {{ $articleSection = "catalog" }}
     {{ end }}
     {{ $articleLink = add "categories/" $articleSection }}
-  {{ else }}
-    {{ $headerStyle = "bg-red-400 to-red-900" }} <!-- Default style for projects section -->
   {{ end }}
 {{ end }}
 {{ with (eq .Section "portfolio") }} {{ $headerStyle = "bg-slate-500 to-slate-800" }} {{ end }}
