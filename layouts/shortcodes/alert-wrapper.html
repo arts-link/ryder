@@ -6,11 +6,14 @@
 {{ $alertTitle := .Get "alertTitle" | default "" }}
 {{ $alertMessage := .Get "alertMessage" | default "" }}
 {{ $alertIconClass := .Get "alertIconClass" | default "" }}
+{{ $alertCTA := .Get "alertCTA" | default "" }}
 {{ $dismissable := .Get "dismissable" | default false }}
 
 {{ $.Scratch.Set "alertType" $alertType }}
 {{ $.Scratch.Set "alertTitle" $alertTitle }}
 {{ $.Scratch.Set "alertMessage" $alertMessage }}
 {{ $.Scratch.Set "alertIconClass" $alertIconClass }}
+{{ $.Scratch.Set "alertCTA" $alertCTA }}
 {{ $.Scratch.Set "dismissable" $dismissable }}
+
 {{ partial "alert" . }}

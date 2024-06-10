@@ -6,14 +6,15 @@
     {{- .Scratch.Set "alertType" "success" }}
     {{- .Scratch.Set "alertTitle" "Alpha Release" }}
     {{- .Scratch.Set "alertMessage" "You are viewing an alpha version of this site redesign. Things may be broken at times or just in a state of flux." }}
+    {{- .Scratch.Set "alertCTA" "/path/to/something" }}
     {{- .Scratch.Set "dismissable" true }}
     {{- partial "alert.html" . }}
 */}}
-
 {{ $alertType := .Scratch.Get "alertType" | default "dark" }}
 {{ $alertTitle := .Scratch.Get "alertTitle" | default "" }}
 {{ $alertMessage := .Scratch.Get "alertMessage" | default "" }}
 {{ $alertIconClass := .Scratch.Get "alertIconClass" | default "" }}
+{{ $alertCTA := .Scratch.Get "alertCTA" | default "" }}
 {{ $dismissable := .Scratch.Get "dismissable" | default false }}
 
 {{ $alertClasses := "" }}
@@ -38,7 +39,7 @@
 
 {{/* ONLY SHOW THE BOX if it has a Title OR a Message OR both */}}
 {{ if or (ne $alertTitle "") (ne $alertMessage "") }}
-<div x-data="{ isOpen: document.cookie.indexOf('alertClosed=true') === -1 }" x-show="isOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform translate-y-2" class="relative flex items-start justify-between p-4 mb-4 mx-auto text-sm border rounded-lg max-w-screen-lg {{ $alertClasses }}" role="alert">
+<div x-data="{ isOpen: document.cookie.indexOf('alertClosed=true') === -1 }" x-show="isOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform translate-y-2" class="relative flex items-start justify-between p-4 my-4 mx-auto text-lg border rounded-lg max-w-screen-lg {{ $alertClasses }}" role="alert">
   <div class="flex items-center">
     <i class="{{ if ne $alertIconClass "" }}{{ $alertIconClass }}{{ else }}{{ $alertIcon }}{{ end }} flex-shrink-0 inline w-6 h-6 me-3"></i>
     <span class="sr-only">{{ $alertType }}</span>
@@ -46,6 +47,12 @@
       {{ if ne $alertTitle "" }} <span class="font-bold">{{ $alertTitle }}{{ if ne $alertMessage "" }}:{{ end }}</span> {{ end }}{{ $alertMessage | safeHTML }}
     </div>
   </div>
+  {{ if $alertCTA }}
+  <div class="flex items-center">
+    {{ $opts := dict "path" $alertCTA }}
+    <a href="{{ .RelRef $opts }}" class="inline-block px-4 py-2 ml-4 text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">GO!</a>
+  </div>
+  {{ end }}
   {{ if $dismissable }}
   <button aria-label="Dismiss" @click="isOpen = false; document.cookie = 'alertClosed=true; path=/;';" class="absolute top-0 right-0 rounded-full p-2 hover:bg-gray-200 dark:hover:bg-gray-800 transition focus:outline-none focus:ring">
     <i class="fas fa-times text-gray-500 dark:text-gray-400"></i>
