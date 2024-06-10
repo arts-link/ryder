@@ -10,33 +10,62 @@
 {{ else }}
   {{ $dateHuman = .Date | time.Format "Jan 02, 2006" }}
 {{ end }}
-
-{{ $headerStyle := "bg-yellow-400 to-yellow-900" }}
 {{ $articleSection := .Section }}
 {{ $articleLink := .Section }}
-{{ with (eq .Section "posts") }} {{ $headerStyle = "bg-blue-300 to-yellow-300" }} {{ end }}
-{{ if eq .Section "projects" }}
-    {{ $headerStyle = "bg-red-400 to-red-900" }} <!-- Default style for projects section -->
+
+{{ $headerStyle := default "bg-yellow-400" (.Param "cardCategoryColorsDefault") }}
+{{ if .Params.categories }}
+  {{ $mainCategory := index .Params.categories 0 }}
+  {{ $articleSection = $mainCategory }}
+  {{ $articleLink = add "categories/" $articleSection }}
+  {{ with .Site.GetPage (print "/categories/" $mainCategory) }}
+    {{ with .Params.cardCategoryColorsDefault }}
+      {{ $headerStyle = . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{/*  {{ if eq .Section "projects" }}
   {{ if or (in .Params.categories "hiking") (in .Params.categories "recipes") (in .Params.categories "catalog") }}
     {{ if in .Params.categories "hiking" }}
-      {{ $headerStyle = "bg-green-400 to-green-900" }} <!-- Style for hiking category -->
+      {{ $headerStyle = "bg-green-400" }} <!-- Style for hiking category -->
       {{ $articleSection = "hiking" }}
     {{ else if in .Params.categories "recipes" }}
-      {{ $headerStyle = "bg-pink-500 to-yellow-500" }} <!-- Style for recipes category -->
+      {{ $headerStyle = "bg-pink-500" }} <!-- Style for recipes category -->
       {{ $articleSection = "recipes" }}
     {{ else if in .Params.categories "catalog" }}
-      {{ $headerStyle = "bg-zinc-400 to-zinc-900" }} <!-- Style for catalog category -->
+      {{ $headerStyle = "bg-zinc-400" }} <!-- Style for catalog category -->
       {{ $articleSection = "catalog" }}
     {{ end }}
     {{ $articleLink = add "categories/" $articleSection }}
   {{ end }}
+{{ end }}  */}}
+
+{{/*  
+{{ with (eq .Section "posts") }} {{ $headerStyle = "bg-blue-300" }} {{ end }}
+{{ if eq .Section "projects" }}
+  {{ if or (in .Params.categories "hiking") (in .Params.categories "recipes") (in .Params.categories "catalog") }}
+    {{ if in .Params.categories "hiking" }}
+      {{ $headerStyle = "bg-green-400" }} <!-- Style for hiking category -->
+      {{ $articleSection = "hiking" }}
+    {{ else if in .Params.categories "recipes" }}
+      {{ $headerStyle = "bg-pink-500" }} <!-- Style for recipes category -->
+      {{ $articleSection = "recipes" }}
+    {{ else if in .Params.categories "catalog" }}
+      {{ $headerStyle = "bg-zinc-400" }} <!-- Style for catalog category -->
+      {{ $articleSection = "catalog" }}
+    {{ end }}
+    {{ $articleLink = add "categories/" $articleSection }}
+  {{ end }}
+  {{ $headerStyle = "bg-red-400" }} <!-- Default style for projects section -->
 {{ end }}
-{{ with (eq .Section "portfolio") }} {{ $headerStyle = "bg-slate-500 to-slate-800" }} {{ end }}
-{{ with (eq .Section "ingredients") }} {{ $headerStyle = "bg-violet-600 to-indigo-600" }} {{ end }}
-{{ with (eq .Section "consulting") }} {{ $headerStyle = "bg-amber-200 to-yellow-400" }} {{ end }}
+{{ with (eq .Section "portfolio") }} {{ $headerStyle = "bg-slate-500" }} {{ end }}
+{{ with (eq .Section "ingredients") }} {{ $headerStyle = "bg-violet-600" }} {{ end }}
+{{ with (eq .Section "consulting") }} {{ $headerStyle = "bg-amber-200" }} {{ end }}  */}}
 
 
 <div itemscope="" itemtype="http://schema.org/Article" class="article">
+  
   <div class="article-content relative p-1 rounded-t-xl {{ $headerStyle }}">
     <div class="w-full h-full bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
       <a itemprop="url" aria-label="{{ .Title }}" href="{{ .RelPermalink }}" class="link-overlay"> </a>
