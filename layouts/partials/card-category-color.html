@@ -13,7 +13,7 @@
 {{ $articleSection := .Section }}
 {{ $articleLink := .Section }}
 
-{{ $headerStyle := default "bg-gradient-to-r from-slate-600 to-slate-400" (.Param "cardCategoryColorsDefault") }}
+{{ $headerStyle := default "bg-gradient-to-r from-zinc-400 to-zinc-300" (.Param "cardCategoryColorsDefault") }}
 {{ if .Params.categories }}
   {{ $mainCategory := index .Params.categories 0 }}
   {{ $articleSection = $mainCategory }}

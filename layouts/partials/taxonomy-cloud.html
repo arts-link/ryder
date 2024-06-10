@@ -30,14 +30,15 @@
          {{ $currentFontSize := (add $smallestFontSize (mul (sub $largestFontSize $smallestFontSize) $weight)) }}
          {{ $baseURL := $.Site.BaseURL }}
          
-         {{ $classes := "bg-gradient-to-r from-lime-400 to-lime-500 text-zinc-900 py-2 px-4 rounded-full border-2 border-yellow-500 hover:bg-yellow-500 hover:border-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 no-underline inline-block text-center break-words "}}
+         {{ $gradientClass := "bg-gradient-to-r from-lime-400 to-lime-500 text-zinc-900 "}}
+         {{ $classes := "py-2 px-4 rounded-full border-2 border-yellow-500 hover:bg-yellow-500 hover:border-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 no-underline inline-block text-center break-words "}}
          {{ $headerBackgroundFrameOuter := "" }}
          {{ with $.Site.Param "twClasses.headerBackgroundFrameOuter" }}
-           {{ $headerBackgroundFrameOuter = . }}
+           {{ $gradientClass = . }}
          {{ end }}
          <a href="{{ printf "%s%s/%s" $baseURL $taxonomy ($name | urlize) }}" 
             class="tagcloud-item px-2" style="font-size: {{ $currentFontSize }}rem;">
-            <span class="{{ $classes }} {{ $headerBackgroundFrameOuter }}">{{ $name }}<sup>{{ $tagCount }}</sup></span></a>
+            <span class="{{ $classes }} {{ $gradientClass }}">{{ $name }}<sup>{{ $tagCount }}</sup></span></a>
        {{ end }}
    {{ end }}
  </div>

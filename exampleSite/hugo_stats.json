@@ -31,6 +31,7 @@
       "main",
       "meta",
       "nav",
+      "noscript",
       "ol",
       "p",
       "path",
@@ -170,6 +171,7 @@
       "fa-sun",
       "fa-tags",
       "fa-times",
+      "fa-wheat-awn",
       "fa-xmark",
       "fab",
       "false",
@@ -193,9 +195,9 @@
       "footnote-backref",
       "footnote-ref",
       "footnotes",
-      "from-lime-400",
-      "from-slate-600",
+      "from-red-500",
       "from-slate-900",
+      "from-zinc-400",
       "gap-12",
       "gap-6",
       "gap-x-1",
@@ -373,10 +375,9 @@
       "text-xl",
       "text-xs",
       "text-yellow-800",
-      "text-zinc-900",
-      "to-lime-500",
-      "to-slate-400",
+      "to-orange-500",
       "to-slate-700",
+      "to-zinc-300",
       "toc",
       "top-0",
       "top-1/2",
@@ -410,6 +411,7 @@
       "z-50"
     ],
     "ids": [
+      "a-category-homepage",
       "alert-shortcode-examples",
       "background",
       "banners",
@@ -466,6 +468,7 @@
       "vagus-elidunt",
       "vimeo-simple-shortcode",
       "warning",
+      "welcome-to-the-ryder-theme-example-site",
       "youtube-privacy-enhanced-shortcode"
     ]
   }
