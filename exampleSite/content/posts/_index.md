@@ -5,7 +5,8 @@ date = "2024-01-24"
 author = "Hugo Authors"
 enableComments = false
 [cascade]
-  showToc = true
+  homeFeatureIcon = "fa-solid fa-signs-post"
+  cardCategoryColorsDefault = "bg-gradient-to-r from-violet-400 to-pink-400"
 [menu]
  [menu.main]
   weight = 32
