@@ -1,0 +1,28 @@
+{{- $lat := .Get "latitude" | default .Page.Params.latitude | float -}}
+{{- $lon := .Get "longitude" | default .Page.Params.longitude | float -}}
+
+
+{{- $latDegrees := math.Floor $lat -}}
+{{- $latMinutes := math.Floor (mul (math.Abs (sub $lat $latDegrees)) 60) -}}
+{{- $latSeconds := mul (sub (mul (math.Abs (sub $lat $latDegrees)) 60) $latMinutes) 60 -}}
+
+{{- $lonDegrees := math.Floor $lon -}}
+{{- $lonMinutes := math.Floor (mul (math.Abs (sub $lon $lonDegrees)) 60) -}}
+{{- $lonSeconds := mul (sub (mul (math.Abs (sub $lon $lonDegrees)) 60) $lonMinutes) 60 -}}
+
+{{- $latDMS := printf "%d° %02d' %05.2f\"" (int $latDegrees) (int $latMinutes) $latSeconds -}}
+{{- $lonDMS := printf "%d° %02d' %05.2f\"" (int $lonDegrees) (int $lonMinutes) $lonSeconds -}}
+
+<div class="grid grid-cols-3 gap-1 p-1">
+  <div class="col-span-1 flex items-center justify-center text-2xl font-bold">
+    <i class="text-emerald-500 text-5xl fa-solid fa-globe"></i>
+  </div>
+  <div class="col-span-1 flex flex-col justify-center h-full">
+    <div class="text-lg font-semibold">Latitude</div>
+    <div>{{ $latDMS }}</div>
+  </div>
+  <div class="col-span-1 flex flex-col items-center justify-center h-full">
+    <div class="text-lg font-semibold">Longitude</div>
+    <div>{{ $lonDMS }}</div>
+  </div>
+</div>
