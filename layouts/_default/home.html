@@ -35,11 +35,18 @@
       
     {{ $excludedSections := site.Params.excludedSections | default slice }}
     {{ $excludedCategories := site.Params.excludedCategories | default slice }}
+    {{ $excludedTags := site.Params.excludedTags | default slice }}
     {{- $filteredPages := slice -}}
     {{- range $pages.ByLastmod.Reverse }}
       {{- $excludePage := false -}}
       {{- range .Params.categories }}
         {{- if in $excludedCategories . }}
+          {{- $excludePage = true -}}
+          {{- break -}}
+        {{- end }}
+      {{- end }}
+      {{- range .Params.tags }}
+        {{- if in $excludedTags . }}
           {{- $excludePage = true -}}
           {{- break -}}
         {{- end }}

@@ -10,8 +10,8 @@ tags = [
 # featured_image = ""
 # showTOC = true
 [cascade]
-  sectionTitle = "Recipe Ingredients on BenStrawbridge.com"
-  homeFeatureIcon = "fa-solid fa-wheat-awn"
+  sectionTitle = "Maps on BenStrawbridge.com"
+  homeFeatureIcon = "fa-solid fa-map-location-dot"
   cardCategoryColorsDefault = "bg-gradient-to-r from-red-500 to-orange-500"
 [menu]
  [menu.main]

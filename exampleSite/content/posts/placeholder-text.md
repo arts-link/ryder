@@ -6,6 +6,7 @@ description = "Lorem Ipsum Dolor Si Amet"
 tags = [
     "markdown",
     "text",
+    "excluded"
 ]
 [menu]
  [menu.main]

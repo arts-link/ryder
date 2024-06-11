@@ -19,6 +19,7 @@ themesDir= "../../"
   # UseHugoToc = true
   # enabledebugpanel = true 
   # navbar_fixed = true
+  excludedTags = ["excluded"]
   showDate = true
   showDarkToggle = true
   og_image_default = 'images/ryder-theme-og.jpg'

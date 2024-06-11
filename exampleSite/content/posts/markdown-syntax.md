@@ -7,6 +7,7 @@ tags = [
     "markdown",
     "css",
     "html",
+    "excluded"
 ]
 [menu]
  [menu.main]
