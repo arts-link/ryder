@@ -1,11 +1,22 @@
 {{- define "main" }}
 
-  {{ if and .Title .Content }}
-  <div class="p-4 flex-1 items-center justify-center">
-    {{ partial "card-category-color.html" . }}
-  </div>
-  {{ end }}
+{{ if and .Title .Content }}
+<div class="p-4 flex-1 items-center justify-center">
+  {{ partial "card-category-color.html" . }}
+</div>
+{{ end }}
 
+    {{/*  Header classes  */}}
+    {{ $headerClass := split "bg-gradient-to-r from-cyan-500 to-cyan-800 text-neutral-100" " " }} 
+    {{ with or (.Param "twClasses.headerBackgroundFrameOuter") (.Param "headerGradientClasses") }}
+    {{ $headerClass = split . " " }}
+    {{ end }}
+    {{ $headerClass = delimit $headerClass " " }}
+    {{/*  Set up the content loop  */}}
+    {{- $pages := slice }}
+    {{- $pages = .Site.Pages }} 
+    {{- $features := where $pages "Params.homeFeature" "eq" true }}
+    {{ $counter := 0 }}
 
   <div class="lg:grid-cols-2  p-4 mx-auto grid grid-cols-1 gap-12  mb-5">
     <h2 class="lg:col-span-2 flex p-3 items-center mb-2 text-3xl uppercase">Latest stuff</h2>
