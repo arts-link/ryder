@@ -13,9 +13,6 @@
 {{- end }}
 {{- partialCached "head/css.html" . }}
 {{- partialCached "head/js.html" . }}
-{{ partial "head/opengraph.html" . }}
-{{ partial "head/schema.html" . }}
-{{ partial "head/fonts.html" . }}
-
-<link rel="stylesheet" href="{{ site.BaseURL}}leaflet/leaflet.css" />
-<script src="{{ site.BaseURL}}leaflet/leaflet.js"></script>
+{{- partial "head/opengraph.html" . }}
+{{- partial "head/schema.html" . }}
+{{- partialCached "head/fonts.html" . }}

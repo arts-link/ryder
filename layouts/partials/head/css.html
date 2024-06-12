@@ -3,7 +3,8 @@
 {{- if eq hugo.Environment "development" }}
 {{/*  TODO :: update this to use params enabledebugpanel vars  */}}
 {{- $debug := resources.Get "css/debugprint.css" }}
-{{- $mergedCss := slice $css $extended $debug | resources.Concat "css/busta-main.css" | resources.PostCSS (dict "inlineImports" true)  }}
+{{- $leaflet := resources.Get "css/leaflet.css" }}
+{{- $mergedCss := slice $css $extended $leaflet $debug | resources.Concat "css/busta-main.css" | resources.PostCSS (dict "inlineImports" true)  }}
 {{- with $mergedCss | fingerprint }}
   <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
 {{- end }}

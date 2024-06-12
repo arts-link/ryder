@@ -9,15 +9,27 @@
 
 <div id="{{ $id }}" style="height: {{ $divHeight }};"></div>
 <script>
-  var map = L.map('{{ $id }}').setView([{{ $lat }}, {{ $lon }}], {{ $zoom }});
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.L) {
+      var map = L.map('{{ $id }}').setView([{{ $lat }}, {{ $lon }}], {{ $zoom }});
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
 
-  {{ with $markerLat }}
-  L.marker([{{ $markerLat }}, {{ $markerLon }}]).addTo(map)
-    .bindPopup('{{ $markerPopup }}');
-  {{ end }}
+      {{ with $markerLat }}
+      // MARKERS MUST BE LABELED
+      //   {alt: 'Kyiv'}).addTo(map) // "Kyiv" is the accessible name of this marker
+      L.marker([{{ $markerLat }}, {{ $markerLon }}]).addTo(map)
+        .bindPopup('{{ $markerPopup }}');
+      {{ end }}
+      {{/*  L.marker([33.97400,-118.4105]).addTo(map)
+        .bindPopup('Dunbarton entrance').openPopup();
+      L.marker([33.97200,-118.41291]).addTo(map)
+        .bindTooltip("my tooltip text").openTooltip();  */}}
+    } else {
+      console.error('Leaflet is not loaded');
+    }
+  });
 </script>
 <div class="hidden">Debug Info: ID={{ .Get "id" }}, Lat={{ .Get "lat" }}, Lon={{ .Get "lon" }}, Zoom={{ .Get "zoom" }}</div>
