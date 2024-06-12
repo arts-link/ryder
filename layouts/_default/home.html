@@ -64,9 +64,11 @@
       {{- $filteredPages = $filteredPages | append . -}}
     {{- end }}
 
-    {{- range $filteredPages.Limit 18 }}
+    {{ range (.Paginate $filteredPages 18).Pages }}
+    {{/*  {{- range $filteredPages.Limit 18 }}  */}}
       {{- partial "card-category-color.html" . }}
     {{- end }}
+    {{ template "_internal/pagination.html" . }}
   </div>
     
 {{- end }}

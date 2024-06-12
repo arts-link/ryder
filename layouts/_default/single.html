@@ -19,22 +19,29 @@
             {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
             {{ $dateHuman := .Date | time.Format ":date_long" }}
             <time datetime="{{ $dateMachine }}" class="{{- if ne site.Params.showDate true }}hidden{{- end }}">{{ $dateHuman }}</time>
-          
-          
         </div>
       </header>
       <div class=" {{ if .Params.hideAsideBar }}md:col-span-12{{ else }}md:col-span-10{{ end }} prose max-w-max lg:prose-lg dark:prose-invert ">
-        {{/*  this is probably dumb :)  */}}
         {{ .Content |  safeHTML }}
-        {{/*  {{ .Content }}  */}}
       </div>
-      
       <aside class=" max-w-max {{ if ne .Params.hideAsideBar true}}md:col-span-2{{ else }}md:col-span-12{{ end }} relative">
+        {{/* This did not end up being the quick solution to what i thought i might be trying to be solving  
+        {{ with or .Next .Prev }}
+        <div class="not-prose flex justify-between w-full border-2">
+          {{ with .Next }}
+            <a href="{{ .RelPermalink }}" class="text-right"><i class="fa-regular fa-hand-point-left text-lg px-2"></i>Prev</a>
+          {{ end }}
+          {{ with .Prev }}
+            <a href="{{ .RelPermalink }}" class="text-left">Next<i class="fa-regular fa-hand-point-right text-lg px-2"></i></a>
+          {{ end }}
+        </div>
+        {{ end }}  */}}
         {{ if .Params.tags }}
           <div class="not-prose">
             {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
           </div>
         {{ end }}
+        
         {{- if .Params.showToc }}
         <div class="{{ if ne .Params.hideAsideBar true}}md:sticky md:block{{ end }} top-0 flex-auto py-4 hidden">
           <div class="px-4 grid grid-cols-1">
