@@ -64,7 +64,7 @@
       {{- $filteredPages = $filteredPages | append . -}}
     {{- end }}
 
-    {{- range $filteredPages.Limit 36 }}
+    {{- range $filteredPages.Limit 18 }}
       {{- partial "card-category-color.html" . }}
     {{- end }}
   </div>
