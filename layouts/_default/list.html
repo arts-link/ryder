@@ -2,7 +2,7 @@
 <div class="max-w-screen-xl mx-auto">
   {{- partial "breadcrumb.html" . }}
 </div>
-<div class="p-4 max-w-screen-xl mx-auto">
+<div class="p-2 max-w-screen-xl mx-auto">
   <header class="max-w-screen-xl prose lg:prose-xl dark:prose-invert">
     <h1  class=" flex items-center">{{- if .Params.homeFeatureIcon }}
     <i class="{{ .Params.homeFeatureIcon }} mr-2 text-4xl"></i>
@@ -11,25 +11,19 @@
     {{ .Content }}
   </header>
   {{ if eq .Kind "taxonomy" }}
-  {{- partial "taxonomy-cloud.html" .}}
+    {{- partial "taxonomy-cloud.html" .}}
   {{ else }}
-  <div class="grid grid-cols-1 gap-6 p-2 sm:p-4 sm:grid-cols-2 lg:grid-cols-3">
-  {{ $myCollection := .Pages }}
-  {{ if eq .Params.listRecursive true }}
-  {{ $myCollection = .RegularPagesRecursive }}
-  {{ end }}
-  {{ $paginator := .Paginate ($myCollection) }}
-  {{ $headerClass := "bg-gradient-to-r from-cyan-500 to-cyan-800 text-neutral-100" }} 
-  {{ $headerBackgroundFrameInner := "" }}
-  {{ with .Param "twClasses.headerBackgroundFrameOuter" }}
-  {{ $headerClass = . }}
-  {{ end }}
-  {{ range $paginator.Pages.ByLastmod.Reverse }}
-  {{ partial "card-category-color.html" . }}
-  {{ end }}
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-2">
+    {{ $myCollection := .Pages }}
+    {{ if eq .Params.listRecursive true }}
+      {{ $myCollection = .RegularPagesRecursive }}
+    {{ end }}
+    {{ $paginator := .Paginate ($myCollection) }}
+    {{ range $paginator.Pages.ByLastmod.Reverse }}
+      {{- partial "card-category-color.html" . -}}
+    {{ end }}
   </div>
   {{ template "_internal/pagination.html" . }}
   {{ end }}
 </div>
-
 {{ end }}

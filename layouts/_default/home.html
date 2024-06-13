@@ -6,18 +6,22 @@
 </div>
 {{ end }}
 
+{{/*  Set up the content loop  */}}
+{{- $pages := slice }}
+{{- $pages = .Site.Pages }} 
+{{- $features := where $pages "Params.homeFeature" "eq" true }}
+
+{{ if .Param "everything" }}
+  <div class="lg:grid-cols-2 xl:grid-cols-4 p-4 mx-auto grid grid-cols-1 gap-12 xl:gap-6 mb-5">
+    <h2 class="text-3xl uppercase lg:col-span-2 xl:col-span-4">{{ .Title }}</h2>
+  {{ range $pages }}
+    {{- partial "card-category-color.html" . }}
+  {{- end }}
+  </div>
+{{ else }}
+
+{{ if $features }}
   <div class="max-w-screen-lg p-4 mx-auto grid grid-cols-1 gap-12 mb-5">
-    {{/*  Header classes  */}}
-    {{ $headerClass := split "bg-gradient-to-r from-cyan-500 to-cyan-800 text-neutral-100" " " }} 
-    {{ with or (.Param "twClasses.headerBackgroundFrameOuter") (.Param "headerGradientClasses") }}
-    {{ $headerClass = split . " " }}
-    {{ end }}
-    {{ $headerClass = delimit $headerClass " " }}
-    {{/*  Set up the content loop  */}}
-    {{- $pages := slice }}
-    {{- $pages = .Site.Pages }} 
-    {{- $features := where $pages "Params.homeFeature" "eq" true }}
-    {{ $counter := 0 }}
     {{ if (.Param "contentTopBox") }}
       <div class="h-full first:sm:col-span-2 items-center rounded-2xl bg-sky-50 transition-[filter] hover:brightness-90 dark:text-gray-200 text-gray-800 dark:bg-sky-800 dark:hover:brightness-110">
         <div class="hpContent prose max-w-max p-5 text-lg ">
@@ -26,9 +30,10 @@
       </div>
     {{ end }}
     {{- range first 1 $features }}
-    {{ partial "card-category-color.html" . }} 
+      {{- partial "card-category-color.html" . }} 
     {{- end }}
   </div>
+{{ end }}
 
   <div class="lg:grid-cols-2  p-4 mx-auto grid grid-cols-1 gap-12  mb-5">
     <h2 class="lg:col-span-2 flex p-3 items-center mb-2 text-3xl uppercase">Latest stuff</h2>
@@ -71,4 +76,5 @@
     {{ template "_internal/pagination.html" . }}
   </div>
     
+{{ end }}
 {{- end }}
