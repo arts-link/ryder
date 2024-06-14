@@ -9,13 +9,19 @@ Weight = 9999
 # draft = true
 +++
 
-By adding these params to your front matter you can have the post show up in a special box on the home page of the website.
+By adding the `homeFeature` param to your front matter you can have the post show up at the top of the home page of your website.
 
-{{< cta-button button_label="a test of relref" button_relref="/posts/alerts" >}}
+> C.T.A. buttons now take on the characteristic of the category style
+
+{{< cta-button 
+  button_label="CTA Buttons Take you places!"
+  button_relref="/posts/alerts"
+>}}
+
+<!--more-->
 
 ## Front Matter
 
-<!--more-->
 
 ```
 +++

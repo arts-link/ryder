@@ -1,6 +1,7 @@
 +++
 title = 'The Ryder Theme'
 date = 2024-01-26T14:32:26-08:00
+homeFeature = true
 # [[cascade]]
 #   [cascade.twClasses]
 #     headerBackgroundFrameInner = ""
@@ -14,9 +15,17 @@ date = 2024-01-26T14:32:26-08:00
 
 ### Welcome to the Ryder theme example site!
 
-To get started and learn more about how to use this theme, check out the {{< cta-button button_label="README file on github" button_href="https://github.com/arts-link/ryder" >}}.
+Get started and Learn more about The Ryder theme for Hugo websites over at GitHub.
+
+
+{{< cta-button 
+  button_label="README file on github" 
+  button_href="https://github.com/arts-link/ryder" 
+>}}
 
 <!--more-->
 
 Here is the theme namesake:
-  {{< picture src="images/ryder-theme-og.jpg" >}}
+  {{< picture 
+    src="images/ryder-theme-og.jpg"
+  >}}

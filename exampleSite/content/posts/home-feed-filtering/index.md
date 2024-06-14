@@ -10,6 +10,7 @@ tags = [
   "feed"
   ]
 # featured_image = ""
+homeFeature = true
 homeFeatureIcon = "fa-solid fa-house"
 # showTOC = true
 +++

@@ -6,8 +6,7 @@ description = "Sample article showcasing basic Markdown syntax and formatting fo
 tags = [
     "markdown",
     "css",
-    "html",
-    "excluded"
+    "html"
 ]
 [menu]
  [menu.main]

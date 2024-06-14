@@ -23,6 +23,7 @@ themesDir= "../../"
   showDate = true
   showDarkToggle = true
   og_image_default = 'images/ryder-theme-og.jpg'
+  # homePageFeedHeader = "the new style"
   logo_firstWord = 'ryder'
   logo_lastWord = 'theme'
   logo_tagline = "FOR HUGO WEBSITES"

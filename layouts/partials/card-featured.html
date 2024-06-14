@@ -36,14 +36,17 @@
         {{- end }}
         {{ .Title }}
       </h2>
+      <div class=" bg-gradient-to-br dark:from-rose-900 dark:to-teal-900 from-rose-100 to-teal-100">
+
       <span class="details pl-2 mt-4 inline-block">
         {{/*  I am currenly not doing anything for author since it is only me but for Ryder author with be a taxonomy item and included in every page  */}}
-        <span class="{{ with $hideAuthor }}hidden{{ end }}" itemprop="author" itemscope="" itemtype="http://schema.org/Person">By <span class="author" itemprop="name">{{ .Site.Params.author.name }}</span></span>
+        <span class="{{ with $hideAuthor }}hidden{{ end }}" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span class="author" itemprop="name">{{ .Site.Params.author.name }}</span></span>
         {{ with $articleSection }}In <a href="{{ site.BaseURL }}{{ $articleLink }}"><span itemprop="articleSection" class="source font-bold capitalize">{{ . }}</span></a>{{ end }}
         On <time itemprop="datePublished" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
       </span>
       <div itemprop="articleBody" class="articleBody px-3 pb-4">
         {{ or .Params.homeFeatureSummary .Summary }}
+      </div>
       </div>
     </div>
   </div>
