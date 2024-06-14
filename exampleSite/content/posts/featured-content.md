@@ -2,6 +2,7 @@
 title = 'Featured Content'
 date = 2024-02-21T15:03:39-08:00
 homeFeature = true
+categories = ["home page"]
 homeFeatureTitle = "Featured Content"
 homeFeatureIcon = "fa-solid fa-om"
 Weight = 9999
@@ -10,7 +11,11 @@ Weight = 9999
 
 By adding these params to your front matter you can have the post show up in a special box on the home page of the website.
 
+{{< cta-button button_label="a test of relref" button_relref="/posts/alerts" >}}
+
 ## Front Matter
+
+<!--more-->
 
 ```
 +++
