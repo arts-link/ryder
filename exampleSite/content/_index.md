@@ -2,6 +2,7 @@
 title = 'The Ryder Theme'
 date = 2024-01-26T14:32:26-08:00
 homeFeature = true
+categories = ["home-page"]
 # [[cascade]]
 #   [cascade.twClasses]
 #     headerBackgroundFrameInner = ""
@@ -15,8 +16,7 @@ homeFeature = true
 
 ### Welcome to the Ryder theme example site!
 
-Get started and Learn more about The Ryder theme for Hugo websites over at GitHub.
-
+Get started and Learn more about The Ryder theme for Hugo websites over at GitHub. If you leave all of the content on this page, this top box will not show up.
 
 {{< cta-button 
   button_label="README file on github" 
