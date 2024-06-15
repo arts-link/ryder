@@ -1,7 +1,7 @@
 {{- define "main" }}
 
   {{ if and .Title .Content }}
-  <div class="p-4 flex-1 items-center justify-center">
+  <div class="p-2 flex-1 items-center justify-center">
     {{ partial "card-category-color.html" . }}
   </div>
   {{ end }}
@@ -15,7 +15,7 @@
   {{- $features := where $pages "Params.homeFeature" "eq" true }}
   {{ if $features }}
   {{ $featureHeader := site.Params.homePageFeedHeader }}
-    <div class="p-4 mx-auto grid grid-cols-1 gap-12 mb-5">
+    <div class="p-2 mx-auto grid grid-cols-1 gap-12 mb-5">
       {{ if $featureHeader }}
         <h2 class="lg:col-span-2 flex p-3 items-center mb-2 text-3xl uppercase">{{ $featureHeader }}</h2>
       {{ end }}
@@ -27,7 +27,7 @@
 
   {{- $feed := where $pages "Params.homeFeature" "ne" true }}
   {{ $feedHeader := default "Latest stuff" (site.Params.homePageFeedHeader) }}
-  <div class="lg:grid-cols-2  p-4 mx-auto grid grid-cols-1 gap-12 mb-5">
+  <div class="lg:grid-cols-2 p-2 mx-auto grid grid-cols-1 gap-12 mb-5">
     <h2 class="lg:col-span-2 flex p-3 items-center mb-2 text-3xl uppercase">{{ $feedHeader }}</h2>
     {{ $excludedSections := site.Params.excludedSections | default slice }}
     {{ $excludedCategories := site.Params.excludedCategories | default slice }}
@@ -60,6 +60,8 @@
     {{- end }}
 
     {{ range (.Paginate $filteredPages).Pages }}
+    {{/*  {{ index .Params.categories 0 }}
+    {{ .Section }}  */}}
       {{- partial "card-category-color.html" . }}
     {{- end }}
     {{ template "_internal/pagination.html" . }}
