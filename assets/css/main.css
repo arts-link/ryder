@@ -86,6 +86,10 @@
     }
   }
   .footer-menu-nav {
+    .main-menu-ul > li {
+      @apply border-b border-zinc-800;
+      @apply flex items-center justify-center 
+    }
     .child-nav-container > ul {
       @apply ml-2
     }

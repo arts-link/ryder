@@ -2,20 +2,20 @@
 <div class="flex flex-wrap mb-auto max-w-fit">
   {{ range sort . "weight" }}
   {{ if and .icon .link }}
-  <div x-data="{ show: false }" class="relative p-4">
+  <div x-data="{ show: false }" class="relative p-3">
     <a class="hover:underline cursor-pointer text-2xl" @mouseenter="show = true" @mouseleave="show = false" href="{{ .link | safeURL }}" aria-label="{{ .title }}" title="{{ .title }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} {{ if .type }}type="{{ .type }}"{{ end }}>
       <i class=" {{ .icon }}"></i>
     </a>
     <div x-show="show" x-transition 
          @mouseenter="show = true" @mouseleave="show = false" 
-         class="absolute z-10 p-2 bg-white border rounded shadow-lg transform -translate-x-1/2 left-1/2"
+         class="absolute z-10 p-2 bg-neutral-100 text-neutral-900 border rounded shadow-lg transform -translate-x-1/2 left-1/2"
          :class="{ 'bottom-full mb-2': $refs.tooltip.getBoundingClientRect().top > 50, 'top-full mt-2': $refs.tooltip.getBoundingClientRect().top <= 50 }"
          x-ref="tooltip">
       <div class="relative">
         <div class="text-center">{{ .title }}</div>
         <div class="absolute left-1/2 transform -translate-x-1/2"
              :class="{ 'top-full mt-1': $refs.tooltip.getBoundingClientRect().top <= 50, 'bottom-0 mb-1': $refs.tooltip.getBoundingClientRect().top > 50 }">
-          <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" 
+          <svg class="w-4 h-4 text-neutral-100" viewBox="0 0 24 24" 
                :class="{ 'rotate-180': $refs.tooltip.getBoundingClientRect().top > 50 }">
             <path d="M12 0L24 24H0z" />
           </svg>

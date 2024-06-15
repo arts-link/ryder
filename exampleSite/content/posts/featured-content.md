@@ -2,7 +2,6 @@
 title = 'Featured Content'
 date = 2024-02-21T15:03:39-08:00
 homeFeature = true
-categories = ["home page"]
 homeFeatureTitle = "Featured Content"
 homeFeatureIcon = "fa-solid fa-om"
 Weight = 9999

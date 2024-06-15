@@ -2,6 +2,7 @@
 title = 'The Ryder Theme'
 date = 2024-01-26T14:32:26-08:00
 homeFeature = true
+homeFeatureIcon = "fa-solid fa-shield-dog"
 categories = ["home-page"]
 # [[cascade]]
 #   [cascade.twClasses]
