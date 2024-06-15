@@ -1,5 +1,5 @@
 {{ with .Site.Data.social.main }}
-<div class="flex flex-wrap mb-auto max-w-fit">
+<div class="flex flex-wrap mb-auto max-w-fit items-center justify-center text-center">
   {{ range sort . "weight" }}
   {{ if and .icon .link }}
   <div x-data="{ show: false }" class="relative p-3">

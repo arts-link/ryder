@@ -27,8 +27,8 @@
 
   {{- $feed := where $pages "Params.homeFeature" "ne" true }}
   {{ $feedHeader := default "Latest stuff" (site.Params.homePageFeedHeader) }}
-  <div class="lg:grid-cols-2 p-2 mx-auto grid grid-cols-1 gap-12 mb-5">
-    <h2 class="lg:col-span-2 flex p-3 items-center mb-2 text-3xl uppercase">{{ $feedHeader }}</h2>
+  <div class="md:grid-cols-2 p-2 mx-auto grid grid-cols-1 gap-12 mb-5">
+    <h2 class="md:col-span-2 flex p-3 items-center mb-2 text-3xl uppercase">{{ $feedHeader }}</h2>
     {{ $excludedSections := site.Params.excludedSections | default slice }}
     {{ $excludedCategories := site.Params.excludedCategories | default slice }}
     {{ $excludedTags := site.Params.excludedTags | default slice }}
@@ -64,7 +64,7 @@
     {{ .Section }}  */}}
       {{- partial "card-category-color.html" . }}
     {{- end }}
-    {{ template "_internal/pagination.html" . }}
+      {{ template "_internal/pagination.html" . }}
   </div>
     
 {{ end }}
