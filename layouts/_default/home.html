@@ -2,7 +2,16 @@
 
   {{ if and .Title .Content }}
   <div class="p-2 flex-1 items-center justify-center">
-    {{ partial "card-category-color.html" . }}
+    <h2 itemprop="headline" class="text-2xl p-3 "> 
+      {{- if .Params.homeFeatureIcon }}
+        <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>
+      {{- end }}
+      {{ .Title }}
+    </h2>
+    <div itemprop="articleBody" class="articleBody px-3 pb-4">
+      {{ .Content }}
+    </div>
+    {{/*  {{ partial "card-category-color.html" . }}  */}}
   </div>
   {{ end }}
 
@@ -14,10 +23,10 @@
   {{- $pages = where $pages "Permalink" "ne" $current }}
   {{- $features := where $pages "Params.homeFeature" "eq" true }}
   {{ if $features }}
-  {{ $featureHeader := site.Params.homePageFeedHeader }}
-    <div class="p-2 mx-auto grid grid-cols-1 gap-12 mb-5">
+  {{ $featureHeader := site.Params.homePageFeatureHeader }}
+    <div class="p-2 mx-auto grid md:grid-cols-2 gap-12 mb-5">
       {{ if $featureHeader }}
-        <h2 class="lg:col-span-2 flex p-3 items-center mb-2 text-3xl uppercase">{{ $featureHeader }}</h2>
+        <h2 class="md:col-span-2 flex p-3 items-center mb-2 text-3xl uppercase">{{ $featureHeader }}</h2>
       {{ end }}
       {{- range $features }}
         {{- partial "card-featured.html" . }} 
@@ -25,46 +34,47 @@
     </div>
   {{ end }}
 
-  {{- $feed := where $pages "Params.homeFeature" "ne" true }}
-  {{ $feedHeader := default "Latest stuff" (site.Params.homePageFeedHeader) }}
-  <div class="md:grid-cols-2 p-2 mx-auto grid grid-cols-1 gap-12 mb-5">
-    <h2 class="md:col-span-2 flex p-3 items-center mb-2 text-3xl uppercase">{{ $feedHeader }}</h2>
-    {{ $excludedSections := site.Params.excludedSections | default slice }}
-    {{ $excludedCategories := site.Params.excludedCategories | default slice }}
-    {{ $excludedTags := site.Params.excludedTags | default slice }}
-    {{- $filteredPages := slice -}}
-    {{- range $feed.ByLastmod.Reverse }}
-      {{- $excludePage := false -}}
-      {{- range .Params.categories }}
-        {{- if in $excludedCategories . }}
-          {{- $excludePage = true -}}
-          {{- break -}}
+  {{ if ne true site.Params.hideHomeFeed }}
+    {{- $feed := where $pages "Params.homeFeature" "ne" true }}
+    {{ $feedHeader := default "Latest stuff" (site.Params.homePageFeedHeader) }}
+    <div class="md:grid-cols-2 p-2 mx-auto grid grid-cols-1 gap-12 mb-5">
+      <h2 class="md:col-span-2 flex p-3 items-center mb-2 text-3xl uppercase">{{ $feedHeader }}</h2>
+      {{ $excludedSections := site.Params.excludedSections | default slice }}
+      {{ $excludedCategories := site.Params.excludedCategories | default slice }}
+      {{ $excludedTags := site.Params.excludedTags | default slice }}
+      {{- $filteredPages := slice -}}
+      {{- range $feed.ByLastmod.Reverse }}
+        {{- $excludePage := false -}}
+        {{- range .Params.categories }}
+          {{- if in $excludedCategories . }}
+            {{- $excludePage = true -}}
+            {{- break -}}
+          {{- end }}
         {{- end }}
-      {{- end }}
-      {{- range .Params.tags }}
-        {{- if in $excludedTags . }}
-          {{- $excludePage = true -}}
-          {{- break -}}
+        {{- range .Params.tags }}
+          {{- if in $excludedTags . }}
+            {{- $excludePage = true -}}
+            {{- break -}}
+          {{- end }}
         {{- end }}
+        {{- if $excludePage }}
+          {{- continue -}}
+        {{- end }}
+        {{- if in $excludedSections .Section }}
+          {{- continue }}
+        {{- end }}
+        {{- if eq .Summary "" }}
+          {{- continue }}
+        {{- end }}
+        {{- $filteredPages = $filteredPages | append . -}}
       {{- end }}
-      {{- if $excludePage }}
-        {{- continue -}}
-      {{- end }}
-      {{- if in $excludedSections .Section }}
-        {{- continue }}
-      {{- end }}
-      {{- if eq .Summary "" }}
-        {{- continue }}
-      {{- end }}
-      {{- $filteredPages = $filteredPages | append . -}}
-    {{- end }}
 
-    {{ range (.Paginate $filteredPages).Pages }}
-    {{/*  {{ index .Params.categories 0 }}
-    {{ .Section }}  */}}
-      {{- partial "card-category-color.html" . }}
-    {{- end }}
-      {{ template "_internal/pagination.html" . }}
-  </div>
-    
+      {{ range (.Paginate $filteredPages).Pages }}
+      {{/*  {{ index .Params.categories 0 }}
+      {{ .Section }}  */}}
+        {{- partial "card-category-color.html" . }}
+      {{- end }}
+        {{ template "_internal/pagination.html" . }}
+    </div>
+  {{ end }}
 {{ end }}

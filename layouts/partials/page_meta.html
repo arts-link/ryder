@@ -1,12 +1,13 @@
 {{/*  {{.GitInfo | jsonify}}  */}}
+{{/*  {{ printf "%#v" .GitInfo }}  */}}
 {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
 {{ $dateHuman := .Date | time.Format ":date_long" }}
 {{ $dateLastmodMachine := .Lastmod | time.Format "2006-01-02T15:04:05-07:00" }}
 {{ $dateLastmodHuman := .Lastmod | time.Format ":date_long" }}
-  {{/*  {{ printf "%#v" .GitInfo }}  */}}
-{{ $hash1 := "Commit" }}
-{{ $hash2 := "History" }}
-{{ $hash3 := "Blame" }}
+{{ $daRepo := default "https://github.com/arts-link/ryder" site.Params.repository }}
+{{ $hash1 := "-" }}
+{{ $hash2 := "-" }}
+{{ $hash3 := "-" }}
 {{ $hashlink := "nope" }}
 {{ $daPL := .RelPermalink }}
 {{ $daFP := "" }}
