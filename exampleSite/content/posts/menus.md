@@ -12,7 +12,11 @@ tags = [
 # draft = true
 +++
 
+## This is one way to add a menu
+
 I modified the default menu.html partial sample code from the hugo docs to use the tailwindcss `group-hover` syntax. I made the children menu inside a container div so it is a sibling to the main anchor and on hover it appears. Still needs style work.
+
+<!--more-->
 
 I use front matter to create the simple menu here.
 

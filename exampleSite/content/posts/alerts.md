@@ -12,6 +12,12 @@ tags = ["alerts","banners"]
 
 +++
 
+## Create alerts as shortcode or partial or in hugo.toml for global announcements.
+
+{{< alert-wrapper alertType="info" alertTitle="Make it known" alertMessage="Alerts are fun to use for all!" dismissable=true >}}
+
+<!--more-->
+
 ## The global alert
 
 This is setup in your `hugo.toml` configuration file. Multiple banners will be displayed for however many `[[params.alphaAlert]]` blocks you configure. 
