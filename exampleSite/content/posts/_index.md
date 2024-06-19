@@ -14,4 +14,4 @@ enableComments = false
 +++
 
 
-A list of all your content under posts will go here on this paginated section. If you only want to show the posts, just have no content on the `index.md` file.
+A list of all your content under posts will go here on this paginated section. If you only want to show the posts, just have no content on the `_index.md` file.
