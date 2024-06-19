@@ -7,9 +7,8 @@ summaryLength = 15
 enableRobotsTXT = true
 copyright = "©️ Ryder Theme 2024"
 enableEmoji = true
-# enableGitInfo = true
-
-# paginate = 4
+enableGitInfo = true
+paginate = 80
 
 # !!! exampleSite only, you may need to delete the line: `themesDir: ../../` 
 themesDir= "../../"
