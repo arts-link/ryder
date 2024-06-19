@@ -74,7 +74,9 @@
       {{ .Section }}  */}}
         {{- partial "card-category-color.html" . }}
       {{- end }}
-        {{ template "_internal/pagination.html" . }}
+        <div class="md:col-span-2 flex p-3 justify-center items-center">
+          {{ template "_internal/pagination.html" . }}
+        </div>
     </div>
   {{ end }}
 {{ end }}
