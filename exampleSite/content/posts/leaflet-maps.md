@@ -18,7 +18,17 @@ You can add a leaflet map to your website through the use of the `leaflet` short
 
 <!--more-->
 
+## Shortcode
+
 {{< highlight go-html-template >}}
-{{</* leaflet id="map1" lat="33.966613" lon="-118.426178" zoom="13.5" markerLat="33.9716" markerLon="-118.4363" markerPopup="Green Space right by LAX!" */>}}
+{{</* leaflet 
+  id="map1" 
+  lat="33.966613" 
+  lon="-118.426178" 
+  zoom="13.5" 
+  markerLat="33.9716" 
+  markerLon="-118.4363" 
+  markerPopup="Green Space right by LAX!" 
+*/>}}
 {{< /highlight >}}
 
