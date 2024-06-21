@@ -28,5 +28,5 @@ Get started and Learn more about The Ryder theme for Hugo websites over at GitHu
 
 Here is the theme namesake:
   {{< picture 
-    src="images/ryder-theme-og.jpg"
+    src="images/ryder-theme-og.webp"
   >}}

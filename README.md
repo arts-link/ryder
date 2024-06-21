@@ -32,7 +32,7 @@ hugo server -D
 v0.1 - This theme is pretty barebones, with a few additions to get things setup quickly.
 
 I decided to name it after my late friend and companion, the rhodesian ridgeback / mastiff dog named Ryder.
-![ryder](https://arts-link.github.io/ryder/images/ryder-theme-og.jpg)
+![ryder](https://arts-link.github.io/ryder/images/ryder-theme-og.webp)
 
 ## Demo Site
 
