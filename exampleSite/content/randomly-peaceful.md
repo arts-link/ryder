@@ -5,7 +5,7 @@ date = 2024-01-31T14:32:26-08:00
 type = 'hidden-home'
 randomizeBackground = true
 # enableDebugPanel = true 
-
+categories = ['home-page']
 [menu]
  [menu.main]
   parent = 'peaceful'

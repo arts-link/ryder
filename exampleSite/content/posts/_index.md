@@ -13,5 +13,6 @@ enableComments = false
   identifier = 'posts'
 +++
 
+A list of all your content under posts will go here on this paginated section. If you only want to show the posts, just have no content on the `_index.md` file, or remove it completely if you don't need to set any front matter variables.
 
-A list of all your content under posts will go here on this paginated section. If you only want to show the posts, just have no content on the `_index.md` file.
+<!--more-->

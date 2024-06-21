@@ -21,10 +21,10 @@
             <time datetime="{{ $dateMachine }}" class="{{- if ne site.Params.showDate true }}hidden{{- end }}">{{ $dateHuman }}</time>
         </div>
       </header>
-      <div class=" {{ if .Params.hideAsideBar }}md:col-span-12{{ else }}md:col-span-10{{ end }} prose max-w-max lg:prose-lg dark:prose-invert ">
+      <div class="w-full {{ if .Params.hideAsideBar }}md:col-span-12{{ else }}md:col-span-10{{ end }} prose max-w-max-screen-xl min-w-full lg:prose-lg dark:prose-invert ">
         {{ .Content |  safeHTML }}
       </div>
-      <aside class=" max-w-max {{ if ne .Params.hideAsideBar true}}md:col-span-2{{ else }}md:col-span-12{{ end }} relative">
+      <aside class="w-full {{ if .Params.hideAsideBar }}md:col-span-12{{ else }}md:col-span-2{{ end }} relative">
         {{/* This did not end up being the quick solution to what i thought i might be trying to be solving  
         {{ with or .Next .Prev }}
         <div class="not-prose flex justify-between w-full border-2">
@@ -36,11 +36,11 @@
           {{ end }}
         </div>
         {{ end }}  */}}
-        {{ if .Params.tags }}
+        {{- if .Params.tags }}
           <div class="not-prose">
             {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
           </div>
-        {{ end }}
+        {{- end }}
         
         {{- if .Params.showToc }}
         <div class="{{ if ne .Params.hideAsideBar true}}md:sticky md:block{{ end }} top-0 flex-auto py-4 hidden">

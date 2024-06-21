@@ -6,8 +6,9 @@
 {{- $markerLon := .Get "markerLon" | default "-0.09" }} 
 {{- $markerPopup := .Get "markerPopup" | default "You are Here." }}
 {{- $divHeight := .Get "divHeight" | default "450px" }}
+<div class="w-full">
 
-<div id="{{ $id }}" style="height: {{ $divHeight }};"></div>
+<div id="{{ $id }}" style="height: {{ $divHeight }};" class="w-full"></div>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     if (window.L) {
@@ -32,4 +33,6 @@
     }
   });
 </script>
-<div class="hidden">Debug Info: ID={{ .Get "id" }}, Lat={{ .Get "lat" }}, Lon={{ .Get "lon" }}, Zoom={{ .Get "zoom" }}</div>
+{{/*  <div class="hidden">Debug Info: ID={{ .Get "id" }}, Lat={{ .Get "lat" }}, Lon={{ .Get "lon" }}, Zoom={{ .Get "zoom" }}</div>  */}}
+
+</div>

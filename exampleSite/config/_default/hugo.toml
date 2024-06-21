@@ -21,7 +21,7 @@ themesDir= "../../"
   excludedTags = ["excluded"]
   # showDate = true 
   hideAuthor = false
-  showDarkToggle = false 
+  showDarkToggle = true
   loadLeaflet = true 
   og_image_default = 'images/ryder-theme-og.jpg'
   # homePageFeedHeader = "the new style"
@@ -30,6 +30,7 @@ themesDir= "../../"
   logo_tagline = "FOR HUGO WEBSITES"
   logo_fontClass = 'font-titillium'
   repository = "https://github.com/arts-link/ryder"
+  articleBackgroundStyle = "bg-gradient-to-l from-blue-100 to-green-100 dark:from-blue-800 dark:to-green-800"
 
   [params.author]
     email = 'ben@benstrawbridge.com'

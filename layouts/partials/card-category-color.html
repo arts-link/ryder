@@ -19,6 +19,7 @@
   {{ $articleSection = $mainCategory }}
   {{ $articleLink = add "categories/" $articleSection }}
   {{ with .Site.GetPage (print "/categories/" $mainCategory) }}
+    {{ $articleSection = .Title }}
     {{ with .Params.cardCategoryColorsDefault }}
       {{ $headerStyle = . }}
     {{ end }}

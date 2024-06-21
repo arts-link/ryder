@@ -2,9 +2,11 @@
 title = 'Leaflet Maps'
 date = 2024-05-10T14:29:11-07:00
 homeFeature = true
+homeFeatureWide = true
 homeFeatureIcon = "fa-solid fa-map-location-dot"
 categories = ["maps"]
 tags = ["maps"]
+hideAsideBar = true
 # draft = true 
 [menu]
  [menu.main]
@@ -12,13 +14,20 @@ tags = ["maps"]
   parent = 'posts'
 +++
 
-You can add a leaflet map to your website through the use of the `leaflet` shortcode.
+## Maps on a Hugo website made easy!
+
+{{< lat-long-box 
+  latitude="39.9057" 
+  longitude="-75.1665"
+>}}
+
+Adding a map to your hugo website becomes easy with the `leaflet` shortcode. You can add a box to display the lat and long as well through the use of the `lat-long-box` shortcode.
 
 {{< leaflet id="bankit" lat="39.9057" lon="-75.1665" zoom="16.5" markerLat="39.9057" markerLon="-75.1665" markerPopup="Life at the Bank!" divHeight="450px" >}} 
 
 <!--more-->
 
-## Shortcode
+## Leaflet Shortcode
 
 {{< highlight go-html-template >}}
 {{</* leaflet 
@@ -32,3 +41,13 @@ You can add a leaflet map to your website through the use of the `leaflet` short
 */>}}
 {{< /highlight >}}
 
+## Lat-Long Box Shortcode 
+
+Add this shortcode to include the lat-long display box with minutes and seconds.
+
+{{< highlight go-html-template >}}
+{{</* lat-long-box 
+  latitude="39.9057" 
+  longitude="-75.1665"
+*/>}}
+{{< /highlight >}}

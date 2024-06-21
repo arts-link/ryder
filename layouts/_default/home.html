@@ -24,14 +24,14 @@
   {{- $features := where $pages "Params.homeFeature" "eq" true }}
   {{ if $features }}
   {{ $featureHeader := site.Params.homePageFeatureHeader }}
-    <div class="p-2 mx-auto grid md:grid-cols-2 gap-12 mb-5">
-      {{ if $featureHeader }}
-        <h2 class="md:col-span-2 flex p-3 items-center mb-2 text-3xl uppercase">{{ $featureHeader }}</h2>
-      {{ end }}
-      {{- range $features }}
-        {{- partial "card-featured.html" . }} 
-      {{- end }}
-    </div>
+  {{ if $featureHeader }}
+    <h2 class="flex p-3 items-center mb-2 text-3xl uppercase">{{ $featureHeader }}</h2>
+  {{ end }}
+  <div class="p-2 mx-auto grid md:grid-cols-2 gap-12 mb-5">
+  {{- range $features }}
+    {{- partial "card-featured.html" . }} 
+  {{- end }}
+  </div>
   {{ end }}
 
   {{ if ne true site.Params.hideHomeFeed }}

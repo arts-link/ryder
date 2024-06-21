@@ -1,6 +1,7 @@
 +++
 title = 'Contact'
 date = 2024-02-21T16:17:49-08:00
+categories = ['home-page']
 +++
 
 ## Hello :wave:

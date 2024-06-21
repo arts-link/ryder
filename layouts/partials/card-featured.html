@@ -14,19 +14,22 @@
 {{ $articleLink := .Section }}
 
 {{ $headerStyle := default "bg-gradient-to-r from-zinc-400 to-zinc-300" (.Param "cardCategoryColorsDefault") }}
+{{ $articleBackgroundStyle := default "bg-gradient-to-br dark:from-rose-900 dark:to-teal-900 from-rose-100 to-teal-100" (.Param "articleBackgroundStyle") }}
 {{ if .Params.categories }}
   {{ $mainCategory := index .Params.categories 0 }}
   {{ $articleSection = $mainCategory }}
   {{ $articleLink = add "categories/" $articleSection }}
   {{ with .Site.GetPage (print "/categories/" $mainCategory) }}
+    {{ with .Params.articleBackgroundStyle }}
+      {{ $articleBackgroundStyle = . }}
+    {{ end }}
     {{ with .Params.cardCategoryColorsDefault }}
       {{ $headerStyle = . }}
     {{ end }}
   {{ end }}
 {{ end }}
 
-<div itemscope="" itemtype="http://schema.org/Article" class="article">
-  
+<div itemscope="" itemtype="http://schema.org/Article" class="article {{ with .Param "homeFeatureWide" }}md:col-span-2 md:order-first{{ else }}md:order-last{{ end }} ">
   <div class="article-content relative p-1 rounded-t-xl {{ $headerStyle }}">
     <div class="w-full h-full bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
       <a itemprop="url" aria-label="{{ .Title }}" href="{{ .RelPermalink }}" class="link-overlay"> </a>
@@ -36,7 +39,7 @@
         {{- end }}
         {{ .Title }}
       </h2>
-      <div class=" bg-gradient-to-br dark:from-rose-900 dark:to-teal-900 from-rose-100 to-teal-100">
+      <div class="{{ $articleBackgroundStyle }}">
 
       <span class="details pl-2 mt-4 inline-block">
         {{/*  I am currenly not doing anything for author since it is only me but for Ryder author with be a taxonomy item and included in every page  */}}
