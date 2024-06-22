@@ -16,5 +16,5 @@
 {{- end }}
 <!-- Preload the LCP image with a high fetchpriority so it starts loading with the stylesheet. -->
 {{ $ryder := resources.Get "images/ryder-theme-og.webp"}}
-{{ $ryder.RelPermalink }}
+{{/*  {{ $ryder.RelPermalink }}  */}}
 <link rel="preload" fetchpriority="high" as="image" href="{{ $ryder.RelPermalink }}" type="image/webp">
