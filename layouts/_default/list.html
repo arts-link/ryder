@@ -15,7 +15,7 @@
       {{- partial "taxonomy-cloud.html" .}}
     </div>
   {{ else }}
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-2">
+  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-2">
     {{ $myCollection := .Pages }}
     {{ if eq .Params.listRecursive true }}
       {{ $myCollection = .RegularPagesRecursive }}

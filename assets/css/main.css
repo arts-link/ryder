@@ -18,11 +18,11 @@
   }
 
   h3 {
-    @apply text-lg font-bold mt-4 mb-4;
+    @apply text-lg font-bold my-2;
   }
 
   h4 {
-    @apply text-base font-bold mt-3 mb-3;
+    @apply text-base font-bold my-1;
   }
   /* ... */
 }
