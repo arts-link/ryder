@@ -1,0 +1,30 @@
+{{/*  
+for example::
+
+*/}}
+{{ $button_label := default "Go!" .button_label }}
+{{ $button_class := default "bg-yellow-400 text-black font-medium py-2 mt-4 px-4 rounded-full border-2 border-yellow-500 hover:bg-yellow-500 hover:border-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 no-underline inline-block text-center break-words" .button_class }}
+{{ $button_relref := .button_relref }}
+{{ $button_href := .button_href }}
+{{ $button_icon := .button_icon }}
+
+{{ if $button_relref }}
+  {{/*  {{ $button_href = relref $button_relref }}  */}}
+  {{ $opts := dict "path" $button_relref }}
+  {{ $button_href = .RelRef $opts }}
+{{ end }}
+
+
+{{ $headerStyle := default "" (.Page.Params.cardCategoryColorsDefault) }}
+{{ if .Page.Params.categories }}
+  {{ $mainCategory := index .Page.Params.categories 0 }}
+  {{ with .Site.GetPage (print "/categories/" $mainCategory) }}
+    {{ with .Params.cardCategoryColorsDefault }}
+      {{ $headerStyle = . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+<a class="z-10 relative block w-max" href="{{ $button_href }}">
+  <span class="{{ $headerStyle }} {{ $button_class }}">{{ with $button_icon }}<i class="{{ . }}"></i>{{ end }}{{ with $button_label }}{{ . }} {{ end }}</span>
+</a>

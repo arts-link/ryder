@@ -1,0 +1,27 @@
+{{/* 
+Set variables in either hugo.toml OR front matter to configure you header. 
+By default it will have a background gradient in cayan.
+*/}}
+{{/*  make sure to remember you point tailwind.config.js to your config file  */}}
+{{ $headerClass := split "bg-gradient-to-r from-cyan-500 to-cyan-800" " " }} 
+{{ $headerBackgroundFrameInner := "" }}
+{{ with or (.Param "twClasses.headerBackgroundFrameOuter") (.Param "headerGradientClasses") }}
+    {{ $headerClass = split . " " }}
+{{ end }}
+{{ with .Param "twClasses.navbar_fixed" }}
+{{ $headerClass = $headerClass | append . }}
+{{ end }}
+{{ $headerClass = delimit $headerClass " " }}
+{{ with .Param "twClasses.headerBackgroundFrameInner" }}
+{{ $headerBackgroundFrameInner = . }}
+{{ end }}
+{{/* 
+    Not sure I'll use those but leave'm for now
+*/}}
+
+<header class=" w-full">
+    <div class="w-1/2 mx-auto flex flex-col items-center"> 
+        {{- partial "logo.html" . }}
+        {{- partial "menu-fun.html" (dict "menuID" "main" "page" . "shade" "rose") }}
+    </div>
+</header>

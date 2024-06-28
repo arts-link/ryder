@@ -1,6 +1,6 @@
 {{/*  
 for example::
-{{< amazon-associate-link 
+{{< cta-button 
   button_label = "Label in the button" 
   button_class = "Label in the button" 
   button_relref = "/path/for/relref" 
@@ -12,6 +12,8 @@ for example::
 {{ $button_class := default "bg-yellow-400 text-black font-medium py-2 mt-4 px-4 rounded-full border-2 border-yellow-500 hover:bg-yellow-500 hover:border-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 no-underline inline-block text-center break-words" (.Get "button_class") }}
 {{ $button_relref := .Get "button_relref" }}
 {{ $button_href := .Get "button_href" }}
+{{ $button_icon := .Get "button_icon" }}
+
 {{ if $button_relref }}
   {{/*  {{ $button_href = relref $button_relref }}  */}}
   {{ $opts := dict "path" $button_relref }}
@@ -30,5 +32,5 @@ for example::
 {{ end }}
 
 <a class="z-10 relative" href="{{ $button_href }}">
-  <span class="{{ $button_class }} {{ $headerStyle }}">{{ with $button_label }}{{ . }} {{ end }}</span>
+  <span class="{{ $button_class }} {{ $headerStyle }}">{{ with $button_icon }}<i class="{{ . }}"></i>{{ end }}{{ with $button_label }}{{ . }} {{ end }}</span>
 </a>
