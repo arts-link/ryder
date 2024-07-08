@@ -1,6 +1,6 @@
 [![exampleSite build](https://github.com/arts-link/ryder/actions/workflows/hugo.yml/badge.svg)](https://arts-link.github.io/ryder/)
 
-# TLDR
+# TLDR;
 
 If your in a hurry and like to skip the words, let's just get in and out quickly
 
