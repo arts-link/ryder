@@ -22,7 +22,10 @@ tags = [
 
 To create a custom taxonomy list page like this one, just create a directory for the taxonomy, in this case `categories` and the term, here `maps` and create an `index.md` in it with front matter like this:
 
-{{< cta-button button_label="a lot of fun stuff over there" button_relref="/posts/alerts" >}}
+{{< cta-button 
+  button_label="a lot of fun stuff over there" 
+  button_relref="/posts/alerts" 
+>}}
 
 <!--more-->
 

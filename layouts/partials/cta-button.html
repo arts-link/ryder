@@ -17,11 +17,8 @@ for example::
 {{ end }}
 
 {{ if $button_relref }}
-  {{/*  {{ $button_href = relref $button_relref }}  */}}
-  {{ $opts := dict "path" $button_relref }}
-  {{ $button_href = .RelRef $opts }}
+  {{ $button_href = relref .page $button_relref }}
 {{ end }}
-
 
 {{ $headerStyle := default "" (.Page.Params.cardCategoryColorsDefault) }}
 {{ if .Page.Params.categories }}
