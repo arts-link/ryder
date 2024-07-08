@@ -2,11 +2,19 @@
 for example::
 
 */}}
+{{ $button_type := .button_type }}
 {{ $button_label := default "Go!" .button_label }}
 {{ $button_class := default "bg-yellow-400 text-black font-medium py-2 mt-4 px-4 rounded-full border-2 border-yellow-500 hover:bg-yellow-500 hover:border-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 no-underline inline-block text-center break-words" .button_class }}
 {{ $button_relref := .button_relref }}
 {{ $button_href := .button_href }}
 {{ $button_icon := .button_icon }}
+
+{{ $spotify_icon := "fab fa-spotify text-2xl align-middle pr-2" }}
+{{ $spotify_class := "text-white bg-gradient-to-r from-green-500 to-green-600 hover:bg-gradient-to-r hover:from-green-600 hover:to-green-700 py-2 px-4 rounded-lg transition duration-300 no-underline inline-block text-center break-words" }}
+{{ if eq $button_type "spotify" }}
+  {{ $button_icon = $spotify_icon }}
+  {{ $button_class = $spotify_class }}
+{{ end }}
 
 {{ if $button_relref }}
   {{/*  {{ $button_href = relref $button_relref }}  */}}
