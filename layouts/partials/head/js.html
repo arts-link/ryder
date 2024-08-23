@@ -16,6 +16,7 @@
   {{- end }}
 {{- end }}
 {{- if hugo.IsProduction | or (eq site.Params.env "production") }}
+  {{ partial "plausible.html" . }}
   {{ template "_internal/google_analytics.html" . }}
 {{- end -}}
 {{/*  <script src="https://kit.fontawesome.com/cdef052a32.js" crossorigin="anonymous"></script>  */}}
