@@ -1,11 +1,14 @@
-{{ with site.Params.plausible_domain }}
+{{ $plausible := .Site.Params.plausible_domain }}
 
-  {{ if . | string | is "string" }}
-    {{ $domain := . }}
+{{ if $plausible }}
+  {{ if (string $plausible) }}
+    {{/* Handle as a string */}}
+    {{ $domain := $plausible }}
     {{ $advanced := false }}
   {{ else }}
-    {{ $domain := .domain }}
-    {{ $advanced := .advanced | default false }}
+    {{/* Handle as a map */}}
+    {{ $domain := $plausible.domain }}
+    {{ $advanced := $plausible.advanced | default false }}
   {{ end }}
 
   {{ if $advanced }}
