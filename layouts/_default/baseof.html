@@ -2,6 +2,12 @@
 <html lang="{{ or site.Language.LanguageCode site.Language.Lang }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
 <head>
   {{ partial "head.html" . }}
+  {{ if eq .Kind "404" }}
+  {{ $advanced := site.Params.plausible_advanced }}
+  {{ if $advanced }}
+  <script>document.addEventListener('DOMContentLoaded', function () { plausible('404', { props: { path: document.location.pathname } }); });</script>
+  {{ end }}
+  {{ end }}
 </head>
 <body class="bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100 font-titillium">
   {{ if not hugo.IsProduction }}
