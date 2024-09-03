@@ -3,12 +3,9 @@
   {{ $domain := . }}
   {{ $advanced := false }}
 
-  {{ if .domain }}
+  {{ if (kindIs "map" .) }}
     {{ $domain = .domain }}
-  {{ end }}
-
-  {{ if .advanced }}
-    {{ $advanced = .advanced }}
+    {{ $advanced = .advanced | default false }}
   {{ end }}
 
   {{ if $advanced }}
