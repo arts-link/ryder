@@ -1,11 +1,11 @@
 {{ with site.Params.plausible_domain }}
 
-  {{ $domain := . }}
-  {{ $advanced := false }}
-
-  {{ if (kindIs "map" .) }}
-    {{ $domain = .domain }}
-    {{ $advanced = .advanced | default false }}
+  {{ if . | string | is "string" }}
+    {{ $domain := . }}
+    {{ $advanced := false }}
+  {{ else }}
+    {{ $domain := .domain }}
+    {{ $advanced := .advanced | default false }}
   {{ end }}
 
   {{ if $advanced }}
