@@ -1,20 +1,13 @@
-{{ $plausible := .Site.Params.plausible_domain }}
-
-{{ $domain := "" }}
-{{ $advanced := false }}
-
-{{ if (string $plausible) }}
-  {{/* Handle as a string */}}
-  {{ $domain = $plausible }}
-{{ else if (not (empty $plausible.domain)) }}
-  {{/* Handle as a map */}}
-  {{ $domain = $plausible.domain }}
-  {{ $advanced = $plausible.advanced | default false }}
-{{ end }}
-
-{{ if $advanced }}
-  <script defer data-domain="arts-link.com" src="https://plausible.io/js/script.hash.outbound-links.js"></script>
-  <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
-{{ else }}
-  <script defer data-domain="{{ $domain }}" src="https://plausible.io/js/plausible.js"></script>
+{{ if site.Params.plausible_domain }}
+  {{ if eq (kindOf site.Params.plausible_domain) "map" }}
+    {{ range $key, $value := site.Params.plausible_domain }}
+      {{ if eq $key "domain" }}
+        {{ $dataDomain := $value }}
+        <script defer data-domain="{{ $dataDomain }}" src="https://plausible.io/js/plausible.js"></script>
+      {{ end }}
+    {{ end }}
+  {{ else if eq (kindOf site.Params.plausible_domain) "string" }}
+    {{ $dataDomain := site.Params.plausible_domain }}
+    <script defer data-domain="{{ $dataDomain }}" src="https://plausible.io/js/plausible.js"></script>
+  {{ end }}
 {{ end }}
