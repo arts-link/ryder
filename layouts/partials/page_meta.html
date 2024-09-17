@@ -24,6 +24,7 @@
   {{- $hashlink = fmt.Printf "%s / %s / %s" $hash1 $hash2 $hash3 -}}
 {{ end }}
 
+{{ if .GitInfo }}
 <div>
   <!-- 
   DATE: {{ .Date}}/
@@ -40,3 +41,4 @@
 <div>
   <i class="fa-brands fa-github-alt"></i> {{ $hashlink | safe.HTML }}
 </div>
+{{ end }}
