@@ -5,18 +5,18 @@
 
 
 <footer class="border-t w-full mt-auto text-neutral-100 {{ $footerClass }} ">
-  <div class="flex justify-between ">
-    <div class="py-4 px-2 text-sm ">
+  <div class="flex w-full ">
+    <div class="py-4 px-2 w-1/3 text-sm ">
       {{- with .Site.Copyright | safeHTML }}
       <p class="flex items-center">{{ . }}</p>
       {{- end }}
       {{- partial "attribution.html" . }}
       {{- partial "page_meta.html" . }}
     </div>
-    <div class="py-4 px-2 text-sm">
+    <div class="py-4 px-2 w-1/3 text-sm">
       {{- partial "menu.html" (dict "menuID" "footer" "page" .) }} 
     </div>
-    <div class="flex justify-end text-xl ">
+    <div class="flex w-1/3 justify-end text-xl ">
       {{- partial "socialslist.html" . }}
       {{- if (.Param "showDarkToggle") }}
         {{- partial "dark-toggle.html" . }}
