@@ -57,6 +57,8 @@
     .main-menu-ul > li {
       @apply border-b border-sky-800;
       @apply text-sky-800;
+      @apply bg-neutral-100;
+      @apply p-2 rounded-md;
     }
     .main-menu-ul li .active,
     .main-menu-ul li .ancestor  {

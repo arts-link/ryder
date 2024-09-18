@@ -9,19 +9,23 @@ By default it will have a background gradient in cayan.
     {{ $headerClass = split . " " }}
 {{ end }}
 {{ with .Param "twClasses.navbar_fixed" }}
-{{ $headerClass = $headerClass | append . }}
+    {{ $headerClass = $headerClass | append . }}
 {{ end }}
 {{ $headerClass = delimit $headerClass " " }}
 {{ with .Param "twClasses.headerBackgroundFrameInner" }}
-{{ $headerBackgroundFrameInner = . }}
+    {{ $frameMargin := "m-3" }}
+    {{ $headerBackgroundFrameInner = printf `%s %s` . $frameMargin }}
+    {{/*  {{ printf `<tr><td class="key">%s</td><td class="type">%s</td><td class="value">` $key1 $type1 | safeHTML }}  */}}
 {{ end }}
 {{/* 
     Not sure I'll use those but leave'm for now
 */}}
 
-<header class=" w-full">
-    <div class="w-1/2 mx-auto flex flex-col items-center"> 
+<header class=" w-full {{ $headerClass }}">
+    <div class=" {{ $headerBackgroundFrameInner }}">
+    <div class="w-full mx-auto flex flex-col items-center"> 
         {{- partial "logo.html" . }}
         {{- partial "menu-fun.html" (dict "menuID" "main" "page" . "shade" "rose") }}
+    </div>
     </div>
 </header>

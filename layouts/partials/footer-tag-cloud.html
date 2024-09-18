@@ -10,17 +10,17 @@
       {{- with .Site.Copyright | safeHTML }}
         <p class="flex mx-auto items-center">{{ . }}</p>
       {{- end }}
-      {{- partial "attribution.html" . }}
-      {{- partial "page_meta.html" . }}
+      {{- partial "utils/attribution.html" . }}
+      {{- partial "utils/page_meta.html" . }}
       {{ if .Site.Menus.footer }}
         {{- partial "menu.html" (dict "menuID" "footer" "page" .) }} 
       {{ end }}
-      {{- partial "socialslist.html" . }}
+      {{- partial "utils/socialslist.html" . }}
       {{- if (.Param "showDarkToggle") }}
-        {{- partial "dark-toggle.html" . }}
+        {{- partial "utils/dark-toggle.html" . }}
       {{- end }}
       <div class="md:w-3/4 lg:w-2/3">
-        {{- partial "taxonomy-string.html" . }}
+        {{- partial "utils/taxonomy-string.html" . }}
       </div>
     </div>
     

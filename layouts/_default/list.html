@@ -4,10 +4,16 @@
 </div>
 <div class="p-2 max-w-screen-xl mx-auto">
   <header class="max-w-screen-xl prose lg:prose-xl dark:prose-invert">
-    <h1  class=" flex items-center">{{- if .Params.homeFeatureIcon }}
-    <i class="{{ .Params.homeFeatureIcon }} mr-2 text-4xl"></i>
-    {{- end }}
-    {{ .Title }}</h1>
+    {{ $headerClass := "" }}
+    {{ with .Param "twClasses.headerBackgroundFrameOuter" }}
+    {{ $headerClass = . }}
+    {{ end }}
+    <h1 class=" rounded-t-lg p-3 flex items-center {{ $headerClass }}">
+      {{- if .Params.homeFeatureIcon }}
+        <i class="{{ .Params.homeFeatureIcon }} mr-2 text-4xl"></i>
+      {{- end }}
+      {{ .Title }}
+    </h1>
     {{ .Content }}
   </header>
   {{ if eq .Kind "taxonomy" }}

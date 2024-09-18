@@ -16,3 +16,7 @@
 {{- partial "head/opengraph.html" . }}
 {{- partial "head/schema.html" . }}
 {{- partialCached "head/fonts.html" . }}
+{{ if eq .Kind "404" }}
+  {{ $advanced := site.Params.plausible_advanced }}
+  {{ if $advanced }} <script>document.addEventListener('DOMContentLoaded', function () { plausible('404', { props: { path: document.location.pathname } }); });</script> {{ end }}
+{{ end }}

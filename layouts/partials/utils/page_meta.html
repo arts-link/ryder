@@ -1,3 +1,4 @@
+
 {{/*  {{.GitInfo | jsonify}}  */}}
 {{/*  {{ printf "%#v" .GitInfo }}  */}}
 {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
@@ -17,28 +18,17 @@
   {{- $hash3 = fmt.Printf "<a href=\"%s/blame/main/content/%s\">%s</a>" site.Params.repository $daFP "Blame" -}}
 {{ end }}
 {{ with .GitInfo }}
-  <!-- <div>
-    <i class="fa-solid fa-hashtag"></i>: [{{ .Hash }}]
-  </div> -->
   {{- $hash1 = fmt.Printf "<a href=\"%s/commit/%s\">%s</a>" site.Params.repository .Hash .AbbreviatedHash -}}
   {{- $hashlink = fmt.Printf "%s / %s / %s" $hash1 $hash2 $hash3 -}}
 {{ end }}
-
-{{ if .GitInfo }}
-<div>
-  <!-- 
-  DATE: {{ .Date}}/
-  Human: {{ $dateHuman }}<br/>
-  LASTMOD: {{ .Lastmod}}/
-  Human: {{ $dateLastmodHuman }}<br/>
-  -->
-  <i class="fa-solid fa-calendar-days"></i> Published: <time datetime="{{ $dateMachine }}" class="">{{ $dateHuman }}</time>
-  {{/*  TODO only show lastmod if different...  */}}
-  {{ if ne .Lastmod .Date }}
-  (Last Modified: <time datetime="{{ $dateLastmodMachine }}" class="">{{ $dateLastmodHuman }}</time>)
-  {{ end }}
-</div>
-<div>
-  <i class="fa-brands fa-github-alt"></i> {{ $hashlink | safe.HTML }}
-</div>
+{{ if .Site.Params.ShowPubDate }}
+  <div>
+    {{ if ne .Lastmod .Date }} <i class="fa-solid fa-calendar-days"></i> Last Modified: <time datetime="{{ $dateLastmodMachine }}" class="">{{ $dateLastmodHuman }}</time><br/> {{ end }}
+    <i class="fa-solid fa-calendar-days"></i> Published: <time datetime="{{ $dateMachine }}" class="">{{ $dateHuman }}</time><br/>
+  </div>
+{{ end }}
+{{ if ne $hashlink "nope" }}
+  <div>
+    <i class="fa-brands fa-github-alt"></i> {{ $hashlink | safe.HTML }}
+  </div>
 {{ end }}

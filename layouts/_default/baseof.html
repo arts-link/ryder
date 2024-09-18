@@ -2,20 +2,13 @@
 <html lang="{{ or site.Language.LanguageCode site.Language.Lang }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
 <head>
   {{ partial "head.html" . }}
-  {{ if eq .Kind "404" }}
-  {{ $advanced := site.Params.plausible_advanced }}
-  {{ if $advanced }}
-  <script>document.addEventListener('DOMContentLoaded', function () { plausible('404', { props: { path: document.location.pathname } }); });</script>
-  {{ end }}
-  {{ end }}
+  
 </head>
 <body class="bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100 font-titillium">
-  {{ if not hugo.IsProduction }}
-    <!-- tailwind size indicator -->
-    {{ partial "tw-size-indicator.html" . }}
-  {{ end }}
+  {{ if not hugo.IsProduction }} {{ partial "tw-size-indicator.html" . }} {{ end }}
   <div class="min-h-lvh flex flex-col container mx-auto">
-    {{- partial "header.html" . }}
+    {{ $headerType := .Param "headerType" | default "" }}
+    {{- partial (printf "header%s.html" $headerType) . }}
     {{- $alphaAlert := .Params.alphaAlert | default .Site.Params.alphaAlert -}}
     {{- with $alphaAlert }}
       <div id="banners" class="w-full mx-auto ">
@@ -32,14 +25,10 @@
     <main class="container max-h-max mx-auto ">
       {{- block "main" . }}{{- end }}
     </main>
-    {{- if .Site.Params.Footer.tagCloud }}
-      {{ partial "footer-tag-cloud.html" . }}
-    {{- else }}
-      {{ partial "footer.html" . }}
-    {{- end }}
-</div>
+    {{ partial "footer.html" . }}
+    <i class="p-2 fa-solid fa-om"></i>
+  </div>
     
-    <i class="fa-solid fa-om"></i>
 
 {{ if .Param "enabledebugpanel" }}
 {{ partial "debug-panel.html" . }}
