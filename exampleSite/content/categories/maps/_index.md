@@ -13,6 +13,8 @@ tags = [
   sectionTitle = "Maps on BenStrawbridge.com"
   homeFeatureIcon = "fa-solid fa-map-location-dot"
   cardCategoryColorsDefault = "bg-gradient-to-r from-red-500 to-orange-500"
+  [cascade.params.twClasses]
+    headerBackgroundFrameOuter = "bg-gradient-to-r from-red-500 to-orange-500 text-neutral-100"
 [menu]
  [menu.main]
   weight = 20

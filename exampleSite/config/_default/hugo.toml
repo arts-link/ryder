@@ -38,7 +38,7 @@ themesDir= "../../"
     email = 'ben@benstrawbridge.com'
     name = 'Ben Strawbridge'
   [params.footer]
-    # tagCloud = true
+    tagCloud = true
   [params.twClasses]
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
     headerBackgroundFrameInner = "bg-header-ryder h-[300px] bg-cover bg-left"

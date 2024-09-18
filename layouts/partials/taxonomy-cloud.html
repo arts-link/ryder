@@ -29,12 +29,17 @@
          {{ $weight := div (sub (math.Log $tagCount) (math.Log $min)) (sub (math.Log $max) (math.Log $min)) }}
          {{ $currentFontSize := (add $smallestFontSize (mul (sub $largestFontSize $smallestFontSize) $weight)) }}
          {{ $baseURL := $.Site.BaseURL }}
-         
          {{ $gradientClass := "bg-gradient-to-r from-lime-400 to-lime-500 text-zinc-900 "}}
          {{ $classes := "py-2 px-4 rounded-full border-2 border-yellow-500 hover:bg-yellow-500 hover:border-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 no-underline inline-block text-center break-words "}}
          {{ $headerBackgroundFrameOuter := "" }}
          {{ with $.Site.Param "twClasses.headerBackgroundFrameOuter" }}
            {{ $gradientClass = . }}
+         {{ end }}
+         {{ if eq $.Page.Kind "taxonomy" }}
+          {{ $sectionData := $.Site.GetPage (printf "%s/%s" $taxonomy $name) }}
+          {{ with $sectionData.Params.twClasses.headerBackgroundFrameOuter }}
+            {{ $gradientClass = . }}
+          {{ end }}
          {{ end }}
          <a href="{{ printf "%s%s/%s" $baseURL $taxonomy ($name | urlize) }}" 
             class="tagcloud-item px-2" style="font-size: {{ $currentFontSize }}rem;">
