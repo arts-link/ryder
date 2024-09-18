@@ -6,7 +6,7 @@ aliases = ["about-us", "about-hugo", "contact"]
 author = "Hugo Authors"
 enableComments = false
 ShowToc = true
-tags = ["hugo"]
+tags = ["sample","test","hugo"]
 
 [menu]
  [menu.main]

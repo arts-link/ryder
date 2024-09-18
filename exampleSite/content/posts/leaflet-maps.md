@@ -5,7 +5,7 @@ homeFeature = true
 homeFeatureWide = true
 homeFeatureIcon = "fa-solid fa-map-location-dot"
 categories = ["maps"]
-tags = ["maps"]
+tags = ["sample","test","maps"]
 hideAsideBar = true
 # draft = true 
 [menu]

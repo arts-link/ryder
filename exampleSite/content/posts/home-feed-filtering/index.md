@@ -25,7 +25,7 @@ You can now set params in your `hugo.toml` file to keep any pesky pages off your
   # homepage list exclusion... 
   excludedSections = ["fineprint", "portfolio", "goals"]
   excludedCategories = ["catalog","recipes"]
-  excludedTags = ["excluded"]
+  excludedtags = ["sample","test","excluded"]
 {{< /highlight >}}
 
 ### How does it work?

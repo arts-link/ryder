@@ -4,7 +4,7 @@ date = 2024-06-01T23:19:13-07:00
 # draft = true
 # summary = ""
 # categories = [""]
-# tags = [""]
+# tags = ["sample","test",""]
 # featured_image = ""
 showTOC = true
 [menu]

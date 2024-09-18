@@ -4,7 +4,7 @@ date = {{ .Date }}
 draft = true
 # summary = ""
 # categories = [""]
-# tags = [""]
+# tags = ["sample","test",""]
 # featured_image = ""
 # showTOC = true
 +++
