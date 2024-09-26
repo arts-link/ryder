@@ -1,6 +1,14 @@
 {{/*  
 for example::
-
+{{- $cta_opts := (dict 
+  "button_label" $button_label
+  "button_class" $button_class
+  "button_type" $button_type 
+  "button_relref" $button_relref
+  "button_href" $button_href 
+  "button_icon" $button_icon
+  "page" .) }}
+{{- partial "cta-button.html" $cta_opts }}
 */}}
 {{ $button_type := .button_type }}
 {{ $button_label := default "Go!" .button_label }}
@@ -15,7 +23,6 @@ for example::
   {{ $button_icon = $spotify_icon }}
   {{ $button_class = $spotify_class }}
 {{ end }}
-
 {{ if $button_relref }}
   {{ $button_href = relref .page $button_relref }}
 {{ end }}
