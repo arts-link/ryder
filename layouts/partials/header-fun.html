@@ -23,9 +23,12 @@ By default it will have a background gradient in cayan.
 
 <header class=" w-full {{ $headerClass }}">
     <div class=" {{ $headerBackgroundFrameInner }}">
-    <div class="w-full mx-auto flex flex-col items-center"> 
-        {{- partial "logo.html" . }}
-        {{- partial "menu-fun.html" (dict "menuID" "main" "page" . "shade" "rose") }}
+        <div class="w-full h-full mx-auto flex flex-col items-end justify-end sm:justify-start"> 
+            {{- partial "logo.html" . }}
+        </div>
+        
     </div>
+    <div class="w-full mx-auto">
+        {{- partial "menu-fun.html" (dict "menuID" "main" "page" . "shade" "rose") }}
     </div>
 </header>
