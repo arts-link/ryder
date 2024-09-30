@@ -14,23 +14,28 @@
 {{ $articleLink := .Section }}
 
 {{ $headerStyle := default "bg-gradient-to-r from-zinc-400 to-zinc-300" (.Param "cardCategoryColorsDefault") }}
-{{ if .Params.categories }}
-  {{ $mainCategory := index .Params.categories 0 }}
-  {{ $articleSection = $mainCategory }}
-  {{ $articleLink = add "categories/" $articleSection }}
-  {{ with .Site.GetPage (print "/categories/" $mainCategory) }}
+{{ $categories := .GetTerms "categories" }}
+{{ if gt (len $categories) 0 }}
+  {{ $mainCategory := index $categories 0 }}
+  {{ $articleSection = $mainCategory.Title }}
+  {{ $articleLink = printf "categories/%s" $articleSection }}
+  {{ with .Site.GetPage ($articleLink) }}
     {{ $articleSection = .Title }}
     {{ with .Params.cardCategoryColorsDefault }}
       {{ $headerStyle = . }}
     {{ end }}
   {{ end }}
 {{ end }}
+{{ $cardURL := .RelPermalink }}
+{{ with .Params.detailpageURL }}
+  {{ $cardURL = . }}
+{{ end }}
 
 <div itemscope="" itemtype="http://schema.org/Article" class="article">
   
   <div class="article-content relative p-1 rounded-t-xl {{ $headerStyle }}">
     <div class="w-full h-full bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
-      <a itemprop="url" aria-label="{{ .Title }}" href="{{ .RelPermalink }}" class="link-overlay"> </a>
+      <a itemprop="url" aria-label="{{ .Title }}" href="{{ $cardURL }}" class="link-overlay"> </a>
       <h2 itemprop="headline" class="text-2xl p-3 {{ $headerStyle }}"> 
         {{- if .Params.homeFeatureIcon }}
           <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>

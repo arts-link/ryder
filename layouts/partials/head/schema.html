@@ -39,63 +39,7 @@
         "logo": {{ .Site.Params.logo_png | absURL }}
       }
     }
-  {{ else if .Params.recipe }}
-    // schema for recipes
-    {
-        "@context": "https://schema.org/",
-        "@type": "Recipe",
-        "mainEntityOfPage": { "@type": "WebPage" },
-        "name": {{ .Title }},
-        {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
-        "author": {
-          "@type": "Person",
-          "name": {{ .Site.Params.author.name }},
-          "email": {{ .Site.Params.author.email }}
-        },
-        "datePublished": {{ .PublishDate }},
-        "dateModified": {{ .Lastmod }},
-        "description": {{ .Summary }},
-        "recipeCuisine": {{ .Params.recipeCuisine }},
-        "prepTime": {{ .Params.prepTime }},
-        "cookTime": {{ .Params.cookTime }},
-        "totalTime": {{ .Params.totalTime }},
-        "keywords": {{ .Params.tags }},
-        "recipeYield": [
-          {{ .Params.recipeYield }}
-        ],
-        "recipeCategory": {{ range last 1 .Params.categories }}{{ . }}{{ end }},
-        "nutrition": {
-          "@type": "NutritionInformation",
-          "calories": {{ .Params.calories }}
-        },
-        {{/*  "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "5",
-          "ratingCount": "0"
-        },  */}}
-        "recipeIngredient": [{{ $len := len .Params.recipeIngredients }}{{ range $index, $ingredient := .Params.recipeIngredients }}{{ if not (strings.HasPrefix $ingredient "**") }}"{{ $ingredient }}"{{ if ne $index (sub $len 1) }},{{ end }}{{ end }}{{ end }}],
-        "recipeInstructions": [
-          {{- $link := .Permalink }}
-          {{- $len := len .Params.recipeInstructions }}
-          {{- $lastIndex := sub $len 1 }}
-          {{- range $index, $instruction := .Params.recipeInstructions }}
-          {{ if findRE "^\\*\\*" $instruction.name }}
-            {{ continue }}
-          {{ end }}
-          {
-            "@type": "HowToStep",
-            "name": "{{ $instruction.name }}",
-            {{/*  this is not working
-              TODO :: figure out how to reuse images with overlay
-              needs more thought right now...
-              */}}
-            {{- if $instruction.featured }}"image": "{{ $instruction.featured.Permalink }}",{{ end }}
-            "text": "{{ $instruction.text }}",
-            "url": "{{ $link }}#{{ $instruction.name }}"
-          }{{ if ne $index $lastIndex }},{{ end }}
-          {{- end }}
-        ]
-      }
+  
   {{ else }}
       // schema for posts
       {

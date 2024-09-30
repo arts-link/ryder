@@ -45,13 +45,13 @@
       {{- $filteredPages := slice -}}
       {{- range $feed.ByLastmod.Reverse }}
         {{- $excludePage := false -}}
-        {{- range .Params.categories }}
+        {{ range (.GetTerms "categories") }}
           {{- if in $excludedCategories . }}
             {{- $excludePage = true -}}
             {{- break -}}
           {{- end }}
         {{- end }}
-        {{- range .Params.tags }}
+        {{ range (.GetTerms "tags") }}
           {{- if in $excludedTags . }}
             {{- $excludePage = true -}}
             {{- break -}}

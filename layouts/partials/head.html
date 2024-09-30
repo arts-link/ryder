@@ -1,6 +1,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
   <link rel="canonical" href="{{ .Permalink }}" />
+  <link rel="icon" href="{{ site.BaseURL}}faviconico?v=4" type="image/x-icon" />
   {{ $sectionTitle := .Params.sectionTitle | default site.Title }}
   <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title $sectionTitle }}{{ end }}</title>
   <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}" />
@@ -12,10 +13,11 @@
 {{- end }}
 {{- partialCached "head/css.html" . }}
 {{- partialCached "head/js.html" . }}
-{{- partial "head/opengraph.html" . }}
-{{- partial "head/schema.html" . }}
+{{- partial "common-partials/head-seo.html" . }}
+{{- partial "head/schema-recipe.html" . }}
 {{- partialCached "head/fonts.html" . }}
 {{- partialCached "head/favicon.html" . }}
+
 {{ if eq .Kind "404" }}
   {{ $advanced := site.Params.plausible_advanced }}
   {{ if $advanced }} <script>document.addEventListener('DOMContentLoaded', function () { plausible('404', { props: { path: document.location.pathname } }); });</script> {{ end }}

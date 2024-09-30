@@ -14,7 +14,7 @@
  
 
  <div class="container tagcloud">
-   <h3>{{ len (index $.Site.Taxonomies $taxonomy) }} {{ $taxonomy }} found on {{ $.Site.Title }}</h3>
+   {{/*  <h3>{{ len (index $.Site.Taxonomies $taxonomy) }} {{ $taxonomy }} found on {{ $.Site.Title }}</h3>  */}}
    {{ if ne (len (index $.Site.Taxonomies $taxonomy)) 0 }}
      {{ $largestFontSize := 3.8 }}
      {{ $smallestFontSize := 0.8 }}
