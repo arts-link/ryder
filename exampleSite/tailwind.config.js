@@ -15,7 +15,7 @@ module.exports = {
       backgroundImage: {
         "hidden-home": " url('/ryder/images/hidden-home-cover.webp')",
         "header-sunset-mb": " url('/ryder/images/hidden-home-cover.webp')",
-        "header-ryder": " url('/ryder/images/ryder-theme-og.webp')",
+        "header-ryder": " url('/ryder/images/ryder-theme-og.jpg')",
       },
       fontFamily: {
         titillium: ["Titillium Web", ...defaultTheme.fontFamily.sans],
