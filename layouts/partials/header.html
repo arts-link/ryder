@@ -3,22 +3,22 @@ Set variables in either hugo.toml OR front matter to configure you header.
 By default it will have a background gradient in cayan.
 */}}
 {{/*  make sure to remember you point tailwind.config.js to your config file  */}}
-{{ $headerClass := split "bg-gradient-to-r from-cyan-500 to-cyan-800" " " }} 
-{{ $headerBackgroundFrameInner := "" }}
-{{ with or (.Param "twClasses.headerBackgroundFrameOuter") (.Param "headerGradientClasses") }}
-    {{ $headerClass = split . " " }}
-{{ end }}
-{{ with .Param "twClasses.navbar_fixed" }}
-{{ $headerClass = $headerClass | append . }}
-{{ end }}
-{{ $headerClass = delimit $headerClass " " }}
-{{ with .Param "twClasses.headerBackgroundFrameInner" }}
-{{ $headerBackgroundFrameInner = . }}
-{{ end }}
+{{- $headerClass := split "bg-gradient-to-r from-cyan-500 to-cyan-800" " " -}} 
+{{- $headerBackgroundFrameInner := "" -}}
+{{- with or (.Param "twClasses.headerBackgroundFrameOuter") (.Param "headerGradientClasses") -}}
+    {{- $headerClass = split . " " -}}
+{{- end -}}
+{{- with .Param "twClasses.navbar_fixed" -}}
+{{- $headerClass = $headerClass | append . -}}
+{{- end -}}
+{{- $headerClass = delimit $headerClass " " -}}
+{{- with .Param "twClasses.headerBackgroundFrameInner" -}}
+{{- $headerBackgroundFrameInner = . -}}
+{{- end -}}
 <header class=" w-full {{ $headerClass }}">
 <div class=" m-3 rounded-lg flex flex-row {{ $headerBackgroundFrameInner }}">
     <div class="mr-auto relative">
-        {{- partial "logo.html" . }}
+        {{- partial "logo.html" . -}}
     </div>
     <div class="ml-auto flex relative " x-data="{ openMenu : false }"  @click.away="openMenu = false">
         <!-- navbar toggler -->
@@ -33,7 +33,7 @@ By default it will have a background gradient in cayan.
         {{/*  <span x-text="openMenu"></span>  */}}
         <div id="nav-menu"  x-bind:class="{ 'hidden': !openMenu, 'inline': openMenu }"
              class="ml-auto absolute top-20 right-0 md:inline md:relative md:top-auto md:left-auto md:right-0 text-xl ">
-            {{- partial "menu.html" (dict "menuID" "main" "page" . "shade" "rose") }}
+            {{- partial "menu.html" (dict "menuID" "main" "page" . "shade" "rose") -}}
         </div>
     </div>
 </div>

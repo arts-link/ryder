@@ -1,10 +1,7 @@
 {{ define "main" }}
-  <div class="max-w-screen-xl mx-auto">
-    {{- partial "breadcrumb.html" . }}
-  </div>
-  <div class="p-4 max-w-screen-xl mx-auto ">
+  <div class="p-2 max-w-screen-xl mx-auto ">
     <div class=" grid grid-cols-1 md:grid-cols-12 gap-x-1 ">
-      <header class=" w-full md:col-span-12 prose lg:prose-xl {{ if .Params.hideAsideBar }}max-w-screen-xl{{ else }}max-w-screen-xl{{ end }}  dark:prose-invert">
+      <header class=" w-full md:col-span-12 {{ if .Params.hideAsideBar }}max-w-screen-xl{{ else }}max-w-screen-xl{{ end }}  ">
         <div class="">
           {{ $headerClass := "bg-gradient-to-r from-cyan-500 to-cyan-800 text-neutral-100" }} 
           {{ with .Param "twClasses.headerBackgroundFrameOuter" }}
@@ -19,23 +16,23 @@
             {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
             {{ $dateHuman := .Date | time.Format ":date_long" }}
             <time datetime="{{ $dateMachine }}" class="{{- if ne site.Params.showDate true }}hidden{{- end }}">{{ $dateHuman }}</time>
+            <div>
+              {{ partial "share-buttons" . }}
+            </div>
         </div>
       </header>
       <div class="w-full {{ if .Params.hideAsideBar }}md:col-span-12{{ else }}md:col-span-10{{ end }} prose max-w-max-screen-xl min-w-full lg:prose-lg dark:prose-invert ">
-        {{ .Content |  safeHTML }}
+        <div class="content">
+          {{ .Content |  safeHTML }}
+        </div>
+        {{ if .Site.Config.Services.Disqus.Shortname }}
+          <div id="disqus_container">
+            <h2>Tell the internet what you think</h2>
+            {{ template "_internal/disqus.html" . }}
+          </div>
+        {{ end }}
       </div>
       <aside class="w-full {{ if .Params.hideAsideBar }}md:col-span-12{{ else }}md:col-span-2{{ end }} relative">
-        {{/* This did not end up being the quick solution to what i thought i might be trying to be solving  
-        {{ with or .Next .Prev }}
-        <div class="not-prose flex justify-between w-full border-2">
-          {{ with .Next }}
-            <a href="{{ .RelPermalink }}" class="text-right"><i class="fa-regular fa-hand-point-left text-lg px-2"></i>Prev</a>
-          {{ end }}
-          {{ with .Prev }}
-            <a href="{{ .RelPermalink }}" class="text-left">Next<i class="fa-regular fa-hand-point-right text-lg px-2"></i></a>
-          {{ end }}
-        </div>
-        {{ end }}  */}}
         {{- if .Params.tags }}
           <div class="not-prose">
             {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
@@ -50,7 +47,19 @@
         </div>
         {{- end }}
       </aside>
-      
+      <div class="not-prose md:col-span-12 my-5 p-3 flex justify-between w-full text-2xl">
+        <div class="w-1/2 text-left">
+          {{ with .PrevInSection }}
+            <a class="w-1/2 text-left" href="{{ .RelPermalink }}"><i class="fa-regular fa-hand-point-left  px-2"></i> Previous: {{ .Title }}</a>
+          {{ end }}
+        </div>
+
+        <div class="w-1/2 text-right">
+          {{ with .NextInSection }}
+            <a class="w-1/2 text-right" href="{{ .RelPermalink }}">Next: {{ .Title }} <i class="fa-regular fa-hand-point-right  px-2"></i></a>
+          {{ end }}
+        </div>
+      </div> 
     </div>
   </div>
 {{ end }}

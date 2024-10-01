@@ -8,7 +8,7 @@ enableRobotsTXT = true
 copyright = "©️ Ryder Theme 2024"
 enableEmoji = true
 enableGitInfo = true
-paginate = 80
+paginate = 8
 
 # !!! exampleSite only, you may need to delete the line: `themesDir: ../../` 
 themesDir= "../../"
@@ -19,7 +19,7 @@ themesDir= "../../"
   # enabledebugpanel = true 
   # navbar_fixed = true
   excludedtags = ["sample","test","excluded"]
-  # showDate = true 
+  showDate = true 
   hideAuthor = false
   showDarkToggle = true
   loadLeaflet = true 
@@ -34,6 +34,17 @@ themesDir= "../../"
   ShowPubDate = true
   # headerType = "-fun" # "-fun" or "-custom" to make your own
 
+  [params.shareButtons]
+    networks = [ "twitter", "email", "reddit", "facebook" ]
+    # size = "small" # small, medium, large
+    # icon = "solid" # normal, solid, circle, solidcircle
+    # buttonMargin = "0.2em" 
+
+  [params.ogImageText]
+    x = 50
+    y = 475
+    fontName = "TitilliumWeb-Regular"
+
   [params.author]
     email = 'ben@benstrawbridge.com'
     name = 'Ben Strawbridge'
@@ -43,12 +54,12 @@ themesDir= "../../"
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
     headerBackgroundFrameInner = "bg-header-ryder h-[300px] bg-cover bg-left"
 
-[[params.alphaAlert]]
-  weight = 1
-  alertType = "success"
-  alertTitle = "Ryder Theme for Hugo"
-  alertMessage = "This is the <b>exampleSite</b>. Learn more about the theme by checking out the README on <a href='https://github.com/arts-link/ryder' class='underline'>on github.com</a>."
-  dismissable = true 
+# [[params.alphaAlert]]
+#   weight = 1
+#   alertType = "success"
+#   alertTitle = "Ryder Theme for Hugo"
+#   alertMessage = "This is the <b>exampleSite</b>. Learn more about the theme by checking out the README on <a href='https://github.com/arts-link/ryder' class='underline'>on github.com</a>."
+#   dismissable = true 
   # alertIconClass = "fa-solid fa-camera-retro"
 [menus]
 [[menus.main]]

@@ -1,0 +1,28 @@
+{{ $images := $.Resources.ByType "image" }}
+{{ $featured := $images.GetMatch "*feature*" }}
+{{ if not $featured }}
+  {{ $featured = $images.GetMatch "{*cover*,*thumbnail*}" }}
+{{ end }}
+{{ if not $featured }}
+  {{ $featured = resources.Get "/common-partials/opengraph/opengraph-base.png" }}
+  {{ $size := 80 }}
+  {{ $title := $.LinkTitle }}
+  {{ if gt (len $title) 20 }}
+    {{ $size = 70 }}
+  {{ end }}
+
+  {{ $fontName := default "TitilliumWeb-Regular" .Site.Params.ogImageText.fontName }}
+  {{ $font := (resources.Get (printf "/common-partials/opengraph/%s.ttf" $fontName)) }}
+  {{ $textX := default 15 .Site.Params.ogImageText.x }}
+  {{ $textY := default 475 .Site.Params.ogImageText.y }}
+  {{ $textOptions := dict
+    "color" "#085624"
+    "size" $size
+    "lineSpacing" 10
+    "x" $textX "y" $textY
+    "font" $font
+  }}
+  {{ $featured = $featured | images.Filter (images.Text $title $textOptions) }}
+{{ end }}
+
+{{ return $featured }}

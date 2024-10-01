@@ -1,0 +1,1 @@
+These common partials come from https://www.github.com/bep/hugo-mod-misc/ repo but I am having trouble building with hugo modules on amplify so for now they are simply copied in here.... TODO: fix this?

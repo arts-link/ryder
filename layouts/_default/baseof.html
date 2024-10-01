@@ -23,6 +23,11 @@
       </div>
     {{- end }}
     <main class="container max-h-max mx-auto ">
+      {{ if not .IsHome }}
+      <div class="max-w-screen-xl mx-auto">
+        {{- partial "breadcrumb.html" . }}
+      </div>
+      {{ end }}
       {{- block "main" . }}{{- end }}
     </main>
     {{ partial "footer.html" . }}

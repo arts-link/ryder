@@ -1,37 +1,36 @@
-{{ define "main" }}
-<div class="max-w-screen-xl mx-auto">
-  {{- partial "breadcrumb.html" . }}
-</div>
+{{- define "main" -}}
 <div class="p-2 max-w-screen-xl mx-auto">
-  <header class="max-w-screen-xl prose lg:prose-xl dark:prose-invert">
-    {{ $headerClass := "" }}
-    {{ with .Param "twClasses.headerBackgroundFrameOuter" }}
-    {{ $headerClass = . }}
-    {{ end }}
-    <h1 class=" rounded-t-lg p-3 flex items-center {{ $headerClass }}">
-      {{- if .Params.homeFeatureIcon }}
+  <header class="max-w-screen-xl">
+    {{- $headerClass := "" -}}
+    {{- with .Param "twClasses.headerBackgroundFrameOuter" -}}
+      {{- $headerClass = . -}}
+    {{- end -}}
+    <h1 class="{{ $headerClass }} rounded-t-lg p-3 flex items-center ">
+      {{- if .Params.homeFeatureIcon -}}
         <i class="{{ .Params.homeFeatureIcon }} mr-2 text-4xl"></i>
-      {{- end }}
-      {{ .Title }}
+      {{- end -}}
+      {{- .Title -}}
     </h1>
-    {{ .Content }}
   </header>
-  {{ if eq .Kind "taxonomy" }}
-    <div class="mt-2">
-      {{- partial "taxonomy-cloud.html" .}}
+  <div class="mt-2 prose w-full max-w-max-screen-xl min-w-full lg:prose-lg dark:prose-invert">
+    {{- .Content -}}
+  </div>
+  {{- if eq .Kind "taxonomy" -}}
+    <div class="m-2">
+      {{- partial "taxonomy-cloud.html" . -}}
     </div>
-  {{ else }}
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-2">
-      {{ $myCollection := .Pages }}
-      {{ if eq .Params.listRecursive true }}
-        {{ $myCollection = .RegularPagesRecursive }}
-      {{ end }}
-      {{ $paginator := .Paginate ($myCollection) }}
-      {{ range $paginator.Pages.ByLastmod.Reverse }}
+  {{- else -}}
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 m-2">
+      {{- $myCollection := .Pages -}}
+      {{- if eq .Params.listRecursive true -}}
+        {{- $myCollection = .RegularPagesRecursive -}}
+      {{- end -}}
+      {{- $paginator := .Paginate ($myCollection) -}}
+      {{- range $paginator.Pages.ByLastmod.Reverse -}}
         {{- partial "card-category-color.html" . -}}
-      {{ end }}
+      {{- end -}}
     </div>
-    {{ template "_internal/pagination.html" . }}
-  {{ end }}
+    {{- template "_internal/pagination.html" . -}}
+  {{- end -}}
 </div>
-{{ end }}
+{{- end -}}
