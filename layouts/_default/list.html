@@ -14,6 +14,18 @@
   </header>
   <div class="mt-2 prose w-full max-w-max-screen-xl min-w-full lg:prose-lg dark:prose-invert">
     {{- .Content -}}
+    {{- if and (eq .Section "musical-genres") (eq .Kind "term") -}}
+    To Learn more about {{ .Title }} music, you can search for CD's and Vinyl on Amazon Music.
+    {{- $button_href := (printf "https://www.amazon.com/s?k=%s" .Title) -}}
+    {{- $button_href = add $button_href "&rh=n%3A301668%2Cp_n_availability%3A-1&tag=benstrawbridge-spot-20&linkCode=osi" -}}
+    {{- $cta_opts := (dict 
+      "button_label" (printf "Search for %s CD's and Vinyl on Amazon Music" .Title)
+      "button_icon" "fab fa-amazon mr-2"
+      "button_href" $button_href
+      "page" .) }}
+    {{- partial "cta-button.html" $cta_opts }}
+    {{- end -}}
+
   </div>
   {{- if eq .Kind "taxonomy" -}}
     <div class="m-2">

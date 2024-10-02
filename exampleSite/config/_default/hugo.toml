@@ -22,6 +22,7 @@ themesDir= "../../"
   showDate = true 
   hideAuthor = false
   showDarkToggle = true
+  showShareButtons = true
   loadLeaflet = true 
   og_image_default = 'images/ryder-theme-og.webp'
   # homePageFeedHeader = "the new style"
