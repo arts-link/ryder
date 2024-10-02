@@ -1,16 +1,20 @@
 {{- define "main" }}
 
-  {{ if and .Title .Content }}
+  {{ if or .Title .Content }}
   <div class="p-2 flex-1 items-center justify-center">
+    {{ if .Title }}
     <h2 itemprop="headline" class="text-2xl p-3 "> 
       {{- if .Params.homeFeatureIcon }}
         <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>
       {{- end }}
       {{ .Title }}
     </h2>
+    {{ end }}
+    {{ if .Content }}
     <div itemprop="articleBody" class="articleBody px-3 pb-4">
       {{ .Content }}
     </div>
+    {{ end }}
     {{/*  {{ partial "card-category-color.html" . }}  */}}
   </div>
   {{ end }}

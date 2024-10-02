@@ -1,0 +1,12 @@
+<header class="max-w-screen-xl">
+  {{- $headerClass := "" -}}
+  {{- with .Param "twClasses.headerBackgroundFrameOuter" -}}
+    {{- $headerClass = . -}}
+  {{- end -}}
+  <h1 class="{{ $headerClass }} rounded-t-lg p-3 flex items-center ">
+    {{- if .Params.homeFeatureIcon -}}
+      <i class="{{ .Params.homeFeatureIcon }} mr-2 text-4xl"></i>
+    {{- end -}}
+    {{- .Title -}}
+  </h1>
+</header>
