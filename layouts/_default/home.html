@@ -1,7 +1,6 @@
 {{- define "main" }}
 
   {{ if or .Title .Content }}
-  <div class="p-2 flex-1 items-center justify-center">
     {{ if .Title }}
     <h2 itemprop="headline" class="text-2xl p-3 "> 
       {{- if .Params.homeFeatureIcon }}
@@ -16,7 +15,6 @@
     </div>
     {{ end }}
     {{/*  {{ partial "card-category-color.html" . }}  */}}
-  </div>
   {{ end }}
 
   {{- $current := .Page.Permalink }}
