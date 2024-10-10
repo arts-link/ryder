@@ -1,7 +1,7 @@
 {{- define "main" }}
-
+{{/*  Any content defined in the root _index.html of the website  */}}
   {{ if or .Title .Content }}
-    {{ if .Title }}
+    {{ if and .Title .Params.showHomeTitle}}
     <h2 itemprop="headline" class="text-2xl p-3 "> 
       {{- if .Params.homeFeatureIcon }}
         <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>
@@ -14,9 +14,9 @@
       {{ .Content }}
     </div>
     {{ end }}
-    {{/*  {{ partial "card-category-color.html" . }}  */}}
   {{ end }}
 
+  {{/*  Featured content loop  */}}
   {{- $current := .Page.Permalink }}
   {{/*  Set up the content loop  */}}
   {{- $pages := slice }}
@@ -36,6 +36,7 @@
   </div>
   {{ end }}
 
+  {{/*  Home page feed loop removig things to be removed first...  */}}
   {{ if ne true site.Params.hideHomeFeed }}
     {{- $feed := where $pages "Params.homeFeature" "ne" true }}
     {{ $feedHeader := default "Latest stuff" (site.Params.homePageFeedHeader) }}
