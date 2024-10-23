@@ -1,4 +1,5 @@
 {{ $hideAuthor := default true .Site.Params.hideAuthor }}
+{{ $hideReadOn := default true .Site.Params.hideReadOn }}
 
 {{ $nowYear := time.Now | time.Format "2006" }}
 {{ $dateYear := .Date | time.Format "2006" }}
@@ -49,6 +50,9 @@
       </span>
       <div itemprop="articleBody" class="articleBody px-3 pb-4">
         {{ or .Params.homeFeatureSummary .Summary }}
+        {{ if ne $hideReadOn true}}
+          {{ partial "utils/btn-read-on.html" . }}
+        {{ end }}
       </div>
       </div>
     </div>
