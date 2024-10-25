@@ -1,16 +1,14 @@
 {{- define "main" }}
 {{/*  Any content defined in the root _index.html of the website  */}}
   {{ if or .Title .Content }}
-    {{ if and .Title .Params.showHomeTitle}}
+    {{ if and .Title site.Params.showHomeTitle}}
     <h2 itemprop="headline" class="text-2xl p-3 "> 
-      {{- if .Params.homeFeatureIcon }}
-        <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>
-      {{- end }}
+      {{- if .Params.homeFeatureIcon }} <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i> {{- end }}
       {{ .Title }}
     </h2>
     {{ end }}
     {{ if .Content }}
-    <div itemprop="articleBody" class="articleBody px-3 pb-4">
+    <div itemprop="articleBody" class="articleBody mx-auto prose px-3 pb-4">
       {{ .Content }}
     </div>
     {{ end }}
