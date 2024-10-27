@@ -38,9 +38,8 @@
   transition: 25ms ease-out;
   padding: 0.5em 0.75em;
   font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
-  {{ if (isset .Site.Params.ShareButtons "fontsize" ) }}
-  font-size: {{ .Site.Params.ShareButtons.FontSize }}
-  {{ end }}
+  {{ $fontSize := default "16px" .Site.Params.ShareButtons.fontsize }}
+  font-size: {{ $fontSize }};
 }
 
 .resp-sharing-button__icon svg {
