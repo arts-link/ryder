@@ -3,7 +3,7 @@
     <div class=" grid grid-cols-1 md:grid-cols-12 gap-x-1 ">
       <header class=" w-full md:col-span-12 {{ if .Params.hideAsideBar }}max-w-screen-xl{{ else }}max-w-screen-xl{{ end }}  ">
         <div class="">
-          {{ $headerClass := "bg-gradient-to-r from-cyan-500 to-cyan-800 text-neutral-100" }} 
+          {{ $headerClass := "text-neutral-100" }} 
           {{ with .Param "twClasses.headerBackgroundFrameOuter" }}
           {{ $headerClass = . }}
           {{ end }}
