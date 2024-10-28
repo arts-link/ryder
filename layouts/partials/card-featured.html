@@ -48,7 +48,7 @@
         {{ with $articleSection }}In <a href="{{ site.BaseURL }}{{ $articleLink }}"><span itemprop="articleSection" class="source font-bold capitalize">{{ . }}</span></a>{{ end }}
         On <time itemprop="datePublished" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
       </span>
-      <div itemprop="articleBody" class="articleBody prose max-w-max px-3 pb-4">
+      <div itemprop="articleBody" class="articleBody prose dark:prose-invert max-w-max px-3 pb-4">
         {{ or .Params.homeFeatureSummary .Summary }}
         {{ if ne $hideReadOn true}}
           {{ partial "utils/btn-read-on.html" . }}
