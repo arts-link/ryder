@@ -14,8 +14,8 @@
 {{ $articleSection := .Section }}
 {{ $articleLink := .Section }}
 
-{{ $headerStyle := default "bg-gradient-to-r from-zinc-400 to-zinc-300" (.Param "cardCategoryColorsDefault") }}
-{{ $articleBackgroundStyle := default "bg-gradient-to-br from-rose-100 to-teal-100" (.Param "articleBackgroundStyle") }}
+{{ $headerStyle := default "bg-gradient-to-r from-zinc-400 to-zinc-300 text-neutral-900" (.Param "cardCategoryColorsDefault") }}
+{{ $articleBackgroundStyle := default "bg-gradient-to-br from-rose-100 to-teal-100 text-neutral-900" (.Param "articleBackgroundStyle") }}
 {{ if .Params.categories }}
   {{ $mainCategory := index .Params.categories 0 }}
   {{ $articleSection = $mainCategory }}
@@ -32,7 +32,7 @@
 
 <div itemscope="" itemtype="http://schema.org/Article" class="article {{ with .Param "homeFeatureWide" }}md:col-span-2 md:order-first{{ else }}md:order-last{{ end }} ">
   <div class="article-content relative p-1 rounded-t-xl {{ $headerStyle }}">
-    <div class="w-full h-full bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
+    <div class="w-full h-full">
       <a itemprop="url" aria-label="{{ .Title }}" href="{{ .RelPermalink }}" class="link-overlay"> </a>
       <h2 itemprop="headline" class="text-2xl p-3 {{ $headerStyle }}"> 
         {{- if .Params.homeFeatureIcon }}
@@ -48,7 +48,7 @@
         {{ with $articleSection }}In <a href="{{ site.BaseURL }}{{ $articleLink }}"><span itemprop="articleSection" class="source font-bold capitalize">{{ . }}</span></a>{{ end }}
         On <time itemprop="datePublished" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
       </span>
-      <div itemprop="articleBody" class="articleBody prose dark:prose-invert max-w-max px-3 pb-4">
+      <div itemprop="articleBody" class="articleBody prose max-w-max px-3 pb-4">
         {{ or .Params.homeFeatureSummary .Summary }}
         {{ if ne $hideReadOn true}}
           {{ partial "utils/btn-read-on.html" . }}
