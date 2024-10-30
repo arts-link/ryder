@@ -15,7 +15,7 @@
 {{ $articleLink := .Section }}
 
 {{ $headerStyle := default "bg-gradient-to-r from-zinc-400 to-zinc-300" (.Param "cardCategoryColorsDefault") }}
-{{ $articleBackgroundStyle := default "bg-gradient-to-br dark:from-rose-900 dark:to-teal-900 from-rose-100 to-teal-100" (.Param "articleBackgroundStyle") }}
+{{ $articleBackgroundStyle := default "bg-gradient-to-br from-rose-100 to-teal-100" (.Param "articleBackgroundStyle") }}
 {{ if .Params.categories }}
   {{ $mainCategory := index .Params.categories 0 }}
   {{ $articleSection = $mainCategory }}
