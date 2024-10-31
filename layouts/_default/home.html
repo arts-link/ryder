@@ -35,7 +35,7 @@
   {{ end }}
 
   {{/*  Home page feed loop removing things to be removed first...  */}}
-  {{ $showHomeFeed := site.Params.hideHomeFeed | default true }}
+  {{ $showHomeFeed := site.Params.showHomeFeed | default true }}
   {{ if $showHomeFeed }}
     {{- $feed := where $pages "Params.homeFeature" "ne" true }}
     {{ $feedHeader := default "Latest stuff" (site.Params.homePageFeedHeader) }}
