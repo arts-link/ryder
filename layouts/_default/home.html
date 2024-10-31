@@ -34,8 +34,9 @@
   </div>
   {{ end }}
 
-  {{/*  Home page feed loop removig things to be removed first...  */}}
-  {{ if ne true site.Params.hideHomeFeed }}
+  {{/*  Home page feed loop removing things to be removed first...  */}}
+  {{ $showHomeFeed := site.Params.hideHomeFeed | default true }}
+  {{ if $showHomeFeed }}
     {{- $feed := where $pages "Params.homeFeature" "ne" true }}
     {{ $feedHeader := default "Latest stuff" (site.Params.homePageFeedHeader) }}
     <div class="md:grid-cols-2 p-2 mx-auto grid grid-cols-1 gap-6 mb-5">

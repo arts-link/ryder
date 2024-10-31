@@ -1,5 +1,6 @@
-{{ $hideAuthor := default true .Site.Params.hideAuthor }}
-{{ $hideReadOn := default true .Site.Params.hideReadOn }}
+{{ $showAuthor := .Param "showAuthor" | default true }}
+{{ $showReadOn := .Param "showReadOn" | default true }}
+{{ $showDate := .Param "showDate" | default true }}
 
 {{ $nowYear := time.Now | time.Format "2006" }}
 {{ $dateYear := .Date | time.Format "2006" }}
@@ -43,13 +44,13 @@
       <div class="{{ $articleBackgroundStyle }}">
 
       <span class="details pl-2 mt-4 inline-block">
-        <span class="{{ with $hideAuthor }}hidden{{ end }}" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span class="author" itemprop="name">{{ .Site.Params.author.name }}</span></span>
+        <span class="{{ if not $showAuthor }}hidden{{ end }}" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span class="author" itemprop="name">{{ .Site.Params.author.name }}</span></span>
         {{ with $articleSection }}In <a href="{{ site.BaseURL }}{{ $articleLink }}"><span itemprop="articleSection" class="source font-bold capitalize">{{ . }}</span></a>{{ end }}
         On <time itemprop="datePublished" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
       </span>
       <div itemprop="articleBody" class="articleBody prose max-w-max px-3 pb-4">
         {{ or .Params.homeFeatureSummary .Summary }}
-        {{ if ne $hideReadOn true}}
+        {{ if $showReadOn }}
           {{ partial "utils/btn-read-on.html" . }}
         {{ end }}
       </div>

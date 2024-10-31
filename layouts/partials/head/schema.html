@@ -1,8 +1,8 @@
+<!-- Schema.org JSON-LD -->
 {{- $images := .Resources.ByType "image" -}}
 {{- $featured := ($images.GetMatch (.Params.featured_image | default "*feature*")) | default (resources.Get .Site.Params.og_image_default) }}
- 
-<script type="application/ld+json">
-  {{ if eq .Title .Site.Title }}
+{{- if eq .Title .Site.Title }}
+  <script type="application/ld+json">
     // homepage
     {
       "@context": "https://schema.org/",
@@ -39,126 +39,125 @@
         "logo": {{ .Site.Params.logo_png | absURL }}
       }
     }
-  
-  {{ else }}
-      // schema for posts
-      {
-        "@context":"http://schema.org",
-        "@type": "BlogPosting",
-        "mainEntityOfPage": { "@type": "WebPage" },
-        "headline": {{ .Title | truncate 110 }},
-        {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
-        "url": {{ .Permalink }},
-        "datePublished": {{ .PublishDate }},
-        "dateModified": {{ .Lastmod }},
-        "inLanguage": {{ .Site.LanguageCode }},
-        "isFamilyFriendly": "true",
-        "copyrightYear": "{{ .PublishDate.Format "2006" }}",
-        "copyrightHolder": {{ .Site.Params.author.name }},
-        "accountablePerson": {
-          "@type": "Person",
-          "name": {{ .Site.Params.author.name }},
-          "email": {{ .Site.Params.author.email }},
-          "url": "{{.Site.BaseURL}}"
-        },
-        "author": {
-          "@type": "Person",
-          "name": {{ .Site.Params.author.name }},
-          "email": {{ .Site.Params.author.email }},
-          "url": "{{.Site.BaseURL}}"
-        },
-        "creator": {
-          "@type": "Person",
-          "name": {{ .Site.Params.author.name }},
-          "email": {{ .Site.Params.author.email }},
-          "url": "{{.Site.BaseURL}}"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": {{ .Site.Params.author.name }},
-          "email": {{ .Site.Params.author.email }},
-          "url": "{{.Site.BaseURL}}",
-          "logo": {{ .Site.Params.logo_png | absURL }}
-        },
-        "articleBody": {{ .Content | safeJS | htmlUnescape | plainify }},
-        "description": {{ with .Description }}{{ . | plainify }}{{ else }}{{if .IsPage}}{{ .Summary | plainify | safeHTML }}{{ else }}{{ with .Site.Params.description }}{{ . | plainify }}{{ end }}{{ end }}{{ end }},
-        "keywords": [{{ range $i, $e := .Params.tags }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}]
-      }
-  {{ end }}
   </script>
-      
-  {{ if .IsHome }}
+  {{- else }}
   <script type="application/ld+json">
+    // schema for posts
+    {
+      "@context":"http://schema.org",
+      "@type": "BlogPosting",
+      "mainEntityOfPage": { "@type": "WebPage" },
+      "headline": {{ .Title | truncate 110 }},
+      {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
+      "url": {{ .Permalink }},
+      "datePublished": {{ .PublishDate }},
+      "dateModified": {{ .Lastmod }},
+      "inLanguage": {{ .Site.LanguageCode }},
+      "isFamilyFriendly": "true",
+      "copyrightYear": "{{ .PublishDate.Format "2006" }}",
+      "copyrightHolder": {{ .Site.Params.author.name }},
+      "accountablePerson": {
+        "@type": "Person",
+        "name": {{ .Site.Params.author.name }},
+        "email": {{ .Site.Params.author.email }},
+        "url": "{{.Site.BaseURL}}"
+      },
+      "author": {
+        "@type": "Person",
+        "name": {{ .Site.Params.author.name }},
+        "email": {{ .Site.Params.author.email }},
+        "url": "{{.Site.BaseURL}}"
+      },
+      "creator": {
+        "@type": "Person",
+        "name": {{ .Site.Params.author.name }},
+        "email": {{ .Site.Params.author.email }},
+        "url": "{{.Site.BaseURL}}"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": {{ .Site.Params.author.name }},
+        "email": {{ .Site.Params.author.email }},
+        "url": "{{.Site.BaseURL}}",
+        "logo": {{ .Site.Params.logo_png | absURL }}
+      },
+      "articleBody": {{ .Content | safeJS | htmlUnescape | plainify }},
+      "description": {{ with .Description }}{{ . | plainify }}{{ else }}{{if .IsPage}}{{ .Summary | plainify | safeHTML }}{{ else }}{{ with .Site.Params.description }}{{ . | plainify }}{{ end }}{{ end }}{{ end }},
+      "keywords": [{{ range $i, $e := .Params.tags }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}]
+    }
+  </script>
+{{- end }}
+{{- if .IsHome }}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "{{ .Site.BaseURL }}",
+      "logo": "{{ .Site.Params.logo_png | absURL }}",
+      {{ with .Site.Title }}"name": "{{ . }}",{{ end }}
+      {{ with .Site.Params.author.email }}"email": {{ . }}{{ end }}
+    }
+  </script>
+{{- end }}
+      
+{{- if ne .Title .Site.Title }}
+  <script type="application/ld+json">
+    //breadcrumb schema
+    {{ if .Params.categories }}
+        [{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "{{.Site.BaseURL}}"
+        },
+        {{/*  This won't really work with multple categories...  */}}
+        {{ $counter := 1 }}
+        {{ range $i, $e := .Params.categories }}
+        {{ $counter = add $counter 1 }}
         {
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "url": "{{ .Site.BaseURL }}",
-          "logo": "{{ .Site.Params.logo_png | absURL }}",
-          {{ with .Site.Title }}"name": "{{ . }}",{{ end }}
-          {{ with .Site.Params.author.email }}"email": {{ . }}{{ end }}
-        }
-  </script>
-  {{ end }}
-      
-  {{ if ne .Title .Site.Title }}
-  <script type="application/ld+json">
-      //breadcrumb schema
-      {{ if .Params.categories }}
-          [{
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": [{
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": "{{.Site.BaseURL}}"
-          },
-          {{/*  This won't really work with multple categories...  */}}
-          {{ $counter := 1 }}
-          {{ range $i, $e := .Params.categories }}
-          {{ $counter = add $counter 1 }}
-          {
-              "@type": "ListItem",
-              "position": {{ $counter }},
-              "name": {{ $e }},
-              "item": "https://benstrawbridge.com/categories/{{ $e | urlize }}"
-          },
-          {{ end }}
-          {
-              "@type": "ListItem",
-              "position": {{ add $counter 1 }},
-              "name": {{.Title}},
-              "item": "{{.Site.BaseURL}}/{{ .RelPermalink }}"
-          }]
-          },
-      {{ end }}
-          {
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": [{
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": "{{.Site.BaseURL}}"
-          },
-          {{ $counter := 2 }}
-          {{ range after 1 .Ancestors.Reverse }}
-          {
             "@type": "ListItem",
             "position": {{ $counter }},
-            "name": {{ .Title }},
+            "name": {{ $e }},
+            "item": "https://benstrawbridge.com/categories/{{ $e | urlize }}"
+        },
+        {{ end }}
+        {
+            "@type": "ListItem",
+            "position": {{ add $counter 1 }},
+            "name": {{.Title}},
             "item": "{{.Site.BaseURL}}/{{ .RelPermalink }}"
-          },
-          {{ $counter = add $counter 1 }}
-          {{ end }}
-          {
-              "@type": "ListItem",
-              "position": {{ $counter }},
-              "name": {{.Title}},
-              "item": "{{.Site.BaseURL}}/{{ .RelPermalink }}"
-          }]
-          }
-      {{ if .Params.categories }} ]{{ end }}
-  
+        }]
+        },
+    {{ end }}
+        {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "{{.Site.BaseURL}}"
+        },
+        {{ $counter := 2 }}
+        {{ range after 1 .Ancestors.Reverse }}
+        {
+          "@type": "ListItem",
+          "position": {{ $counter }},
+          "name": {{ .Title }},
+          "item": "{{ .Permalink }}"
+        },
+        {{ $counter = add $counter 1 }}
+        {{ end }}
+        {
+            "@type": "ListItem",
+            "position": {{ $counter }},
+            "name": {{.Title}},
+            "item": "{{ .Permalink }}"
+        }]
+        }
+    {{ if .Params.categories }} ]{{ end }}
   </script>
-  {{ end }}
+  {{- end }}

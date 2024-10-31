@@ -2,17 +2,18 @@
 <html lang="{{ or site.Language.LanguageCode site.Language.Lang }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
 <head>
   {{ partial "head.html" . }}
-  
 </head>
 <body class="bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100 font-titillium">
-  {{ if not hugo.IsProduction }} {{ partial "tw-size-indicator.html" . }} {{ end }}
+  {{ if not hugo.IsProduction }}
+    {{ partial "tw-size-indicator.html" . }}
+  {{ end }}
   <div class="min-h-lvh flex flex-col container mx-auto">
     {{ $headerType := .Param "headerType" | default "" }}
     {{- partial (printf "header%s.html" $headerType) . }}
     {{- partial "alphaAlert.html" . }}
-    
     <main class="container max-h-max mx-auto ">
-      {{ if not .IsHome }}
+      {{ $showBreadCrumbs := .Param "showBreadCrumbs" | default true }}
+      {{ if and (not .IsHome) $showBreadCrumbs }}
       <div class="max-w-screen-xl mx-auto">
         {{- partial "breadcrumb.html" . }}
       </div>
