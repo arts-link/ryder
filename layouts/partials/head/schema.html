@@ -128,7 +128,7 @@
             "@type": "ListItem",
             "position": {{ add $counter 1 }},
             "name": {{.Title}},
-            "item": "{{.Site.BaseURL}}/{{ .RelPermalink }}"
+            "item": "{{ .Permalink }}"
         }]
         },
     {{ end }}
