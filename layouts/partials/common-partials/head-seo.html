@@ -1,14 +1,10 @@
-{{ $description := "" }}
-{{ with .Description }}
-  {{ $description = . }}
-{{ else }}
-  {{ if .IsPage }}
-    {{ $description = .Summary }}
-  {{ else }}
-    {{ with .Site.Params.description }}{{ $description = . }}{{ end }}
-  {{ end }}
-{{ end }}
-<meta name="description" content="{{ $description }}" />
+{{- with or .Description .Summary site.Params.description | plainify | htmlUnescape | chomp }}
+  <meta name="description" content="{{ . }}" />
+{{- end }}
+<!-- Open Graph Meta Tags -->
 {{- partial "common-partials/opengraph/opengraph.html" . -}}
+<!-- Schema.org for Google -->
 {{- template "_internal/schema.html" . -}}
+{{- partial "head/schema-recipe.html" . }}
+<!-- Twitter (X) meta tags -->
 {{- partial "common-partials/opengraph/twitter_cards.html" . -}}

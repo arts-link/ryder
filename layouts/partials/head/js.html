@@ -1,8 +1,8 @@
-<script>
-  // Default value for showDarkToggle
+
+  <script>
   const showDarkToggle = {{ with .Param "showDarkToggle" }}{{ . }}{{ else }}false{{ end }};
   const loadLeaflet = {{ with .Param "loadLeaflet" }}{{ . }}{{ else }}false{{ end }};
-</script>
+  </script>
 {{- with resources.Get "js/main.js" }}
   {{- if eq hugo.Environment "development" }}
     {{- with . | js.Build }}

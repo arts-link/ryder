@@ -9,19 +9,8 @@
   <div class="min-h-lvh flex flex-col container mx-auto">
     {{ $headerType := .Param "headerType" | default "" }}
     {{- partial (printf "header%s.html" $headerType) . }}
-    {{- $alphaAlert := .Params.alphaAlert | default .Site.Params.alphaAlert -}}
-    {{- with $alphaAlert }}
-      <div id="banners" class="w-full mx-auto ">
-        {{- range sort . "weight" }}
-          {{- $.Scratch.Set "alertType" .alertType }}
-          {{- $.Scratch.Set "alertTitle" .alertTitle }}
-          {{- $.Scratch.Set "alertMessage" .alertMessage }}
-          {{- $.Scratch.Set "alertIconClass" .alertIconClass }}
-          {{- $.Scratch.Set "dismissable" .dismissable}}
-          {{- partial "alert.html" $.Page }}
-        {{- end }}
-      </div>
-    {{- end }}
+    {{- partial "alphaAlert.html" . }}
+    
     <main class="container max-h-max mx-auto ">
       {{ if not .IsHome }}
       <div class="max-w-screen-xl mx-auto">

@@ -1,4 +1,4 @@
-{{ if .Params.recipe }}
+{{- if .Params.recipe }}
 {{- $images := .Resources.ByType "image" -}}
 {{- $featured := ($images.GetMatch (.Params.featured_image | default "*feature*")) | default (resources.Get .Site.Params.og_image_default) }}
 <script type="application/ld+json">
@@ -59,4 +59,4 @@
     ]
   }
 </script> 
-{{ end}}
+{{- end}}

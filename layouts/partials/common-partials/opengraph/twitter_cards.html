@@ -13,7 +13,6 @@
 {{- with or .Description .Summary site.Params.description | plainify | htmlUnescape | chomp }}
   <meta name="twitter:description" content="{{ . }}" />
 {{- end }}
-
 {{- $twitterSite := "" }}
 {{- with site.Params.social }}
   {{- if reflect.IsMap . }}

@@ -2,19 +2,14 @@
 {{- $css := resources.Get "css/main.css"}}
 {{- $leaflet := resources.Get "css/leaflet.css" }}
 {{- if eq hugo.Environment "development" }}
-  {{/*  TODO :: update this to use params enabledebugpanel vars  */}}
   {{- $debug := resources.Get "css/debugprint.css" }}
   {{- $mergedCss := slice $css $extended $leaflet $debug | resources.Concat "css/busta-main.css" | resources.PostCSS (dict "inlineImports" true)  }}
   {{- with $mergedCss | fingerprint }}
-    <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
   {{- end }}
 {{- else }}
   {{- $mergedCss := slice $css $leaflet $extended | resources.Concat "css/busta-main.css" | resources.PostCSS (dict "inlineImports" true)  }}
   {{- with $mergedCss | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
   {{- end }}
 {{- end }}
-{{/*  these are just some experiments in page speed optimizations  */}}
-{{/*  {{ $ryder := resources.Get "images/ryder-theme-og.webp"}}  */}}
-{{/*  {{ $ryder.RelPermalink }}  */}}
-{{/*  <link rel="preload" fetchpriority="high" as="image" href="{{ $ryder.RelPermalink }}" type="image/webp">  */}}
