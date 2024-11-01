@@ -15,7 +15,6 @@
 {{ end }}
 {{ $articleSection := .Section }}
 {{ $articleLink := .Section }}
-
 {{ $headerStyle := default "bg-gradient-to-r from-zinc-400 to-zinc-300" (.Param "cardCategoryColorsDefault") }}
 {{ $categories := .GetTerms "categories" }}
 {{ if gt (len $categories) 0 }}

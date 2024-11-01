@@ -9,8 +9,10 @@
     {{- if eq .Params.listRecursive true -}}
       {{- $myCollection = .RegularPagesRecursive -}}
     {{- end -}}
-    {{- $paginator := .Paginate ($myCollection) -}}
-    {{- range $paginator.Pages.ByLastmod.Reverse -}}
+    {{- $sortBy := .Param "listSortBy" | default "Date" }}
+    {{- $sortOrder := .Param "listSortOrder" | default "desc" }}
+    {{- $paginator := .Paginate (sort $myCollection $sortBy $sortOrder) }}
+    {{- range $paginator.Pages -}}
       {{- partial "card-category-color.html" . -}}
     {{- end -}}
   </div>
