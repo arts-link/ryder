@@ -53,7 +53,7 @@
         <span class="{{- if not $showDate }}hidden{{- end }}">On <time itemprop="datePublished" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time></span>
       </span>
       {{ end }}
-      <div itemprop="articleBody" class="articleBody prose dark:prose-invert max-w-max px-3 pb-4 w-full">
+      <div itemprop="articleBody" class="articleBody prose dark:prose-invert px-3 pb-4 w-full mx-auto">
         {{ or .Params.homeFeatureSummary .Summary }}
         {{ if $showReadOn }}
           {{ partial "utils/btn-read-on.html" . }}
