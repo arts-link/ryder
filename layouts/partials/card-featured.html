@@ -1,7 +1,6 @@
 {{ $showAuthor := .Param "showAuthor" | default true }}
 {{ $showReadOn := .Param "showReadOn" | default true }}
 {{ $showDate := .Param "showDate" | default true }}
-
 {{ $nowYear := time.Now | time.Format "2006" }}
 {{ $dateYear := .Date | time.Format "2006" }}
 {{ $dateHuman := "" }}
@@ -9,6 +8,8 @@
 {{/*  {{ $dateHuman := .Date | time.Format ":date_long" }}  */}}
 {{ if eq $dateYear $nowYear }}
   {{ $dateHuman = .Date | time.Format "Jan 02" }}
+{{ else if eq $dateYear "0001" }}
+  {{ $showDate = false }}
 {{ else }}
   {{ $dateHuman = .Date | time.Format "Jan 02, 2006" }}
 {{ end }}

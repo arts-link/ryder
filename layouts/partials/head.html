@@ -13,9 +13,9 @@
 {{- end }}
 {{- partial "common-partials/head-seo.html" . }}
 {{- partialCached "head/fonts.html" . }}
-{{ if eq .Kind "404" }}
-  {{- $advanced := site.Params.plausible_advanced }}
-  {{- if $advanced }} <script>document.addEventListener('DOMContentLoaded', function () { plausible('404', { props: { path: document.location.pathname } }); });</script> {{ end }}
-{{ end }}
 {{- partial "head/css.html" . }}
 {{- partial "head/js.html" . }}
+{{- if hugo.IsProduction -}}
+  {{ partial "plausible.html" . }}
+  {{ template "_internal/google_analytics.html" . }}
+{{- end -}}

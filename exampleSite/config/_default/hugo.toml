@@ -13,7 +13,7 @@ paginate = 8
 # !!! exampleSite only, you may need to delete the line: `themesDir: ../../` 
 themesDir= "../../"
 [params]
-  description = 'A theme for hugo'
+  # description = 'A theme for hugo'
   TocOpen = true
   # UseHugoToc = true
   # enabledebugpanel = true 
@@ -34,7 +34,8 @@ themesDir= "../../"
   logo_tagline = "FOR HUGO WEBSITES"
   logo_fontClass = 'font-titillium'
   repository = "https://github.com/arts-link/ryder"
-  articleBackgroundStyle = "bg-gradient-to-l from-blue-100 to-green-100 dark:from-blue-800 dark:to-green-800"
+  # articleBackgroundStyle = "bg-gradient-to-l from-blue-100 to-green-100"
+  # featuredArticleBackgroundStyle = "bg-gradient-to-l from-yellow-200 to-lime-200"
   ShowPubDate = true
   # headerType = "-fun" # "-fun" or "-custom" to make your own
 
@@ -92,6 +93,10 @@ themesDir= "../../"
   [[module.mounts]]
     source = "hugo_stats.json"
     target = "assets/watching/hugo_stats.json"
+
+[services]
+  [services.plausibleAnalytics]
+    ID = "arts-link.github.io/ryder"
 
 [build]
   writeStats = true

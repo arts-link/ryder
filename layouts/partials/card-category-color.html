@@ -15,7 +15,11 @@
 {{ end }}
 {{ $articleSection := .Section }}
 {{ $articleLink := .Section }}
-{{ $headerStyle := default "bg-gradient-to-r from-zinc-400 to-zinc-300" (.Param "cardCategoryColorsDefault") }}
+
+{{ $headerStyle := default "bg-gradient-to-r from-stone-300 to-stone-200" (.Param "cardCategoryColorsDefault") }}
+{{ $articleBackgroundStyle := default "" (.Param "articleBackgroundStyle") }}
+{{ $featuredArticleBackgroundStyle := default "bg-gradient-to-br from-rose-100 to-teal-100 text-neutral-900 dark:from-rose-800 dark:to-teal-800 dark:text-neutral-200" (.Param "featuredArticleBackgroundStyle") }}
+
 {{ $categories := .GetTerms "categories" }}
 {{ if gt (len $categories) 0 }}
   {{ $mainCategory := index $categories 0 }}
@@ -33,8 +37,7 @@
   {{ $cardURL = . }}
 {{ end }}
 
-<div itemscope="" itemtype="http://schema.org/Article" class="article">
-  
+<div itemscope="" itemtype="http://schema.org/Article" class="article {{ with .Param "homeFeatureWide" }}md:col-span-2 md:order-first{{ end }}">
   <div class="article-content relative p-1 rounded-t-xl {{ $headerStyle }}">
     <div class="w-full h-full bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
       <a itemprop="url" aria-label="{{ .Title }}" href="{{ $cardURL }}" class="link-overlay"> </a>
@@ -44,20 +47,24 @@
         {{- end }}
         {{ .Title }}
       </h2>
-      {{ if or $articleSection .Site.Params.showDate $showAuthor }}
+      
+      
+      <div class="{{- if .Param "homeFeature" -}}{{$featuredArticleBackgroundStyle}}{{- else -}}{{$articleBackgroundStyle}}{{- end -}}">
+
+      {{- if or $articleSection .Site.Params.showDate $showAuthor -}}
       <span class="details pl-2 mt-4 inline-block">
         {{/*  I am currenly not doing anything for author since it is only me but for Ryder author with be a taxonomy item and included in every page  */}}
         <span class="{{ if not $showAuthor }}hidden{{ end }}" itemprop="author" itemscope="" itemtype="http://schema.org/Person">By <span class="author" itemprop="name">{{ .Site.Params.author.name }}</span></span>
         {{ with $articleSection }}In <a href="{{ site.BaseURL }}{{ $articleLink }}"><span itemprop="articleSection" class="relative z-10 source font-bold capitalize">{{ . }}</span></a>{{ end }}
         <span class="{{- if not $showDate }}hidden{{- end }}">On <time itemprop="datePublished" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time></span>
       </span>
-      {{ end }}
+      {{- end -}}
       <div itemprop="articleBody" class="articleBody prose dark:prose-invert px-3 pb-4 w-full mx-auto">
         {{ or .Params.homeFeatureSummary .Summary }}
         {{ if $showReadOn }}
           {{ partial "utils/btn-read-on.html" . }}
         {{ end }}
-        
+      </div>  
       </div>
     </div>
   </div>

@@ -1,15 +1,26 @@
+{{- $css := resources.Get "css/main.css" }}
 {{- $extended := (resources.Match "css/extended/*.css") | resources.Concat "assets/css/extended.css" }}
-{{- $css := resources.Get "css/main.css"}}
-{{- $leaflet := resources.Get "css/leaflet.css" }}
+
+{{- $cssFiles := slice $css $extended }}
+
+{{- if .Param "loadLeaflet" }}
+  {{- $leaflet := resources.Get "css/leaflet.css" }}
+  {{- $cssFiles = $cssFiles | append $leaflet }}
+{{- end }}
+
 {{- if eq hugo.Environment "development" }}
   {{- $debug := resources.Get "css/debugprint.css" }}
-  {{- $mergedCss := slice $css $extended $leaflet $debug | resources.Concat "css/busta-main.css" | resources.PostCSS (dict "inlineImports" true)  }}
-  {{- with $mergedCss | fingerprint }}
-  <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
+  {{- $cssFiles = $cssFiles | append $debug }}
+{{- end }}
+
+{{- $mergedCss := $cssFiles | resources.Concat "css/busta-main.css" | resources.PostCSS (dict "inlineImports" true) }}
+
+{{- if eq hugo.Environment "production" }}
+  {{- with $mergedCss | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
   {{- end }}
 {{- else }}
-  {{- $mergedCss := slice $css $leaflet $extended | resources.Concat "css/busta-main.css" | resources.PostCSS (dict "inlineImports" true)  }}
-  {{- with $mergedCss | minify | fingerprint }}
-  <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
+  {{- with $mergedCss | fingerprint }}
+    <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
   {{- end }}
 {{- end }}

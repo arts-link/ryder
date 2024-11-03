@@ -1,22 +1,17 @@
+<script>
+  const showDarkToggle = {{ .Site.Params.showDarkToggle | default false }};
+  const loadLeaflet = {{ .Site.Params.loadLeaflet | default false }};
+</script>
 
-  <script>
-  const showDarkToggle = {{ with .Param "showDarkToggle" }}{{ . }}{{ else }}false{{ end }};
-  const loadLeaflet = {{ with .Param "loadLeaflet" }}{{ . }}{{ else }}false{{ end }};
-  </script>
 {{- with resources.Get "js/main.js" }}
   {{- if eq hugo.Environment "development" }}
     {{- with . | js.Build }}
-  <script defer src="{{ .RelPermalink }}"></script>
+      <script defer src="{{ .RelPermalink }}"></script>
     {{- end }}
   {{- else }}
     {{- $opts := dict "minify" true }}
     {{- with . | js.Build $opts | fingerprint }}
-  <script defer src="{{ .RelPermalink }}" integrity="{{- .Data.Integrity }}" crossorigin="anonymous"></script>
+      <script defer src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
     {{- end }}
   {{- end }}
 {{- end }}
-{{- if hugo.IsProduction | or (eq site.Params.env "production") }}
-  {{ partial "plausible.html" . }}
-  {{ template "_internal/google_analytics.html" . }}
-{{- end -}}
-{{/*  <script src="https://kit.fontawesome.com/cdef052a32.js" crossorigin="anonymous"></script>  */}}

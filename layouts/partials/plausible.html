@@ -1,10 +1,13 @@
-{{ $domain := site.Params.plausible_domain }}
-{{ $advanced := site.Params.plausible_advanced }}
-{{ if $domain }}
-{{ if $advanced }}
-  <script defer data-domain="{{ $domain }}" src="https://plausible.io/js/script.hash.outbound-links.js"></script>
+{{- $domain := site.Params.plausible_domain -}}
+{{- $advanced := site.Params.plausible_advanced -}}
+{{- if $domain -}}
+{{- if $advanced -}}
+  <script defer data-domain="{{- $domain -}}" src="https://plausible.io/js/script.hash.outbound-links.js"></script>
   <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
-{{ else}}
-  <script defer data-domain="{{ $domain }}" src="https://plausible.io/js/plausible.js"></script>
-{{ end }}
-{{ end }}
+  {{- if eq .Kind "404" -}}
+  <script>document.addEventListener('DOMContentLoaded', function () { plausible('404', { props: { path: document.location.pathname } }); });</script>
+  {{- end -}}
+{{- else -}}
+  <script defer data-domain="{{- $domain -}}" src="https://plausible.io/js/plausible.js"></script>
+{{- end -}}
+{{- end -}}

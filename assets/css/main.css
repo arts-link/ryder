@@ -46,46 +46,7 @@
   .hpContent h2 { 
     @apply mt-0;
   }
-  .main-fun-menu-nav {
-    .main-menu-ul {
-      @apply flex space-x-4;
-      @apply justify-center;
-      /* @apply w-full; */
-      @apply p-3;
-      @apply text-nowrap;
-      @apply rounded-lg;
-    }
-    .main-menu-ul > li {
-      @apply border-b border-sky-800;
-      @apply text-sky-800;
-      @apply bg-neutral-100;
-      @apply p-2 rounded-md;
-    }
-    .main-menu-ul li .active,
-    .main-menu-ul li .ancestor  {
-      /* @apply border-b border-lime-800; */
-      @apply text-lime-800;
-    }
-    .main-menu-child-ul {
-     @apply ml-4 p-2;
-      @apply bg-neutral-300 rounded-lg cursor-pointer;
-    }
-    .main-menu-child-ul > li {
-      @apply border-b border-sky-800;
-    }
 
-    .child-nav-container {
-      @apply flex flex-row items-center cursor-pointer;
-    }
-    .child-nav-icon {
-      @apply ml-1 text-base;
-    }
-    .child-ul-container {
-      @apply absolute top-7 -right-2 pt-5;
-      @apply min-w-40 max-w-52 md:max-w-60;
-      @apply hidden;
-    }
-  }
   .main-menu-nav {
     .main-menu-ul {
       @apply md:flex md:space-x-4;
@@ -140,7 +101,6 @@ img {
   height: auto;
   max-width: 100%;
 }
-
 
   .article .article-content a.link-overlay {
     border: 5px;

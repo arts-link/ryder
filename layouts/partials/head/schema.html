@@ -1,6 +1,5 @@
 <!-- Schema.org JSON-LD -->
-{{- $images := .Resources.ByType "image" -}}
-{{- $featured := ($images.GetMatch (.Params.featured_image | default "*feature*")) | default (resources.Get .Site.Params.og_image_default) }}
+{{- $featured := partial "common-partials/opengraph/get-featured-image.html" . }}
 {{- if eq .Title .Site.Title }}
   <script type="application/ld+json">
     // homepage
@@ -9,34 +8,35 @@
       "@type": "WebPage",
       "name": "{{ .Title }}",
       "url": "{{ .Site.BaseURL }}",
+      {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
       "inLanguage": {{ .Site.LanguageCode }},
       "isFamilyFriendly": "true",
       "copyrightYear": "{{ .PublishDate.Format "2006" }}",
-      "copyrightHolder": {{ .Site.Params.author.name }},
+      "copyrightHolder": "{{ .Site.Params.author.name }}",
       "accountablePerson": {
         "@type": "Person",
-        "name": {{ .Site.Params.author.name }},
-        "email": {{ .Site.Params.author.email }},
+        "name": "{{ .Site.Params.author.name }}",
+        "email": "{{ .Site.Params.author.email }}",
         "url": "{{.Site.BaseURL}}"
       },
       "author": {
         "@type": "Person",
-        "name": {{ .Site.Params.author.name }},
-        "email": {{ .Site.Params.author.email }},
+        "name": "{{ .Site.Params.author.name }}",
+        "email": "{{ .Site.Params.author.email }}",
         "url": "{{.Site.BaseURL}}"
       },
       "creator": {
         "@type": "Person",
-        "name": {{ .Site.Params.author.name }},
-        "email": {{ .Site.Params.author.email }},
+        "name": "{{ .Site.Params.author.name }}",
+        "email": "{{ .Site.Params.author.email }}",
         "url": "{{.Site.BaseURL}}"
       },
       "publisher": {
         "@type": "Organization",
-        "name": {{ .Site.Params.author.name }},
-        "email": {{ .Site.Params.author.email }},
+        "name": "{{ .Site.Params.author.name }}",
+        "email": "{{ .Site.Params.author.email }}",
         "url": "{{.Site.BaseURL}}",
-        "logo": {{ .Site.Params.logo_png | absURL }}
+        "logo": "{{ .Site.Params.logo_png | absURL }}"
       }
     }
   </script>
@@ -55,34 +55,34 @@
       "inLanguage": {{ .Site.LanguageCode }},
       "isFamilyFriendly": "true",
       "copyrightYear": "{{ .PublishDate.Format "2006" }}",
-      "copyrightHolder": {{ .Site.Params.author.name }},
+      "copyrightHolder": "{{ .Site.Params.author.name }}",
       "accountablePerson": {
         "@type": "Person",
-        "name": {{ .Site.Params.author.name }},
-        "email": {{ .Site.Params.author.email }},
+        "name": "{{ .Site.Params.author.name }}",
+        "email": "{{ .Site.Params.author.email }}",
         "url": "{{.Site.BaseURL}}"
       },
       "author": {
         "@type": "Person",
-        "name": {{ .Site.Params.author.name }},
-        "email": {{ .Site.Params.author.email }},
+        "name": "{{ .Site.Params.author.name }}",
+        "email": "{{ .Site.Params.author.email }}",
         "url": "{{.Site.BaseURL}}"
       },
       "creator": {
         "@type": "Person",
-        "name": {{ .Site.Params.author.name }},
-        "email": {{ .Site.Params.author.email }},
+        "name": "{{ .Site.Params.author.name }}",
+        "email": "{{ .Site.Params.author.email }}",
         "url": "{{.Site.BaseURL}}"
       },
       "publisher": {
         "@type": "Organization",
-        "name": {{ .Site.Params.author.name }},
-        "email": {{ .Site.Params.author.email }},
+        "name": "{{ .Site.Params.author.name }}",
+        "email": "{{ .Site.Params.author.email }}",
         "url": "{{.Site.BaseURL}}",
-        "logo": {{ .Site.Params.logo_png | absURL }}
+        "logo": "{{ .Site.Params.logo_png | absURL }}"
       },
-      "articleBody": {{ .Content | safeJS | htmlUnescape | plainify }},
-      "description": {{ with .Description }}{{ . | plainify }}{{ else }}{{if .IsPage}}{{ .Summary | plainify | safeHTML }}{{ else }}{{ with .Site.Params.description }}{{ . | plainify }}{{ end }}{{ end }}{{ end }},
+      "articleBody": "{{ .Content | safeJS | htmlUnescape | plainify }}",
+      "description": "{{ with .Description }}{{ . | plainify }}{{ else }}{{if .IsPage}}{{ .Summary | plainify | safeHTML }}{{ else }}{{ with .Site.Params.description }}{{ . | plainify }}{{ end }}{{ end }}{{ end }}",
       "keywords": [{{ range $i, $e := .Params.tags }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}]
     }
   </script>
