@@ -4,19 +4,22 @@
   {{ $featured = $images.GetMatch "{*cover*,*thumbnail*}" }}
 {{ end }}
 {{ if not $featured }}
-  {{ $featured = resources.Get "/common-partials/opengraph/opengraph-base.png" }}
+  {{ $customImage := .Param "og_image_default" | default "/common-partials/opengraph/opengraph-base.png" }}
+  {{ $featured = resources.Get $customImage }}
+  {{ $featured = $featured.Resize "1200x" }}
+  
   {{ $size := 80 }}
   {{ $title := $.LinkTitle }}
   {{ if gt (len $title) 20 }}
     {{ $size = 70 }}
   {{ end }}
-
   {{ $fontName := default "TitilliumWeb-Regular" .Site.Params.ogImageText.fontName }}
+  {{ $color := default "#085624" .Site.Params.ogImageText.fontColor }}
   {{ $font := (resources.Get (printf "/common-partials/opengraph/%s.ttf" $fontName)) }}
   {{ $textX := default 15 .Site.Params.ogImageText.x }}
   {{ $textY := default 475 .Site.Params.ogImageText.y }}
   {{ $textOptions := dict
-    "color" "#085624"
+    "color" $color 
     "size" $size
     "lineSpacing" 10
     "x" $textX "y" $textY

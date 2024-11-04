@@ -1,4 +1,5 @@
-{{- with or .Description .Summary site.Params.description | plainify | htmlUnescape | chomp }}
+<!-- Setup for SEO -->
+{{- with or (.Description | plainify | htmlUnescape | chomp) (.Summary | plainify | htmlUnescape | chomp) (site.Params.description | plainify | htmlUnescape | chomp) }}
   <meta name="description" content="{{ . }}" />
 {{- end }}
 <!-- Open Graph Meta Tags -->
