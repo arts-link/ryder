@@ -1,41 +1,44 @@
-{{ $showAuthor := .Param "showAuthor" | default true }}
-{{ $showReadOn := .Param "showReadOn" | default true }}
-{{ $showDate := .Param "showDate" | default true }}
-{{ $nowYear := time.Now | time.Format "2006" }}
-{{ $dateYear := .Date | time.Format "2006" }}
-{{ $dateHuman := "" }}
-{{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
+{{- $showAuthor := .Param "showAuthor" | default true }}
+{{- $showReadOn := .Param "showReadOn" | default true }}
+{{- $showDate := .Param "showDate" | default true }}
+{{- $showSummaryMeta := .Param "showSummaryMeta" | default true}}
+{{- $nowYear := time.Now | time.Format "2006" }}
+{{- $headerStyle := .Param "cardCategoryColorsDefault" 
+  | default "bg-gradient-to-r from-stone-300 to-stone-200 text-neutral-800" }}
+{{- $articleBackgroundStyle := .Param "articleBackgroundStyle" 
+  | default "" }}
+{{- $featuredArticleBackgroundStyle := .Param "featuredArticleBackgroundStyle" 
+  | default "bg-gradient-to-br from-rose-100 to-teal-100 text-neutral-900 dark:from-rose-800 dark:to-teal-800 dark:text-neutral-100" }}
+{{- $dateYear := .Date | time.Format "2006" }}
+{{- $dateHuman := "" }}
+{{- $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
 {{/*  {{ $dateHuman := .Date | time.Format ":date_long" }}  */}}
-{{ if eq $dateYear $nowYear }}
-  {{ $dateHuman = .Date | time.Format "Jan 02" }}
-{{ else if eq $dateYear "0001" }}
-  {{ $showDate = false }}
-{{ else }}
-  {{ $dateHuman = .Date | time.Format "Jan 02, 2006" }}
-{{ end }}
-{{ $articleSection := .Section }}
-{{ $articleLink := .Section }}
+{{- if eq $dateYear $nowYear }}
+  {{- $dateHuman = .Date | time.Format "Jan 02" }}
+{{- else if eq $dateYear "0001" }}
+  {{- $showDate = false }}
+{{- else }}
+  {{- $dateHuman = .Date | time.Format "Jan 02, 2006" }}
+{{- end }}
+{{- $articleSection := .Section }}
+{{- $articleLink := .Section }}
 
-{{ $headerStyle := default "bg-gradient-to-r from-stone-300 to-stone-200" (.Param "cardCategoryColorsDefault") }}
-{{ $articleBackgroundStyle := default "" (.Param "articleBackgroundStyle") }}
-{{ $featuredArticleBackgroundStyle := default "bg-gradient-to-br from-rose-100 to-teal-100 text-neutral-900 dark:from-rose-800 dark:to-teal-800 dark:text-neutral-200" (.Param "featuredArticleBackgroundStyle") }}
-
-{{ $categories := .GetTerms "categories" }}
-{{ if gt (len $categories) 0 }}
-  {{ $mainCategory := index $categories 0 }}
-  {{ $articleSection = $mainCategory.Title }}
-  {{ $articleLink = printf "categories/%s" $articleSection }}
-  {{ with .Site.GetPage ($articleLink) }}
-    {{ $articleSection = .Title }}
-    {{ with .Params.cardCategoryColorsDefault }}
-      {{ $headerStyle = . }}
-    {{ end }}
-  {{ end }}
-{{ end }}
-{{ $cardURL := .RelPermalink }}
-{{ with .Params.detailpageURL }}
-  {{ $cardURL = . }}
-{{ end }}
+{{- $categories := .GetTerms "categories" }}
+{{- if gt (len $categories) 0 }}
+  {{- $mainCategory := index $categories 0 }}
+  {{- $articleSection = $mainCategory.Title }}
+  {{- $articleLink = printf "categories/%s" $articleSection }}
+  {{- with .Site.GetPage ($articleLink) }}
+    {{- $articleSection = .Title }}
+    {{- with .Params.cardCategoryColorsDefault }}
+      {{- $headerStyle = . }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- $cardURL := .RelPermalink }}
+{{- with .Params.detailpageURL }}
+  {{- $cardURL = . }}
+{{- end }}
 
 <div itemscope="" itemtype="http://schema.org/Article" class="article {{ with .Param "homeFeatureWide" }}md:col-span-2 md:order-first{{ end }}">
   <div class="article-content relative p-1 rounded-t-xl {{ $headerStyle }}">
@@ -47,11 +50,8 @@
         {{- end }}
         {{ .Title }}
       </h2>
-      
-      
       <div class="{{- if .Param "homeFeature" -}}{{$featuredArticleBackgroundStyle}}{{- else -}}{{$articleBackgroundStyle}}{{- end -}}">
-
-      {{- if or $articleSection .Site.Params.showDate $showAuthor -}}
+      {{- if and $showSummaryMeta (or $articleSection .Site.Params.showDate $showAuthor) -}}
       <span class="details pl-2 mt-4 inline-block">
         {{/*  I am currenly not doing anything for author since it is only me but for Ryder author with be a taxonomy item and included in every page  */}}
         <span class="{{ if not $showAuthor }}hidden{{ end }}" itemprop="author" itemscope="" itemtype="http://schema.org/Person">By <span class="author" itemprop="name">{{ .Site.Params.author.name }}</span></span>
@@ -59,11 +59,11 @@
         <span class="{{- if not $showDate }}hidden{{- end }}">On <time itemprop="datePublished" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time></span>
       </span>
       {{- end -}}
-      <div itemprop="articleBody" class="articleBody prose dark:prose-invert px-3 pb-4 w-full mx-auto">
-        {{ or .Params.homeFeatureSummary .Summary }}
-        {{ if $showReadOn }}
-          {{ partial "utils/btn-read-on.html" . }}
-        {{ end }}
+      <div itemprop="articleBody" class="articleBody">
+        {{- or .Params.homeFeatureSummary .Summary }}
+        {{- if $showReadOn }}
+          {{- partial "utils/btn-read-on.html" . }}
+        {{- end }}
       </div>  
       </div>
     </div>

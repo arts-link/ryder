@@ -1,7 +1,7 @@
-{{ with .Site.Data.social.main }}
+{{- with .Site.Data.social.main }}
 <div class="flex flex-wrap mb-auto max-w-fit items-center justify-center text-center">
-  {{ range sort . "weight" }}
-  {{ if and .icon .link }}
+  {{- range sort . "weight" }}
+  {{- if and .icon .link }}
   <div x-data="{ show: false }" class="relative p-3">
     <a class="hover:underline cursor-pointer text-2xl" @mouseenter="show = true" @mouseleave="show = false" href="{{ .link | safeURL }}" aria-label="{{ .title }}" title="{{ .title }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} {{ if .type }}type="{{ .type }}"{{ end }}>
       <i class=" {{ .icon }}"></i>
@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-  {{ end }} 
-  {{ end }}
+  {{- end }} 
+  {{- end }}
 </div>
-{{ end }}
+{{- end }}

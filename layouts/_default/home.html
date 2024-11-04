@@ -1,18 +1,18 @@
 {{- define "main" }}
 {{/*  Any content defined in the root _index.html of the website  */}}
-  {{ if or .Title .Content }}
-    {{ if and .Title site.Params.showHomeTitle}}
+  {{- if or .Title .Content }}
+    {{- if and .Title site.Params.showHomeTitle}}
     <h2 itemprop="headline" class="text-2xl p-3 "> 
       {{- if .Params.homeFeatureIcon }} <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i> {{- end }}
       {{ .Title }}
     </h2>
-    {{ end }}
-    {{ if .Content }}
+    {{- end }}
+    {{- if .Content }}
     <div itemprop="articleBody" class="articleBody max-w-xl mx-auto prose dark:prose-invert px-3 pb-4">
       {{ .Content }}
     </div>
-    {{ end }}
-  {{ end }}
+    {{- end }}
+  {{- end }}
 
   {{/*  Featured content loop  */}}
   {{- $current := .Page.Permalink }}
@@ -22,9 +22,9 @@
   {{/*  remove the current page b/c it was displayed at the top of the page.  */}}
   {{- $pages = where $pages "Permalink" "ne" $current }}
   {{- $features := where $pages "Params.homeFeature" "eq" true }}
-  {{ if $features }}
-  {{ $featureHeader := site.Params.homePageFeatureHeader }}
-  {{ if $featureHeader }}
+  {{- if $features }}
+  {{- $featureHeader := site.Params.homePageFeatureHeader }}
+  {{- if $featureHeader }}
     <h2 class="flex p-3 items-center mb-2 text-3xl uppercase">{{ $featureHeader }}</h2>
   {{ end }}
   <div class="p-2 mx-auto grid md:grid-cols-2 gap-6 mb-5">
@@ -33,18 +33,18 @@
     {{- partial "card-category-color.html" . }}
   {{- end }}
   </div>
-  {{ end }}
+  {{- end }}
 
   {{/*  Home page feed loop removing things to be removed first...  */}}
-  {{ $showHomeFeed := site.Params.showHomeFeed | default true }}
-  {{ if $showHomeFeed }}
+  {{- $showHomeFeed := site.Params.showHomeFeed | default true }}
+  {{- if $showHomeFeed }}
     {{- $feed := where $pages "Params.homeFeature" "ne" true }}
-    {{ $feedHeader := default "Latest stuff" (site.Params.homePageFeedHeader) }}
+    {{- $feedHeader := default "Latest stuff" (site.Params.homePageFeedHeader) }}
     <div class="md:grid-cols-2 p-2 mx-auto grid grid-cols-1 gap-6 mb-5">
       <h2 class="md:col-span-2 flex my-2 items-center mb-2 text-3xl uppercase">{{ $feedHeader }}</h2>
-      {{ $excludedSections := site.Params.excludedSections | default slice }}
-      {{ $excludedCategories := site.Params.excludedCategories | default slice }}
-      {{ $excludedTags := site.Params.excludedTags | default slice }}
+      {{- $excludedSections := site.Params.excludedSections | default slice }}
+      {{- $excludedCategories := site.Params.excludedCategories | default slice }}
+      {{- $excludedTags := site.Params.excludedTags | default slice }}
       {{- $filteredPages := slice -}}
       {{- range $feed.ByLastmod.Reverse }}
         {{- $excludePage := false -}}
@@ -71,15 +71,14 @@
         {{- end }}
         {{- $filteredPages = $filteredPages | append . -}}
       {{- end }}
-
-      {{ range (.Paginate $filteredPages).Pages }}
+      {{- range (.Paginate $filteredPages).Pages }}
       {{/*  {{ index .Params.categories 0 }}
       {{ .Section }}  */}}
         {{- partial "card-category-color.html" . }}
       {{- end }}
         <div class="md:col-span-2 flex p-3 justify-center items-center">
-          {{ template "_internal/pagination.html" . }}
+          {{- template "_internal/pagination.html" . }}
         </div>
     </div>
-  {{ end }}
-{{ end }}
+  {{- end }}
+{{- end }}

@@ -46,7 +46,11 @@
   .hpContent h2 { 
     @apply mt-0;
   }
-
+  .articleBody {
+    @apply prose dark:prose-invert w-full;
+    @apply mx-auto;
+    @apply p-4;
+  }
   .main-menu-nav {
     .main-menu-ul {
       @apply md:flex md:space-x-4;

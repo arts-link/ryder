@@ -1,10 +1,10 @@
-{{ $taxonomy := "tags" }}
+{{- $taxonomy := "tags" }}
 <div class="items-center justify-center text-center">
-{{ range $name, $taxonomyPage := (index $.Site.Taxonomies $taxonomy) }}
-  {{ $tagCount := len $taxonomyPage.Pages }}
-  {{ $baseURL := $.Site.BaseURL }}
-  {{ if gt $tagCount 1 }}
+{{- range $name, $taxonomyPage := (index $.Site.Taxonomies $taxonomy) }}
+  {{- $tagCount := len $taxonomyPage.Pages }}
+  {{- $baseURL := $.Site.BaseURL }}
+  {{- if gt $tagCount 1 }}
   <a href="{{ printf "%s%s/%s" $baseURL $taxonomy ($name | urlize) }}" class="px-2 inline-block text-center break-words">{{ $name }}<sup>{{ $tagCount }}</sup></span></a>
-  {{ end }}
-{{ end }}
+  {{- end }}
+{{- end }}
 </div>
