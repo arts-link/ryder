@@ -1,18 +1,18 @@
 {{- define "main" }}
-{{/*  Any content defined in the root _index.html of the website  */}}
-  {{- if or .Title .Content }}
-    {{- if and .Title site.Params.showHomeTitle}}
+<div class="p-2 max-w-screen-lg mx-auto ">
+  {{ if or .Title .Content }}
+    {{ if and .Title site.Params.showHomeTitle}}
     <h2 itemprop="headline" class="text-2xl p-3 "> 
       {{- if .Params.homeFeatureIcon }} <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i> {{- end }}
       {{ .Title }}
     </h2>
-    {{- end }}
-    {{- if .Content }}
+    {{ end }}
+    {{ if .Content }}
     <div itemprop="articleBody" class="articleBody max-w-xl mx-auto prose dark:prose-invert px-3 pb-4">
       {{ .Content }}
     </div>
-    {{- end }}
-  {{- end }}
+    {{ end }}
+  {{ end }}
 
   {{/*  Featured content loop  */}}
   {{- $current := .Page.Permalink }}
@@ -22,14 +22,13 @@
   {{/*  remove the current page b/c it was displayed at the top of the page.  */}}
   {{- $pages = where $pages "Permalink" "ne" $current }}
   {{- $features := where $pages "Params.homeFeature" "eq" true }}
-  {{- if $features }}
-  {{- $featureHeader := site.Params.homePageFeatureHeader }}
-  {{- if $featureHeader }}
+  {{ if $features }}
+  {{ $featureHeader := site.Params.homePageFeatureHeader }}
+  {{ if $featureHeader }}
     <h2 class="flex p-3 items-center mb-2 text-3xl uppercase">{{ $featureHeader }}</h2>
   {{ end }}
   <div class="p-2 mx-auto grid md:grid-cols-2 gap-6 mb-5">
   {{- range $features }}
-    {{/*  {{- partial "card-featured.html" . }}   */}}
     {{- partial "card-category-color.html" . }}
   {{- end }}
   </div>
@@ -81,4 +80,5 @@
         </div>
     </div>
   {{- end }}
+</div>
 {{- end }}

@@ -7,9 +7,9 @@
   {{ $customImage := .Param "og_image_default" | default "/common-partials/opengraph/opengraph-base.png" }}
   {{ $featured = resources.Get $customImage }}
   {{ $featured = $featured.Resize "1200x" }}
-  
+
   {{ $size := 80 }}
-  {{ $title := $.LinkTitle }}
+  {{ $title := .Param "ogTitleText" | default $.LinkTitle }}
   {{ if gt (len $title) 20 }}
     {{ $size = 70 }}
   {{ end }}

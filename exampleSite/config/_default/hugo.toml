@@ -8,10 +8,11 @@ enableRobotsTXT = true
 copyright = "©️ Ryder Theme 2024"
 enableEmoji = true
 enableGitInfo = true
-paginate = 8
 
 # !!! exampleSite only, you may need to delete the line: `themesDir: ../../` 
 themesDir= "../../"
+[pagination]
+  pagerSize = 8 
 [params]
   # description = 'A theme for hugo'
   TocOpen = true

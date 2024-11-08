@@ -14,7 +14,7 @@
     <main class="container max-h-max mx-auto ">
       {{ $showBreadCrumbs := .Param "showBreadCrumbs" | default true }}
       {{ if and (not .IsHome) $showBreadCrumbs }}
-      <div class="max-w-screen-xl mx-auto">
+      <div class="max-w-screen-lg mx-auto">
         {{- partial "breadcrumb.html" . }}
       </div>
       {{ end }}

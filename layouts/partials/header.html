@@ -8,6 +8,7 @@ By default it will have a background gradient in cayan.
 {{- with or (.Param "twClasses.headerBackgroundFrameOuter") (.Param "headerGradientClasses") -}}
     {{- $headerClass = split . " " -}}
 {{- end -}}
+{{/*  {{ $headerClass }}  */}}
 {{- with .Param "twClasses.navbar_fixed" -}}
 {{- $headerClass = $headerClass | append . -}}
 {{- end -}}

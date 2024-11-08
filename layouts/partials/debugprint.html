@@ -133,12 +133,12 @@
                     {{ partial "debugprint.html" (index $PageVarSymbols $idx) }} <!-- Recursive call FTW! -->
                     {{ printf "</td></tr>" | safeHTML }}
                 {{ end }}
-                {{ with .NextPage }}
+                {{ with .Next }}
                     {{ printf `<tr><td class="key">NextPage</td><td class="value"><a href="%s">%s</a></td></tr>` .Permalink .Title | safeHTML }}
                 {{ else }}
                     {{ printf `<tr><td class="key">NextPage</td><td class="value">None</td></tr>` | safeHTML }}
                 {{ end }}
-                {{ with .PrevPage }}
+                {{ with .Prev }}
                     {{ printf `<tr><td class="key">PrevPage</td><td class="value"><a href="%s">%s</a></td></tr>` .Permalink .Title | safeHTML }}
                 {{ else }}
                     {{ printf `<tr><td class="key">PrevPage</td><td class="value">None</td></tr>` | safeHTML }}

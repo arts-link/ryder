@@ -4,10 +4,12 @@ description = "Posts to show how that might look."
 date = "2024-01-24"
 author = "Hugo Authors"
 enableComments = false
-headerType = "-fun" 
+# headerType = "-fun" 
 [cascade]
+  # showCardLinkOverlay = false
   homeFeatureIcon = "fa-solid fa-signs-post"
   cardCategoryColorsDefault = "bg-gradient-to-r from-violet-400 to-pink-400"
+  showReadOn = true
 [menu]
  [menu.main]
   weight = 32

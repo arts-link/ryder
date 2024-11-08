@@ -13,7 +13,7 @@
   {{- $cssFiles = $cssFiles | append $debug }}
 {{- end }}
 
-{{- $mergedCss := $cssFiles | resources.Concat "css/busta-main.css" | resources.PostCSS (dict "inlineImports" true) }}
+{{- $mergedCss := $cssFiles | resources.Concat "css/busta-main.css" | css.PostCSS (dict "inlineImports" true) }}
 
 {{- if eq hugo.Environment "production" }}
   {{- with $mergedCss | minify | fingerprint }}
