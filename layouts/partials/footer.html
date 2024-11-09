@@ -9,11 +9,20 @@
 {{- if or .Site.Params.footer.tagCloud $showMiddleColumn }}
   {{- $showMiddleColumn = true }}
 {{- end }}
+
+{{- $footerLayout := .Param "footerLayout" }} <!-- Check for footerLayout param -->
+
 <footer class="border-t w-full mt-auto text-neutral-100 {{ $footerClass }} ">
-  <div class="grid w-full text-md py-4 px-2 {{ if $showMiddleColumn }}sm:grid-cols-3{{ else }}sm:grid-cols-2{{ end }} gap-4">
-    
+  
+  <!-- Conditionally apply layout: grid or flex -->
+  {{ if eq $footerLayout "stacked" }}
+    <div class="flex flex-col w-full text-md py-4 px-2 gap-4">
+  {{ else }}
+    <div class="grid w-full text-md py-4 px-2 {{ if $showMiddleColumn }}sm:grid-cols-3{{ else }}sm:grid-cols-2{{ end }} gap-4">
+  {{ end }}
+  
     <!-- Left Column -->
-    <div class="flex flex-col h-full items-center sm:items-start justify-center text-center sm:text-left sm:justify-self-start">
+    <div class="flex flex-col h-full items-center justify-center text-center {{ if ne $footerLayout "stacked" }}sm:items-start sm:text-left sm:justify-self-start{{ end }}">
       {{- with .Site.Copyright | safeHTML }}
       <p>{{ . }}</p>
       {{- end }}
@@ -32,7 +41,7 @@
     {{- end }}
 
     <!-- Right Column -->
-    <div class="flex h-full flex-col sm:flex-row items-center justify-center sm:justify-end sm:justify-self-end text-xl space-x-4">
+    <div class="flex h-full flex-col items-center justify-center text-xl space-x-4 {{ if ne $footerLayout "stacked" }}sm:flex-row sm:justify-end sm:justify-self-end{{ end }}">
       <div class="flex items-center space-x-2">
         {{- partial "utils/socialslist.html" . }}
       </div>
