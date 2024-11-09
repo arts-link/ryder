@@ -1,30 +1,47 @@
 {{- $footerClass := "" }} 
+{{- $showMiddleColumn := false }}
 {{- with or (.Param "twClasses.footerBackground") (.Param "twClasses.headerBackgroundFrameOuter") (.Param "headerGradientClasses")}}
-{{- $footerClass = . }}
+  {{- $footerClass = . }}
+{{- end }}
+{{- with .Site.Menus.footer }}
+  {{- $showMiddleColumn = true }}
+{{- end }}
+{{- if or .Site.Params.footer.tagCloud $showMiddleColumn }}
+  {{- $showMiddleColumn = true }}
 {{- end }}
 <footer class="border-t w-full mt-auto text-neutral-100 {{ $footerClass }} ">
-  <div class="flex w-full ">
-    <div class="py-4 px-2 w-1/3 text-sm ">
+  <div class="grid w-full text-md py-4 px-2 {{ if $showMiddleColumn }}sm:grid-cols-3{{ else }}sm:grid-cols-2{{ end }} gap-4">
+    
+    <!-- Left Column -->
+    <div class="flex flex-col h-full items-center sm:items-start justify-center text-center sm:text-left sm:justify-self-start">
       {{- with .Site.Copyright | safeHTML }}
-      <p class="flex items-center">{{ . }}</p>
+      <p>{{ . }}</p>
       {{- end }}
       {{- partial "utils/attribution.html" . }}
       {{- partial "utils/page_meta.html" . }}
     </div>
-    <div class="py-4 px-2 w-1/3 text-sm">
+
+    <!-- Middle Column (conditionally shown) -->
+    {{- if $showMiddleColumn }}
+    <div class="flex flex-col h-full items-center justify-center text-center">
       {{- partial "menu.html" (dict "menuID" "footer" "page" .) }} 
       {{- if .Site.Params.footer.tagCloud }}
-        <div class="pt-4"> {{- partial "utils/taxonomy-string.html" . }} </div>
+        <div class="pt-4">{{- partial "utils/taxonomy-string.html" . }}</div>
       {{- end }}
     </div>
-    <div class="flex w-1/3 justify-end text-xl ">
-      {{- partial "utils/socialslist.html" . }}
+    {{- end }}
+
+    <!-- Right Column -->
+    <div class="flex h-full flex-col sm:flex-row items-center justify-center sm:justify-end sm:justify-self-end text-xl space-x-4">
+      <div class="flex items-center space-x-2">
+        {{- partial "utils/socialslist.html" . }}
+      </div>
       {{- if (.Param "showDarkToggle") }}
+      <div class="flex items-center">
         {{- partial "utils/dark-toggle.html" . }}
+      </div>
       {{- end }}
     </div>
-  </div>
-  <div>
     
   </div>
 </footer>
