@@ -71,7 +71,7 @@
         {{- $filteredPages = $filteredPages | append . -}}
       {{- end }}
       {{- $sortBy := .Param "listSortBy" | default "Date" }}
-      {{- $sortOrder := .Param "listSortOrder" | default "asc" }}
+      {{- $sortOrder := .Param "listSortOrder" | default "desc" }}
       {{- $paginator := .Paginate (sort $filteredPages $sortBy $sortOrder) }}
       {{- range $paginator.Pages -}}
         {{- partial "card-category-color.html" . }}
