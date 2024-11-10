@@ -3,7 +3,8 @@
 
 {{- $cssFiles := slice $css $extended }}
 
-{{- if .Param "loadLeaflet" }}
+{{- $loadLeaflet = .Param "loadLeaflet" | default false }}
+{{- if $loadLeaflet }}
   {{- $leaflet := resources.Get "css/leaflet.css" }}
   {{- $cssFiles = $cssFiles | append $leaflet }}
 {{- end }}
