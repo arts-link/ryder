@@ -6,8 +6,6 @@
 {{- $nowYear := time.Now | time.Format "2006" }}
 {{- $headerStyle := .Param "cardCategoryColorsDefault" 
   | default "bg-gradient-to-r from-stone-300 to-stone-200 text-neutral-800" }}
-{{- $cardInternalBackground := .Param "cardInternalBackground" 
-  | default "bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100" }}
 {{- $articleBackgroundStyle := .Param "articleBackgroundStyle" 
   | default "" }}
 {{- $featuredArticleBackgroundStyle := .Param "featuredArticleBackgroundStyle" 
@@ -45,7 +43,7 @@
 
 <div itemscope="" itemtype="http://schema.org/Article" class="article {{ with .Param "homeFeatureWide" }}md:col-span-2 md:order-first{{ end }}">
   <div class="article-content relative p-1 rounded-t-xl {{ $headerStyle }}">
-    <div class="w-full h-full {{ $cardInternalBackground }}">
+    <div class="w-full h-full bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
       {{ if $showCardLinkOverlay}}
       <a itemprop="url" aria-label="{{ .Title }}" href="{{ $cardURL }}" class="link-overlay"> </a>
       {{ end }}
