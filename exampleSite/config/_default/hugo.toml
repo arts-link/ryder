@@ -40,6 +40,7 @@ themesDir= "../../"
   # articleBackgroundStyle = "bg-gradient-to-l from-blue-100 to-green-100"
   # featuredArticleBackgroundStyle = "bg-gradient-to-l from-yellow-200 to-lime-200"
   ShowPubDate = true
+  cardInternalBackground = ""
   # headerType = "-fun" # "-fun" or "-custom" to make your own
 
   [params.shareButtons]
