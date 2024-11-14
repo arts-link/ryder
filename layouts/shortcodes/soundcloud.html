@@ -1,0 +1,22 @@
+{{ $url := .Get "url" | default "https://api.soundcloud.com/tracks/1120047793" }}
+{{ $color := .Get "color" | default "#ff5500" }}
+{{ $auto_play := .Get "auto_play" | default "false" }}
+{{ $hide_related := .Get "hide_related" | default "false" }}
+{{ $show_comments := .Get "show_comments" | default "true" }}
+{{ $show_user := .Get "show_user" | default "true" }}
+{{ $show_reposts := .Get "show_reposts" | default "false" }}
+{{ $show_teaser := .Get "show_teaser" | default "true" }}
+{{ $visual := .Get "visual" | default "true" }}
+{{ $user_id := .Get "user_id" }}
+{{ $user_name := .Get "user_name" }}
+{{ $track_title := .Get "track_title" }}
+
+<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay"
+    src="{{ printf "https://w.soundcloud.com/player/?url=%s&color=%s&auto_play=%s&hide_related=%s&show_comments=%s&show_user=%s&show_reposts=%s&show_teaser=%s&visual=%s" $url (urlquery $color) $auto_play $hide_related $show_comments $show_user $show_reposts $show_teaser $visual | safeHTMLAttr }}"></iframe>
+
+{{ if and (eq $show_user "true") $user_id }}
+<div style="font-size: 10px; color: #cccccc; line-break: anywhere; word-break: normal; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-family: Interstate, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Garuda, Verdana, Tahoma, sans-serif; font-weight: 100;">
+    <a href="https://soundcloud.com/{{ $user_id }}" title="{{ $user_name }}" target="_blank" style="color: #cccccc; text-decoration: none;">{{ $user_name }}</a>
+    {{ if $track_title }} · <a href="https://soundcloud.com/{{ $user_id }}/{{ $track_title | urlize }}" title="{{ $track_title }}" target="_blank" style="color: #cccccc; text-decoration: none;">{{ $track_title }}</a>{{ end }}
+</div>
+{{ end }}
