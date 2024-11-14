@@ -4,8 +4,8 @@ This link format qualifies for the direct link bonus.
 for example::
 {{< amazon-associate-link button_label="BLUESTORM Cirrus 26 Inflatable Life Jacket PFD for Adults" >}}
 */}}
-{{ $asin := default "B0BT488H6W" .Page.Params.asin }}
-{{ $button_label := .Get "button_label" }}
+{{ $asin := .Get "asin" | default .Page.Params.asin }}
+{{ $button_label := .Get "button_label" | default "Buy Now" }}
 {{ $affiliate_tag := default "artslink-20" .Site.Params.amazon_associate_id }}
 {{ $classes := "bg-yellow-400 text-black font-medium py-2 mt-4 px-4 rounded-full border-2 border-yellow-500 hover:bg-yellow-500 hover:border-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 no-underline inline-block text-center break-words"}}
 <a class="z-10 relative" href="https://www.amazon.com/dp/{{ $asin }}/ref=nosim?tag={{ $affiliate_tag }}">
