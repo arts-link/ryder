@@ -397,6 +397,7 @@
       "rounded",
       "rounded-full",
       "rounded-lg",
+      "rounded-md",
       "rounded-t-lg",
       "rounded-t-xl",
       "rounded-xl",

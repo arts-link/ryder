@@ -41,6 +41,11 @@ themesDir= "../../"
   # featuredArticleBackgroundStyle = "bg-gradient-to-l from-yellow-200 to-lime-200"
   ShowPubDate = true
   # headerType = "-fun" # "-fun" or "-custom" to make your own
+  # footerType = "-fun" # "-fun" or "-custom" to make your own
+  # menuType = "-fun" # "-fun" or "-custom" to make your own
+  # listCardType = "-super-simple" # "-fun" or "-custom" to make your own
+  # homeListCardType = "-fun" # "-fun" or "-custom" to make your own
+  # homeFeatureListCardType = "-fun" # "-fun" or "-custom" to make your own
 
   [params.shareButtons]
     networks = [ "twitter", "email", "reddit", "facebook" ]

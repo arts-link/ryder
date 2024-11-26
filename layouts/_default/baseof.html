@@ -20,7 +20,8 @@
       {{ end }}
       {{- block "main" . }}{{- end }}
     </main>
-    {{ partial "footer.html" . }}
+    {{ $footerType := .Param "footerType" | default "" }}
+    {{- partial (printf "footer%s.html" $footerType) . }}
     <i class="p-2 text-lg fa-solid fa-om"></i>
   </div>
 {{ if .Param "enabledebugpanel" }}

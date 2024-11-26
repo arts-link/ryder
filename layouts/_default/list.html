@@ -17,8 +17,9 @@
       {{- $sortBy := .Param "listSortBy" | default "Date" }}
       {{- $sortOrder := .Param "listSortOrder" | default "desc" }}
       {{- $paginator := .Paginate (sort $myCollection $sortBy $sortOrder) }}
+      {{ $listCardType := .Param "listCardType" | default "-category-color" }}
       {{- range $paginator.Pages -}}
-        {{- partial "card-category-color.html" . -}}
+        {{- partial (printf "card%s.html" $listCardType) . -}}
       {{- end -}}
     </div>
     {{- template "_internal/pagination.html" . -}}

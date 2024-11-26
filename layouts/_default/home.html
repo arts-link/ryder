@@ -28,8 +28,9 @@
     <h2 class="flex p-3 items-center mb-2 text-3xl uppercase">{{ $featureHeader }}</h2>
   {{- end }}
   <div class="p-2 mx-auto grid md:grid-cols-2 gap-6 mb-5">
+  {{ $homeFeatureListCardType := .Param "homeFeatureListCardType" | default "-category-color" }}
   {{- range $features }}
-    {{- partial "card-category-color.html" . }}
+    {{- partial (printf "card%s.html" $homeFeatureListCardType) . -}}
   {{- end }}
   </div>
   {{- end }}
@@ -73,8 +74,9 @@
       {{- $sortBy := .Param "listSortBy" | default "Date" }}
       {{- $sortOrder := .Param "listSortOrder" | default "desc" }}
       {{- $paginator := .Paginate (sort $filteredPages $sortBy $sortOrder) }}
+      {{ $homeListCardType := .Param "homeListCardType" | default "-category-color" }}
       {{- range $paginator.Pages -}}
-        {{- partial "card-category-color.html" . }}
+        {{- partial (printf "card%s.html" $homeListCardType) . -}}
       {{- end }}
         <div class="md:col-span-2 flex p-3 justify-center items-center">
           {{- template "_internal/pagination.html" . }}

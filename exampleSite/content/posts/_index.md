@@ -4,6 +4,7 @@ description = "Posts to show how that might look."
 date = "2024-01-24"
 author = "Hugo Authors"
 enableComments = false
+listCardType = "-super-simple" # "-fun" or "-custom" to make your own
 # headerType = "-fun" 
 [cascade]
   # showCardLinkOverlay = false
