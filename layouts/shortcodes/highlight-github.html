@@ -78,11 +78,7 @@ Renders highlighted code from a file in a GitHub repository.
   {{- $apiEndPoint := urls.JoinPath $apiBase "repos" $owner $repo }}
   {{- $data := "" }}
   {{- with resources.GetRemote $apiEndPoint }}
-    {{- with .Err }}
-      {{- errorf "%s" . }}
-    {{- else }}
-      {{- $data = . | transform.Unmarshal }}
-    {{- end }}
+    {{- $data = . | transform.Unmarshal }}
   {{- else }}
     {{- errorf "Unable to get remote resource %q" $apiEndPoint }}
   {{- end }}
@@ -94,11 +90,7 @@ Renders highlighted code from a file in a GitHub repository.
   {{- $apiEndPoint = printf "%s?%s" $apiEndPoint $query }}
   {{- $data := "" }}
   {{- with resources.GetRemote $apiEndPoint }}
-    {{- with .Err }}
-      {{- errorf "%s" . }}
-    {{- else }}
-      {{- $data = . | transform.Unmarshal }}
-    {{- end }}
+    {{- $data = . | transform.Unmarshal }}
   {{- else }}
     {{- errorf "Unable to get remote resource %q" $apiEndPoint }}
   {{- end }}

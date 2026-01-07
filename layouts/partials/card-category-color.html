@@ -47,11 +47,11 @@
       {{ if $showCardLinkOverlay}}
       <a itemprop="url" aria-label="{{ .Title }}" href="{{ $cardURL }}" class="link-overlay"> </a>
       {{ end }}
-      <h2 itemprop="headline" class="text-2xl p-3 {{ $headerStyle }}"> 
+      <h2 itemprop="headline" class="text-2xl p-3 {{ $headerStyle }}">
         {{- if .Params.homeFeatureIcon }}
           <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>
         {{- end }}
-        {{ .Title }}
+        {{ if not $showCardLinkOverlay }}<a itemprop="url" href="{{ $cardURL }}" class="relative z-10">{{ end }}{{ .Title }}{{ if not $showCardLinkOverlay }}</a>{{ end }}
       </h2>
       <div class="{{- if .Param "homeFeature" -}}{{$featuredArticleBackgroundStyle}}{{- else -}}{{$articleBackgroundStyle}}{{- end -}}">
       {{- if and $showSummaryMeta (or $articleSection .Site.Params.showDate $showAuthor) -}}
