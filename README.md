@@ -174,6 +174,38 @@ enableGitInfo = true  # Show git links, slower builds
 
 **Note:** Most sites don't need GitInfo. Only enable if you specifically want GitHub commit links in the footer.
 
+### Footer Taxonomy Configuration
+
+**Optional:** Display taxonomy lists in the footer (tags, categories, etc).
+
+By default, the footer shows no taxonomy lists. To enable them, configure `params.footer.taxonomies`:
+
+```toml
+[params.footer]
+  tagCloud = true  # Must be enabled for taxonomies to show
+
+# Configure which taxonomies to display
+[[params.footer.taxonomies]]
+  name = "tags"              # Taxonomy name (must exist in your site)
+  title = "Top Tags"         # Display title in footer
+  minCount = 2               # Only show items with 2+ posts
+
+[[params.footer.taxonomies]]
+  name = "categories"
+  title = "Categories"
+  minCount = 3
+
+[[params.footer.taxonomies]]
+  name = "musical-genres"
+  title = "Musical Genres"
+  minCount = 5
+```
+
+**Notes:**
+- Without this configuration, no taxonomy lists will appear in the footer
+- You can configure as many taxonomies as you want
+- `minCount` defaults to 1 if not specified
+
 ## TODO
 
 ## Sites that are using the ryder hugo theme 

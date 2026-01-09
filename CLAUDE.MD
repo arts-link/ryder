@@ -83,6 +83,15 @@ The theme's `layouts/partials/utils/page_meta.html` conditionally shows git link
   showDarkToggle = true             # Display dark mode toggle
   headerGradientClasses = "..."     # TailwindCSS gradient classes
 
+[params.footer]
+  tagCloud = true                   # Enable footer taxonomy display
+
+# Optional: Configure footer taxonomies (opt-in, default shows nothing)
+[[params.footer.taxonomies]]
+  name = "tags"                     # Taxonomy name
+  title = "Top Tags"                # Display title
+  minCount = 2                      # Minimum post count to display
+
 [[params.alphaAlert]]               # Global banner configuration
   alertType = "danger|info|warning"
   alertTitle = "..."

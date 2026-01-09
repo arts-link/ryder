@@ -63,6 +63,18 @@ themesDir= "../../"
     name = 'Ben Strawbridge'
   [params.footer]
     tagCloud = true
+
+# Example: Configure footer taxonomies (optional, defaults to showing nothing)
+[[params.footer.taxonomies]]
+  name = "tags"
+  title = "Top Tags"
+  minCount = 2
+
+[[params.footer.taxonomies]]
+  name = "categories"
+  title = "Categories"
+  minCount = 3
+
   [params.twClasses]
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
     headerBackgroundFrameInner = "bg-header-ryder h-[300px] bg-cover bg-left"

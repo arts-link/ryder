@@ -1,28 +1,21 @@
-{{- $taxonomy := "tags" }}
-<div class="items-center justify-center text-center">
-  <h4>Top Tags</h4>
-{{- range $name, $taxonomyPage := (index $.Site.Taxonomies $taxonomy) }}
-  {{- $tagCount := len $taxonomyPage.Pages }}
-  {{- $baseURL := $.Site.BaseURL }}
-  {{- if gt $tagCount 1 }}
-  <a href="{{ printf "%s%s/%s" $baseURL $taxonomy ($name | urlize) }}" class="px-2 inline-block text-center break-words">{{ $name }}<sup>{{ $tagCount }}</sup></span></a>
-  {{- end }}
-{{- end }}
-</div>
-{{- $taxonomy := "musical-genres" }}
-{{- $isFirst := true }} <!-- Initialize a "first iteration" flag -->
+{{- $taxonomies := site.Params.footer.taxonomies }}
 
-<div class="items-center justify-center text-center">
-{{- range $name, $taxonomyPage := (index $.Site.Taxonomies $taxonomy) }}
-{{- if $isFirst }}
-      <!-- Perform your action for the first iteration -->
-      <h4> Musical Genres </h4>
-      {{- $isFirst = false }} <!-- Set the flag to false after the first iteration -->
-    {{- end }}
-  {{- $tagCount := len $taxonomyPage.Pages }}
-  {{- $baseURL := $.Site.BaseURL }}
-  {{- if gt $tagCount 4 }}
-  <a href="{{ printf "%s%s/%s" $baseURL $taxonomy ($name | urlize) }}" class="px-2 inline-block text-center break-words">{{ $name }}<sup>{{ $tagCount }}</sup></span></a>
+{{- /* Only render if taxonomies are explicitly configured */ -}}
+{{- if $taxonomies }}
+  {{- range $taxonomies }}
+    {{- $taxonomy := .name }}
+    {{- $title := .title }}
+    {{- $minCount := .minCount | default 1 }}
+    {{- $baseURL := $.Site.BaseURL }}
+
+    <div class="items-center justify-center text-center">
+      <h4>{{ $title }}</h4>
+      {{- range $name, $taxonomyPage := (index $.Site.Taxonomies $taxonomy) }}
+        {{- $tagCount := len $taxonomyPage.Pages }}
+        {{- if ge $tagCount $minCount }}
+          <a href="{{ printf "%s%s/%s" $baseURL $taxonomy ($name | urlize) }}" class="px-2 inline-block text-center break-words">{{ $name }}<sup>{{ $tagCount }}</sup></a>
+        {{- end }}
+      {{- end }}
+    </div>
   {{- end }}
 {{- end }}
-</div>
