@@ -154,6 +154,26 @@ Defined in `/config/_default/hugo.toml`
   weight = 20
 ```
 
+### Performance: GitInfo Configuration
+
+**enableGitInfo** (optional, default: false)
+
+When enabled, Hugo runs git commands for every page to get commit history. The theme uses this to display GitHub links in the footer (commit hash, history, blame links).
+
+**Performance Impact:**
+- **Enabled:** Significantly slower builds (40-50% slower on large sites)
+- **Disabled:** Faster builds, but no GitHub footer links
+
+**Configuration:**
+```toml
+# In config/production/hugo.toml
+enableGitInfo = true  # Show git links, slower builds
+# OR
+# enableGitInfo = false  # No git links, faster builds (recommended)
+```
+
+**Note:** Most sites don't need GitInfo. Only enable if you specifically want GitHub commit links in the footer.
+
 ## TODO
 
 ## Sites that are using the ryder hugo theme 
