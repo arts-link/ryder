@@ -1,212 +1,200 @@
-# CLAUDE.MD - Project Guide for AI Assistants
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
-**Project Name:** ryder
-**Type:** Hugo Theme
-**Version:** 0.1
-**License:** MIT
-**Author:** Ben Strawbridge
+**ryder** is a Hugo theme (v0.1) built with TailwindCSS, Alpine.js, and Font Awesome. Named after a late Rhodesian Ridgeback/Mastiff companion, it's intentionally barebones with practical additions for quick setup.
 
-This is a Hugo theme named after a late Rhodesian Ridgeback/Mastiff companion. It's a barebones theme with practical additions for quick setup, built with TailwindCSS, Alpine.js, and Font Awesome.
+- **Live Demo:** https://arts-link.github.io/ryder/
+- **License:** MIT
+- **Production Sites:** benstrawbridge.com, arts-link.com, writingsos.com, grrquarterly.com
 
-**Live Demo:** https://arts-link.github.io/ryder/
+## Technology Requirements
 
-## Technology Stack
-
-- **Hugo:** Static site generator (requires Hugo 0.146+ for compatibility)
-- **TailwindCSS:** v3.4.0+ (utility-first CSS framework)
-- **Alpine.js:** Lightweight JavaScript framework
-- **Font Awesome:** v6.5.1+ (icon library)
-- **PostCSS:** CSS processing with autoprefixer
+- **Hugo:** 0.146+ (compatibility requirement)
 - **Node.js/npm:** For dependency management
+- **TailwindCSS:** v3.4.0+
+- **Alpine.js:** Lightweight JavaScript framework
+- **Font Awesome:** v6.5.1+
 
-## Project Structure
+## Development Commands
 
-```
-ryder/
-├── archetypes/          # Content templates (default.md, recipe.md)
-├── assets/              # CSS, JS, and other assets
-│   └── css/             # TailwindCSS source files
-├── exampleSite/         # Demo site showcasing theme features
-│   ├── config/          # Hugo configuration (layered configs)
-│   ├── content/         # Example content
-│   └── data/            # Data files (social.json, theme.json)
-├── i18n/                # Internationalization (en, de, fr)
-├── layouts/             # Hugo templates
-│   └── partials/        # Reusable template components
-├── static/              # Static files
-├── .github/workflows/   # GitHub Actions (hugo.yml for builds)
-├── package.json         # npm dependencies
-├── postcss.config.js    # PostCSS configuration
-├── tailwind.config.js   # TailwindCSS configuration
-└── theme.toml           # Theme metadata
+### CSS Development
+```bash
+npm run build-tw     # Build TailwindCSS
+npm run deploy-tw    # Build and minify for production
+npm run watch-tw     # Watch mode for development
 ```
 
-## Key Features
+### Hugo Commands
+```bash
+hugo server -D                    # Local development with drafts
+hugo server -D --source exampleSite  # Test theme in exampleSite
+hugo --minify                     # Production build
+```
 
-1. **Dark Mode:** Toggle for light/dark themes
-2. **Notification System:** Shortcode and partial for alerts
-3. **Featured Items:** Display page summaries on homepage
-4. **Hidden-Home Template:** Special template for cover images
-5. **Table of Contents (TOC):** Partial included via front matter
-6. **Photo Gallery:** Simple gallery using Alpine.js
-7. **Custom RSS Feed:** XSLT-styled RSS
-8. **Hugo Debugger:** Template for debugging
+### Testing
+The `exampleSite/` directory is the primary test environment. All theme changes MUST be tested here before release.
 
-## Important Configuration Notes
+## Architecture Overview
 
-### Installation Warning
-When copying the example config, **ALWAYS delete** the line `themesDir = "../.."` from `/config/_default/hugo.toml` - this is critical and should never be skipped.
+### Template Hierarchy & Customization
 
-### Configuration Structure
-This theme uses Hugo's layered configuration:
-- `/config/_default/hugo.toml` - Default settings
-- `/config/production/hugo.toml` - Production overrides
+The theme uses Hugo's template lookup order with a powerful customization system:
 
-### GitInfo Performance Consideration
+1. **Base Templates** (`layouts/_default/`)
+   - `baseof.html` - Root template with header/footer partials
+   - `home.html`, `list.html`, `single.html` - Page type templates
+   - `hidden-home/baseof.html` - Special cover image template
 
-**enableGitInfo** has significant performance implications:
-- When enabled: Hugo executes git commands for every page to get commit info
-- Theme uses this for footer GitHub links (commit/history/blame)
-- On sites with 1000+ pages, this can slow builds by 40-50%
-- Default: disabled for performance
-- Only enable if GitHub footer links are specifically needed
+2. **Dynamic Partial Loading** (`layouts/partials/`)
+   Theme supports variants via configuration parameters:
+   - Header: `header.html` (default) or `header-fun.html` (via `headerType = "-fun"`)
+   - Menu: `menu.html` (default) or `menu-fun.html` (via `menuType = "-fun"`)
+   - Footer: `footer.html` (default) or `footer-fun.html` (via `footerType = "-fun"`)
+   - Cards: Multiple variants (`card-super-simple.html`, etc.) via `listCardType`
 
-The theme's `layouts/partials/utils/page_meta.html` conditionally shows git links only when GitInfo is available.
+   **Implementation pattern in baseof.html:**
+   ```go
+   {{ $headerType := .Param "headerType" | default "" }}
+   {{- partial (printf "header%s.html" $headerType) . }}
+   ```
+   This allows users to set custom variants in config or front matter without editing theme files.
 
-### Key Parameters
+3. **Partial Organization**
+   - `partials/common-partials/` - SEO, OpenGraph, Twitter Cards
+   - `partials/head/` - CSS, JS, fonts, favicon, schema markup
+   - `partials/utils/` - Reusable utilities (dark toggle, page meta, social lists)
 
+4. **Shortcodes** (`layouts/shortcodes/`)
+   Content embeds: alerts, photo galleries, affiliate links, maps (Leaflet/OpenStreetMap), recipe schemas, custom media players (Soundcloud, Webamp)
+
+### CSS Architecture
+
+- **Source:** `assets/css/main.css` (TailwindCSS source)
+- **Output:** `assets/css/style.css` (generated, don't edit directly)
+- **Config:** `tailwind.config.js` with custom screens, fonts, background images
+- **PostCSS:** `postcss.config.js` (autoprefixer processing)
+- **JIT Compilation:** TailwindCSS scans `hugo_stats.json` for class usage (configured in `build.cachebusters`)
+
+**Hugo integration:** The theme uses Hugo's asset pipeline with cache busting for Tailwind, PostCSS, and JS files.
+
+### Configuration System
+
+**Layered configs** (Hugo's multi-environment setup):
+- `/config/_default/hugo.toml` - Base configuration
+- `/config/production/hugo.toml` - Production overrides (analytics, GitInfo, etc.)
+
+**Key parameter groups:**
 ```toml
 [params]
-  isAlpha = true                    # Show global site banner
-  showDarkToggle = true             # Display dark mode toggle
-  headerGradientClasses = "..."     # TailwindCSS gradient classes
+  isAlpha = true                 # Global site banner
+  showDarkToggle = true          # Dark mode toggle
+  showCardLinkOverlay = false    # Card link behavior
+  repository = "..."             # GitHub repo for footer links
 
 [params.footer]
-  tagCloud = true                   # Enable footer taxonomy display
+  tagCloud = true                # Enable footer taxonomies
 
-# Optional: Configure footer taxonomies (opt-in, default shows nothing)
-[[params.footer.taxonomies]]
-  name = "tags"                     # Taxonomy name
-  title = "Top Tags"                # Display title
-  minCount = 2                      # Minimum post count to display
+[[params.footer.taxonomies]]     # Opt-in taxonomy display
+  name = "tags"
+  title = "Top Tags"
+  minCount = 2
 
-[[params.alphaAlert]]               # Global banner configuration
-  alertType = "danger|info|warning"
+[[params.alphaAlert]]            # Site-wide banners (can have multiple)
+  alertType = "danger|info|warning|success"
   alertTitle = "..."
   alertMessage = "..."
-  alertIconClass = "fa-solid ..."
+  dismissable = true
 
-[[params.social]]                   # Social links
-  faClasses = "..."
-  title = "..."
+[[params.social]]                # Social links (footer/elsewhere)
+  faClasses = "fa-brands fa-github"
   url = "..."
-  target = "_blank"
-  weight = 30
+  weight = 20                    # Display order
 ```
+
+## Critical Installation Notes
+
+### When Copying exampleSite Config
+**ALWAYS delete** the line `themesDir = "../.."` from `/config/_default/hugo.toml`. This is for theme development only and will break normal installations.
+
+### GitInfo Performance Warning
+- **`enableGitInfo = true`** runs git commands for every page to get commit metadata
+- Used for footer GitHub links (commit/history/blame) via `layouts/partials/utils/page_meta.html`
+- **Performance impact:** 40-50% slower builds on sites with 1000+ pages
+- **Default:** Disabled for performance
+- Only enable if GitHub footer links are specifically needed
+
+### Footer Taxonomies (Opt-in)
+By default, footer shows NO taxonomy lists. Must configure `params.footer.taxonomies` to display tags/categories.
+
+## Development Philosophy
+
+**Barebones with practical additions** - Avoid over-engineering:
+- Don't add features beyond what's requested
+- Use TailwindCSS utilities over custom CSS
+- Keep Alpine.js usage minimal
+- Don't add error handling for impossible scenarios
+- Don't create abstractions for one-time operations
+- Don't add backwards-compatibility hacks
 
 ## Development Workflow
 
-### NPM Scripts
-- `npm run build-tw` - Build TailwindCSS
-- `npm run deploy-tw` - Build and minify TailwindCSS for production
-- `npm run watch-tw` - Watch and rebuild TailwindCSS on changes
+### Adding New Features
+1. Read existing code first to understand patterns
+2. Update `layouts/` or `layouts/partials/` as needed
+3. Test in `exampleSite/` directory
+4. Document in README.md if user-facing
+5. Update `theme.toml` version if significant
+6. Maintain Hugo 0.146+ compatibility
 
-### Local Development
-```bash
-hugo server -D
-```
-
-### Testing Theme Changes
-The `exampleSite` directory contains a complete test site. Changes to layouts, partials, or assets should be tested here before release.
-
-## Recent Changes & Git History
-
-**Recent commits:**
-- Fix Hugo 0.146+ compatibility and improve card link behavior
-- The super simple card idea for rnkallday.com
-- Card interior updates
-- Amazon associate link improvements
-
-**Main Branch:** `main` (use this for PRs)
-
-## Sites Using This Theme
-
-- benstrawbridge.com
-- arts-link.com
-- writingsos.com
-- grrquarterly.com
-
-## Common Tasks
-
-### When Adding New Features
-1. Update layouts/partials as needed
-2. Test in `exampleSite`
-3. Document in README.md if user-facing
-4. Update theme.toml version if significant
-
-### When Modifying CSS
-1. Edit files in `/assets/css/`
+### Modifying CSS
+1. Edit source files in `assets/css/main.css`
 2. Run `npm run watch-tw` during development
-3. Build production CSS with `npm run deploy-tw`
+3. Test with `hugo server -D`
+4. Build production CSS with `npm run deploy-tw`
 
-### When Creating Shortcodes
-1. Add to `/layouts/shortcodes/`
-2. Create example usage in `exampleSite/content/posts/`
+### Creating Shortcodes
+1. Add to `layouts/shortcodes/`
+2. Create example in `exampleSite/content/posts/`
 3. Document usage in README
 
-## Dependencies
+### Template Customization Pattern
+When creating new template variants:
+- Follow the `{partial}{suffix}.html` naming pattern
+- Use `.Param "{type}Type"` to load variants
+- Support both config-level and front-matter overrides
+- Test default behavior when parameter is unset
 
-### Core NPM Packages
-- `@fortawesome/fontawesome-free`: ^6.5.1
-- `@tailwindcss/typography`: ^0.5.10
-- `autoprefixer`: ^10.4.16
-- `postcss`: ^8.4.33
-- `postcss-cli`: ^11.0.0
-- `postcss-import`: ^16.0.0
-- `tailwindcss`: ^3.4.1
-- `alpinejs`: latest
+## CI/CD
 
-## Known Issues & TODOs
+GitHub Actions (`.github/workflows/hugo.yml`) builds exampleSite and deploys to GitHub Pages on every push to `main`. Check build badge status before merging changes.
 
-- Expand documentation on archetypes usage
-- Complete documentation of all variables
-- Theme is in v0.1 (work in progress)
+**Workflow details:**
+- Uses Hugo 0.138.0 (update as needed)
+- Runs `npm ci` in exampleSite directory
+- Builds with `--minify` flag
+- Deploys to https://arts-link.github.io/ryder/
 
-## Code Style & Conventions
+## Known Issues
 
-- Follow Hugo best practices for template development
-- Use TailwindCSS utility classes (avoid custom CSS when possible)
-- Maintain responsive design principles
-- Keep Alpine.js usage minimal and purposeful
-- Comment complex template logic
+- Theme is v0.1 (work in progress)
+- Archetype documentation needs expansion
+- Not all configuration variables are documented
 
-## Testing & CI/CD
+## Design Decisions to Ask About
 
-GitHub Actions workflow (`hugo.yml`) builds the example site and deploys to GitHub Pages. Check the build badge status before merging changes.
-
-## When Making Changes
-
-1. **Always read existing code first** - Understand current implementation before modifying
-2. **Test in exampleSite** - Ensure changes work in the demo environment
-3. **Maintain Hugo 0.146+ compatibility** - Recent fixes were needed for this
-4. **Update documentation** - Keep README.md current with new features
-5. **Avoid over-engineering** - This is intentionally a barebones theme
-6. **Consider existing sites** - Changes affect multiple production sites
-
-## Questions to Ask
-
-When uncertain about implementation:
+When implementation approach is unclear:
 - Should this be a shortcode or a partial?
-- Does this need to be configurable via hugo.toml?
-- Will this work with Hugo 0.146+?
-- Should this be added to the exampleSite for demonstration?
-- Does this align with the "barebones with practical additions" philosophy?
+- Does this need configuration via hugo.toml?
+- Should this support the variant suffix pattern (e.g., `-fun`, `-custom`)?
+- Should this be demonstrated in exampleSite?
+- Does this align with "barebones with practical additions"?
+- Will this work across all production sites using the theme?
 
 ## Resources
 
-- Hugo Discourse Forum: https://discourse.gohugo.io/
-- Hugo Documentation: https://gohugo.io/documentation/
+- Hugo Discourse: https://discourse.gohugo.io/
 - TailwindCSS Docs: https://tailwindcss.com/docs
 - Alpine.js Docs: https://alpinejs.dev/

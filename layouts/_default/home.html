@@ -14,66 +14,74 @@
     {{- end }}
   {{- end }}
 
-  {{/*  Featured content loop  */}}
-  {{- $current := .Page.Permalink }}
   {{/*  Set up the content loop  */}}
+  {{- $current := .Page.Permalink }}
   {{- $pages := slice }}
-  {{- $pages = .Site.Pages }} 
+  {{- $pages = .Site.Pages }}
   {{/*  remove the current page b/c it was displayed at the top of the page.  */}}
   {{- $pages = where $pages "Permalink" "ne" $current }}
-  {{- $features := where $pages "Params.homeFeature" "eq" true }}
-  {{- if $features }}
-  {{- $featureHeader := site.Params.homePageFeatureHeader }}
-  {{- if $featureHeader }}
-    <h2 class="flex p-3 items-center mb-2 text-3xl uppercase">{{ $featureHeader }}</h2>
-  {{- end }}
-  <div class="p-2 mx-auto grid md:grid-cols-2 gap-6 mb-5">
-  {{ $homeFeatureListCardType := .Param "homeFeatureListCardType" | default "-category-color" }}
-  {{- range $features }}
-    {{- partial (printf "card%s.html" $homeFeatureListCardType) . -}}
-  {{- end }}
-  </div>
-  {{- end }}
 
-  {{/*  Home page feed loop removing things to be removed first...  */}}
+  {{/*  Prepare feed and create paginator early so we can check page number  */}}
   {{- $showHomeFeed := site.Params.showHomeFeed | default true }}
+  {{- $paginator := .Paginator }}
   {{- if $showHomeFeed }}
     {{- $feed := where $pages "Params.homeFeature" "ne" true }}
+    {{- $excludedSections := site.Params.excludedSections | default slice }}
+    {{- $excludedCategories := site.Params.excludedCategories | default slice }}
+    {{- $excludedTags := site.Params.excludedTags | default slice }}
+    {{- $filteredPages := slice -}}
+    {{- range $feed.ByLastmod.Reverse }}
+      {{- $excludePage := false -}}
+      {{- range (.GetTerms "categories") }}
+        {{- if in $excludedCategories . }}
+          {{- $excludePage = true -}}
+          {{- break -}}
+        {{- end }}
+      {{- end }}
+      {{- range (.GetTerms "tags") }}
+        {{- if in $excludedTags . }}
+          {{- $excludePage = true -}}
+          {{- break -}}
+        {{- end }}
+      {{- end }}
+      {{- if $excludePage }}
+        {{- continue -}}
+      {{- end }}
+      {{- if in $excludedSections .Section }}
+        {{- continue }}
+      {{- end }}
+      {{- if eq .Summary "" }}
+        {{- continue }}
+      {{- end }}
+      {{- $filteredPages = $filteredPages | append . -}}
+    {{- end }}
+    {{- $sortBy := .Param "listSortBy" | default "Date" }}
+    {{- $sortOrder := .Param "listSortOrder" | default "desc" }}
+    {{- $paginator = .Paginate (sort $filteredPages $sortBy $sortOrder) }}
+  {{- end }}
+
+  {{/*  Featured content loop - only show on page 1  */}}
+  {{- if eq $paginator.PageNumber 1 }}
+    {{- $features := where $pages "Params.homeFeature" "eq" true }}
+    {{- if $features }}
+    {{- $featureHeader := site.Params.homePageFeatureHeader }}
+    {{- if $featureHeader }}
+      <h2 class="flex p-3 items-center mb-2 text-3xl uppercase">{{ $featureHeader }}</h2>
+    {{- end }}
+    <div class="p-2 mx-auto grid md:grid-cols-2 gap-6 mb-5">
+    {{ $homeFeatureListCardType := .Param "homeFeatureListCardType" | default "-category-color" }}
+    {{- range $features }}
+      {{- partial (printf "card%s.html" $homeFeatureListCardType) . -}}
+    {{- end }}
+    </div>
+    {{- end }}
+  {{- end }}
+
+  {{/*  Home page feed loop  */}}
+  {{- if $showHomeFeed }}
     {{- $feedHeader := default "Latest stuff" (site.Params.homePageFeedHeader) }}
     <div class="md:grid-cols-2 p-2 mx-auto grid grid-cols-1 gap-6 mb-5">
       <h2 class="md:col-span-2 flex my-2 items-center mb-2 text-3xl uppercase">{{ $feedHeader }}</h2>
-      {{- $excludedSections := site.Params.excludedSections | default slice }}
-      {{- $excludedCategories := site.Params.excludedCategories | default slice }}
-      {{- $excludedTags := site.Params.excludedTags | default slice }}
-      {{- $filteredPages := slice -}}
-      {{- range $feed.ByLastmod.Reverse }}
-        {{- $excludePage := false -}}
-        {{- range (.GetTerms "categories") }}
-          {{- if in $excludedCategories . }}
-            {{- $excludePage = true -}}
-            {{- break -}}
-          {{- end }}
-        {{- end }}
-        {{- range (.GetTerms "tags") }}
-          {{- if in $excludedTags . }}
-            {{- $excludePage = true -}}
-            {{- break -}}
-          {{- end }}
-        {{- end }}
-        {{- if $excludePage }}
-          {{- continue -}}
-        {{- end }}
-        {{- if in $excludedSections .Section }}
-          {{- continue }}
-        {{- end }}
-        {{- if eq .Summary "" }}
-          {{- continue }}
-        {{- end }}
-        {{- $filteredPages = $filteredPages | append . -}}
-      {{- end }}
-      {{- $sortBy := .Param "listSortBy" | default "Date" }}
-      {{- $sortOrder := .Param "listSortOrder" | default "desc" }}
-      {{- $paginator := .Paginate (sort $filteredPages $sortBy $sortOrder) }}
       {{ $homeListCardType := .Param "homeListCardType" | default "-category-color" }}
       {{- range $paginator.Pages -}}
         {{- partial (printf "card%s.html" $homeListCardType) . -}}
