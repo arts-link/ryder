@@ -61,6 +61,19 @@ themesDir= "../../"
   [params.author]
     email = 'ben@benstrawbridge.com'
     name = 'Ben Strawbridge'
+
+  [params.twClasses]
+    headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
+    headerBackgroundFrameInner = "bg-header-ryder h-[300px] bg-cover bg-left"
+
+[[params.alphaAlert]]
+  weight = 1
+  alertType = "success"
+  alertTitle = "Ryder Theme for Hugo"
+  alertMessage = "This is the <b>exampleSite</b>. Learn more about the theme by checking out the README on <a href='https://github.com/arts-link/ryder' class='underline'>on github.com</a>."
+  dismissable = true 
+  alertIconClass = "fa-solid fa-camera-retro"
+
   [params.footer]
     tagCloud = true
 
@@ -75,18 +88,6 @@ themesDir= "../../"
   title = "Categories"
   minCount = 3
 
-  [params.twClasses]
-    headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
-    headerBackgroundFrameInner = "bg-header-ryder h-[300px] bg-cover bg-left"
-
-[[params.alphaAlert]]
-  weight = 1
-  alertType = "success"
-  alertTitle = "Ryder Theme for Hugo"
-  alertMessage = "This is the <b>exampleSite</b>. Learn more about the theme by checking out the README on <a href='https://github.com/arts-link/ryder' class='underline'>on github.com</a>."
-  dismissable = true 
-  alertIconClass = "fa-solid fa-camera-retro"
-
 [menus]
 [[menus.main]]
     name = 'Tags'
@@ -95,8 +96,7 @@ themesDir= "../../"
     weight = 9990
 [[menus.footer]]
     name = 'File a Bug or Feature Request'
-    URL = 'https://github.com/arts-link/ryder/issues/new/choose'
-    rel = '_blank'
+    url = 'https://github.com/arts-link/ryder/issues/new/choose'
     weight = 10
 [[menus.footer]]
     name = 'Contact Us'

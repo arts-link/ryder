@@ -70,6 +70,23 @@ The theme uses Hugo's template lookup order with a powerful customization system
 4. **Shortcodes** (`layouts/shortcodes/`)
    Content embeds: alerts, photo galleries, affiliate links, maps (Leaflet/OpenStreetMap), recipe schemas, custom media players (Soundcloud, Webamp)
 
+5. **Custom Content Types**
+   - `photo-gallery/` - `layouts/photo-gallery/single.html` renders photo gallery pages as a distinct layout
+
+6. **Image Render Hook**
+   - `layouts/_default/_markup/render-image.html` - Custom render hook wraps all Markdown images for responsive/lazy loading
+
+### JavaScript Architecture
+
+- **Entry point:** `assets/js/main.js` — bootstraps Font Awesome SVG replacement, Alpine.js, and conditionally loads Leaflet and the dark mode module based on Hugo-injected JS variables (`loadLeaflet`, `showDarkToggle`)
+- **`assets/js/themeSwitcher.js`** — dark mode logic, imported dynamically
+- **`assets/js/backgroundChanger.js`** — random background image utility for `hidden-home` layout
+- **`assets/js/extended.js`** — intentionally empty; meant to be overridden by users in their site's `assets/js/extended.js` to add custom JS without modifying theme files
+
+### i18n
+
+Partial translations exist for English (`en`), German (`de`), and French (`fr`) in `i18n/`. Strings used in templates (e.g., "Read more", "Posted on") reference these via `i18n` function calls.
+
 ### CSS Architecture
 
 - **Source:** `assets/css/main.css` (TailwindCSS source)
@@ -172,7 +189,7 @@ When creating new template variants:
 GitHub Actions (`.github/workflows/hugo.yml`) builds exampleSite and deploys to GitHub Pages on every push to `main`. Check build badge status before merging changes.
 
 **Workflow details:**
-- Uses Hugo 0.138.0 (update as needed)
+- Uses Hugo 0.138.0 (⚠️ lower than the 0.146+ requirement — update when bumping minimum Hugo version)
 - Runs `npm ci` in exampleSite directory
 - Builds with `--minify` flag
 - Deploys to https://arts-link.github.io/ryder/
