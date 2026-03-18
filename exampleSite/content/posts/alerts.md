@@ -2,6 +2,7 @@
 title = 'Alerts'
 date = 2024-01-26T12:55:50-08:00
 # draft = true
+homeFeature = true
 homeFeatureTitle = "Alert boxes"
 homeFeatureIcon = "fa-solid fa-dungeon"
 tags = ["sample","test","alerts","banners"]
