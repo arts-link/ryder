@@ -1,29 +1,36 @@
 {{ $page := .Page }}
-<div class="pl-2 grid">
+<div class="my-4 space-y-3">
   {{ with .Page.Params.recipeInstructions }}
-
     {{ $itemCount := 1 }}
     {{ range $index, $element := . }}
-      {{ if findRE "^\\*\\*" $element.name}}
-        <h3 class="" id="ingredient-sub-{{ $itemCount }}">{{ replaceRE "^\\*\\*" "" $element.name }}</h3>
+      {{ if findRE "^\\*\\*" $element.name }}
+        <div class="flex items-center gap-3 pt-4 pb-1">
+          <i class="fa-solid fa-utensils text-amber-500 dark:text-amber-400 text-sm"></i>
+          <span class="text-xs font-bold uppercase tracking-widest text-stone-500 dark:text-stone-400">{{ replaceRE "^\\*\\*" "" $element.name }}</span>
+          <span class="h-px flex-1 bg-stone-200 dark:bg-stone-700"></span>
+        </div>
       {{ else }}
-        {{ if $element.image }}
-        {{- $opts := dict
-          "page" $page
-          "alt" $element.name
-          "title" $element.name
-          "src" $element.image
-        }}
-        {{- partial "picture.html" $opts }}
-        {{ end }}
-        <h4 class="relative flex items-start mb-2" id="{{ $element.name }}">
-          <span class="flex-none p-4 rounded-full flex items-center justify-center dark:bg-rose-950 dark:text-neutral-100 dark:border-neutral-200 bg-sky-300 border-violet-900 text-violet-900 border-2 text-4xl"><i class="fa-regular fa-hand-point-right"></i></span>
-          <span class="ml-2 font-normal">{{ $element.text | markdownify }}</span>
-        </h4>
+        <div class="flex gap-4 p-4 rounded-xl bg-stone-50 dark:bg-stone-900 border border-stone-100 dark:border-stone-800 hover:border-amber-200 dark:hover:border-amber-800 hover:bg-amber-50 dark:hover:bg-stone-800 transition-all duration-200" id="{{ $element.name }}">
+          <div class="flex-none pt-0.5">
+            <div class="w-9 h-9 rounded-full bg-amber-500 dark:bg-amber-600 text-white font-bold text-base flex items-center justify-center shadow-sm">{{ $itemCount }}</div>
+          </div>
+          <div class="flex-1 min-w-0">
+            {{ if $element.name }}
+            <p class="text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400 mb-1">{{ $element.name }}</p>
+            {{ end }}
+            <p class="text-stone-700 dark:text-stone-300 leading-relaxed">{{ $element.text | markdownify }}</p>
+            {{ if $element.image }}
+            <div class="mt-3">
+              {{- $opts := dict "page" $page "alt" $element.name "title" $element.name "src" $element.image }}
+              {{- partial "picture.html" $opts }}
+            </div>
+            {{ end }}
+          </div>
+        </div>
         {{ $itemCount = add $itemCount 1 }}
       {{ end }}
     {{ end }}
   {{ else }}
-    <div>No How-To Steps listed.</div>
+    <div class="text-stone-400 italic text-sm">No how-to steps listed.</div>
   {{ end }}
 </div>
