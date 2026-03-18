@@ -57,11 +57,11 @@ A bright, lemony granola with chia seeds. Low and slow baking and a weighted pre
 
 ## Ingredients
 
-{{</* recipe-ingredients-list */>}}
+{{< recipe-ingredients-list >}}
 
 ## Instructions
 
-{{</* recipe-howto-steps-list */>}}
+{{< recipe-howto-steps-list >}}
 
 ## Enjoy
 
