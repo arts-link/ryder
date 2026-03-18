@@ -1,6 +1,6 @@
 {{- $m := partial "utils/card-meta.html" . }}
 
-<div itemscope="" itemtype="http://schema.org/Article" class="rounded-md {{ $m.headerStyle }}">
+<div itemscope="" itemtype="http://schema.org/Article" class="rounded-md shadow-sm transition-shadow duration-200 ease-in-out hover:shadow-md {{ $m.headerStyle }}">
   <a itemprop="url" aria-label="{{ .Title }}" href="{{ $m.cardURL }}">
     <h2 itemprop="headline" class="text-2xl p-3">
       {{- if .Params.homeFeatureIcon }}

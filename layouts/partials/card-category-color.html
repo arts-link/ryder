@@ -1,8 +1,8 @@
 {{- $m := partial "utils/card-meta.html" . }}
 
 <div itemscope="" itemtype="http://schema.org/Article" class="article {{ with .Param "homeFeatureWide" }}md:col-span-2 md:order-first{{ end }}">
-  <div class="article-content relative p-1 rounded-t-xl {{ $m.headerStyle }}">
-    <div class="w-full h-full bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
+  <div class="article-content relative p-1 rounded-xl {{ $m.headerStyle }}">
+    <div class="w-full h-full bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100">
       {{- if $m.showCardLinkOverlay }}
       <a itemprop="url" aria-label="{{ .Title }}" href="{{ $m.cardURL }}" class="link-overlay"> </a>
       {{- end }}

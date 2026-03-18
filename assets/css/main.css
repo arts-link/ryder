@@ -10,11 +10,11 @@
 }
 @layer base {
   h1 {
-    @apply text-2xl;
+    @apply text-2xl font-bold tracking-tight;
   }
 
   h2 {
-    @apply text-xl;
+    @apply text-xl font-semibold tracking-tight;
   }
 
   h3 {
@@ -78,11 +78,15 @@
   .resp-sharing-button--telegram:hover, .resp-sharing-button--telegram:active { background-color: #4B97D1; border-color: #4B97D1; }
   /* --- End share buttons --- */
 
-  .hpContent h2 { 
-    @apply flex p-3 items-center mb-2 text-3xl uppercase  text-neutral-100 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500;
+  .article {
+    @apply shadow-sm transition-shadow duration-200 ease-in-out rounded-xl;
   }
-  .hpContent h2 { 
-    @apply mt-0;
+  .article:hover {
+    @apply shadow-md;
+  }
+
+  .hpContent h2 {
+    @apply flex p-3 items-center mt-0 mb-2 text-3xl uppercase text-neutral-100 bg-gradient-to-r from-slate-700 to-slate-500;
   }
   .articleBody {
     @apply prose dark:prose-invert w-full;
@@ -126,6 +130,18 @@
       @apply min-w-40 max-w-52 md:max-w-60;
       @apply hidden;
     }
+    .main-menu-ul > li > a,
+    .main-menu-child-ul > li > a {
+      @apply transition-colors duration-150 ease-in-out rounded px-1 py-0.5;
+    }
+    .main-menu-ul > li > a:hover,
+    .main-menu-child-ul > li > a:hover {
+      @apply text-sky-600 bg-neutral-300;
+    }
+    .main-menu-ul > li > a:focus-visible,
+    .main-menu-child-ul > li > a:focus-visible {
+      @apply outline-2 outline-offset-2 outline-sky-500;
+    }
   }
   .footer-menu-nav {
     .main-menu-ul > li {
@@ -145,8 +161,6 @@ img {
 }
 
   .article .article-content a.link-overlay {
-    border: 5px;
-    border-color: #f505f5;
     position: absolute;
     display: block;
     top: 0;
@@ -172,16 +186,19 @@ img {
     margin-left: 0;
     margin-right: 0;
   }
-   blockquote, .prose blockquote {
+  blockquote, .prose blockquote {
     display: block;
-    border-left: 3px solid grey;
-    background-image: linear-gradient(to right, #ec4899, #f59e0b);
-    background-clip: text;
-    -webkit-background-clip: text; /* Ensure compatibility with WebKit-based browsers */
-    color: transparent;
-    padding-left: 10px;
+    border-left: 4px solid;
+    background-image: none;
+    background-clip: unset;
+    -webkit-background-clip: unset;
+    color: inherit;
+    @apply border-sky-400 bg-sky-50 text-inherit;
+    @apply dark:border-sky-600 dark:bg-neutral-800;
+    padding: 0.75em 1em;
     margin-top: 1em;
     margin-bottom: 1em;
-    margin-left: 40px;
-    margin-right: 40px;
+    margin-left: 1em;
+    margin-right: 1em;
+    @apply rounded-r-md;
   }
