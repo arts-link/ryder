@@ -1,17 +1,14 @@
 {
-  "name": "benstraw",
-  "version": "1.0.0",
-  "description": "## Features",
-  "main": "index.js",
+  "name": "ryder",
+  "version": "0.1.0",
+  "description": "A barebones Hugo theme built with TailwindCSS and Alpine.js",
+  "author": "Ben Strawbridge",
+  "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build-tw": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/style.css",
     "deploy-tw": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/style.css --minify",
     "watch-tw": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/style.css -w"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
     "tailwindcss": "^3.4.0"
