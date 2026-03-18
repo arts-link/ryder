@@ -21,9 +21,10 @@
   {{/*  remove the current page b/c it was displayed at the top of the page.  */}}
   {{- $pages = where $pages "Permalink" "ne" $current }}
 
-  {{/*  Prepare feed and create paginator early so we can check page number  */}}
+  {{/*  Prepare feed and create paginator after filtering to avoid Hugo's paginator cache issue  */}}
   {{- $showHomeFeed := site.Params.showHomeFeed | default true }}
-  {{- $paginator := .Paginator }}
+  {{- $pageNum := 1 }}
+  {{- $paginator := dict }}
   {{- if $showHomeFeed }}
     {{- $feed := where $pages "Params.homeFeature" "ne" true }}
     {{- $excludedSections := site.Params.excludedSections | default slice }}
@@ -58,15 +59,16 @@
     {{- $sortBy := .Param "listSortBy" | default "Date" }}
     {{- $sortOrder := .Param "listSortOrder" | default "desc" }}
     {{- $paginator = .Paginate (sort $filteredPages $sortBy $sortOrder) }}
+    {{- $pageNum = $paginator.PageNumber }}
   {{- end }}
 
   {{/*  Featured content loop - only show on page 1  */}}
-  {{- if eq $paginator.PageNumber 1 }}
+  {{- if eq $pageNum 1 }}
     {{- $features := where $pages "Params.homeFeature" "eq" true }}
     {{- if $features }}
     {{- $featureHeader := site.Params.homePageFeatureHeader }}
     {{- if $featureHeader }}
-      <h2 class="flex p-3 items-center mb-2 text-3xl uppercase">{{ $featureHeader }}</h2>
+      <h2 class="flex p-3 items-center mb-2 text-3xl uppercase font-bold tracking-wide border-b border-neutral-300 dark:border-neutral-700">{{ $featureHeader }}</h2>
     {{- end }}
     <div class="p-2 mx-auto grid md:grid-cols-2 gap-6 mb-5">
     {{ $homeFeatureListCardType := .Param "homeFeatureListCardType" | default "-category-color" }}
@@ -81,7 +83,7 @@
   {{- if $showHomeFeed }}
     {{- $feedHeader := default "Latest stuff" (site.Params.homePageFeedHeader) }}
     <div class="md:grid-cols-2 p-2 mx-auto grid grid-cols-1 gap-6 mb-5">
-      <h2 class="md:col-span-2 flex my-2 items-center mb-2 text-3xl uppercase">{{ $feedHeader }}</h2>
+      <h2 class="md:col-span-2 flex my-2 items-center mb-2 text-3xl uppercase font-bold tracking-wide border-b border-neutral-300 dark:border-neutral-700">{{ $feedHeader }}</h2>
       {{ $homeListCardType := .Param "homeListCardType" | default "-category-color" }}
       {{- range $paginator.Pages -}}
         {{- partial (printf "card%s.html" $homeListCardType) . -}}
