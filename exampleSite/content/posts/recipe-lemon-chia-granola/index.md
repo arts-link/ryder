@@ -52,26 +52,6 @@ recipeIngredients = [
   text = "Let cool completely in the pan, then break apart into clumps."
 +++
 
-![Lemon Chia Granola](granola_fini_lemon_chia_seed.webp)
-
-A bright, lemony granola with chia seeds. Low and slow baking and a weighted press gives you satisfying clusters.
-
-<!--more-->
-
-## Ingredients
-
-{{< recipe-ingredients-list >}}
-
-## Instructions
-
-{{< recipe-howto-steps-list >}}
-
-## Enjoy
-
-Eat alone, mixed with fruit and yogurt, or with milk as cereal.
-
----
-
 ## How the recipe shortcodes work
 
 The ingredient and step data lives entirely in front matter. The shortcodes read it and render it — no repeated data in the body.
@@ -108,3 +88,25 @@ recipeIngredients = [
 ```
 
 Setting `recipe = true` also enables the `Schema.org/Recipe` JSON-LD block in the page `<head>` for structured data / search engine rich results.
+
+---
+
+Here's a live example using the front matter on this page:
+
+![Lemon Chia Granola](granola_fini_lemon_chia_seed.webp)
+
+A bright, lemony granola with chia seeds. Low and slow baking and a weighted press gives you satisfying clusters.
+
+<!--more-->
+
+## Ingredients
+
+{{< recipe-ingredients-list >}}
+
+## Instructions
+
+{{< recipe-howto-steps-list >}}
+
+## Enjoy
+
+Eat alone, mixed with fruit and yogurt, or with milk as cereal.
