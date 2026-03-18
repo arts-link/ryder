@@ -83,6 +83,16 @@ The theme uses Hugo's template lookup order with a powerful customization system
 - **`assets/js/backgroundChanger.js`** — random background image utility for `hidden-home` layout
 - **`assets/js/extended.js`** — intentionally empty; meant to be overridden by users in their site's `assets/js/extended.js` to add custom JS without modifying theme files
 
+### Data Files
+
+- **`data/social.json`** — Social icon links displayed in the footer. Structure: `{ "main": [{ "title", "name", "icon", "link", "weight" }] }`.
+- **`data/theme.json`** — Color palette and font family definitions (used for reference/documentation; not dynamically consumed by templates).
+
+### Static Assets
+
+- **`static/leaflet/`** — Leaflet.js is bundled locally (not loaded from CDN) to avoid external requests. Only loaded when `loadLeaflet = true`.
+- **`static/pretty-feed-v3.xsl`** — Custom XSLT stylesheet for the RSS feed, providing a styled browser-readable feed view.
+
 ### i18n
 
 Partial translations exist for English (`en`), German (`de`), and French (`fr`) in `i18n/`. Strings used in templates (e.g., "Read more", "Posted on") reference these via `i18n` function calls.
@@ -110,6 +120,36 @@ Partial translations exist for English (`en`), German (`de`), and French (`fr`) 
   showDarkToggle = true          # Dark mode toggle
   showCardLinkOverlay = false    # Card link behavior
   repository = "..."             # GitHub repo for footer links
+  showHomeFeed = true            # Show paginated feed on home page
+  showDate = true                # Show post dates
+  showAuthor = true              # Show author on posts
+  showBreadCrumbs = true         # Breadcrumb navigation
+  showShareButtons = false       # Social share buttons on single pages
+  showSummaryMeta = true         # Show meta on card summaries
+  showReadOn = false             # "Read on" link on cards
+  loadLeaflet = false            # Load Leaflet.js (self-hosted in static/leaflet/)
+  navbar_fixed = false           # Sticky header
+  og_image_default = "images/..."# Default OG image path
+  logo_firstWord = "..."         # Logo text (first word)
+  logo_lastWord = "..."          # Logo text (second word)
+  logo_tagline = "..."           # Logo tagline
+  homePageFeedHeader = "Latest"  # Home feed section header
+  homePageFeatureHeader = "..."  # Featured section header
+  articleBackgroundStyle = "..."    # TW classes for article bg
+  featuredArticleBackgroundStyle = "..." # TW classes for featured article bg
+
+[params.twClasses]               # TailwindCSS class overrides
+  headerBackgroundFrameOuter = "bg-gradient-to-r ..."
+  headerBackgroundFrameInner = "bg-cover h-[300px] ..."
+  footerBackground = "..."       # Footer background (falls back to headerBackgroundFrameOuter)
+
+[params.author]
+  name = "..."
+  email = "..."
+
+[params.shareButtons]
+  networks = ["twitter", "email", "reddit", "facebook"]
+  # size, icon, buttonMargin also available
 
 [params.footer]
   tagCloud = true                # Enable footer taxonomies
@@ -124,12 +164,32 @@ Partial translations exist for English (`en`), German (`de`), and French (`fr`) 
   alertTitle = "..."
   alertMessage = "..."
   dismissable = true
+  alertIconClass = "fa-solid fa-..."  # Optional Font Awesome icon
+  weight = 1                     # Display order
 
-[[params.social]]                # Social links (footer/elsewhere)
-  faClasses = "fa-brands fa-github"
-  url = "..."
-  weight = 20                    # Display order
+[services.plausibleAnalytics]    # Privacy-friendly analytics
+  ID = "yourdomain.com"
 ```
+
+**Social links (data file, not params):**
+
+Social icons in the footer are configured via `data/social.json`, NOT via params:
+```json
+{
+  "main": [
+    { "title": "GitHub", "name": "github", "icon": "fab fa-github", "link": "https://...", "weight": 10 }
+  ]
+}
+```
+Fields: `title`, `name`, `icon` (Font Awesome classes), `link`, `weight` (sort order), optional `rel`, `target`, `type`.
+
+**Home page feed filtering (front matter):**
+
+Pages with `homeFeature: true` appear in the featured grid (not the paginated feed). The feed excludes pages with empty summaries, and respects site params `excludedSections`, `excludedCategories`, `excludedTags`. Sort order is controlled via `listSortBy` and `listSortOrder` params.
+
+**Footer layout option:**
+
+Set `footerLayout = "stacked"` in params for a single-column stacked footer instead of the default 2-3 column grid.
 
 ## Critical Installation Notes
 
