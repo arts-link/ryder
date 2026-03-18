@@ -79,14 +79,16 @@ Shortcodes that are personal site utilities, not theme features:
 - [x] `package.json` — fixed `name` (`benstraw` → `ryder`), `description`, `license` (`ISC` → `MIT`), removed spurious `main` field
 
 ### Phase 2 — Standardize (Naming, conventions, broken promises)
-**Status:** Not started
+**Status:** Complete — 2026-03-17
 
-- [ ] Rename params to consistent camelCase: `TocOpen→tocOpen`, `UseHugoToc→useHugoToc`, `ShowPubDate→showPubDate`, `enabledebugpanel→enableDebugPanel`
-- [ ] Fix `archetypes/recipe.md` — `recipeInstructions` must be array of objects
-- [ ] Resolve social links config: document `data/social.json` as the single source of truth, remove `[[params.social]]` references from docs
-- [ ] Create `footer-fun.html` stub (or remove `footerType` param support from baseof.html + docs)
-- [ ] Update CI/CD Hugo version to match minimum requirement
-- [ ] Document `[params.twClasses]`, `footerLayout`, undocumented card params
+- [x] Rename params to camelCase in templates and exampleSite config: `TocOpen→tocOpen`, `UseHugoToc→useHugoToc`, `ShowPubDate→showPubDate`, `enabledebugpanel→enableDebugPanel`
+- [x] Fix `archetypes/recipe.md` (both root and exampleSite) — `recipeInstructions` was a string, now correctly a TOML array of `[[recipeInstructions]]` objects with `name` and `text` fields. Also fixed bare unquoted TOML values in exampleSite version (`recipeCuisine = American` → quoted).
+- [x] Social links: confirmed `[[params.social]]` never existed in templates or config — implementation always used `data/social.json`. CLAUDE.md was already corrected in Phase 1 setup. No template changes needed.
+- [x] Created `footer-fun.html` — simple single-row flex footer (copyright + socials + dark toggle). The `footerType = "-fun"` param in baseof.html now has a real target.
+- [x] CI/CD Hugo version: `0.138.0` → `0.146.0` (matches stated minimum requirement)
+- [x] Fix `archetypes/default.md` and `archetypes/recipe.md`: `showTOC` → `showToc` to match template (`.Params.showToc` in single.html)
+- [x] Simplify `hidden-home/baseof.html` debug panel condition: `or (.Params.enabledebugpanel) (and (not .Params.enabledebugpanel) (site.Params.enabledebugpanel))` → `.Param "enableDebugPanel"` (standard Hugo cascade)
+- [x] Remove stale comment block from `header-fun.html` ("Not sure I'll use those but leave'm for now")
 
 ### Phase 3 — Consolidate (Remove duplication)
 **Status:** Not started
@@ -114,6 +116,35 @@ Shortcodes that are personal site utilities, not theme features:
 ---
 
 ## Change Log
+
+### 2026-03-17 — Phase 2: Standardize
+
+**Param renames (camelCase):**
+- `TocOpen` → `tocOpen` (toc.html, exampleSite config)
+- `UseHugoToc` → `useHugoToc` (toc.html, exampleSite config)
+- `ShowPubDate` → `showPubDate` (page_meta.html, footer.html, exampleSite config)
+- `enabledebugpanel` → `enableDebugPanel` (baseof.html, hidden-home/baseof.html, exampleSite config)
+- `showTOC` → `showToc` in both archetypes (to match `.Params.showToc` in single.html)
+
+**Recipe archetype bug fixed (both root and exampleSite):**
+- `recipeInstructions = "..."` was a string — schema-recipe.html iterates it as an array of objects
+- Now uses TOML array of tables: `[[recipeInstructions]]` with `name` and `text` fields
+- Also fixed unquoted TOML strings in exampleSite version (`recipeCuisine = American` → `"American"`)
+
+**Created `layouts/partials/footer-fun.html`:**
+- Simple single-row flex footer: copyright left, socials + dark toggle right
+- `footerType = "-fun"` in config/front matter now has a real target instead of silently failing
+
+**CI/CD:**
+- `.github/workflows/hugo.yml`: Hugo version `0.138.0` → `0.146.0`
+
+**`hidden-home/baseof.html`:**
+- Replaced `or (.Params.enabledebugpanel) (and (not .Params.enabledebugpanel) (site.Params.enabledebugpanel))` with `.Param "enableDebugPanel"` — equivalent but uses standard Hugo param cascade
+
+**`header-fun.html`:**
+- Removed stale comment block ("Not sure I'll use those but leave'm for now")
+
+---
 
 ### 2026-03-17 — Phase 1: Cut
 

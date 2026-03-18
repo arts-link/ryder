@@ -11,7 +11,7 @@ hideAsideBar = true
   # ]
 # featured_image = ""
 # homeFeatureIcon = ""
-# showTOC = true
+# showToc = true
 +++
 
 <!--more-->

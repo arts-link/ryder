@@ -1,0 +1,19 @@
+{{- $footerClass := "" }}
+{{- with or (.Param "twClasses.footerBackground") (.Param "twClasses.headerBackgroundFrameOuter") (.Param "headerGradientClasses") }}
+  {{- $footerClass = . }}
+{{- end }}
+
+<footer class="border-t w-full mt-auto text-neutral-100 {{ $footerClass }}">
+  <div class="flex flex-wrap items-center justify-between gap-4 py-3 px-4 text-sm">
+    <div class="flex items-center gap-4">
+      {{- with .Site.Copyright | safeHTML }}<span>{{ . }}</span>{{- end }}
+      {{- partial "utils/attribution.html" . }}
+    </div>
+    <div class="flex items-center gap-4 text-xl">
+      {{- partial "utils/socialslist.html" . }}
+      {{- if .Param "showDarkToggle" }}
+        {{- partial "utils/dark-toggle.html" . }}
+      {{- end }}
+    </div>
+  </div>
+</footer>

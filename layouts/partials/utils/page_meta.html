@@ -21,7 +21,7 @@
   {{- $hash1 = fmt.Printf "<a href=\"%s/commit/%s\">%s</a>" site.Params.repository .Hash .AbbreviatedHash -}}
   {{- $hashlink = fmt.Printf "%s / %s / %s" $hash1 $hash2 $hash3 -}}
 {{-  end }}
-{{-  if .Site.Params.ShowPubDate }}
+{{-  if .Site.Params.showPubDate }}
   <div>
     {{ if ne .Lastmod .Date }} <i class="fa-solid fa-calendar-days"></i> Last Modified: <time datetime="{{ $dateLastmodMachine }}" class="">{{ $dateLastmodHuman }}</time><br/> {{ end }}
     <i class="fa-solid fa-calendar-days"></i> Published: <time datetime="{{ $dateMachine }}" class="">{{ $dateHuman }}</time><br/>

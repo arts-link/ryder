@@ -39,7 +39,7 @@
       </div>
     </div>
   </main>
-{{- if or (.Params.enabledebugpanel) (and (not .Params.enabledebugpanel) (site.Params.enabledebugpanel)) }}
+{{- if .Param "enableDebugPanel" }}
 {{ partial "debug-panel.html" . }}
 {{- end }}
 </body>
