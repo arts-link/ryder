@@ -289,9 +289,7 @@ npm run deploy-tw   # Build + minify for production
 ## Sites Using Ryder
 
 - [benstrawbridge.com](https://www.benstrawbridge.com)
-- [arts-link.com](https://www.arts-link.com)
 - [writingsos.com](https://www.writingsos.com)
-- [grrquarterly.com](https://www.grrquarterly.com)
 
 Using Ryder? [Let us know](mailto:hello@arts-link.com?subject=ryder) to be added here.
 
