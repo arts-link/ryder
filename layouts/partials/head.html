@@ -1,6 +1,15 @@
   <!-- The primary content of the <head> tag -->
   {{- partial "head/csp.html" . }}
   <meta charset="utf-8" />
+  <!-- Dark mode: apply class immediately to prevent flash of light content -->
+  <script>
+    (function() {
+      var t = localStorage.theme;
+      if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
   <meta name="viewport" content="width=device-width" />
   <link rel="canonical" href="{{ .Permalink }}" />
   {{- partialCached "head/favicon.html" . }}

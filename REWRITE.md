@@ -107,16 +107,40 @@ Shortcodes that are personal site utilities, not theme features:
 - [x] `openstreetmap.html` — kept. Documented the use case distinction (uMap embed vs Leaflet custom map) in `exampleSite/content/posts/leaflet-maps.md`.
 
 ### Phase 5 — Modernize (Improvements for v0.2)
-**Status:** Not started
+**Status:** Complete — 2026-03-17
 
-- [ ] Fix dark mode initial flash (data attribute + CSS custom properties approach)
-- [ ] Improve `[params.twClasses]` documentation and potentially rename to something more intuitive
-- [ ] Consider whether Leaflet (300KB) belongs in static/ or should be documented as an optional install
-- [ ] Rename `-fun` variant suffix to something that communicates what it does
+- [x] **Dark mode flash fixed.** Added a tiny inline `<script>` at the top of `<head>` (before CSS) that reads `localStorage.theme` and `prefers-color-scheme` and immediately adds the `dark` class to `<html>` if needed. Prevents the flash of light content on dark-mode-preferred page loads. The full `themeSwitcher.js` still handles the 3-way toggle (light/dark/system) after JS loads.
+- [x] **`static/leaflet/` removed.** The theme ships Leaflet as an npm dependency (used by `main.js` via `import('leaflet')`), and the CSS is in `assets/css/leaflet.css`. The `static/leaflet/` directory was a redundant manual copy (~300KB) serving no purpose in the build pipeline. Marker images referenced by the CSS are served from `static/css/images/` which remains.
+- [x] **`exampleSite/package.json` fixed.** Same issues as root: name, description, license (ISC → MIT), removed spurious `main` field.
+- [ ] **`[params.twClasses]` rename** — deferred. The name is not ideal but renaming is a breaking change requiring a migration guide. Document thoroughly instead.
+- [ ] **`-fun` variant suffix rename** — deferred. Renaming (`headerType = "-fun"` → something descriptive) is a breaking change for existing users. Flag for v0.2 with clear migration note.
 
 ---
 
 ## Change Log
+
+### 2026-03-17 — Phase 5: Modernize
+
+**Dark mode flash prevention:**
+- Added inline `<script>` at top of `<head>` (before CSS loads) that reads
+  `localStorage.theme` and `prefers-color-scheme` and immediately adds
+  the `dark` class to `<html>` — prevents flash of light content on dark-mode-preferred loads
+- `themeSwitcher.js` continues to handle the full 3-way toggle after hydration
+
+**`static/leaflet/` removed (~300KB):**
+- Leaflet JS: loaded via npm by Hugo's `js.Build` (`import('leaflet')` in main.js)
+- Leaflet CSS: served from `assets/css/leaflet.css` (already in asset pipeline)
+- Marker images: served from `static/css/images/` (unchanged, CSS references these)
+- `static/leaflet/` was a redundant manual copy with no role in the build
+
+**`exampleSite/package.json` fixed:**
+- name, description, license (ISC → MIT), removed spurious `main` field
+
+**Deferred to v0.2:**
+- `[params.twClasses]` rename — breaking change, needs migration guide
+- `-fun` variant suffix rename — breaking change, needs migration guide
+
+---
 
 ### 2026-03-17 — Phase 4: Simplify
 
