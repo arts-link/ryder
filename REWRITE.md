@@ -91,11 +91,12 @@ Shortcodes that are personal site utilities, not theme features:
 - [x] Remove stale comment block from `header-fun.html` ("Not sure I'll use those but leave'm for now")
 
 ### Phase 3 — Consolidate (Remove duplication)
-**Status:** Not started
+**Status:** Complete — 2026-03-17
 
-- [ ] Merge `menu.html` and `menu-fun.html` into single file (parameterize the one differing class)
-- [ ] Extract `utils/card-meta.html` partial shared by card templates
-- [ ] Move share-buttons CSS out of inline `<style>` block into `assets/css/`
+- [x] Merged `menu.html` and `menu-fun.html` into single `menu.html`. Added optional `navClass` param (defaults to `main-menu-nav`; footer menus use `footer-menu-nav`). Deleted `menu-fun.html`. Updated `header-fun.html` to call `menu.html` with `navClass = "main-fun-menu-nav"`. Removed unused `shade` param that was passed but never read.
+- [x] Created `utils/card-meta.html` — returning partial (Hugo `return`) that computes all shared card metadata. Both card templates now call it and receive a dict. Each card is only its rendering logic.
+- [x] Moved ~275 lines of share-buttons CSS from inline `<style>` block into `assets/css/main.css`. Eliminated the duplicate first color set (which lacked `border-color` and `:active` states). Removed dead Google+ network styles. Dynamic values (`margin`, `font-size`) now use CSS custom properties `--sb-margin` and `--sb-font-size` set by a small remaining `<style>` block.
+- [x] Removed dead commented-out navbar toggler CSS from `main.css`
 
 ### Phase 4 — Simplify (Reduce complexity)
 **Status:** Not started
@@ -116,6 +117,30 @@ Shortcodes that are personal site utilities, not theme features:
 ---
 
 ## Change Log
+
+### 2026-03-17 — Phase 3: Consolidate
+
+**`menu.html` / `menu-fun.html` merged:**
+- Single `menu.html` with optional `navClass` param
+- `header-fun.html` now calls `menu.html` with `navClass = "main-fun-menu-nav"`
+- `menu-fun.html` deleted
+
+**`utils/card-meta.html` created:**
+- Returns dict with all computed card metadata via Hugo `return`
+- `card-category-color.html` and `card-super-simple.html` each reduced to just rendering logic
+- Eliminates ~42 lines of duplicated computation across the two card templates
+
+**Share-buttons CSS externalized:**
+- ~275 lines of inline CSS moved to `assets/css/main.css`
+- Duplicate first color set removed (it was a subset of the second set, which has `border-color` + `:active`)
+- Google+ network CSS removed (service discontinued)
+- `--sb-margin` and `--sb-font-size` CSS custom properties replace the two dynamic template values
+- `share-buttons.html` `<style>` block reduced from 275 lines to 6
+
+**`main.css` cleanup:**
+- Removed commented-out checkbox-based navbar toggler CSS (replaced by Alpine.js years ago)
+
+---
 
 ### 2026-03-17 — Phase 2: Standardize
 

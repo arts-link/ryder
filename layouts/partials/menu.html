@@ -1,23 +1,28 @@
 {{- /*
 Renders a menu for the given menu ID.
 
-@context {page} page The current page.
-@context {string} menuID The menu ID.
+@context {page}   page     The current page.
+@context {string} menuID   The menu ID (e.g. "main", "footer").
+@context {string} navClass Optional CSS class override for the <nav> element.
+                           Defaults to "main-menu-nav" for non-footer menus.
 
 @example: {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
+@example: {{ partial "menu.html" (dict "menuID" "main" "page" . "navClass" "main-fun-menu-nav") }}
 */}}
 {{- $page := .page }}
 {{- $menuID := .menuID }}
-   {{ $navClassName := "main-menu-nav" }}
-{{ if eq $menuID "footer" }}
-{{ $navClassName = "footer-menu-nav" }}
-{{ end }}
+{{- $navClass := .navClass | default "" }}
+{{- if eq $menuID "footer" }}
+  {{- $navClass = "footer-menu-nav" }}
+{{- else if eq $navClass "" }}
+  {{- $navClass = "main-menu-nav" }}
+{{- end }}
 {{- with index site.Menus $menuID }}
-      <nav class="{{ $navClassName }}">
-        <ul class="main-menu-ul">
-          {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
-        </ul>
-      </nav>
+<nav class="{{ $navClass }}">
+  <ul class="main-menu-ul">
+    {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
+  </ul>
+</nav>
 {{- end }}
 
 {{- define "partials/inline/menu/walk.html" }}
@@ -26,7 +31,7 @@ Renders a menu for the given menu ID.
     {{- $attrs := dict "href" .URL }}
     {{- if $page.IsMenuCurrent .Menu . }}
       {{- $attrs = merge $attrs (dict "class" "active" "aria-current" "page") }}
-    {{- else if $page.HasMenuCurrent .Menu .}}
+    {{- else if $page.HasMenuCurrent .Menu . }}
       {{- $attrs = merge $attrs (dict "class" "ancestor" "aria-current" "true") }}
     {{- end }}
     {{- $name := .Name }}
@@ -35,10 +40,9 @@ Renders a menu for the given menu ID.
         {{- $name = . }}
       {{- end }}
     {{- end }}
-          <li class="">
-            {{/*  TODO -- replace n with nesting level  */}}
-            {{- if .Children }}<div class="child-nav-container relative group/sub-n">{{- end }}
-            <a 
+    <li class="">
+      {{- if .Children }}<div class="child-nav-container relative group/sub-n">{{- end }}
+      <a
         {{- range $k, $v := $attrs }}
           {{- with $v }}
             {{- printf " %s=%q" $k $v | safeHTMLAttr }}
@@ -48,11 +52,12 @@ Renders a menu for the given menu ID.
       {{- with .Children }}
         <i class="child-nav-icon fa-solid fa-angle-down"></i>
         <div class="child-ul-container group-hover/sub-n:block z-10">
-        <ul class="main-menu-child-ul">
-                {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
-        </ul>
+          <ul class="main-menu-child-ul">
+            {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
+          </ul>
         </div>
       {{- end }}
-      {{- if .Children }}</div>{{ end }}</li>
+      {{- if .Children }}</div>{{- end }}
+    </li>
   {{- end }}
 {{- end }}
