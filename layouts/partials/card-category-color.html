@@ -1,73 +1,33 @@
-{{- $showAuthor := .Param "showAuthor" | default true }}
-{{- $showReadOn := .Param "showReadOn" | default false }}
-{{- $showDate := .Param "showDate" | default true }}
-{{- $showCardLinkOverlay := .Param "showCardLinkOverlay" | default true }}
-{{- $showSummaryMeta := .Param "showSummaryMeta" | default true}}
-{{- $nowYear := time.Now | time.Format "2006" }}
-{{- $headerStyle := .Param "cardCategoryColorsDefault" 
-  | default "bg-gradient-to-r from-stone-300 to-stone-200 text-neutral-800" }}
-{{- $articleBackgroundStyle := .Param "articleBackgroundStyle" 
-  | default "" }}
-{{- $featuredArticleBackgroundStyle := .Param "featuredArticleBackgroundStyle" 
-  | default "bg-gradient-to-br from-rose-100 to-teal-100 text-neutral-900 dark:from-rose-800 dark:to-teal-800 dark:text-neutral-100" }}
-{{- $dateYear := .Date | time.Format "2006" }}
-{{- $dateHuman := "" }}
-{{- $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
-{{/*  {{ $dateHuman := .Date | time.Format ":date_long" }}  */}}
-{{- if eq $dateYear $nowYear }}
-  {{- $dateHuman = .Date | time.Format "Jan 02" }}
-{{- else if eq $dateYear "0001" }}
-  {{- $showDate = false }}
-{{- else }}
-  {{- $dateHuman = .Date | time.Format "Jan 02, 2006" }}
-{{- end }}
-{{- $articleSection := .Section }}
-{{- $articleLink := .Section }}
-
-{{- $categories := .GetTerms "categories" }}
-{{- if gt (len $categories) 0 }}
-  {{- $mainCategory := index $categories 0 }}
-  {{- $articleSection = $mainCategory.Title }}
-  {{- $articleLink = printf "categories/%s" $articleSection }}
-  {{- with .Site.GetPage ($articleLink) }}
-    {{- $articleSection = .Title }}
-    {{- with .Params.cardCategoryColorsDefault }}
-      {{- $headerStyle = . }}
-    {{- end }}
-  {{- end }}
-{{- end }}
-{{- $cardURL := .RelPermalink }}
-{{- with .Params.detailpageURL }}
-  {{- $cardURL = . }}
-{{- end }}
+{{- $m := partial "utils/card-meta.html" . }}
 
 <div itemscope="" itemtype="http://schema.org/Article" class="article {{ with .Param "homeFeatureWide" }}md:col-span-2 md:order-first{{ end }}">
-  <div class="article-content relative p-1 rounded-t-xl {{ $headerStyle }}">
+  <div class="article-content relative p-1 rounded-t-xl {{ $m.headerStyle }}">
     <div class="w-full h-full bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
-      {{ if $showCardLinkOverlay}}
-      <a itemprop="url" aria-label="{{ .Title }}" href="{{ $cardURL }}" class="link-overlay"> </a>
-      {{ end }}
-      <h2 itemprop="headline" class="text-2xl p-3 {{ $headerStyle }}">
+      {{- if $m.showCardLinkOverlay }}
+      <a itemprop="url" aria-label="{{ .Title }}" href="{{ $m.cardURL }}" class="link-overlay"> </a>
+      {{- end }}
+      <h2 itemprop="headline" class="text-2xl p-3 {{ $m.headerStyle }}">
         {{- if .Params.homeFeatureIcon }}
           <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i>
         {{- end }}
-        {{ if not $showCardLinkOverlay }}<a itemprop="url" href="{{ $cardURL }}" class="relative z-10">{{ end }}{{ .Title }}{{ if not $showCardLinkOverlay }}</a>{{ end }}
+        {{- if not $m.showCardLinkOverlay }}<a itemprop="url" href="{{ $m.cardURL }}" class="relative z-10">{{- end }}
+        {{- .Title }}
+        {{- if not $m.showCardLinkOverlay }}</a>{{- end }}
       </h2>
-      <div class="{{- if .Param "homeFeature" -}}{{$featuredArticleBackgroundStyle}}{{- else -}}{{$articleBackgroundStyle}}{{- end -}}">
-      {{- if and $showSummaryMeta (or $articleSection .Site.Params.showDate $showAuthor) -}}
-      <span class="details pl-2 mt-4 inline-block">
-        {{/*  I am currenly not doing anything for author since it is only me but for Ryder author with be a taxonomy item and included in every page  */}}
-        <span class="{{ if not $showAuthor }}hidden{{ end }}" itemprop="author" itemscope="" itemtype="http://schema.org/Person">By <span class="author" itemprop="name">{{ .Site.Params.author.name }}</span></span>
-        {{ with $articleSection }}In <a href="{{ site.BaseURL }}{{ $articleLink }}"><span itemprop="articleSection" class="relative z-10 source font-bold capitalize">{{ . }}</span></a>{{ end }}
-        <span class="{{- if not $showDate }}hidden{{- end }}">On <time itemprop="datePublished" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time></span>
-      </span>
-      {{- end -}}
-      <div itemprop="articleBody" class="articleBody">
-        {{- or .Params.homeFeatureSummary .Summary }}
-        {{- if $showReadOn }}
-          {{- partial "utils/btn-read-on.html" . }}
+      <div class="{{- if .Param "homeFeature" }}{{ $m.featuredArticleBackgroundStyle }}{{- else }}{{ $m.articleBackgroundStyle }}{{- end }}">
+        {{- if and $m.showSummaryMeta (or $m.articleSection .Site.Params.showDate $m.showAuthor) }}
+        <span class="details pl-2 mt-4 inline-block">
+          <span class="{{ if not $m.showAuthor }}hidden{{ end }}" itemprop="author" itemscope="" itemtype="http://schema.org/Person">By <span class="author" itemprop="name">{{ .Site.Params.author.name }}</span></span>
+          {{ with $m.articleSection }}In <a href="{{ site.BaseURL }}{{ $m.articleLink }}"><span itemprop="articleSection" class="relative z-10 source font-bold capitalize">{{ . }}</span></a>{{ end }}
+          <span class="{{ if not $m.showDate }}hidden{{ end }}">On <time itemprop="datePublished" datetime="{{ $m.dateMachine }}">{{ $m.dateHuman }}</time></span>
+        </span>
         {{- end }}
-      </div>  
+        <div itemprop="articleBody" class="articleBody">
+          {{- or .Params.homeFeatureSummary .Summary }}
+          {{- if $m.showReadOn }}
+            {{- partial "utils/btn-read-on.html" . }}
+          {{- end }}
+        </div>
       </div>
     </div>
   </div>
