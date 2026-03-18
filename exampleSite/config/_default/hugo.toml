@@ -16,7 +16,6 @@ themesDir= "../../"
 [params]
   # description = 'A theme for hugo'
   tocOpen = true
-  # useHugoToc = true
   # enableDebugPanel = true
   # navbar_fixed = true
   excludedtags = ["sample","test","excluded"]
