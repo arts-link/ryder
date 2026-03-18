@@ -106,6 +106,23 @@ Shortcodes that are personal site utilities, not theme features:
 - [x] `soundcloud.html` — kept. Added `exampleSite/content/posts/media-embeds.md` with full parameter documentation and a live embed example.
 - [x] `openstreetmap.html` — kept. Documented the use case distinction (uMap embed vs Leaflet custom map) in `exampleSite/content/posts/leaflet-maps.md`.
 
+### Phase 6 — Frontend Design Refresh
+**Status:** Complete — 2026-03-17
+
+Surgical visual modernization. No new frameworks, no structural changes, no new config parameters. All changes backwards-compatible.
+
+- [x] **Heading typography** — `h1` gets `font-bold tracking-tight`, `h2` gets `font-semibold tracking-tight`. Titillium Web benefits from slight negative tracking at display sizes. `@layer base` keeps specificity low.
+- [x] **`.hpContent h2` gradient** — replaced blue→purple→pink rainbow with neutral `from-slate-700 to-slate-500`. Consolidated two duplicate rules into one.
+- [x] **Card shadows** — `.article` gets `shadow-sm` + hover `shadow-md` + `rounded-xl`. The outer radius aligns the shadow to the visible card shape (inner `rounded-xl` on `.article-content` was already there).
+- [x] **Nav hover + focus** — `main-menu-ul` and `main-menu-child-ul` links get `transition-colors`, hover `text-sky-600 bg-neutral-300`, and `focus-visible` outline ring.
+- [x] **Blockquote modernization** — replaced gradient-clip text trick (unreadable in dark mode, WCAG fail) with clean left-bordered blockquote: `border-sky-400 bg-sky-50` light / `border-sky-600 bg-neutral-800` dark. Margin shrinks from 40px to 1em.
+- [x] **Link overlay debug border removed** — `border: 5px; border-color: #f505f5` (magenta) stripped from `.article .article-content a.link-overlay`. Was a debug artifact.
+- [x] **Card dark mode surface** — `dark:bg-neutral-900` → `dark:bg-neutral-800` in `card-category-color.html`. Cards were invisible against the body in dark mode. Also `rounded-t-xl` → `rounded-xl` on `.article-content` to close the card shape.
+- [x] **`card-super-simple` shadow** — outer wrapper gets `shadow-sm transition-shadow duration-200 ease-in-out hover:shadow-md` (no `.article` class, so Change 3 didn't cover it).
+- [x] **Hamburger hex color** — `text-[#17729C]` → `text-sky-700`. Uses semantic Tailwind token instead of arbitrary hex.
+- [x] **Home section headers** — feature and feed `<h2>` elements get `font-bold tracking-wide border-b border-neutral-300 dark:border-neutral-700`. Gives floating uppercase text a visual anchor.
+- [x] **Logo hover** — logo box gets `hover:bg-neutral-300 transition-colors duration-150`. Makes the logo feel interactive.
+
 ### Phase 5 — Modernize (Improvements for v0.2)
 **Status:** Complete — 2026-03-17
 
@@ -118,6 +135,46 @@ Shortcodes that are personal site utilities, not theme features:
 ---
 
 ## Change Log
+
+### 2026-03-17 — Phase 6: Frontend Design Refresh
+
+**Heading typography (`main.css`):**
+- `h1`: added `font-bold tracking-tight`
+- `h2`: added `font-semibold tracking-tight`
+
+**`.hpContent h2` gradient simplified:**
+- Blue→purple→pink rainbow → neutral `from-slate-700 to-slate-500`
+- Two duplicate rules consolidated into one
+
+**Card shadows (`main.css`, `card-category-color.html`, `card-super-simple.html`):**
+- `.article` gets `shadow-sm` + hover `shadow-md` + `rounded-xl`
+- `card-super-simple` outer wrapper gets the same shadow treatment directly
+- `article-content` `rounded-t-xl` → `rounded-xl` to align shadow with card shape
+
+**Card dark mode surface (`card-category-color.html`):**
+- `dark:bg-neutral-900` → `dark:bg-neutral-800` — cards were invisible against the body
+
+**Nav hover + focus (`main.css`):**
+- Menu links get `transition-colors`, hover `text-sky-600 bg-neutral-300`, `focus-visible` outline ring
+
+**Blockquote modernization (`main.css`):**
+- Replaced gradient-clip text (WCAG fail, broken dark mode) with bordered box
+- `border-sky-400 bg-sky-50` light / `border-sky-600 bg-neutral-800` dark
+- Left margin: 40px → 1em
+
+**Link overlay debug border removed (`main.css`):**
+- Stripped `border: 5px; border-color: #f505f5` (magenta debug artifact)
+
+**Hamburger button (`header.html`):**
+- `text-[#17729C]` → `text-sky-700` (semantic token)
+
+**Home section headers (`home.html`):**
+- Feature and feed `<h2>` get `font-bold tracking-wide border-b border-neutral-300 dark:border-neutral-700`
+
+**Logo hover (`logo.html`):**
+- `hover:bg-neutral-300 transition-colors duration-150` added to logo box
+
+---
 
 ### 2026-03-17 — Phase 5: Modernize
 
