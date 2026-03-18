@@ -1,19 +1,27 @@
-{{ .Page.Params.recipeIngredientsTitle | default "" }}
-<div class="pl-2 grid grid-cols-2 gap-x-4">
+{{ with .Page.Params.recipeIngredientsTitle }}
+<p class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400 mb-4">
+  <i class="fa-solid fa-seedling"></i> {{ . }}
+</p>
+{{ end }}
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-1 my-4">
   {{ with .Page.Params.recipeIngredients }}
     {{ $itemCount := 1 }}
     {{ range $index, $element := . }}
       {{ if findRE "^\\*\\*" $element }}
-        <h3 class="col-span-2" id="ingredient-sub">{{ replaceRE "^\\*\\*" "" $element }}</h3>
+        <div class="col-span-full flex items-center gap-3 mt-5 mb-2">
+          <span class="h-px flex-1 bg-stone-200 dark:bg-stone-700"></span>
+          <span class="text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-stone-500">{{ replaceRE "^\\*\\*" "" $element }}</span>
+          <span class="h-px flex-1 bg-stone-200 dark:bg-stone-700"></span>
+        </div>
       {{ else }}
-        <div class="relative flex items-start mb-2">
-          <span class="flex-none w-8 h-8 rounded-full flex items-center justify-center dark:bg-rose-950 dark:text-neutral-100 dark:border-neutral-200 bg-sky-300 border-violet-900 text-violet-900 border-2 ">{{ $itemCount }}</span>
-          <span class="ml-2">{{ $element | markdownify }}</span>
+        <div class="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-amber-50 dark:hover:bg-stone-800 transition-colors duration-150 group">
+          <span class="flex-none mt-0.5 w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 text-xs font-bold flex items-center justify-center ring-1 ring-amber-200 dark:ring-amber-800 group-hover:bg-amber-200 dark:group-hover:bg-amber-800 transition-colors">{{ $itemCount }}</span>
+          <span class="text-stone-700 dark:text-stone-300 text-sm leading-snug">{{ $element | markdownify }}</span>
         </div>
         {{ $itemCount = add $itemCount 1 }}
       {{ end }}
     {{ end }}
   {{ else }}
-    <div>No ingredients listed.</div>
+    <div class="text-stone-400 italic text-sm">No ingredients listed.</div>
   {{ end }}
 </div>
