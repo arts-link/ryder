@@ -10,7 +10,9 @@ Named after a late Rhodesian Ridgeback/Mastiff companion.
 
 ---
 
-## Quick Start
+## TLDR;
+
+If your in a hurry and like to skip the words, let's just get in and out quickly
 
 ```bash
 hugo new site <your-site>
