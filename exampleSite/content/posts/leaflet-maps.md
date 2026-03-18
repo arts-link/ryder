@@ -41,13 +41,23 @@ Adding a map to your hugo website becomes easy with the `leaflet` shortcode. You
 */>}}
 {{< /highlight >}}
 
-## Lat-Long Box Shortcode 
+## Lat-Long Box Shortcode
 
 Add this shortcode to include the lat-long display box with minutes and seconds.
 
 {{< highlight go-html-template >}}
-{{</* lat-long-box 
-  latitude="39.9057" 
+{{</* lat-long-box
+  latitude="39.9057"
   longitude="-75.1665"
 */>}}
 {{< /highlight >}}
+
+## OpenStreetMap Shortcode
+
+For sharing a pre-built [uMap](https://umap.openstreetmap.fr) map, use the `openstreetmap` shortcode. This is different from the `leaflet` shortcode — use `leaflet` when you want to define a map from coordinates in your content, and `openstreetmap` when you have already built a map in uMap and want to embed it.
+
+{{< highlight go-html-template >}}
+{{</* openstreetmap mapName="your-map-name-123456" */>}}
+{{< /highlight >}}
+
+Optional parameters: `mapWidth` (default `100%`), `mapHeight` (default `600px`), `scaleControl`, `miniMap`, `scrollWheelZoom`, `zoomControl`, and others. See the shortcode source for the full list.

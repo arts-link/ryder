@@ -99,12 +99,12 @@ Shortcodes that are personal site utilities, not theme features:
 - [x] Removed dead commented-out navbar toggler CSS from `main.css`
 
 ### Phase 4 — Simplify (Reduce complexity)
-**Status:** Not started
+**Status:** Complete — 2026-03-17
 
-- [ ] Evaluate `toc.html` — migrate to Hugo built-in or dramatically simplify
-- [ ] Audit `picture.html` partial (362 lines) for dead code paths
-- [ ] Decide on `soundcloud.html` — document with example or delete
-- [ ] Decide on `openstreetmap.html` — document with example or delete (vs leaflet.html)
+- [x] `toc.html` replaced entirely. The 96-line custom Scratch-based heading tree builder is gone. Now uses Hugo's built-in `.TableOfContents` — 12 lines. The `<details>` wrapper, `tocOpen` param, and i18n title are unchanged. `useHugoToc` param removed from exampleSite config (no longer a choice).
+- [x] `picture.html` — audited, left unchanged. All 362 lines are doing real work: responsive multi-format images, optional overlay compositing, page/section/global resource resolution with proper error handling. From Veriphor (Apache 2.0). No dead paths.
+- [x] `soundcloud.html` — kept. Added `exampleSite/content/posts/media-embeds.md` with full parameter documentation and a live embed example.
+- [x] `openstreetmap.html` — kept. Documented the use case distinction (uMap embed vs Leaflet custom map) in `exampleSite/content/posts/leaflet-maps.md`.
 
 ### Phase 5 — Modernize (Improvements for v0.2)
 **Status:** Not started
@@ -117,6 +117,26 @@ Shortcodes that are personal site utilities, not theme features:
 ---
 
 ## Change Log
+
+### 2026-03-17 — Phase 4: Simplify
+
+**`toc.html` rewritten (96 lines → 12):**
+- Custom Scratch-based heading tree removed entirely
+- Now uses Hugo's built-in `.TableOfContents`
+- `<details>` wrapper, `tocOpen`, and i18n title unchanged
+- `useHugoToc` param removed from config (now always Hugo's built-in)
+
+**`picture.html`** — audited, no changes. Justified complexity.
+
+**New `exampleSite/content/posts/media-embeds.md`:**
+- Documents `soundcloud` shortcode with full parameter table
+- Explains how to find a track's API URL
+- Includes a live embed example
+
+**`exampleSite/content/posts/leaflet-maps.md` updated:**
+- Added OpenStreetMap (uMap) section explaining when to use it vs Leaflet
+
+---
 
 ### 2026-03-17 — Phase 3: Consolidate
 
