@@ -9,6 +9,7 @@ tags = [
   "baked",
   "meal-prep"
 ]
+homeFeature = true
 homeFeatureIcon = "fa-solid fa-bowl-food"
 featured_image = "granola_fini_lemon_chia_seed.webp"
 

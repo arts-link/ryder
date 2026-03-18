@@ -1,7 +1,6 @@
 +++
 title = 'The Ryder Theme'
 date = 2024-01-26T14:32:26-08:00
-homeFeature = true
 homeFeatureIcon = "fa-solid fa-shield-dog"
 categories = ["home-page"]
 # [[cascade]]
@@ -13,15 +12,21 @@ categories = ["home-page"]
   # headerBackgroundFrameInner = "bg-[url('/ryder/images/ryder-theme-og.jpg')] bg-cover h-[250px]"
 # draft = true
 # type = 'hidden-home'
-+++ 
++++
 
-### Welcome to the Ryder theme example site!
+### A Hugo theme built with TailwindCSS, Alpine.js, and Font Awesome.
 
-Get started and Learn more about The Ryder theme for Hugo websites over at GitHub. If you leave all of the content on this page, this top box will not show up.
+Ryder is intentionally barebones — practical defaults, no bloat. Drop it in and start writing.
 
-{{< cta-button 
-  button_label="README file on github" 
-  button_href="https://github.com/arts-link/ryder" 
+- **Dark mode** — toggle built in, zero config
+- **Card layouts** — multiple variants, fully configurable
+- **Shortcodes** — alerts, maps, recipe schema, media embeds, CTAs, and more
+- **Schema markup** — structured data for recipes and articles out of the box
+- **Privacy-friendly analytics** — Plausible integration included
+
+{{< cta-button
+  button_label="README on GitHub"
+  button_href="https://github.com/arts-link/ryder"
 >}}
 
 <!--more-->
