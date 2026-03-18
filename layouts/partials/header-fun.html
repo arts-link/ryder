@@ -17,10 +17,6 @@ By default it will have a background gradient in cayan.
     {{ $headerBackgroundFrameInner = printf `%s %s` . $frameMargin }}
     {{/*  {{ printf `<tr><td class="key">%s</td><td class="type">%s</td><td class="value">` $key1 $type1 | safeHTML }}  */}}
 {{ end }}
-{{/* 
-    Not sure I'll use those but leave'm for now
-*/}}
-
 <header class=" w-full {{ $headerClass }}">
     <div class=" {{ $headerBackgroundFrameInner }}">
         <div class="w-full h-full mx-auto flex flex-col items-end justify-end sm:justify-start"> 
