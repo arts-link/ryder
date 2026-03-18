@@ -1,14 +1,12 @@
 {
-  "name": "ryder",
+  "name": "ryder-example-site",
   "version": "1.0.0",
-  "description": "a simple hugo theme",
-  "main": "index.js",
+  "description": "Example site for the Ryder Hugo theme",
+  "author": "Ben Strawbridge",
+  "license": "MIT",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
     "autoprefixer": "^10.4.16",
