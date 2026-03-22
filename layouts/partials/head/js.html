@@ -1,6 +1,6 @@
 <script>
-  const showDarkToggle = {{ .Site.Params.showDarkToggle | default false }};
-  const loadLeaflet = {{ .Site.Params.loadLeaflet | default false }};
+  const showDarkToggle = {{ .Param "showDarkToggle" | default false }};
+  const loadLeaflet = {{ .Param "loadLeaflet" | default false }};
 </script>
 
 {{- with resources.Get "js/main.js" }}
