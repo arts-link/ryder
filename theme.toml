@@ -1,4 +1,5 @@
 name = 'ryder'
+version = 'v0.0.3-alpha'
 license = 'MIT'
 licenselink = 'https://github.com/arts-link/ryder/LICENSE'
 description = 'Just a basic theme I created to learn about theme development and add some shortcodes and partials I was using often.'
