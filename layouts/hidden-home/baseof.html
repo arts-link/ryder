@@ -20,7 +20,7 @@
   {{ partial "head.html" . }}
   
 </head>
-<body class="bg-hidden-home bg-cover text-neutral-900 dark:text-neutral-100">
+<body class="bg-cover text-neutral-900 dark:text-neutral-100" style="background-image: url('{{ "images/hidden-home-cover.webp" | absURL }}')">
   {{ if not hugo.IsProduction }}
   <!-- tailwind size indicator -->
     {{ partial "tw-size-indicator.html" . }}
