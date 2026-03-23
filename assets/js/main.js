@@ -1,9 +1,67 @@
 import { library, dom } from '@fortawesome/fontawesome-svg-core'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { far } from '@fortawesome/free-regular-svg-icons'
-import { fab } from '@fortawesome/free-brands-svg-icons'
 
-library.add(fas, far, fab)
+// Only import the solid icons used by this theme
+import {
+  faAngleDown,
+  faAnglesRight,
+  faBars,
+  faBath,
+  faBicycle,
+  faBinoculars,
+  faBullhorn,
+  faCalendarDays,
+  faCameraRetro,
+  faCircleCheck,
+  faCircleExclamation,
+  faCircleInfo,
+  faCode,
+  faComputer,
+  faDumpsterFire,
+  faDungeon,
+  faGlobe,
+  faHandPointLeft,
+  faHandPointRight,
+  faHouse,
+  faMapLocationDot,
+  faMoon,
+  faOm,
+  faShieldDog,
+  faSignsPost,
+  faSnowflake,
+  faSun,
+  faTags,
+  faTimes,
+  faTriangleExclamation,
+  faWandMagicSparkles,
+  faWheatAwn,
+  faXmark,
+} from '@fortawesome/free-solid-svg-icons'
+
+// Only import the regular icons used by this theme
+import {
+  faHandPointRight as farHandPointRight,
+} from '@fortawesome/free-regular-svg-icons'
+
+// Only import the brand icons used by this theme
+import {
+  faGithubAlt,
+  faSpotify,
+  faYoutube,
+} from '@fortawesome/free-brands-svg-icons'
+
+library.add(
+  // solid
+  faAngleDown, faAnglesRight, faBars, faBath, faBicycle, faBinoculars,
+  faBullhorn, faCalendarDays, faCameraRetro, faCircleCheck, faCircleExclamation,
+  faCircleInfo, faCode, faComputer, faDumpsterFire, faDungeon, faGlobe,
+  faHandPointLeft, faHandPointRight, faHouse, faMapLocationDot, faMoon, faOm,
+  faShieldDog, faSignsPost, faSnowflake, faSun, faTags, faTimes,
+  faTriangleExclamation, faWandMagicSparkles, faWheatAwn, faXmark,
+  // regular
+  farHandPointRight,
+  // brands
+  faGithubAlt, faSpotify, faYoutube,
+)
 // This will automatically find any <i> tags with the 'fa' class and convert them into <svg> elements
 dom.watch()
 
