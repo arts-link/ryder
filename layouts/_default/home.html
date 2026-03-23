@@ -1,17 +1,21 @@
 {{- define "main" }}
 <div class="p-2 max-w-screen-lg mx-auto ">
   {{- if or .Title .Content }}
+  <div class="my-4 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 shadow-sm overflow-hidden">
     {{- if and .Title site.Params.showHomeTitle}}
-    <h2 itemprop="headline" class="text-2xl p-3 "> 
-      {{- if .Params.homeFeatureIcon }} <i class="{{ .Params.homeFeatureIcon }} mr-2 text-3xl"></i> {{- end }}
-      {{- .Title }}
-    </h2>
+    <div class="px-6 pt-6 pb-2 border-b border-neutral-100 dark:border-neutral-700">
+      <h2 itemprop="headline" class="text-2xl font-bold flex items-center gap-3 text-neutral-800 dark:text-neutral-100">
+        {{- if .Params.homeFeatureIcon }}<i class="{{ .Params.homeFeatureIcon }} text-2xl opacity-70"></i>{{- end }}
+        {{- .Title }}
+      </h2>
+    </div>
     {{- end }}
     {{- if .Content }}
-    <div itemprop="articleBody" class="articleBody max-w-xl mx-auto prose dark:prose-invert px-3 pb-4">
+    <div itemprop="articleBody" class="articleBody px-6 py-5 max-w-none prose dark:prose-invert">
       {{- .Content }}
     </div>
     {{- end }}
+  </div>
   {{- end }}
 
   {{/*  Set up the content loop  */}}

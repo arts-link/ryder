@@ -4,9 +4,12 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
   content: [
     "./hugo_stats.json",
+    "./exampleSite/hugo_stats.json",
     "./layouts/**/*.html",
     "./config/**/*.toml",
+    "./exampleSite/config/**/*.toml",
     "./content/**/*.md",
+    "./exampleSite/content/**/*.md",
     "./themes/ryder/layouts/**/*.html",
   ],
   darkMode: 'class',

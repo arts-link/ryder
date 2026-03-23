@@ -1,5 +1,5 @@
 +++
-title = 'Lemon Chia Granola'
+title = 'How the recipe shortcodes work'
 date = 2024-04-29T13:44:16-07:00
 categories = ['recipes']
 tags = [
@@ -53,9 +53,13 @@ recipeIngredients = [
   text = "Let cool completely in the pan, then break apart into clumps."
 +++
 
-## How the recipe shortcodes work
+## Overview
 
-The ingredient and step data lives entirely in front matter. The shortcodes read it and render it — no repeated data in the body.
+The ingredient and step data lives entirely in front matter. The shortcodes read it and render it — no repeated data in the body. This keeps your content clean and makes the structured data for search engines automatic.
+
+If your site uses recipes, this approach means you write data once and it appears in both the rendered page and the JSON-LD schema block in the `<head>`.
+
+<!-- more -->
 
 **Front matter structure:**
 
@@ -97,8 +101,6 @@ Here's a live example using the front matter on this page:
 ![Lemon Chia Granola](granola_fini_lemon_chia_seed.webp)
 
 A bright, lemony granola with chia seeds. Low and slow baking and a weighted press gives you satisfying clusters.
-
-<!--more-->
 
 ## Ingredients
 

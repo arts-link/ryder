@@ -15,6 +15,8 @@ Embed a SoundCloud track with the `soundcloud` shortcode. Pass the API resource 
 {{</* soundcloud url="https://api.soundcloud.com/tracks/1120047793" */>}}
 {{< /highlight >}}
 
+<!--more-->
+
 The shortcode accepts these optional parameters:
 
 | Parameter | Default | Description |
@@ -33,7 +35,6 @@ The shortcode accepts these optional parameters:
 
 To find a track's API URL: open SoundCloud in a browser, view page source, and search for `"api.soundcloud.com/tracks/`.
 
-<!--more-->
 
 ### Example
 
