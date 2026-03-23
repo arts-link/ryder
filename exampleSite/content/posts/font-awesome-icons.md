@@ -11,7 +11,7 @@ tags = ["hugo","icons","font-awesome"]
 
 ## How icons work in this theme
 
-The theme uses Font Awesome with tree-shaking — only the icons explicitly imported in `assets/js/main.js` are included in the JavaScript bundle. If you use an icon class in front matter or a template and it hasn't been imported, it will silently render nothing.
+The theme uses Font Awesome with tree-shaking — only the icons explicitly imported in `assets/js/main.js` are included in the JavaScript bundle. If you use an icon class in front matter or a template and it hasn't been imported, Font Awesome renders a warning placeholder icon instead.
 
 <!--more-->
 
