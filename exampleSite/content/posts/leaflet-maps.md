@@ -21,9 +21,10 @@ hideAsideBar = true
 
 Adding a map to your hugo website becomes easy with the `leaflet` shortcode. You can add a box to display the lat and long as well through the use of the `lat-long-box` shortcode.
 
+<!--more-->
+
 {{< leaflet id="bankit" lat="39.9057" lon="-75.1665" zoom="16.5" markerLat="39.9057" markerLon="-75.1665" markerPopup="Life at the Bank!" divHeight="450px" >}} 
 
-<!--more-->
 
 ## Leaflet Shortcode
 

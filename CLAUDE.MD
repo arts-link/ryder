@@ -83,6 +83,20 @@ The theme uses Hugo's template lookup order with a powerful customization system
 - **`assets/js/backgroundChanger.js`** — random background image utility for `hidden-home` layout
 - **`assets/js/extended.js`** — intentionally empty; meant to be overridden by users in their site's `assets/js/extended.js` to add custom JS without modifying theme files
 
+### Adding Font Awesome Icons
+
+The theme uses tree-shaken FA imports — only explicitly imported icons are included in the JS bundle. If an icon class is used in content or templates but not imported, Font Awesome renders a warning placeholder icon instead.
+
+**To add an icon:**
+1. Find the camelCase name: `fa-bowl-food` → `faBowlFood`
+2. Add the import to `assets/js/main.js` (keep list alphabetical):
+   ```js
+   import { ..., faBowlFood } from '@fortawesome/free-solid-svg-icons'
+   ```
+3. Add it to `library.add(...)` in the same file
+
+Solid icons come from `@fortawesome/free-solid-svg-icons`, brand icons from `@fortawesome/free-brands-svg-icons`, regular (outline) from `@fortawesome/free-regular-svg-icons`. Check [fontawesome.com/icons](https://fontawesome.com/icons) (filter: Free) to confirm availability before adding.
+
 ### Data Files
 
 - **`data/social.json`** — Social icon links displayed in the footer. Structure: `{ "main": [{ "title", "name", "icon", "link", "weight" }] }`.
