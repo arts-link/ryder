@@ -1,0 +1,30 @@
+# Cache policy for Netlify and Cloudflare Pages deployments
+# GitHub Pages does not support custom headers; see README for CDN caching options.
+
+# Fingerprinted CSS bundles (content-hashed filenames) — cache for 1 year
+/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fingerprinted JS bundles (content-hashed filenames) — cache for 1 year
+/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fingerprinted images (content-hashed filenames) — cache for 1 year
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Layer-control images served via CSS relative path — cache for 30 days
+/css/images/*
+  Cache-Control: public, max-age=2592000
+
+# Favicon and other root-level static assets — cache for 7 days
+/favicon.ico
+  Cache-Control: public, max-age=604800
+
+# Feed (may update frequently) — cache for 1 hour
+/index.xml
+  Cache-Control: public, max-age=3600
+
+# HTML pages — always revalidate
+/*
+  Cache-Control: public, max-age=0, must-revalidate
