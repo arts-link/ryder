@@ -1,7 +1,4 @@
-<script>
-  const showDarkToggle = {{ .Param "showDarkToggle" | default false }};
-  const loadLeaflet = {{ .Param "loadLeaflet" | default false }};
-</script>
+<script id="theme-config" type="application/json">{"showDarkToggle":{{ .Param "showDarkToggle" | default false }},"loadLeaflet":{{ .Param "loadLeaflet" | default false }}}</script>
 
 {{- with resources.Get "js/main.js" }}
   {{- if eq hugo.Environment "development" }}

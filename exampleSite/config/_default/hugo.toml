@@ -47,6 +47,18 @@ themesDir= "../../"
   # homeListCardType = "-fun" # "-fun" or "-custom" to make your own
   # homeFeatureListCardType = "-fun" # "-fun" or "-custom" to make your own
 
+  # Content Security Policy — applied via <meta http-equiv="Content-Security-Policy">.
+  # The theme ships with secure defaults. Extend per-directive as needed.
+  # Set disabled = true if your hosting platform already sends a CSP HTTP header.
+  [params.csp]
+    # disabled = true
+    # imgSrc    = "https:"                        # allow all HTTPS image sources (e.g. for external post images)
+    # scriptSrc = "https://cdn.example.com"       # extra script hosts
+    # styleSrc  = "https://cdn.example.com"       # extra style hosts
+    # fontSrc   = "https://cdn.example.com"       # extra font hosts
+    # connectSrc = "https://api.example.com"      # extra connect hosts
+    # extraDirectives = "worker-src 'none';"      # append any additional directives
+
   [params.shareButtons]
     networks = [ "twitter", "email", "reddit", "facebook" ]
     # size = "small" # small, medium, large

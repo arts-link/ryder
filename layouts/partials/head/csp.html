@@ -1,0 +1,103 @@
+{{- /*
+  Content Security Policy (CSP) meta tag.
+
+  Builds a CSP in enforcement mode from a base policy and optional per-site
+  additions configured under [params.csp] in hugo.toml.  Because Hugo
+  generates static HTML the policy is delivered via a <meta> tag, which is
+  universally supported without requiring server configuration.
+
+  Default policy covers all resources that the theme itself loads:
+    • Self-hosted (fingerprinted) CSS, JS and fonts
+    • Google Fonts (googleapis.com / gstatic.com)
+    • Plausible Analytics and Google Analytics when configured
+
+  Users can extend each directive by setting extra sources in hugo.toml:
+
+    [params.csp]
+      imgSrc    = "https://cdn.example.com"
+      scriptSrc = "https://cdn.example.com"
+      styleSrc  = "https://cdn.example.com"
+      connectSrc = "https://api.example.com"
+      fontSrc   = "https://cdn.example.com"
+      extraDirectives = "worker-src 'none';"
+
+  Set params.csp.disabled = true to opt out of the meta CSP tag entirely
+  (e.g. when the hosting platform delivers CSP via HTTP headers instead).
+*/ -}}
+
+{{- $cspParams := site.Params.csp | default dict -}}
+{{- if not $cspParams.disabled -}}
+
+{{- /* ── script-src ─────────────────────────────────────────────────────── */ -}}
+{{- $scriptSrc := slice "'self'" -}}
+
+{{- /* Plausible Analytics */ -}}
+{{- if site.Params.plausible_domain -}}
+  {{- $scriptSrc = $scriptSrc | append "https://plausible.io" -}}
+  {{- /* SHA-256 hashes for Plausible advanced-mode inline scripts */ -}}
+  {{- if site.Params.plausible_advanced -}}
+    {{- $scriptSrc = $scriptSrc | append "'sha256-/6SBPqW+GW+//4nlXX6Y1nR9dWlh0gsQJ6KK71djH6A='" -}}
+    {{- $scriptSrc = $scriptSrc | append "'sha256-RqYEbQ5LE8+gxvgfBOWbOoYTcxVwtSabsMrOzsDyWuQ='" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Google Analytics (Hugo internal template uses googletagmanager.com) */ -}}
+{{- if and hugo.IsProduction (site.GoogleAnalytics) -}}
+  {{- $scriptSrc = $scriptSrc | append "https://www.googletagmanager.com" -}}
+{{- end -}}
+
+{{- with $cspParams.scriptSrc -}}
+  {{- $scriptSrc = $scriptSrc | append . -}}
+{{- end -}}
+
+{{- /* ── style-src ─────────────────────────────────────────────────────── */ -}}
+{{- /* 'unsafe-inline' is required by Alpine.js (x-show adds display:none
+       as an inline style) and for any user-provided inline styles.       */ -}}
+{{- $styleSrc := slice "'self'" "'unsafe-inline'" "https://fonts.googleapis.com" -}}
+{{- with $cspParams.styleSrc -}}
+  {{- $styleSrc = $styleSrc | append . -}}
+{{- end -}}
+
+{{- /* ── font-src ──────────────────────────────────────────────────────── */ -}}
+{{- $fontSrc := slice "'self'" "https://fonts.gstatic.com" -}}
+{{- with $cspParams.fontSrc -}}
+  {{- $fontSrc = $fontSrc | append . -}}
+{{- end -}}
+
+{{- /* ── img-src ───────────────────────────────────────────────────────── */ -}}
+{{- /* Default restricts to self and data URIs (Font Awesome SVG).
+       Sites that embed images from external CDNs or third-party services
+       should add those hosts via params.csp.imgSrc in hugo.toml,
+       e.g. imgSrc = "https://cdn.example.com https://images.unsplash.com"
+       or use imgSrc = "https:" to allow all HTTPS image sources.          */ -}}
+{{- $imgSrc := slice "'self'" "data:" -}}
+{{- with $cspParams.imgSrc -}}
+  {{- $imgSrc = $imgSrc | append . -}}
+{{- end -}}
+
+{{- /* ── connect-src ───────────────────────────────────────────────────── */ -}}
+{{- $connectSrc := slice "'self'" -}}
+{{- if site.Params.plausible_domain -}}
+  {{- $connectSrc = $connectSrc | append "https://plausible.io" -}}
+{{- end -}}
+{{- if and hugo.IsProduction (site.GoogleAnalytics) -}}
+  {{- $connectSrc = $connectSrc | append "https://www.google-analytics.com" "https://region1.google-analytics.com" -}}
+{{- end -}}
+{{- with $cspParams.connectSrc -}}
+  {{- $connectSrc = $connectSrc | append . -}}
+{{- end -}}
+
+{{- /* ── assemble policy string ───────────────────────────────────────── */ -}}
+{{- $policy := printf "default-src 'self'; script-src %s; style-src %s; font-src %s; img-src %s; connect-src %s; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; object-src 'none';"
+    (delimit $scriptSrc " ")
+    (delimit $styleSrc " ")
+    (delimit $fontSrc " ")
+    (delimit $imgSrc " ")
+    (delimit $connectSrc " ") -}}
+
+{{- with $cspParams.extraDirectives -}}
+  {{- $policy = printf "%s %s" $policy . -}}
+{{- end -}}
+
+<meta http-equiv="Content-Security-Policy" content="{{ $policy }}">
+{{- end -}}
