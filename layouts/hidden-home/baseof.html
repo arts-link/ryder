@@ -6,7 +6,8 @@
   <!-- Include the backgroundChanger.js file -->
   {{- with resources.Get "/js/backgroundChanger.js" }}
     {{- if eq hugo.Environment "development" }}
-      {{- with . | js.Build }}
+      {{- $opts := dict "sourceMap" "linked" }}
+      {{- with . | js.Build $opts }}
     <script defer src="{{ .RelPermalink }}"></script>
       {{- end }}
     {{- else }}
