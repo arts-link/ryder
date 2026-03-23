@@ -7,10 +7,17 @@
   "scripts": {
     "build-tw": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/style.css",
     "deploy-tw": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/style.css --minify",
-    "watch-tw": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/style.css -w"
+    "watch-tw": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/style.css -w",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "devDependencies": {
+    "@playwright/test": "^1.44.0",
     "@tailwindcss/typography": "^0.5.10",
-    "tailwindcss": "^3.4.0"
+    "jsdom": "^24.0.0",
+    "tailwindcss": "^3.4.0",
+    "vitest": "^1.6.0"
   }
 }
