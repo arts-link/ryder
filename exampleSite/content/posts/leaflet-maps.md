@@ -5,7 +5,13 @@ homeFeatureIcon = "fa-solid fa-map-location-dot"
 categories = ["maps"]
 tags = ["sample","test","maps"]
 hideAsideBar = true
-# draft = true 
+# draft = true
+loadLeaflet = true
+
+[maps]
+  lat = 39.9057
+  lon = -75.1665
+
 [menu]
  [menu.main]
   weight = 2
@@ -14,10 +20,7 @@ hideAsideBar = true
 
 ## Maps on a Hugo website made easy!
 
-{{< lat-long-box 
-  latitude="39.9057" 
-  longitude="-75.1665"
->}}
+{{< lat-long-box >}}
 
 Adding a map to your hugo website becomes easy with the `leaflet` shortcode. You can add a box to display the lat and long as well through the use of the `lat-long-box` shortcode.
 
