@@ -21,7 +21,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
-    "alpinejs": "^3.13.7",
+    "@alpinejs/csp": "^3.13.7",
     "leaflet": "^1.9.4"
   }
 }

@@ -66,8 +66,78 @@ library.add(
 // This will automatically find any <i> tags with the 'fa' class and convert them into <svg> elements
 dom.watch()
 
-import Alpine from 'alpinejs';
+import Alpine from '@alpinejs/csp';
 import focus from '@alpinejs/focus';
+
+// Register the alert dismissal component (uses document.cookie — must live
+// here rather than in an inline x-data expression so the CSP is not violated)
+Alpine.data('alertDismissible', () => ({
+  isOpen: document.cookie.indexOf('alertClosed=true') === -1,
+  dismiss() {
+    this.isOpen = false;
+    document.cookie = 'alertClosed=true; path=/;';
+  },
+}));
+
+// Register the image-gallery component (methods use setTimeout / $refs /
+// DOM queries — too complex for the CSP-safe expression evaluator)
+Alpine.data('imageGallery', () => ({
+  imageGalleryOpened: false,
+  imageGalleryActiveUrl: null,
+  imageGalleryImageIndex: null,
+  imageGallery: [],
+  init() {
+    try {
+      this.imageGallery = JSON.parse(this.$el.dataset.gallery || '[]');
+    } catch (e) {
+      console.error('Error parsing gallery data:', e);
+    }
+  },
+  imageGalleryOpen(event) {
+    this.imageGalleryImageIndex = event.target.dataset.index;
+    this.imageGalleryActiveUrl = event.target.src;
+    this.imageGalleryOpened = true;
+  },
+  imageGalleryClose() {
+    this.imageGalleryOpened = false;
+    setTimeout(() => { this.imageGalleryActiveUrl = null; }, 300);
+  },
+  imageGalleryNext() {
+    if (this.imageGalleryImageIndex < this.imageGallery.length) {
+      this.imageGalleryImageIndex = parseInt(this.imageGalleryImageIndex) + 1;
+      const img = this.$refs.gallery.querySelector('[data-index=\'' + this.imageGalleryImageIndex + '\']');
+      if (img) this.imageGalleryActiveUrl = img.src;
+    }
+  },
+  imageGalleryPrev() {
+    if (this.imageGalleryImageIndex > 1) {
+      this.imageGalleryImageIndex = parseInt(this.imageGalleryImageIndex) - 1;
+      const img = this.$refs.gallery.querySelector('[data-index=\'' + this.imageGalleryImageIndex + '\']');
+      if (img) this.imageGalleryActiveUrl = img.src;
+    }
+  },
+}));
+
+// Register the affiliate-link-builder component (default tag injected by Hugo
+// via a data attribute so the shortcode needs no inline <script> tag)
+Alpine.data('affiliateLinkBuilder', () => ({
+  asin: '',
+  affiliateTag: '',
+  affiliateLink: '',
+  init() {
+    this.affiliateTag = this.$el.dataset.defaultTag || '';
+  },
+  isValidAsin(asin) {
+    const asinRegex = /^[A-Z0-9]{10}$/;
+    return asinRegex.test(asin);
+  },
+  validateAsin() {
+    this.asin = this.asin.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
+  },
+  generateAffiliateLink() {
+    this.affiliateLink = `View ASIN <a class="bg-yellow-400 text-black font-medium py-2 mt-4 px-4 rounded-full border-2 border-yellow-500 hover:bg-yellow-500 hover:border-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 no-underline inline-block text-center break-words" href="https://www.amazon.com/dp/${this.asin}/ref=nosim?tag=${this.affiliateTag}">${this.asin || 'Buy Now'}</a> on Amazon.com`;
+  },
+}));
 
 // This is optional but gives access to Alpine in devtools
 Alpine.plugin(focus);
