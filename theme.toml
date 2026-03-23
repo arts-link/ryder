@@ -1,5 +1,5 @@
 name = 'ryder'
-version = 'v0.0.5-alpha'
+version = 'v0.1.0'
 license = 'MIT'
 licenselink = 'https://github.com/arts-link/ryder/LICENSE'
 description = 'Just a basic theme I created to learn about theme development and add some shortcodes and partials I was using often.'
@@ -8,7 +8,7 @@ description = 'Just a basic theme I created to learn about theme development and
 homepage = 'https://github.com/arts-link/ryder'
 
 # If you have a running demo of the theme
-# demosite = 'https://owner.github.io/repo'
+demosite = 'https://arts-link.github.io/ryder'
 
 # Taxonomy terms
 tags = ['blog', 'company']

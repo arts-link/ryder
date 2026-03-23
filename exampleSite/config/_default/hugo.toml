@@ -1,5 +1,5 @@
-# !!! exampleSite only, set this to your own site URL
-baseURL= "https://arts-link.github.io/ryder"
+# !!! exampleSite only — CI overrides this via --baseURL flag for GitHub Pages
+baseURL = "https://example.org/"
 languageCode= "en-us"
 title= "The Ryder Theme"
 theme= ["ryder"]
