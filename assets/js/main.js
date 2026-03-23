@@ -20,11 +20,8 @@ if (loadLeaflet) {
       // Make Leaflet accessible globally
       window.L = L;
 
-      // You can now use L here, or call another function that requires Leaflet
-      // console.log('Leaflet has been loaded:', L);
-
-      // Optionally, call your function that needs Leaflet here
-      // initMap(); // Assuming initMap is your function to initialize the map
+      // Notify any map shortcodes that Leaflet is ready
+      window.dispatchEvent(new CustomEvent('leaflet-loaded'));
   }).catch(error => {
       console.error('Error loading Leaflet:', error);
   });
