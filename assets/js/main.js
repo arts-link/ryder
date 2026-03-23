@@ -15,6 +15,18 @@ Alpine.plugin(focus);
 window.Alpine = Alpine;
 Alpine.start();
 
+const themeConfigEl = document.getElementById('theme-config');
+let themeConfig = {};
+if (themeConfigEl) {
+  try {
+    themeConfig = JSON.parse(themeConfigEl.textContent);
+  } catch (e) {
+    console.error('Error parsing theme-config:', e);
+  }
+}
+const loadLeaflet = themeConfig.loadLeaflet || false;
+const showDarkToggle = themeConfig.showDarkToggle || false;
+
 if (loadLeaflet) {
   import('leaflet').then(L => {
       // Make Leaflet accessible globally
