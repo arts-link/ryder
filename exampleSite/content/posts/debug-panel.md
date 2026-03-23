@@ -13,7 +13,7 @@ tags = ["sample","test","debug","hugo"]
   parent = 'posts'
 +++
 
-I made a wrapper around this debug-hugo partial from {{< cta-button button_label="kaushalmodi" button_href="https://github.com/kaushalmodi/hugo-debugprint/blob/master/layouts/partials/debugprint.html" >}}
+I made a wrapper around this debug-hugo partial from {{< cta-button button_label="View source on GitHub" button_href="https://github.com/kaushalmodi/hugo-debugprint/blob/master/layouts/partials/debugprint.html" >}}
 
 To turn it on, set `enabledebugpanel = true` in front matter or add the same variable to the site params in `hugo.toml`.
 
