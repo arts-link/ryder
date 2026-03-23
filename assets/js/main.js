@@ -90,6 +90,14 @@ if (loadLeaflet) {
       // Make Leaflet accessible globally
       window.L = L;
 
+      // Configure default marker icons with fingerprinted (cache-busted) URLs
+      if (themeConfig.leafletMarkerIconUrl) {
+        L.Icon.Default.mergeOptions({
+          iconUrl: themeConfig.leafletMarkerIconUrl,
+          iconRetinaUrl: themeConfig.leafletMarkerIconRetinaUrl,
+          shadowUrl: themeConfig.leafletMarkerShadowUrl,
+        });
+      }
       // Notify any map shortcodes that Leaflet is ready
       window.dispatchEvent(new CustomEvent('leaflet-loaded'));
   }).catch(error => {
