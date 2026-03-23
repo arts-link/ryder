@@ -2,7 +2,7 @@
 {{- with site.Params.amazonAffiliateTags -}}
   {{- $tags = . -}}
 {{- end -}}
-<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full" x-data="affiliateLinkBuilder()">
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full" x-data="affiliateLinkBuilder" data-default-tag="{{ index $tags 0 | default "" }}">
   <form>
     <div class="-mx-3 mb-6">
       <div class="w-full px-3">
@@ -33,26 +33,3 @@
   </form>
   <div class="text-gray-700" id="affiliate-link" x-html="affiliateLink || 'Enter an ASIN and click Generate Link to get started'"></div>
 </div>
-
-<script>
-  document.addEventListener('alpine:init', () => {
-    Alpine.data('affiliateLinkBuilder', () => ({
-      asin: '',
-      affiliateTag: '{{ index $tags 0 | default "" }}',
-      affiliateLink: '',
-
-      isValidAsin(asin) {
-        const asinRegex = /^[A-Z0-9]{10}$/;
-        return asinRegex.test(asin);
-      },
-
-      validateAsin() {
-        this.asin = this.asin.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
-      },
-
-      generateAffiliateLink() {
-        this.affiliateLink = `View ASIN <a class="bg-yellow-400 text-black font-medium py-2 mt-4 px-4 rounded-full border-2 border-yellow-500 hover:bg-yellow-500 hover:border-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 no-underline inline-block text-center break-words" href="https://www.amazon.com/dp/${this.asin}/ref=nosim?tag=${this.affiliateTag}">${this.asin || 'Buy Now'}</a> on Amazon.com`;
-      }
-    }));
-  });
-</script>
