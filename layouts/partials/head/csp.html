@@ -42,7 +42,7 @@
 {{- end -}}
 
 {{- /* Google Analytics (Hugo internal template uses googletagmanager.com) */ -}}
-{{- if and hugo.IsProduction (site.GoogleAnalytics) -}}
+{{- if and hugo.IsProduction (site.Config.Services.GoogleAnalytics.ID) -}}
   {{- $scriptSrc = $scriptSrc | append "https://www.googletagmanager.com" -}}
 {{- end -}}
 
@@ -80,7 +80,7 @@
 {{- if site.Params.plausible_domain -}}
   {{- $connectSrc = $connectSrc | append "https://plausible.io" -}}
 {{- end -}}
-{{- if and hugo.IsProduction (site.GoogleAnalytics) -}}
+{{- if and hugo.IsProduction (site.Config.Services.GoogleAnalytics.ID) -}}
   {{- $connectSrc = $connectSrc | append "https://www.google-analytics.com" "https://region1.google-analytics.com" -}}
 {{- end -}}
 {{- with $cspParams.connectSrc -}}
