@@ -4,8 +4,7 @@ description = "Posts to show how that might look."
 date = "2024-01-24"
 author = "Hugo Authors"
 enableComments = false
-listCardType = "-super-simple" # "-fun" or "-custom" to make your own
-# headerType = "-fun" 
+# headerType = "-fun"
 [cascade]
   # showCardLinkOverlay = false
   homeFeatureIcon = "fa-solid fa-signs-post"
@@ -14,6 +13,7 @@ listCardType = "-super-simple" # "-fun" or "-custom" to make your own
 [menu]
  [menu.main]
   weight = 32
+  name = 'Documentation'
   identifier = 'posts'
 +++
 

@@ -41,7 +41,9 @@ Renders a menu for the given menu ID.
       {{- end }}
     {{- end }}
     <li class="">
-      {{- if .Children }}<div class="child-nav-container relative group/sub-n">{{- end }}
+      {{- if .Children }}
+      <div x-data="subMenu" class="child-nav-container relative" @mouseenter="open = true" @mouseleave="open = false" @click.away="open = false">
+      {{- end }}
       <a
         {{- range $k, $v := $attrs }}
           {{- with $v }}
@@ -50,8 +52,10 @@ Renders a menu for the given menu ID.
         {{- end -}}
       >{{ $name }}</a>
       {{- with .Children }}
-        <i class="child-nav-icon fa-solid fa-angle-down"></i>
-        <div class="child-ul-container group-hover/sub-n:block z-10">
+        <button type="button" class="child-nav-icon" @click.stop="toggle()" :aria-expanded="open.toString()">
+          <i class="fa-solid fa-angle-down transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+        </button>
+        <div class="child-ul-container" x-show="open" x-transition style="display:none" @click.stop>
           <ul class="main-menu-child-ul">
             {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
           </ul>

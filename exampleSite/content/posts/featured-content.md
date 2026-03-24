@@ -6,7 +6,10 @@ homeFeature = true
 homeFeatureTitle = "Featured Content"
 homeFeatureIcon = "fa-solid fa-om"
 Weight = 9999
-# draft = true
+[menu]
+ [menu.main]
+  weight = 20
+  parent = 'posts'
 +++
 ## Lead with a wide feature
 

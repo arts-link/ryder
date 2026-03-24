@@ -121,7 +121,7 @@
             "@type": "ListItem",
             "position": {{ $counter }},
             "name": {{ $e }},
-            "item": "https://benstrawbridge.com/categories/{{ $e | urlize }}"
+            "item": "{{ .Site.BaseURL }}categories/{{ $e | urlize }}"
         },
         {{ end }}
         {

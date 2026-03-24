@@ -11,6 +11,10 @@ tags = [
 ]
 homeFeature = true
 homeFeatureIcon = "fa-solid fa-bowl-food"
+[menu]
+ [menu.main]
+  weight = 150
+  parent = 'posts'
 featured_image = "granola_fini_lemon_chia_seed.webp"
 
 recipe = true

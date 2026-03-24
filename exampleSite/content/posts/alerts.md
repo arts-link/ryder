@@ -1,7 +1,6 @@
 +++
 title = 'Alerts'
 date = 2024-01-26T12:55:50-08:00
-# draft = true
 homeFeature = true
 homeFeatureTitle = "Alert boxes"
 homeFeatureIcon = "fa-solid fa-dungeon"
@@ -9,7 +8,7 @@ tags = ["sample","test","alerts","banners"]
 
 [menu]
  [menu.main]
-  weight = 1
+  weight = 50
   parent = 'posts'
 
 +++
@@ -43,7 +42,7 @@ This is setup in your `hugo.toml` configuration file. Multiple banners will be d
 
 For `alertIconClass` any [fontawesome-free icon class](https://fontawesome.com/search?o=r&m=free) will work.
 
-__**TODO**__:: Make dismissable sticky with a cookie or local storage.
+
 ## From the content directory, called as a shortcode.
 
 All of the params are optional, but if neither alertTitle or alertMessage are passed they will not render. The `alertIconClass` must be a valid [fontawesome icon class](https://fontawesome.com/search?o=r&m=free).
@@ -59,35 +58,41 @@ All of the params are optional, but if neither alertTitle or alertMessage are pa
 ```
 
 ## Alert shortcode examples:
-  
-### Info: 
 
-Uses `fa-solid fa-snowflake`. This one is dismissable.
+### Info
 
-{{< alert-wrapper alertType="info" alertTitle="will" alertMessage="robinson <a href='#info'>test</a>" alertIconClass="fa-solid fa-snowflake" dismissable="true">}}  
+{{< alert-wrapper alertType="info" alertTitle="New feature available" alertMessage="Dark mode is now supported. Toggle it using the sun/moon icon in the header." alertIconClass="fa-solid fa-snowflake" >}}
 
-### Success: 
+### Success
 
-Uses `fa-solid fa-bicycle`.
+{{< alert-wrapper alertType="success" alertTitle="Configuration saved" alertMessage="Your changes have been applied and will take effect on the next build." alertIconClass="fa-solid fa-bicycle" >}}
 
-{{< alert-wrapper alertType="success" alertTitle="will" alertMessage="robinson" alertIconClass="fa-solid fa-bicycle" >}}  
+### Warning
 
-### Warning: 
+{{< alert-wrapper alertType="warning" alertTitle="Heads up" alertMessage="This page uses the Leaflet shortcode which requires loadLeaflet = true in your front matter." alertIconClass="fa-solid fa-bath" >}}
 
-Uses `fa-solid fa-bath`.
+### Danger
 
-{{< alert-wrapper alertType="warning" alertTitle="will" alertMessage="robinson" alertIconClass="fa-solid fa-bath" >}}  
+{{< alert-wrapper alertType="danger" alertTitle="Breaking change" alertMessage="The headerGradientClasses param has been replaced by twClasses.headerBackgroundFrameOuter. Update your config before upgrading." alertIconClass="fa-solid fa-dumpster-fire" >}}
 
-### Danger: 
+### Default (no type)
 
-Uses `fa-solid fa-dumpster-fire`.
+No `alertType` passed — renders with a neutral gray style. No `alertIconClass` either, so the default icon is used.
 
-{{< alert-wrapper alertType="danger" alertTitle="will" alertMessage="robinson"  alertIconClass="fa-solid fa-dumpster-fire" >}}
+{{< alert-wrapper alertTitle="Just so you know" alertMessage="This is a neutral alert with no type specified." >}}
 
-### Neutral: 
+## Dismissable alerts
 
-Does not pass `alertIconClass`, defaults to info icon.
-Does not pass `alertType`, defaults to gray.
+Add `dismissable="true"` to any alert to show a close button. The user can dismiss it and it will not reappear.
 
-{{< alert-wrapper alertTitle="will" alertMessage="robinson" >}}
+{{< highlight go-html-template >}}
+{{</* alert-wrapper
+  alertType="success"
+  alertTitle="All set"
+  alertMessage="You can dismiss this alert with the X button."
+  dismissable="true"
+*/>}}
+{{< /highlight >}}
+
+{{< alert-wrapper alertType="success" alertTitle="All set" alertMessage="You can dismiss this alert with the X button." dismissable="true" >}}
 

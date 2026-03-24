@@ -21,7 +21,7 @@ By default it will have a background gradient in cayan.
     <div class="mr-auto relative">
         {{- partial "logo.html" . -}}
     </div>
-    <div class="ml-auto flex relative " x-data="{ openMenu : false }"  @click.away="openMenu = false">
+    <div class="ml-auto flex relative " x-data="mobileMenu"  @click.away="openMenu = false">
         <!-- navbar toggler -->
         {{/*  <input id="nav-toggle" type="checkbox" class="hidden" />  */}}
         <button

@@ -47,10 +47,6 @@
       {
         "@type": "HowToStep",
         "name": "{{ $instruction.name }}",
-        {{/*  this is not working
-          TODO :: figure out how to reuse images with overlay
-          needs more thought right now...
-          */}}
         {{- if $instruction.featured }}"image": "{{ $instruction.featured.Permalink }}",{{ end }}
         "text": "{{ $instruction.text }}",
         "url": "{{ $link }}#{{ $instruction.name }}"

@@ -9,10 +9,6 @@
   {{- $cssFiles = $cssFiles | append $leaflet }}
 {{- end }}
 
-{{- if eq hugo.Environment "development" }}
-  {{- $debug := resources.Get "css/debugprint.css" }}
-  {{- $cssFiles = $cssFiles | append $debug }}
-{{- end }}
 
 {{- $mergedCss := $cssFiles | resources.Concat "css/busta-main.css" | css.PostCSS (dict "inlineImports" true) }}
 
