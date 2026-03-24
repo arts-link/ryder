@@ -52,8 +52,10 @@ https://www.youtube.com/watch?v=VLvVNMbQIRY
 ## Vimeo
 
 {{< highlight go-html-template >}}
-{{</* vimeo_simple 48912912 */>}}
+{{</* vimeo 48912912 */>}}
 {{< /highlight >}}
+
+{{< vimeo 48912912 >}}
 
 ---
 
@@ -91,5 +93,5 @@ Use the `soundcloud` shortcode with an API resource URL. To find a track's API U
 ## Twitter / X
 
 {{< highlight go-html-template >}}
-{{</* twitter id="1085870671291310081" user="DesignReviewed" */>}}
+{{</* x user="DesignReviewed" id="1085870671291310081" */>}}
 {{< /highlight >}}
