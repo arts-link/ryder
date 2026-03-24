@@ -9,17 +9,21 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Release version tag (e.g., v0.0.3-alpha)'
+        description: 'Release version tag (e.g., v0.1.0)'
         required: true
-        default: 'v0.0.3-alpha'
+        default: 'v0.1.0'
       prerelease:
         description: 'Mark as pre-release'
         required: false
-        default: 'true'
+        default: 'false'
         type: choice
         options:
-          - 'true'
           - 'false'
+          - 'true'
+      body:
+        description: 'Release notes (optional — leave blank for auto-generated)'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -69,5 +73,6 @@ jobs:
         with:
           tag_name: ${{ steps.version.outputs.tag }}
           name: ${{ steps.version.outputs.tag }}
-          generate_release_notes: true
+          body: ${{ github.event.inputs.body }}
+          generate_release_notes: ${{ github.event.inputs.body == '' }}
           prerelease: ${{ steps.version.outputs.prerelease == 'true' }}
