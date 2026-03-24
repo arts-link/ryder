@@ -127,9 +127,9 @@
       @apply cursor-pointer;
     }
     .child-ul-container {
-      @apply absolute top-full right-0 z-20;
-      @apply min-w-44 max-w-64;
-      @apply shadow-lg mt-0;
+      @apply z-20;
+      @apply shadow-lg;
+      @apply md:absolute md:top-full md:right-0 md:min-w-44 md:max-w-64;
     }
     .main-menu-ul > li > a,
     .main-menu-child-ul > li > a {
