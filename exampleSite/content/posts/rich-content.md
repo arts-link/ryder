@@ -55,8 +55,6 @@ https://www.youtube.com/watch?v=VLvVNMbQIRY
 {{</* vimeo_simple 48912912 */>}}
 {{< /highlight >}}
 
-{{< vimeo_simple 48912912 >}}
-
 ---
 
 ## SoundCloud
@@ -95,5 +93,3 @@ Use the `soundcloud` shortcode with an API resource URL. To find a track's API U
 {{< highlight go-html-template >}}
 {{</* twitter id="1085870671291310081" user="DesignReviewed" */>}}
 {{< /highlight >}}
-
-{{< twitter id="1085870671291310081" user="DesignReviewed" >}}
