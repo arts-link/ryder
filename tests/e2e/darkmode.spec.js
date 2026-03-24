@@ -6,9 +6,9 @@ test('dark mode toggle buttons are present on the page', async ({ page }) => {
   await page.goto(`${BASE}/docs/`)
   const themeSwitcher = page.locator('#themeSwitcher')
   await expect(themeSwitcher).toBeVisible()
-  await expect(themeSwitcher.getByRole('button', { name: /dark theme/i })).toBeAttached()
-  await expect(themeSwitcher.getByRole('button', { name: /light theme/i })).toBeAttached()
-  await expect(themeSwitcher.getByRole('button', { name: /system theme/i })).toBeAttached()
+  await expect(themeSwitcher.locator('#lightMode')).toBeAttached()
+  await expect(themeSwitcher.locator('#darkMode')).toBeAttached()
+  await expect(themeSwitcher.locator('#systemMode')).toBeAttached()
 })
 
 test('clicking system button cycles to light mode', async ({ page }) => {
