@@ -1,7 +1,7 @@
 +++
 title = "Media Embeds"
 date = "2024-06-01T10:00:00-07:00"
-description = "Embed YouTube, Vimeo, SoundCloud, and Twitter using built-in and theme shortcodes"
+description = "Embed YouTube, Vimeo, and SoundCloud using built-in and theme shortcodes"
 homeFeatureIcon = "fa-solid fa-music"
 categories = ["home-page"]
 tags = ["shortcodes", "video", "embeds"]
@@ -13,7 +13,7 @@ hideAsideBar = true
   parent = 'posts'
 +++
 
-Embed YouTube, Vimeo, SoundCloud, and Twitter with shortcodes. Video and iframe embeds require one CSP config line — SoundCloud loads via Hugo's asset pipeline and needs no extra config.
+Embed YouTube, Vimeo, and SoundCloud with shortcodes. Video and iframe embeds require one CSP config line — SoundCloud loads via Hugo's asset pipeline and needs no extra config.
 
 <!--more-->
 
@@ -88,10 +88,3 @@ Use the `soundcloud` shortcode with an API resource URL. To find a track's API U
   show_user="false"
 >}}
 
----
-
-## Twitter / X
-
-{{< highlight go-html-template >}}
-{{</* x user="DesignReviewed" id="1085870671291310081" */>}}
-{{< /highlight >}}
