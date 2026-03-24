@@ -2,7 +2,8 @@ name = 'ryder'
 version = 'v0.1.0'
 license = 'MIT'
 licenselink = 'https://github.com/arts-link/ryder/LICENSE'
-description = 'Just a basic theme I created to learn about theme development and add some shortcodes and partials I was using often.'
+description = 'A fast, accessible Hugo theme built with TailwindCSS and Alpine.js. Ships with dark mode, responsive navigation with dropdowns, OpenGraph image generation, Leaflet maps, photo galleries, recipe schema, share buttons, customizable headers/footers, and a Content Security Policy meta tag. Built for blogs, portfolios, and small business sites — easily extended without modifying theme files.'
+min_version = '0.146.0'
 
 # The home page of the theme, where the source can be found
 homepage = 'https://github.com/arts-link/ryder'
@@ -11,8 +12,7 @@ homepage = 'https://github.com/arts-link/ryder'
 demosite = 'https://arts-link.github.io/ryder'
 
 # Taxonomy terms
-tags = ['blog', 'company']
-# features = ['some', 'awesome', 'features']
+tags = ['blog', 'portfolio', 'responsive', 'dark-mode', 'tailwindcss', 'alpinejs']
 
 # If the theme has multiple authors
 # authors = [
