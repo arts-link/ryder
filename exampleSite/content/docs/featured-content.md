@@ -9,7 +9,7 @@ Weight = 9999
 [menu]
  [menu.main]
   weight = 20
-  parent = 'posts'
+  parent = 'docs'
 +++
 ## Lead with a wide feature
 

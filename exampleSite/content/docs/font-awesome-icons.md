@@ -6,7 +6,7 @@ tags = ["hugo","icons","font-awesome"]
 [menu]
  [menu.main]
   weight = 70
-  parent = 'posts'
+  parent = 'docs'
 +++
 
 ## How icons work in this theme

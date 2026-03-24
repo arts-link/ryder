@@ -9,7 +9,7 @@ tags = ["sample","test","alerts","banners"]
 [menu]
  [menu.main]
   weight = 50
-  parent = 'posts'
+  parent = 'docs'
 
 +++
 
@@ -95,4 +95,3 @@ Add `dismissable="true"` to any alert to show a close button. The user can dismi
 {{< /highlight >}}
 
 {{< alert-wrapper alertType="success" alertTitle="All set" alertMessage="You can dismiss this alert with the X button." dismissable="true" >}}
-

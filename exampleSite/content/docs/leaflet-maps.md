@@ -14,7 +14,7 @@ loadLeaflet = true
 [menu]
  [menu.main]
   weight = 90
-  parent = 'posts'
+  parent = 'docs'
 +++
 
 ## Maps on a Hugo website made easy!

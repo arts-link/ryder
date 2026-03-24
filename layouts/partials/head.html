@@ -1,15 +1,17 @@
   <!-- The primary content of the <head> tag -->
-  {{- partial "head/csp.html" . }}
   <meta charset="utf-8" />
   <!-- Dark mode: apply class immediately to prevent flash of light content -->
-  <script>
-    (function() {
-      var t = localStorage.theme;
-      if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-      }
-    })();
-  </script>
+  {{- with resources.Get "js/themeBoot.js" }}
+    {{- if eq hugo.Environment "development" }}
+      {{- with . | js.Build }}
+  <script src="{{ .RelPermalink }}"></script>
+      {{- end }}
+    {{- else }}
+      {{- with . | js.Build | fingerprint }}
+  <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+      {{- end }}
+    {{- end }}
+  {{- end }}
   <meta name="viewport" content="width=device-width" />
   <link rel="canonical" href="{{ .Permalink }}" />
   {{- partialCached "head/favicon.html" . }}
@@ -18,10 +20,11 @@
   {{ hugo.Generator }}
   {{- if hugo.IsProduction | or (eq site.Params.env "production") | and (ne .Params.robotsNoIndex true) }}
   <meta name="robots" content="index, follow">
-  {{- else }}
+{{- else }}
   <meta name="robots" content="noindex, nofollow">
 {{- end }}
 {{- partial "common-partials/head-seo.html" . }}
+  {{- partial "head/csp.html" . }}
 {{- partialCached "head/fonts.html" . }}
 {{- partial "head/css.html" . }}
 {{- partial "head/js.html" . }}

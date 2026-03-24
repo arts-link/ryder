@@ -10,7 +10,7 @@ hideAsideBar = true
 [menu]
  [menu.main]
   weight = 100
-  parent = 'posts'
+  parent = 'docs'
 +++
 
 Embed YouTube, Vimeo, and SoundCloud with shortcodes. Video and iframe embeds require one CSP config line — SoundCloud loads via Hugo's asset pipeline and needs no extra config.
@@ -87,4 +87,3 @@ Use the `soundcloud` shortcode with an API resource URL. To find a track's API U
   url="https://api.soundcloud.com/tracks/1120047793"
   show_user="false"
 >}}
-

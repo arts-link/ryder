@@ -11,7 +11,7 @@ tags = ["sample","test","hugo"]
  [menu.main]
   weight = 120
   name = 'About Hugo'
-  parent = 'posts'
+  parent = 'docs'
 +++
 
 ## Background  

@@ -78,7 +78,7 @@ themesDir= "../../"
   [params.twClasses]
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
     headerBackgroundFrameInner = "h-[400px] bg-cover bg-[center_30%]"
-    headerBackgroundImage = "images/ryder-theme-og.jpg"
+    headerBackgroundImage = "images/hyder_theme_header.webp"
 
 [[params.alphaAlert]]
   weight = 1
@@ -106,7 +106,7 @@ themesDir= "../../"
 [[menus.main]]
     name = 'Tags'
     pageRef = '/tags'
-    parent = 'posts'
+    parent = 'docs'
     weight = 9990
 [[menus.footer]]
     name = 'File a Bug or Feature Request'
@@ -124,9 +124,6 @@ themesDir= "../../"
   [[module.mounts]]
     source = "assets"
     target = "assets"
-  [[module.mounts]]
-    source = "hugo_stats.json"
-    target = "assets/watching/hugo_stats.json"
 
 [services]
   [services.plausibleAnalytics]
@@ -134,9 +131,6 @@ themesDir= "../../"
 
 [build]
   writeStats = true
-  [[build.cachebusters]]
-    source = "assets/watching/hugo_stats\\.json"
-    target = "styles\\.css"
   [[build.cachebusters]]
     source = "(postcss|tailwind)\\.config\\.js"
     target = "css"

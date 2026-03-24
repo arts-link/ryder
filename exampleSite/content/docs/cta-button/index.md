@@ -9,7 +9,7 @@ tags = ["cta","button"]
 [menu]
  [menu.main]
   weight = 60
-  parent = 'posts'
+  parent = 'docs'
 +++
 
 ## Easily add a call to action
@@ -18,7 +18,7 @@ tags = ["cta","button"]
 
 {{< cta-button 
   button_label="CTA Buttons Take you places!"
-  button_relref="/posts/alerts"
+  button_relref="/docs/alerts"
 >}}
 
 <!--more-->
@@ -28,6 +28,6 @@ Just add this shortcode to your content page. Use `button_relref` for local to t
 {{< highlight go-html-template >}}
 {{</* cta-button 
   button_label="CTA Buttons Take you places!"
-  button_relref="/posts/alerts"
+  button_relref="/docs/alerts"
 */>}}
 {{< /highlight >}}

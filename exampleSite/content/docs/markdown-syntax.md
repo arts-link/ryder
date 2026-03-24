@@ -12,7 +12,7 @@ tags = [
  [menu.main]
   weight = 130
   name = 'Markdown'
-  parent = 'posts'
+  parent = 'docs'
 +++
 
 > Make your content stand out

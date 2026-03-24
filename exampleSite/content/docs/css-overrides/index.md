@@ -10,7 +10,7 @@ hideAsideBar = true
 [menu]
  [menu.main]
   weight = 10
-  parent = 'posts'
+  parent = 'docs'
 +++
 
 Control the header image, footer background, card colors, and border accents — all from your `hugo.toml` without touching theme files.

@@ -7,7 +7,7 @@ tags = ["sample","test","github","highlights"]
 [menu]
  [menu.main]
   weight = 110
-  parent = 'posts'
+  parent = 'docs'
 +++
 
 If you put a lot of code sample in your projects this will simplify things by using the new content-adaptors feature to display code directly from github.

@@ -121,9 +121,15 @@ Alpine.data('imageGallery', () => ({
       console.error('Error parsing gallery data:', e);
     }
   },
+  updateActiveImage(index) {
+    const imageIndex = Number(index);
+    const selectedImage = this.imageGallery[imageIndex - 1];
+    if (!selectedImage) return;
+    this.imageGalleryImageIndex = imageIndex;
+    this.imageGalleryActiveUrl = selectedImage.photo;
+  },
   imageGalleryOpen(event) {
-    this.imageGalleryImageIndex = event.target.dataset.index;
-    this.imageGalleryActiveUrl = event.target.src;
+    this.updateActiveImage(event.target.dataset.index || 1);
     this.imageGalleryOpened = true;
   },
   imageGalleryClose() {
@@ -132,16 +138,12 @@ Alpine.data('imageGallery', () => ({
   },
   imageGalleryNext() {
     if (this.imageGalleryImageIndex < this.imageGallery.length) {
-      this.imageGalleryImageIndex = parseInt(this.imageGalleryImageIndex) + 1;
-      const img = this.$refs.gallery.querySelector('[data-index=\'' + this.imageGalleryImageIndex + '\']');
-      if (img) this.imageGalleryActiveUrl = img.src;
+      this.updateActiveImage(this.imageGalleryImageIndex + 1);
     }
   },
   imageGalleryPrev() {
     if (this.imageGalleryImageIndex > 1) {
-      this.imageGalleryImageIndex = parseInt(this.imageGalleryImageIndex) - 1;
-      const img = this.$refs.gallery.querySelector('[data-index=\'' + this.imageGalleryImageIndex + '\']');
-      if (img) this.imageGalleryActiveUrl = img.src;
+      this.updateActiveImage(this.imageGalleryImageIndex - 1);
     }
   },
 }));
@@ -176,7 +178,10 @@ const themeConfigEl = document.getElementById('theme-config');
 let themeConfig = {};
 if (themeConfigEl) {
   try {
-    themeConfig = JSON.parse(themeConfigEl.textContent);
+    const rawThemeConfig = themeConfigEl.tagName === 'TEMPLATE'
+      ? themeConfigEl.innerHTML
+      : themeConfigEl.textContent;
+    themeConfig = JSON.parse((rawThemeConfig || '{}').trim());
   } catch (e) {
     console.error('Error parsing theme-config:', e);
   }

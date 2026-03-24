@@ -1,5 +1,5 @@
 {{- $loadLeaflet := .Param "loadLeaflet" | default false -}}
-<script id="theme-config" type="application/json">{
+<template id="theme-config">{
   "showDarkToggle": {{ .Param "showDarkToggle" | default false }},
   "loadLeaflet": {{ $loadLeaflet }}
   {{- if $loadLeaflet }}
@@ -7,7 +7,7 @@
   {{- with resources.Get "images/leaflet/marker-icon-2x.png" }},"leafletMarkerIconRetinaUrl": "{{ (. | fingerprint).RelPermalink }}"{{ end }}
   {{- with resources.Get "images/leaflet/marker-shadow.png" }},"leafletMarkerShadowUrl": "{{ (. | fingerprint).RelPermalink }}"{{ end }}
   {{- end }}
-}</script>
+}</template>
 
 {{- with resources.Get "js/main.js" }}
   {{- if eq hugo.Environment "development" }}

@@ -98,49 +98,60 @@
       @apply md:flex md:flex-wrap md:items-center md:gap-x-2;
       @apply w-full;
       @apply p-3;
-      @apply bg-neutral-200;
+      @apply bg-neutral-200 dark:bg-neutral-800;
       @apply rounded-lg;
     }
     .main-menu-ul > li {
       @apply border-b md:border-b-0;
-      @apply border-sky-800;
-      @apply text-sky-800;
+      @apply border-sky-800 dark:border-sky-600;
+      @apply text-sky-800 dark:text-sky-100;
     }
     .main-menu-ul li .active,
     .main-menu-ul li .ancestor  {
-      @apply text-lime-800;
+      @apply text-lime-800 dark:text-lime-300;
     }
     .main-menu-child-ul {
       @apply p-2;
-      @apply bg-neutral-100 dark:bg-neutral-700 rounded-lg;
+      @apply bg-neutral-100 dark:bg-neutral-700 rounded-lg ring-1 ring-black/5;
     }
     .main-menu-child-ul > li {
       @apply border-b border-sky-200 dark:border-sky-700;
       @apply last:border-b-0;
     }
     .child-nav-container {
-      @apply flex flex-row items-center;
+      @apply relative flex w-full flex-row items-center justify-between gap-1;
+    }
+    .child-nav-label {
+      @apply flex-1 text-left;
+    }
+    .child-nav-label-button {
+      @apply inline-flex items-center justify-between gap-1;
+      @apply w-full;
     }
     .child-nav-icon {
-      @apply ml-1 px-1 py-0.5 text-sm rounded;
+      @apply shrink-0 self-center px-1 py-0.5 text-sm rounded;
       @apply hover:bg-neutral-300 dark:hover:bg-neutral-600;
       @apply cursor-pointer;
     }
     .child-ul-container {
-      @apply z-20;
+      @apply absolute right-0 top-full z-30 mt-2;
+      @apply min-w-44 max-w-64;
       @apply shadow-lg;
-      @apply md:absolute md:top-full md:right-0 md:min-w-44 md:max-w-64;
     }
     .main-menu-ul > li > a,
+    .child-nav-label,
     .main-menu-child-ul > li > a {
       @apply transition-colors duration-150 ease-in-out rounded px-2 py-1;
       @apply inline-block w-full;
+      @apply dark:text-sky-100;
     }
     .main-menu-ul > li > a:hover,
+    .child-nav-label:hover,
     .main-menu-child-ul > li > a:hover {
-      @apply text-sky-600 bg-neutral-300 dark:bg-neutral-600;
+      @apply text-sky-600 dark:text-sky-100 bg-neutral-300 dark:bg-neutral-600;
     }
     .main-menu-ul > li > a:focus-visible,
+    .child-nav-label:focus-visible,
     .main-menu-child-ul > li > a:focus-visible {
       @apply outline-2 outline-offset-2 outline-sky-500;
     }

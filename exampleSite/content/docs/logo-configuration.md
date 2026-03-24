@@ -6,7 +6,7 @@ tags = ["hugo","logo","configuration"]
 [menu]
  [menu.main]
   weight = 75
-  parent = 'posts'
+  parent = 'docs'
 +++
 
 The Ryder theme supports two logo styles: a **text mark** (the default) and a **custom image**. Both are configured entirely in `hugo.toml` — no template edits required.

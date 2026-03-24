@@ -9,7 +9,7 @@ tags = [
 [menu]
  [menu.main]
   weight = 140
-  parent = 'posts'
+  parent = 'docs'
 
 +++
 

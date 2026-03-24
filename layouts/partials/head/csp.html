@@ -30,6 +30,9 @@
 
 {{- /* ── script-src ─────────────────────────────────────────────────────── */ -}}
 {{- $scriptSrc := slice "'self'" -}}
+{{- if not hugo.IsProduction -}}
+  {{- $scriptSrc = $scriptSrc | append "'unsafe-inline'" "http://localhost:*" "http://127.0.0.1:*" -}}
+{{- end -}}
 
 {{- /* Plausible Analytics */ -}}
 {{- if site.Params.plausible_domain -}}
@@ -87,6 +90,9 @@
 
 {{- /* ── connect-src ───────────────────────────────────────────────────── */ -}}
 {{- $connectSrc := slice "'self'" -}}
+{{- if not hugo.IsProduction -}}
+  {{- $connectSrc = $connectSrc | append "ws://localhost:*" "ws://127.0.0.1:*" "http://localhost:*" "http://127.0.0.1:*" -}}
+{{- end -}}
 {{- if site.Params.plausible_domain -}}
   {{- $connectSrc = $connectSrc | append "https://plausible.io" -}}
 {{- end -}}

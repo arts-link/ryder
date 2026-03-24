@@ -14,7 +14,7 @@ homeFeatureIcon = "fa-solid fa-house"
 [menu]
  [menu.main]
   weight = 30
-  parent = 'posts'
+  parent = 'docs'
 +++
 
 ## Limit your home page feed by Section, Category or Tag

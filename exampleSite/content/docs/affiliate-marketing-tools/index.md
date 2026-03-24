@@ -9,7 +9,7 @@ hideAsideBar = true
 [menu]
  [menu.main]
   weight = 80
-  parent = 'posts'
+  parent = 'docs'
 +++
 
 Two shortcodes for Amazon affiliate links: a single-product buy button and an interactive ASIN link builder.

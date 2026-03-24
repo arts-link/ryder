@@ -8,7 +8,7 @@ tags = [
  [menu.main]
   weight = 40
   name = 'Create a Menu'
-  parent = 'posts'
+  parent = 'docs'
 +++
 
 ## This is one way to add a menu
@@ -17,23 +17,45 @@ I modified the default menu.html partial sample code from the hugo docs to use t
 
 <!--more-->
 
-I use front matter to create the simple menu here.
+## Parent-item trigger modes
 
-```md peaceful.md
+Parent menu items with children support two trigger modes:
+
+- `caret` is the default. The menu label stays a normal link, and only the caret button opens the submenu.
+- `button` turns the full parent row into the submenu trigger. In that mode the parent item does not link to its landing page.
+
+Use a menu param to choose the behavior:
+
+```toml
 +++
 [menu]
  [menu.main]
-  identifier = 'peaceful'
+  identifier = "docs"
+  name = "Docs"
+  [menu.main.params]
+    submenuTrigger = "button"
++++
+```
+
+If you omit `submenuTrigger`, Ryder uses `caret`.
+
+I use front matter to create the simple menu here.
+
+```md maintenance-page.md
++++
+[menu]
+ [menu.main]
+  identifier = 'maintenance-page'
   weight = 22
 +++
 ```
 
 Then a child menu of that would use that identifier. On a page that will be in the main menu sub-nav. This system is not well suited to go beyond 1 level of depth, it works but becomes very unweildy in the actual nav.
 
-```md randomly-peaceful.md
+```md maintenance-status.md
 [menu]
  [menu.main]
-  parent = 'peaceful'
+  parent = 'maintenance-page'
   weight = 22
   name = 'random peace'
 ```
