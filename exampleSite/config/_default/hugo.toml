@@ -61,7 +61,7 @@ themesDir= "../../"
     # extraDirectives = "worker-src 'none';"      # append any additional directives
 
   [params.shareButtons]
-    networks = [ "twitter", "email", "reddit", "facebook" ]
+    networks = [ "x", "email", "reddit", "facebook" ]
     # size = "small" # small, medium, large
     # icon = "solid" # normal, solid, circle, solidcircle
     # buttonMargin = "0.2em" 

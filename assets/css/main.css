@@ -52,8 +52,8 @@
 
   .resp-sharing-button--disqus { background-color: #004C54; border-color: #004C54; }
   .resp-sharing-button--disqus:hover, .resp-sharing-button--disqus:active { background-color: #006c78; border-color: #006c78; }
-  .resp-sharing-button--twitter { background-color: #333; border-color: #333; }
-  .resp-sharing-button--twitter:hover, .resp-sharing-button--twitter:active { background-color: #000; border-color: #000; }
+  .resp-sharing-button--x { background-color: #333; border-color: #333; }
+  .resp-sharing-button--x:hover, .resp-sharing-button--x:active { background-color: #000; border-color: #000; }
   .resp-sharing-button--pinterest { background-color: #bd081c; border-color: #bd081c; }
   .resp-sharing-button--pinterest:hover, .resp-sharing-button--pinterest:active { background-color: #8c0615; border-color: #8c0615; }
   .resp-sharing-button--facebook { background-color: #3b5998; border-color: #3b5998; }
