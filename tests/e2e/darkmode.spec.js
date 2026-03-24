@@ -3,14 +3,16 @@ import { test, expect } from '@playwright/test'
 const BASE = '/ryder'
 
 test('dark mode toggle buttons are present on the page', async ({ page }) => {
-  await page.goto(`${BASE}/`)
-  await expect(page.getByRole('button', { name: /dark theme/i })).toBeAttached()
-  await expect(page.getByRole('button', { name: /light theme/i })).toBeAttached()
-  await expect(page.getByRole('button', { name: /system theme/i })).toBeAttached()
+  await page.goto(`${BASE}/docs/`)
+  const themeSwitcher = page.locator('#themeSwitcher')
+  await expect(themeSwitcher).toBeVisible()
+  await expect(themeSwitcher.getByRole('button', { name: /dark theme/i })).toBeAttached()
+  await expect(themeSwitcher.getByRole('button', { name: /light theme/i })).toBeAttached()
+  await expect(themeSwitcher.getByRole('button', { name: /system theme/i })).toBeAttached()
 })
 
 test('clicking system button cycles to light mode', async ({ page }) => {
-  await page.goto(`${BASE}/`)
+  await page.goto(`${BASE}/docs/`)
   // Default is system mode — the system button (#systemMode) is visible
   await page.getByRole('button', { name: /light theme/i }).click()
   const html = page.locator('html')
@@ -18,7 +20,7 @@ test('clicking system button cycles to light mode', async ({ page }) => {
 })
 
 test('clicking light button cycles to dark mode', async ({ page }) => {
-  await page.goto(`${BASE}/`)
+  await page.goto(`${BASE}/docs/`)
   // Get into light mode first
   await page.getByRole('button', { name: /light theme/i }).click()
   // Now click the light (sun) button to go dark
@@ -27,7 +29,7 @@ test('clicking light button cycles to dark mode', async ({ page }) => {
 })
 
 test('dark mode preference persists across page reload', async ({ page }) => {
-  await page.goto(`${BASE}/`)
+  await page.goto(`${BASE}/docs/`)
   // Cycle to light then to dark
   await page.getByRole('button', { name: /light theme/i }).click()
   await page.getByRole('button', { name: /dark theme/i }).click()
@@ -45,6 +47,6 @@ test('dismissable alert can be closed', async ({ page }) => {
   const alert = page.locator('[role="alert"]').first()
   await expect(alert).toBeVisible()
 
-  await page.getByRole('button', { name: /dismiss/i }).click()
+  await alert.getByRole('button', { name: /dismiss/i }).click()
   await expect(alert).not.toBeVisible()
 })

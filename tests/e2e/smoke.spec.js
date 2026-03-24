@@ -16,7 +16,8 @@ test('homepage shows featured grid', async ({ page }) => {
 
 test('docs list renders articles', async ({ page }) => {
   await page.goto(`${BASE}/docs/`)
-  await expect(page.locator('article, [class*="card"]').first()).toBeVisible()
+  await expect(page.locator('.article').first()).toBeVisible()
+  await expect(page.getByRole('link', { name: /Maintenance Page/i }).first()).toBeVisible()
 })
 
 test('single post renders body content', async ({ page }) => {
@@ -81,7 +82,8 @@ test('mobile docs submenu opens as a compact popout', async ({ page, browserName
   expect(submenuBox).not.toBeNull()
 
   expect(Math.abs(navBoxAfter.height - navBoxBefore.height)).toBeLessThan(24)
-  expect(submenuBox.width).toBeLessThan(navBoxAfter.width)
+  expect(submenuBox.x).toBeGreaterThanOrEqual(0)
+  expect(submenuBox.x + submenuBox.width).toBeLessThanOrEqual(430)
 
   await submenu.getByRole('link', { name: /Maintenance Page/i }).click()
   await expect(page).toHaveURL(/\/docs\/maintenance-page\//)
