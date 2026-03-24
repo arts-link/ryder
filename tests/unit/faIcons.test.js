@@ -150,4 +150,21 @@ describe('Font Awesome icon audit', () => {
   it('main.js imports at least one icon', () => {
     expect(importedIcons.size).toBeGreaterThan(0)
   })
+
+  it('every FA icon imported in main.js is referenced in templates/content', () => {
+    const unused = []
+    for (const camel of importedIcons) {
+      if (!usedIcons.has(camel)) {
+        unused.push(camel)
+      }
+    }
+
+    if (unused.length > 0) {
+      expect.fail(
+        `${unused.length} icon(s) imported in assets/js/main.js but NOT used anywhere:\n` +
+        unused.map(c => `  ${c}`).join('\n') + '\n' +
+        `Remove them from the import block and library.add() call in main.js.`
+      )
+    }
+  })
 })

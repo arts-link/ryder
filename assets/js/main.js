@@ -20,9 +20,7 @@ import {
   faDumpsterFire,
   faDungeon,
   faGlobe,
-  faHandPointLeft,
   faImage,
-  faHandPointRight,
   faHouse,
   faMapLocationDot,
   faMoon,
@@ -39,7 +37,6 @@ import {
   faTriangleExclamation,
   faUtensils,
   faWandMagicSparkles,
-  faWheatAwn,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -56,7 +53,6 @@ import {
   faGithub,
   faGithubAlt,
   faSpotify,
-  faYoutube,
 } from '@fortawesome/free-brands-svg-icons'
 
 library.add(
@@ -64,13 +60,13 @@ library.add(
   faAngleDown, faAnglesRight, faBars, faBath, faBicycle, faBinoculars,
   faBowlFood, faBullhorn, faCalendarDays, faCameraRetro, faCircleCheck, faCircleExclamation,
   faCircleInfo, faCode, faComputer, faDumpsterFire, faDungeon, faGlobe,
-  faHandPointLeft, faHandPointRight, faHouse, faImage, faMapLocationDot, faMoon, faMusic, faOm,
+  faHouse, faImage, faMapLocationDot, faMoon, faMusic, faOm,
   faShieldDog, faSignsPost, faSnowflake, faSun, faTags, faTimes,
-  faRss, faSeedling, faTriangleExclamation, faUtensils, faWandMagicSparkles, faWheatAwn, faXmark,
+  faRss, faSeedling, faTriangleExclamation, faUtensils, faWandMagicSparkles, faXmark,
   // regular
   farEnvelope, farHandPointLeft, farHandPointRight,
   // brands
-  faAmazon, faGithub, faGithubAlt, faSpotify, faYoutube,
+  faAmazon, faGithub, faGithubAlt, faSpotify,
 )
 // This will automatically find any <i> tags with the 'fa' class and convert them into <svg> elements
 dom.watch()
