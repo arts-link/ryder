@@ -12,9 +12,9 @@ Named after a late Rhodesian Ridgeback/Mastiff companion.
 
 ---
 
-## TLDR;
+## Quick Start
 
-If your in a hurry and like to skip the words, let's just get in and out quickly
+If you're in a hurry, here's the minimal setup:
 
 ```bash
 hugo new site <your-site>
