@@ -77,7 +77,8 @@ themesDir= "../../"
 
   [params.twClasses]
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
-    headerBackgroundFrameInner = "bg-[url('/images/ryder-theme-og.jpg')] h-[400px] bg-cover bg-[center_30%]"
+    headerBackgroundFrameInner = "h-[400px] bg-cover bg-[center_30%]"
+    headerBackgroundImage = "images/ryder-theme-og.jpg"
 
 [[params.alphaAlert]]
   weight = 1

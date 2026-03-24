@@ -16,8 +16,12 @@ By default it will have a background gradient in cayan.
 {{- with .Param "twClasses.headerBackgroundFrameInner" -}}
 {{- $headerBackgroundFrameInner = . -}}
 {{- end -}}
+{{- $headerBackgroundStyle := "" -}}
+{{- with .Param "twClasses.headerBackgroundImage" -}}
+{{- $headerBackgroundStyle = printf "background-image: url('%s')" (. | absURL) -}}
+{{- end -}}
 <header class=" w-full {{ $headerClass }}">
-<div class=" m-3 rounded-lg flex flex-row {{ $headerBackgroundFrameInner }}">
+<div class=" m-3 rounded-lg flex flex-row {{ $headerBackgroundFrameInner }}"{{ with $headerBackgroundStyle }} style="{{ . | safeCSS }}"{{ end }}>
     <div class="mr-auto relative">
         {{- partial "logo.html" . -}}
     </div>

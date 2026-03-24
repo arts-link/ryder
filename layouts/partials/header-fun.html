@@ -17,8 +17,12 @@ By default it will have a background gradient in cayan.
     {{ $headerBackgroundFrameInner = printf `%s %s` . $frameMargin }}
     {{/*  {{ printf `<tr><td class="key">%s</td><td class="type">%s</td><td class="value">` $key1 $type1 | safeHTML }}  */}}
 {{ end }}
+{{ $headerBackgroundStyle := "" }}
+{{ with .Param "twClasses.headerBackgroundImage" }}
+    {{ $headerBackgroundStyle = printf "background-image: url('%s')" (. | absURL) }}
+{{ end }}
 <header class=" w-full {{ $headerClass }}">
-    <div class=" {{ $headerBackgroundFrameInner }}">
+    <div class=" {{ $headerBackgroundFrameInner }}"{{ with $headerBackgroundStyle }} style="{{ . | safeCSS }}"{{ end }}>
         <div class="w-full h-full mx-auto flex flex-col items-end justify-end sm:justify-start"> 
             {{- partial "logo.html" . }}
         </div>
