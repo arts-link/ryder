@@ -174,6 +174,36 @@ Configured via `data/social.json` (not params):
   ID = "yourdomain.com"
 ```
 
+### Logo
+
+By default the logo renders as a two-word text mark built from `logo_firstWord` and `logo_lastWord`. If neither is set the first two words of `title` in your config are used.
+
+**Text logo**
+
+```toml
+[params]
+  logo_firstWord = "my"          # First word (sky-blue)
+  logo_lastWord  = "site"        # Second word (lime-green)
+  logo_tagline   = "FOR HUGO WEBSITES"   # Small tagline below the words
+  logo_fontClass = "font-titillium"      # Optional custom Tailwind font class
+  logo_collapse  = true          # Collapse to initials on small screens
+```
+
+**Image logo**
+
+Place your logo file anywhere under `static/` or `assets/` and point `logo_png` at it. The image is scaled to a maximum height of 4 rem; width is automatic.
+
+```toml
+[params]
+  logo_png = "/images/logo.png"  # Path relative to your site root
+```
+
+When `logo_png` is set the text words are hidden. `logo_tagline` is still shown below the image if it is also set.
+
+Steps:
+1. Copy your file (`.png`, `.svg`, `.webp`, etc.) into `static/images/` in your site.
+2. Set `logo_png = "/images/logo.png"` in `[params]` inside `config/_default/hugo.toml`.
+
 ### GitInfo (optional)
 
 Enables GitHub commit/history/blame links in the footer. Has a 40–50% build time cost on large sites — disabled by default.
