@@ -49,8 +49,9 @@ The blockquote element represents content that is quoted from another source, op
 
 #### Blockquote with attribution
 
-> Don't communicate by sharing memory, share memory by communicating.<br>
-> — <cite>Rob Pike[^1]</cite>
+> "Don't communicate by sharing memory, share memory by communicating."
+>
+> Rob Pike[^1]
 
 [^1]: The above quote is excerpted from Rob Pike's [talk](https://www.youtube.com/watch?v=PAAkCSZUG1c) during Gopherfest, November 18, 2015.
 
@@ -137,14 +138,16 @@ Tables aren't part of the core Markdown spec, but Hugo supports supports them ou
   * Milk
   * Cheese
 
-## Other Elements — abbr, sub, sup, kbd, mark
+## Raw HTML in Markdown
 
-<abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
+By default, Ryder follows Hugo's standard Goldmark behavior and does not render raw HTML embedded directly in Markdown content.
 
+If you want to show HTML examples in documentation, prefer fenced code blocks:
+
+```html
+<abbr title="Graphics Interchange Format">GIF</abbr>
 H<sub>2</sub>O
-
 X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
-
-Press <kbd><kbd>CTRL</kbd>+<kbd>ALT</kbd>+<kbd>Delete</kbd></kbd> to end the session.
-
-Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.
+<kbd>CTRL</kbd>+<kbd>ALT</kbd>+<kbd>Delete</kbd>
+<mark>salamanders</mark>
+```
