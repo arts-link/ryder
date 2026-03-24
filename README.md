@@ -8,6 +8,8 @@ Named after a late Rhodesian Ridgeback/Mastiff companion.
 
 **[Live Demo →](https://arts-link.github.io/ryder/)**
 
+> An open source project by **[Arts-Link](https://www.arts-link.com)**, maintained by **[Ben Strawbridge](https://www.benstrawbridge.com)**.
+
 ---
 
 ## TLDR;
@@ -322,6 +324,14 @@ npm run deploy-tw   # Build + minify for production
 - [writingsos.com](https://www.writingsos.com)
 
 Using Ryder? [Let us know](mailto:hello@arts-link.com?subject=ryder) to be added here.
+
+---
+
+## About
+
+Ryder is an open source project by **[Arts-Link](https://www.arts-link.com)**, a small creative studio building tools and sites for writers, artists, and independent publishers. It is actively maintained by **[Ben Strawbridge](https://www.benstrawbridge.com)**.
+
+If Ryder is useful to you, check out [arts-link.com](https://www.arts-link.com) — and feel free to ⭐ the repo.
 
 ---
 
