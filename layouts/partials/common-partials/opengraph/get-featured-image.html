@@ -8,24 +8,40 @@
   {{ $featured = resources.Get $customImage }}
   {{ $featured = $featured.Resize "1200x" }}
 
-  {{ $size := 80 }}
-  {{ $title := .Param "ogTitleText" | default $.LinkTitle }}
-  {{ if gt (len $title) 20 }}
-    {{ $size = 70 }}
-  {{ end }}
   {{ $fontName := default "TitilliumWeb-Regular" .Site.Params.ogImageText.fontName }}
-  {{ $color := default "#085624" .Site.Params.ogImageText.fontColor }}
+  {{ $titleColor := default "#085624" .Site.Params.ogImageText.fontColor }}
+  {{ $siteColor := default "#085624" .Site.Params.ogImageText.fontColor }}
   {{ $font := (resources.Get (printf "/common-partials/opengraph/%s.ttf" $fontName)) }}
-  {{ $textX := default 15 .Site.Params.ogImageText.x }}
-  {{ $textY := default 475 .Site.Params.ogImageText.y }}
-  {{ $textOptions := dict
-    "color" $color 
-    "size" $size
+
+  {{/* ── Title text ───────────────────────────────────────────────── */}}
+  {{ $titleSize := 80 }}
+  {{ $title := .Param "ogTitleText" | default $.LinkTitle }}
+  {{ if gt (len $title) 30 }}
+    {{ $titleSize = 60 }}
+  {{ else if gt (len $title) 20 }}
+    {{ $titleSize = 70 }}
+  {{ end }}
+  {{ $textX := default 50 .Site.Params.ogImageText.x }}
+  {{ $textY := default 430 .Site.Params.ogImageText.y }}
+  {{ $titleOptions := dict
+    "color" $titleColor
+    "size" $titleSize
     "lineSpacing" 10
     "x" $textX "y" $textY
     "font" $font
   }}
-  {{ $featured = $featured | images.Filter (images.Text $title $textOptions) }}
+
+  {{/* ── Site name text (smaller, below title) ───────────────────── */}}
+  {{ $siteName := site.Title | default site.Params.title }}
+  {{ $siteNameOptions := dict
+    "color" $siteColor
+    "size" 36
+    "lineSpacing" 8
+    "x" $textX "y" (add $textY 90)
+    "font" $font
+  }}
+
+  {{ $featured = $featured | images.Filter (images.Text $title $titleOptions) (images.Text $siteName $siteNameOptions) }}
 {{ end }}
 
 {{ return $featured }}

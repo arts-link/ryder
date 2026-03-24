@@ -7,12 +7,12 @@ summaryLength = 15
 enableRobotsTXT = true
 copyright = "©️ Ryder Theme 2024"
 enableEmoji = true
-enableGitInfo = true
+# enableGitInfo = true  # adds git commit links to footer; 40-50% slower on large sites
 
 # !!! exampleSite only, you may need to delete the line: `themesDir: ../../` 
 themesDir= "../../"
 [pagination]
-  pagerSize = 8 
+  pagerSize = 20
 [params]
   # description = 'A theme for hugo'
   tocOpen = true
@@ -57,6 +57,7 @@ themesDir= "../../"
     # styleSrc  = "https://cdn.example.com"       # extra style hosts
     # fontSrc   = "https://cdn.example.com"       # extra font hosts
     # connectSrc = "https://api.example.com"      # extra connect hosts
+    frameSrc  = "https://www.youtube-nocookie.com https://www.youtube.com https://player.vimeo.com https://w.soundcloud.com"
     # extraDirectives = "worker-src 'none';"      # append any additional directives
 
   [params.shareButtons]
@@ -67,16 +68,16 @@ themesDir= "../../"
 
   [params.ogImageText]
     x = 50
-    y = 475
+    y = 430
     fontName = "TitilliumWeb-Regular"
 
   [params.author]
-    email = 'ben@benstrawbridge.com'
+    email = 'you@example.com'
     name = 'Ben Strawbridge'
 
   [params.twClasses]
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
-    headerBackgroundFrameInner = "bg-[url('/ryder/images/ryder-theme-og.jpg')] h-[300px] bg-cover bg-left"
+    headerBackgroundFrameInner = "bg-[url('/images/ryder-theme-og.jpg')] h-[400px] bg-cover bg-[center_30%]"
 
 [[params.alphaAlert]]
   weight = 1

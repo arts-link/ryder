@@ -5,7 +5,7 @@ homeFeatureIcon = "fa-solid fa-wand-magic-sparkles"
 tags = ["hugo","icons","font-awesome"]
 [menu]
  [menu.main]
-  weight = 5
+  weight = 70
   parent = 'posts'
 +++
 

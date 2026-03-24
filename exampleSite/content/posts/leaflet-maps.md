@@ -5,7 +5,6 @@ homeFeatureIcon = "fa-solid fa-map-location-dot"
 categories = ["maps"]
 tags = ["sample","test","maps"]
 hideAsideBar = true
-# draft = true
 loadLeaflet = true
 
 [maps]
@@ -14,7 +13,7 @@ loadLeaflet = true
 
 [menu]
  [menu.main]
-  weight = 2
+  weight = 90
   parent = 'posts'
 +++
 

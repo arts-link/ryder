@@ -1,7 +1,6 @@
 +++
 title = 'Home Feed Filtering and Colorization'
 date = 2024-06-10T20:41:19-07:00
-# draft = true
 # summary = ""
 # categories = [""]
 hideAsideBar = true
@@ -12,6 +11,10 @@ tags = [
 # featured_image = ""
 homeFeatureIcon = "fa-solid fa-house"
 # showTOC = true
+[menu]
+ [menu.main]
+  weight = 30
+  parent = 'posts'
 +++
 
 ## Limit your home page feed by Section, Category or Tag
@@ -45,6 +48,6 @@ For further color configuration look to the default pages you can create for cat
 
 {{< highlight go-html-temlplate >}}
 [cascade]
-  sectionTitle = "Maps on BenStrawbridge.com"
+  sectionTitle = "Maps and Destinations"
   cardCategoryColorsDefault = "bg-gradient-to-r from-red-500 to-orange-500"
 {{< /highlight >}}

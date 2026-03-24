@@ -6,10 +6,9 @@ tags = [
 ]
 [menu]
  [menu.main]
-  weight = 2
+  weight = 40
   name = 'Create a Menu'
   parent = 'posts'
-# draft = true
 +++
 
 ## This is one way to add a menu

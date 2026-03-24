@@ -9,7 +9,7 @@ tags = ["sample","test","hugo"]
 
 [menu]
  [menu.main]
-  weight = 32
+  weight = 120
   name = 'About Hugo'
   parent = 'posts'
 +++

@@ -1,13 +1,12 @@
 +++
 title = 'Highlight Github'
 date = 2024-05-21T22:55:38-07:00
-draft = true
 # homeFeatureTitle = "Alert boxes"
 homeFeatureIcon = "fa-solid fa-code"
-tags = ["sample","test","github","hightlighs"]
+tags = ["sample","test","github","highlights"]
 [menu]
  [menu.main]
-  weight = 1
+  weight = 110
   parent = 'posts'
 +++
 

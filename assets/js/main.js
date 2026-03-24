@@ -25,7 +25,10 @@ import {
   faHouse,
   faMapLocationDot,
   faMoon,
+  faMusic,
   faOm,
+  faRss,
+  faSeedling,
   faShieldDog,
   faSignsPost,
   faSnowflake,
@@ -33,6 +36,7 @@ import {
   faTags,
   faTimes,
   faTriangleExclamation,
+  faUtensils,
   faWandMagicSparkles,
   faWheatAwn,
   faXmark,
@@ -40,11 +44,15 @@ import {
 
 // Only import the regular icons used by this theme
 import {
+  faEnvelope as farEnvelope,
+  faHandPointLeft as farHandPointLeft,
   faHandPointRight as farHandPointRight,
 } from '@fortawesome/free-regular-svg-icons'
 
 // Only import the brand icons used by this theme
 import {
+  faAmazon,
+  faGithub,
   faGithubAlt,
   faSpotify,
   faYoutube,
@@ -55,13 +63,13 @@ library.add(
   faAngleDown, faAnglesRight, faBars, faBath, faBicycle, faBinoculars,
   faBowlFood, faBullhorn, faCalendarDays, faCameraRetro, faCircleCheck, faCircleExclamation,
   faCircleInfo, faCode, faComputer, faDumpsterFire, faDungeon, faGlobe,
-  faHandPointLeft, faHandPointRight, faHouse, faMapLocationDot, faMoon, faOm,
+  faHandPointLeft, faHandPointRight, faHouse, faMapLocationDot, faMoon, faMusic, faOm,
   faShieldDog, faSignsPost, faSnowflake, faSun, faTags, faTimes,
-  faTriangleExclamation, faWandMagicSparkles, faWheatAwn, faXmark,
+  faRss, faSeedling, faTriangleExclamation, faUtensils, faWandMagicSparkles, faWheatAwn, faXmark,
   // regular
-  farHandPointRight,
+  farEnvelope, farHandPointLeft, farHandPointRight,
   // brands
-  faGithubAlt, faSpotify, faYoutube,
+  faAmazon, faGithub, faGithubAlt, faSpotify, faYoutube,
 )
 // This will automatically find any <i> tags with the 'fa' class and convert them into <svg> elements
 dom.watch()
@@ -69,13 +77,36 @@ dom.watch()
 import Alpine from '@alpinejs/csp';
 import focus from '@alpinejs/focus';
 
+// Register the mobile menu component (header nav toggle)
+Alpine.data('mobileMenu', () => ({
+  openMenu: false,
+}));
+
+// Register the socials list toggle component
+Alpine.data('socialsList', () => ({
+  show: false,
+}));
+
+// Register the sub-menu component (hover on desktop, click-toggle on mobile)
+Alpine.data('subMenu', () => ({
+  open: false,
+  toggle() { this.open = !this.open; },
+}));
+
 // Register the alert dismissal component (uses document.cookie — must live
-// here rather than in an inline x-data expression so the CSP is not violated)
+// here rather than in an inline x-data expression so the CSP is not violated).
+// Each alert uses a unique cookie key derived from its data-alert-key attribute
+// so dismissing one alert does not hide others.
 Alpine.data('alertDismissible', () => ({
-  isOpen: document.cookie.indexOf('alertClosed=true') === -1,
+  isOpen: true,
+  init() {
+    const key = this.$el.dataset.alertKey || 'default';
+    this.isOpen = document.cookie.indexOf('alertClosed_' + key + '=true') === -1;
+  },
   dismiss() {
+    const key = this.$el.dataset.alertKey || 'default';
     this.isOpen = false;
-    document.cookie = 'alertClosed=true; path=/;';
+    document.cookie = 'alertClosed_' + key + '=true; path=/;';
   },
 }));
 
@@ -156,20 +187,44 @@ if (themeConfigEl) {
 const loadLeaflet = themeConfig.loadLeaflet || false;
 const showDarkToggle = themeConfig.showDarkToggle || false;
 
+function initLeafletMaps() {
+  document.querySelectorAll('[data-leaflet-map]').forEach(function(el) {
+    if (el._leaflet_id) return;
+    var lat = parseFloat(el.dataset.lat);
+    var lon = parseFloat(el.dataset.lon);
+    var zoom = parseInt(el.dataset.zoom, 10);
+    var map = window.L.map(el, { scrollWheelZoom: false }).setView([lat, lon], zoom);
+    el.addEventListener('click', function() { map.scrollWheelZoom.enable(); });
+    el.addEventListener('mouseleave', function() { map.scrollWheelZoom.disable(); });
+    window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+    var mLat = el.dataset.markerLat;
+    var mLon = el.dataset.markerLon;
+    if (mLat && mLon) {
+      window.L.marker([parseFloat(mLat), parseFloat(mLon)]).addTo(map)
+        .bindPopup(el.dataset.markerPopup || '');
+    }
+  });
+}
+
 if (loadLeaflet) {
   import('leaflet').then(L => {
       // Make Leaflet accessible globally
       window.L = L;
 
-      // Configure default marker icons with fingerprinted (cache-busted) URLs
-      if (themeConfig.leafletMarkerIconUrl) {
-        L.Icon.Default.mergeOptions({
-          iconUrl: themeConfig.leafletMarkerIconUrl,
-          iconRetinaUrl: themeConfig.leafletMarkerIconRetinaUrl,
-          shadowUrl: themeConfig.leafletMarkerShadowUrl,
-        });
-      }
-      // Notify any map shortcodes that Leaflet is ready
+      // Fix default marker icons broken by esbuild bundling.
+      // _getIconUrl auto-detects URLs at runtime but fails when bundled;
+      // deleting it forces Leaflet to use the explicit mergeOptions values.
+      delete L.Icon.Default.prototype._getIconUrl;
+      L.Icon.Default.mergeOptions({
+        iconUrl: themeConfig.leafletMarkerIconUrl || '/images/leaflet/marker-icon.png',
+        iconRetinaUrl: themeConfig.leafletMarkerIconRetinaUrl || '/images/leaflet/marker-icon-2x.png',
+        shadowUrl: themeConfig.leafletMarkerShadowUrl || '/images/leaflet/marker-shadow.png',
+      });
+      // Initialize all maps on the page
+      initLeafletMaps();
+      // Notify any external scripts that Leaflet is ready
       window.dispatchEvent(new CustomEvent('leaflet-loaded'));
   }).catch(error => {
       console.error('Error loading Leaflet:', error);

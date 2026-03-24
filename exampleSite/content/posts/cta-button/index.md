@@ -1,7 +1,6 @@
 +++
 title = 'Cta Button'
 date = 2024-06-20T14:17:05-07:00
-# draft = true
 # summary = ""
 # categories = [""]
 tags = ["cta","button"]
@@ -9,7 +8,7 @@ tags = ["cta","button"]
 # showTOC = true
 [menu]
  [menu.main]
-  weight = 45
+  weight = 60
   parent = 'posts'
 +++
 

@@ -71,8 +71,18 @@
        e.g. imgSrc = "https://cdn.example.com https://images.unsplash.com"
        or use imgSrc = "https:" to allow all HTTPS image sources.          */ -}}
 {{- $imgSrc := slice "'self'" "data:" -}}
+{{- /* Leaflet loads map tiles from OpenStreetMap — allow when loadLeaflet is set */ -}}
+{{- if .Param "loadLeaflet" -}}
+  {{- $imgSrc = $imgSrc | append "https://*.tile.openstreetmap.org" -}}
+{{- end -}}
 {{- with $cspParams.imgSrc -}}
   {{- $imgSrc = $imgSrc | append . -}}
+{{- end -}}
+
+{{- /* ── frame-src ───────────────────────────────────────────────────── */ -}}
+{{- $frameSrc := slice -}}
+{{- with $cspParams.frameSrc -}}
+  {{- $frameSrc = $frameSrc | append . -}}
 {{- end -}}
 
 {{- /* ── connect-src ───────────────────────────────────────────────────── */ -}}
@@ -88,12 +98,13 @@
 {{- end -}}
 
 {{- /* ── assemble policy string ───────────────────────────────────────── */ -}}
-{{- $policy := printf "default-src 'self'; script-src %s; style-src %s; font-src %s; img-src %s; connect-src %s; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; object-src 'none';"
+{{- $policy := printf "default-src 'self'; script-src %s; style-src %s; font-src %s; img-src %s; connect-src %s;%s frame-ancestors 'none'; form-action 'self'; base-uri 'self'; object-src 'none';"
     (delimit $scriptSrc " ")
     (delimit $styleSrc " ")
     (delimit $fontSrc " ")
     (delimit $imgSrc " ")
-    (delimit $connectSrc " ") -}}
+    (delimit $connectSrc " ")
+    (cond (gt (len $frameSrc) 0) (printf " frame-src %s;" (delimit $frameSrc " ")) "") -}}
 
 {{- with $cspParams.extraDirectives -}}
   {{- $policy = printf "%s %s" $policy . -}}

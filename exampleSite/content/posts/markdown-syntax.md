@@ -10,7 +10,7 @@ tags = [
 ]
 [menu]
  [menu.main]
-  weight = 22
+  weight = 130
   name = 'Markdown'
   parent = 'posts'
 +++
