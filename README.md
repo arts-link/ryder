@@ -50,9 +50,11 @@ hugo server -D
 ## Features
 
 - **Dark mode** — toggle built in, or follow system preference
+- **Two-level mobile nav** — Alpine-powered hamburger menu with configurable submenu trigger behavior
 - **Card layouts** — multiple variants, configurable per section or globally
 - **Featured grid** — promote any page to the homepage featured grid via front matter
 - **Shortcodes** — alerts, maps, recipe schema, media embeds, CTAs, photo gallery, and more
+- **Image galleries** — page-bundle gallery layout or shortcode-driven gallery with lightbox
 - **Schema markup** — structured data for recipes (Schema.org/Recipe JSON-LD)
 - **Privacy-friendly analytics** — Plausible integration
 - **Custom RSS feed** — styled XSLT browser-readable feed
@@ -206,6 +208,27 @@ Steps:
 1. Copy your file (`.png`, `.svg`, `.webp`, etc.) into `static/images/` in your site.
 2. Set `logo_png = "/images/logo.png"` in `[params]` inside `config/_default/hugo.toml`.
 
+### Menus
+
+Ryder supports two-level menus on desktop and mobile. Parent items with children can use one of two submenu trigger modes:
+
+- `caret` (default): the parent label remains a link, and only the caret toggles the submenu
+- `button`: the whole parent row toggles the submenu, and the parent landing page is not linked
+
+Example:
+
+```toml
+[[menus.main]]
+  name = "Docs"
+  pageRef = "/docs"
+  weight = 20
+  [menus.main.params]
+    submenuTrigger = "button"
+```
+
+See the example docs page for a complete menu setup:
+[`exampleSite/content/docs/menus.md`](https://github.com/arts-link/ryder/blob/main/exampleSite/content/docs/menus.md)
+
 ### GitInfo (optional)
 
 Enables GitHub commit/history/blame links in the footer. Has a 40–50% build time cost on large sites — disabled by default.
@@ -280,6 +303,37 @@ Requires `loadLeaflet = true` in params.
 {{</* lat-long-box latitude="40.71" longitude="-74.00" */>}}
 {{</* openstreetmap mapName="your-map-name-123456" */>}}
 ```
+
+### Image Galleries
+
+Ryder supports galleries in two forms:
+
+1. A page-bundle gallery page using `type = "photo-gallery"`
+2. A reusable `photo-gallery` shortcode for images stored in a shared asset path
+
+Minimal gallery page:
+
+```toml
++++
+title = "Gallery"
+type = "photo-gallery"
++++
+```
+
+Create that page as a leaf bundle and place your images beside `index.md`.
+
+Shortcode example:
+
+```go-html-template
+{{</* photo-gallery
+  path="images/ryder-gallery"
+  title="Ryder Gallery"
+*/>}}
+```
+
+See the example docs page and live sample:
+- [`exampleSite/content/docs/image-galleries.md`](https://github.com/arts-link/ryder/blob/main/exampleSite/content/docs/image-galleries.md)
+- [`exampleSite/content/ryder-gallery/index.md`](https://github.com/arts-link/ryder/blob/main/exampleSite/content/ryder-gallery/index.md)
 
 ---
 
