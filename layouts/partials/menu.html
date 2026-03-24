@@ -42,7 +42,7 @@ Renders a menu for the given menu ID.
     {{- end }}
     <li class="">
       {{- if .Children }}
-      <div x-data="subMenu" class="child-nav-container relative" @mouseenter="open = true" @mouseleave="open = false" @click.away="open = false">
+      <div x-data="subMenu" class="child-nav-container relative" @click.away="open = false">
       {{- end }}
       <a
         {{- range $k, $v := $attrs }}
