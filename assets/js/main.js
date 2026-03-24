@@ -21,6 +21,7 @@ import {
   faDungeon,
   faGlobe,
   faHandPointLeft,
+  faImage,
   faHandPointRight,
   faHouse,
   faMapLocationDot,
@@ -63,7 +64,7 @@ library.add(
   faAngleDown, faAnglesRight, faBars, faBath, faBicycle, faBinoculars,
   faBowlFood, faBullhorn, faCalendarDays, faCameraRetro, faCircleCheck, faCircleExclamation,
   faCircleInfo, faCode, faComputer, faDumpsterFire, faDungeon, faGlobe,
-  faHandPointLeft, faHandPointRight, faHouse, faMapLocationDot, faMoon, faMusic, faOm,
+  faHandPointLeft, faHandPointRight, faHouse, faImage, faMapLocationDot, faMoon, faMusic, faOm,
   faShieldDog, faSignsPost, faSnowflake, faSun, faTags, faTimes,
   faRss, faSeedling, faTriangleExclamation, faUtensils, faWandMagicSparkles, faWheatAwn, faXmark,
   // regular
