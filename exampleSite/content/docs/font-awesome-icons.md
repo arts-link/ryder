@@ -1,6 +1,7 @@
 +++
 title = 'Using Font Awesome Icons'
 date = 2024-06-01T10:00:00-07:00
+description = 'How to use Font Awesome icons in the Ryder theme, including adding new icons to the tree-shaken JS bundle.'
 homeFeatureIcon = "fa-solid fa-wand-magic-sparkles"
 tags = ["hugo","icons","font-awesome"]
 [menu]

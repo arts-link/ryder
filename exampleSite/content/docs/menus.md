@@ -1,6 +1,7 @@
 +++
 title = 'Menus'
 date = 2024-01-26T15:22:11-08:00
+description = 'Configure navigation menus in Ryder, including parent items, submenu triggers, and footer links.'
 tags = [
     "menus",
 ]

@@ -1,6 +1,7 @@
 +++
 title = 'Alerts'
 date = 2024-01-26T12:55:50-08:00
+description = 'Add dismissable alert boxes via shortcode, partial, or site-wide hugo.toml params.'
 homeFeature = true
 homeFeatureTitle = "Alert boxes"
 homeFeatureIcon = "fa-solid fa-dungeon"

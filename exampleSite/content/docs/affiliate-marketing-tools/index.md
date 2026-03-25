@@ -1,6 +1,7 @@
 +++
 title = 'Affiliate Marketing Tools'
 date = 2024-06-01T23:19:13-07:00
+description = 'Amazon affiliate link shortcodes: a single-product buy button and an interactive ASIN link builder.'
 homeFeatureIcon = "fa-brands fa-amazon"
 categories = ["home-page"]
 tags = ["affiliate", "amazon", "button"]

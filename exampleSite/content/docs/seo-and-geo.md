@@ -1,6 +1,7 @@
 +++
 title = 'SEO & GEO — Structured Data & Search Optimization'
 date = 2025-03-25T00:00:00-08:00
+description = "Built-in SEO and GEO support with OpenGraph, schema.org JSON-LD, and structured data — zero plugins required."
 homeFeature = true
 homeFeatureTitle = "SEO & GEO"
 homeFeatureIcon = "fa-solid fa-globe"

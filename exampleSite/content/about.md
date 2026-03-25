@@ -1,6 +1,7 @@
 +++
 title = 'About Ryder'
 date = 2024-01-26T14:32:26-08:00
+description = 'About the Ryder Hugo theme and its creator, Ben Strawbridge of Arts-Link.'
 categories = ['home-page']
 [menu]
  [menu.main]

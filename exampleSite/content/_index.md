@@ -1,6 +1,7 @@
 +++
 title = 'The Ryder Theme'
 date = 2024-01-26T14:32:26-08:00
+description = 'A barebones Hugo theme built with TailwindCSS, Alpine.js, and Font Awesome — practical defaults, no bloat.'
 homeFeatureIcon = "fa-solid fa-shield-dog"
 categories = ["home-page"]
 # [[cascade]]
