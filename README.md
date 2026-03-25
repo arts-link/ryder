@@ -55,7 +55,7 @@ hugo server -D
 - **Featured grid** — promote any page to the homepage featured grid via front matter
 - **Shortcodes** — alerts, maps, recipe schema, media embeds, CTAs, photo gallery, and more
 - **Image galleries** — page-bundle gallery layout or shortcode-driven gallery with lightbox
-- **Schema markup** — structured data for recipes (Schema.org/Recipe JSON-LD)
+- **SEO & GEO built-in** — full JSON-LD structured data, Open Graph, Twitter Cards, and dynamic OG image generation on every page (see [SEO & GEO](#seo--geo))
 - **Privacy-friendly analytics** — Plausible integration
 - **Custom RSS feed** — styled XSLT browser-readable feed
 - **Social links** — footer social icons via `data/social.json`
@@ -334,6 +334,67 @@ Shortcode example:
 See the example docs page and live sample:
 - [`exampleSite/content/docs/image-galleries.md`](https://github.com/arts-link/ryder/blob/main/exampleSite/content/docs/image-galleries.md)
 - [`exampleSite/content/ryder-gallery/index.md`](https://github.com/arts-link/ryder/blob/main/exampleSite/content/ryder-gallery/index.md)
+
+---
+
+## SEO & GEO
+
+Ryder ships with a complete search and AI optimisation stack — no plugins, no extra configuration required. Every page gets the right metadata automatically.
+
+### What Ryder Outputs on Every Page
+
+| Output | What It Does |
+|---|---|
+| `<meta name="description">` | Page snippet for search results — from `description` front matter, then summary, then site description |
+| Open Graph tags | Social link previews (Facebook, LinkedIn, Slack, Discord) |
+| Twitter / X Cards | `summary_large_image` when a featured image is present, `summary` otherwise |
+| JSON-LD `BlogPosting` | Article authorship, dates, keywords, and full text for Google rich results and AI crawlers |
+| JSON-LD `WebPage` + `Organization` | Homepage entity signals |
+| JSON-LD `BreadcrumbList` | Section and category navigation trails for rich-result breadcrumbs |
+| JSON-LD `Recipe` | Full recipe structured data (ingredients, steps, nutrition) when `recipe = true` |
+| Dynamic OG image | Auto-generated Open Graph image with title text when no page image exists |
+
+### What Is GEO?
+
+**Generative Engine Optimization (GEO)** is the practice of structuring content so AI-powered search tools (ChatGPT, Perplexity, Google AI Overviews, Gemini) can understand, cite, and accurately attribute it. Ryder's JSON-LD blocks give every post clear authorship, semantic type information, and machine-readable facts — exactly what these systems need to surface your content confidently.
+
+### Configuration
+
+Most SEO metadata is automatic. A few optional settings unlock additional features:
+
+```toml
+[params]
+  og_image_default = "images/og-default.webp"   # Base image for generated OG cards
+
+[params.author]
+  name  = "Your Name"
+  email = "you@example.com"                      # Flows into author/publisher schema
+
+[params.social]
+  twitter = "yourtwitterhandle"                  # Adds twitter:site to every page
+
+[params.ogImageText]
+  fontColor = "#085624"                          # Title text colour on generated OG images
+  x = 50                                         # Text x position (px from left)
+  y = 430                                        # Text y position (px from top)
+```
+
+### Front Matter That Feeds Schema
+
+| Front matter | Where It Appears |
+|---|---|
+| `description` | `<meta name="description">`, `og:description`, `BlogPosting.description` |
+| `tags` | `article:tag` OG properties, `BlogPosting.keywords` |
+| `date` | `article:published_time`, `BlogPosting.datePublished` |
+| `lastmod` | `article:modified_time`, `BlogPosting.dateModified` |
+| `categories` | Second `BreadcrumbList` from taxonomy path |
+| `recipe = true` | Enables full `Recipe` JSON-LD block |
+
+### Dynamic OG Image
+
+If a page has no `feature*`, `cover*`, or `thumbnail*` image in its bundle, Ryder generates an Open Graph image at build time by overlaying the page title and site name onto your `og_image_default` base image. The result is a static `.webp` baked into your build — no server-side rendering.
+
+See the full feature breakdown and tips in the [SEO & GEO docs post](https://arts-link.github.io/ryder/docs/seo-and-geo/).
 
 ---
 
