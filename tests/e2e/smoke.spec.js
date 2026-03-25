@@ -88,3 +88,12 @@ test('mobile docs submenu opens as a compact popout', async ({ page, browserName
   await submenu.getByRole('link', { name: /Maintenance Page/i }).click()
   await expect(page).toHaveURL(/\/docs\/maintenance-page\//)
 })
+
+test('llms.txt is served at /llms.txt with correct format', async ({ request }) => {
+  const response = await request.get(`${BASE}/llms.txt`)
+  expect(response.status()).toBe(200)
+  const body = await response.text()
+  expect(body).toMatch(/^# /)
+  expect(body).toContain('The Ryder Theme')
+  expect(body).toMatch(/^> .+$/m)
+})

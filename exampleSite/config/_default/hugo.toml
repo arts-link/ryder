@@ -14,7 +14,7 @@ themesDir= "../../"
 [pagination]
   pagerSize = 20
 [params]
-  # description = 'A theme for hugo'
+  description = 'A barebones Hugo theme built with TailwindCSS, Alpine.js, and Font Awesome. Practical defaults, no bloat.'
   tocOpen = true
   # enableDebugPanel = true
   # navbar_fixed = true
@@ -116,6 +116,9 @@ themesDir= "../../"
     name = 'Contact Us'
     pageRef = '/contact'
     weight = 10
+
+[outputs]
+  home = ["HTML", "RSS", "LLMSTxt"]
 
 [module]
   [module.hugoVersion]

@@ -1,0 +1,18 @@
+# {{ site.Title }}
+{{ with site.Params.description }}
+> {{ . }}
+{{ end }}
+{{- range .Site.Sections }}
+## {{ .Title | default (.Name | humanize | title) }}
+
+{{ range .Pages.ByTitle -}}
+- [{{ .Title }}]({{ .Permalink }}){{ with .Description }}: {{ . }}{{ end }}
+{{ end }}
+{{- end }}
+{{- with where .Site.RegularPages "Section" "" }}
+## Pages
+
+{{ range .ByTitle -}}
+- [{{ .Title }}]({{ .Permalink }}){{ with .Description }}: {{ . }}{{ end }}
+{{ end }}
+{{- end -}}
