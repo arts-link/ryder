@@ -1,6 +1,7 @@
 +++
 title = "Image Galleries"
 date = 2026-03-23T20:46:00-07:00
+draft = true
 description = "Create image galleries with a dedicated page layout or the photo-gallery shortcode."
 [menu]
  [menu.main]

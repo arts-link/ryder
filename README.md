@@ -53,8 +53,7 @@ hugo server -D
 - **Two-level mobile nav** — Alpine-powered hamburger menu with configurable submenu trigger behavior
 - **Card layouts** — multiple variants, configurable per section or globally
 - **Featured grid** — promote any page to the homepage featured grid via front matter
-- **Shortcodes** — alerts, maps, recipe schema, media embeds, CTAs, photo gallery, and more
-- **Image galleries** — page-bundle gallery layout or shortcode-driven gallery with lightbox
+- **Shortcodes** — alerts, maps, recipe schema, media embeds, CTAs, and more
 - **SEO & GEO built-in** — full JSON-LD structured data, Open Graph, Twitter Cards, and dynamic OG image generation on every page (see [SEO & GEO](#seo--geo))
 - **Privacy-friendly analytics** — Plausible integration
 - **Custom RSS feed** — styled XSLT browser-readable feed
@@ -251,7 +250,6 @@ enableGitInfo = true
 | `lat-long-box` | Display coordinates in a formatted box |
 | `recipe-ingredients-list` | Render recipe ingredients from front matter |
 | `recipe-howto-steps-list` | Render recipe steps from front matter |
-| `photo-gallery` | Alpine.js lightbox gallery |
 | `picture` | Responsive image with lazy loading |
 | `soundcloud` | SoundCloud embed |
 | `amazon-associate-link` | Affiliate link with disclosure |
@@ -303,37 +301,6 @@ Requires `loadLeaflet = true` in params.
 {{</* lat-long-box latitude="40.71" longitude="-74.00" */>}}
 {{</* openstreetmap mapName="your-map-name-123456" */>}}
 ```
-
-### Image Galleries
-
-Ryder supports galleries in two forms:
-
-1. A page-bundle gallery page using `type = "photo-gallery"`
-2. A reusable `photo-gallery` shortcode for images stored in a shared asset path
-
-Minimal gallery page:
-
-```toml
-+++
-title = "Gallery"
-type = "photo-gallery"
-+++
-```
-
-Create that page as a leaf bundle and place your images beside `index.md`.
-
-Shortcode example:
-
-```go-html-template
-{{</* photo-gallery
-  path="images/ryder-gallery"
-  title="Ryder Gallery"
-*/>}}
-```
-
-See the example docs page and live sample:
-- [`exampleSite/content/docs/image-galleries.md`](https://github.com/arts-link/ryder/blob/main/exampleSite/content/docs/image-galleries.md)
-- [`exampleSite/content/ryder-gallery/index.md`](https://github.com/arts-link/ryder/blob/main/exampleSite/content/ryder-gallery/index.md)
 
 ---
 
