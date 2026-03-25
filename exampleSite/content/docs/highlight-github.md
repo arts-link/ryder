@@ -1,6 +1,7 @@
 +++
 title = 'Highlight Github'
 date = 2024-05-21T22:55:38-07:00
+description = 'Embed syntax-highlighted code directly from GitHub repositories using the highlight-github shortcode.'
 # homeFeatureTitle = "Alert boxes"
 homeFeatureIcon = "fa-solid fa-code"
 tags = ["sample","test","github","highlights"]

@@ -1,6 +1,7 @@
 +++
 title = 'Leaflet Maps'
 date = 2024-05-10T14:29:11-07:00
+description = 'Embed interactive Leaflet maps powered by OpenStreetMap using the leaflet shortcode.'
 homeFeatureIcon = "fa-solid fa-map-location-dot"
 categories = ["maps"]
 tags = ["sample","test","maps"]

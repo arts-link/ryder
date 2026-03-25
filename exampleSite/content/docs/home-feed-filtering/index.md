@@ -1,6 +1,7 @@
 +++
 title = 'Home Feed Filtering and Colorization'
 date = 2024-06-10T20:41:19-07:00
+description = 'Filter the home page feed by section, category, or tag, and colorize cards with category-based gradients.'
 # summary = ""
 # categories = [""]
 hideAsideBar = true

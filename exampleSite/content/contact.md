@@ -1,6 +1,7 @@
 +++
 title = 'Contact'
 date = 2024-02-21T16:17:49-08:00
+description = 'Get in touch with the Ryder theme team via email or GitHub.'
 categories = ['home-page']
 +++
 

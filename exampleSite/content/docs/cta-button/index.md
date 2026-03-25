@@ -1,6 +1,7 @@
 +++
 title = 'Cta Button'
 date = 2024-06-20T14:17:05-07:00
+description = 'Add styled call-to-action buttons to any page using the cta-button shortcode.'
 # summary = ""
 # categories = [""]
 tags = ["cta","button"]

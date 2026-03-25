@@ -1,6 +1,7 @@
 +++
 title = 'Logo Configuration'
 date = 2024-06-15T10:00:00-07:00
+description = 'Configure the Ryder theme logo as a text mark or custom image, all from hugo.toml — no template edits needed.'
 homeFeatureIcon = "fa-solid fa-image"
 tags = ["hugo","logo","configuration"]
 [menu]

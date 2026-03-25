@@ -1,6 +1,7 @@
 +++
 title = 'Featured Content'
 date = 2024-02-21T15:03:39-08:00
+description = 'Pin posts to the featured grid on the home page using the homeFeature front matter param.'
 homeFeature = true
 # homeFeatureWide = true
 homeFeatureTitle = "Featured Content"

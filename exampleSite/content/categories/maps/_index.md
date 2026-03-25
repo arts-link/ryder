@@ -1,6 +1,7 @@
 +++
 title = 'Maps'
 date = 2024-05-29T22:58:56-07:00
+description = 'Pages featuring interactive Leaflet and OpenStreetMap integrations for Hugo.'
 paginate = 72
 tags = [
   "maps"

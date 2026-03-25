@@ -1,6 +1,7 @@
 +++
 title = 'CSS Overrides and Visual Customization'
 date = 2024-06-15T10:00:00-07:00
+description = 'Customize the header, footer, card colors, and border accents from hugo.toml without editing theme files.'
 homeFeature = true
 homeFeatureTitle = "CSS Overrides"
 homeFeatureIcon = "fa-solid fa-wand-magic-sparkles"

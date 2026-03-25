@@ -1,6 +1,7 @@
 +++
 title = 'Maintenance Page'
 date = 2024-01-26T14:32:26-08:00
+description = 'Example of the hidden-home layout for maintenance or coming-soon pages with a full-screen background.'
 # draft = true
 type = 'hidden-home'
 categories = ['home-page']

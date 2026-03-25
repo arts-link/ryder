@@ -1,6 +1,7 @@
 +++
 title = 'How the recipe shortcodes work'
 date = 2024-04-29T13:44:16-07:00
+description = 'Use recipe schema shortcodes to publish SEO-friendly recipe pages with schema.org JSON-LD structured data.'
 categories = ['recipes']
 tags = [
   "healthy",
