@@ -254,16 +254,14 @@ See the full example: [Lemon Chia Granola recipe](/docs/recipe-lemon-chia-granol
 
 Here is what a typical Ryder post's `<head>` delivers to search engines and AI crawlers:
 
-```
-✅ <meta name="description">
-✅ og:url, og:title, og:description, og:image, og:type
-✅ article:published_time, article:modified_time, article:tag
-✅ twitter:card, twitter:title, twitter:description, twitter:image
-✅ JSON-LD: BlogPosting  (authorship, dates, keywords, full article body)
-✅ JSON-LD: BreadcrumbList  (section + category trails)
-✅ JSON-LD: WebPage + Organization  (home page only)
-✅ JSON-LD: Recipe  (recipe pages only)
-```
+- `<meta name="description">`
+- `og:url`, `og:title`, `og:description`, `og:image`, `og:type`
+- `article:published_time`, `article:modified_time`, `article:tag`
+- `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`
+- JSON-LD: BlogPosting (authorship, dates, keywords, full article body)
+- JSON-LD: BreadcrumbList (section + category trails)
+- JSON-LD: WebPage + Organization (home page only)
+- JSON-LD: Recipe (recipe pages only)
 
 All of this is built from the content and config you have already written — no extra front matter, no third-party plugins, no CDN calls.
 
