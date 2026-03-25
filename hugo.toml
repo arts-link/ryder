@@ -8,7 +8,7 @@
     mediaType = "text/plain"
     baseName = "llms"
     isPlainText = true
-    notAlternative = false
+    notAlternative = true
 
 [outputs]
   home = ["HTML", "RSS", "LLMSTxt"]
