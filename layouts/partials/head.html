@@ -14,6 +14,9 @@
   {{- end }}
   <meta name="viewport" content="width=device-width" />
   <link rel="canonical" href="{{ .Permalink }}" />
+  {{- range .AlternativeOutputFormats -}}
+  <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ site.Title }}" />
+  {{- end }}
   {{- partialCached "head/favicon.html" . }}
   {{- $sectionTitle := .Params.sectionTitle | default site.Title }}
   <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title $sectionTitle }}{{ end }}</title>
