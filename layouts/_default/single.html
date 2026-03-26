@@ -1,6 +1,9 @@
 {{ define "main" }}
+  {{ $showTagsAside := gt (len (.GetTerms "tags")) 0 }}
+  {{ $showTocAside := and .Params.showToc (ne .Params.hideAsideBar true) }}
+  {{ $hasAside := or $showTagsAside $showTocAside }}
   <div class="p-2 max-w-screen-lg mx-auto ">
-    <div class=" grid grid-cols-1 md:grid-cols-12 gap-x-1 ">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-x-4">
       <header class="article-header">
         {{ $headerClass := "" }}
         {{ with .Param "twClasses.headerBackgroundFrameOuter" }}
@@ -28,7 +31,6 @@
                   <div class="article-header-meta-item">
                     <i class="fa-solid fa-calendar-days article-header-meta-icon"></i>
                     <div>
-                      <span class="article-header-meta-label">Published</span>
                       <time datetime="{{ $dateMachine }}" class="article-header-meta-value">{{ $dateHuman }}</time>
                     </div>
                   </div>
@@ -47,7 +49,7 @@
           {{ end }}
         </div>
       </header>
-      <div class="w-full {{ if .Params.hideAsideBar }}md:col-span-12{{ else }}md:col-span-10{{ end }} prose max-w-max-screen-xl min-w-full lg:prose-lg dark:prose-invert ">
+      <div class="w-full {{ if $hasAside }}md:col-span-9{{ else }}md:col-span-12{{ end }} prose max-w-max-screen-xl min-w-full lg:prose-lg dark:prose-invert ">
         <div class="content">
           {{ .Content |  safeHTML }}
         </div>
@@ -61,21 +63,23 @@
           </div>
         {{ end }}
       </div>
-      <aside class="w-full {{ if .Params.hideAsideBar }}md:col-span-12{{ else }}md:col-span-2{{ end }} relative">
-        {{- if .Params.tags }}
+      {{ if $hasAside }}
+      <aside class="w-full md:col-span-3 relative">
+        {{- if $showTagsAside }}
           <div class="not-prose">
             {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
           </div>
         {{- end }}
         
-        {{- if .Params.showToc }}
-        <div class="{{ if ne .Params.hideAsideBar true}}md:sticky md:block{{ end }} top-0 flex-auto py-4 hidden">
+        {{- if $showTocAside }}
+        <div class="hidden py-4 md:sticky md:top-0 md:block">
           <div class="px-4 grid grid-cols-1">
             {{- partial "toc.html" . }}
           </div>
         </div>
         {{- end }}
       </aside>
+      {{ end }}
       <div class="not-prose md:col-span-12 my-5 p-3 flex justify-between w-full text-2xl">
         <div class="w-1/2 text-left">
           {{ with .PrevInSection }}

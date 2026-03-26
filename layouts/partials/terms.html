@@ -12,16 +12,15 @@ For a given taxonomy, renders a list of terms assigned to the page.
 
 {{- with $page.GetTerms $taxonomy }}
   {{- $label := (index . 0).Parent.LinkTitle }}
-  <details open class="px-4 mb-2">
-    <summary  class="" accesskey="t" title="(Alt + T)">
-      <span class="details text-rose-500"><i class="fa-solid fa-tags"></i> {{ $label }}:</span>
-    </summary>
-    <div inner>
-      <ul class="flex flex-wrap max-width-max">
+  <section class="aside-taxonomy-group" aria-labelledby="aside-taxonomy-{{ $taxonomy }}">
+    <h2 id="aside-taxonomy-{{ $taxonomy }}" class="aside-taxonomy-heading">
+      <i class="fa-solid fa-tags aside-taxonomy-icon"></i>
+      <span>{{ $label }}</span>
+    </h2>
+    <div class="aside-taxonomy-links">
       {{- range . }}
-        <li class="my-2 flex-shrink-0"><a class="p-1 mr-2 border rounded-lg text-slate-800 bg-neutral-300 border-rose-500 " href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+        <a class="aside-taxonomy-link" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
       {{- end }}
-      </ul>
     </div>
-  </details>
+  </section>
 {{- end }}

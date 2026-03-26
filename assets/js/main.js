@@ -91,20 +91,29 @@ Alpine.data('subMenu', () => ({
   toggle() { this.open = !this.open; },
 }));
 
-// Register the alert dismissal component (uses document.cookie — must live
-// here rather than in an inline x-data expression so the CSP is not violated).
-// Each alert uses a unique cookie key derived from its data-alert-key attribute
-// so dismissing one alert does not hide others.
+// Register the alert dismissal component. Persistence is stored in
+// localStorage so dismissals survive normal navigation and browser restarts.
+// A cookie fallback is kept for environments where localStorage is blocked.
 Alpine.data('alertDismissible', () => ({
   isOpen: true,
+  storageKey: 'default',
   init() {
     const key = this.$el.dataset.alertKey || 'default';
-    this.isOpen = document.cookie.indexOf('alertClosed_' + key + '=true') === -1;
+    this.storageKey = `alertClosed_${key}`;
+    try {
+      this.isOpen = window.localStorage.getItem(this.storageKey) !== 'true';
+      return;
+    } catch (e) {
+      this.isOpen = document.cookie.indexOf(`${this.storageKey}=true`) === -1;
+    }
   },
   dismiss() {
-    const key = this.$el.dataset.alertKey || 'default';
     this.isOpen = false;
-    document.cookie = 'alertClosed_' + key + '=true; path=/;';
+    try {
+      window.localStorage.setItem(this.storageKey, 'true');
+    } catch (e) {
+      document.cookie = `${this.storageKey}=true; path=/; max-age=31536000; SameSite=Lax`;
+    }
   },
 }));
 

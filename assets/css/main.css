@@ -9,6 +9,10 @@
   @apply mr-2; 
 }
 @layer base {
+  [x-cloak] {
+    display: none !important;
+  }
+
   h1 {
     @apply text-2xl font-bold tracking-tight;
   }
@@ -64,11 +68,11 @@
   }
 
   .article-header-meta-item {
-    @apply inline-flex items-start gap-3 text-slate-700 dark:text-slate-200;
+    @apply inline-flex items-center gap-3 text-slate-700 dark:text-slate-200;
   }
 
   .article-header-meta-icon {
-    @apply mt-0.5 shrink-0 text-sm text-sky-700 dark:text-sky-300;
+    @apply shrink-0 text-sm text-sky-700 dark:text-sky-300;
   }
 
   .article-header-meta-label {
@@ -77,6 +81,30 @@
 
   .article-header-meta-value {
     @apply text-sm leading-tight sm:text-[15px];
+  }
+
+  .aside-taxonomy-group {
+    @apply rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm;
+    @apply dark:border-slate-700/70 dark:bg-slate-900/70;
+  }
+
+  .aside-taxonomy-heading {
+    @apply mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500;
+    @apply dark:text-slate-400;
+  }
+
+  .aside-taxonomy-icon {
+    @apply text-rose-500;
+  }
+
+  .aside-taxonomy-links {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .aside-taxonomy-link {
+    @apply inline-flex items-center rounded-md border border-rose-300/80 bg-rose-50 px-2.5 py-1 text-sm text-slate-700;
+    @apply transition-colors duration-150 ease-in-out hover:border-rose-400 hover:bg-rose-100 hover:text-slate-900;
+    @apply dark:border-rose-900/70 dark:bg-rose-950/40 dark:text-slate-200 dark:hover:border-rose-700 dark:hover:bg-rose-900/50;
   }
 
     /* Share buttons (sharingbuttons.io) --- */
