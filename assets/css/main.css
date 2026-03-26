@@ -84,7 +84,7 @@
   }
 
   .aside-taxonomy-group {
-    @apply rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm;
+    @apply w-full rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm;
     @apply dark:border-slate-700/70 dark:bg-slate-900/70;
   }
 
@@ -105,6 +105,42 @@
     @apply inline-flex items-center rounded-md border border-rose-300/80 bg-rose-50 px-2.5 py-1 text-sm text-slate-700;
     @apply transition-colors duration-150 ease-in-out hover:border-rose-400 hover:bg-rose-100 hover:text-slate-900;
     @apply dark:border-rose-900/70 dark:bg-rose-950/40 dark:text-slate-200 dark:hover:border-rose-700 dark:hover:bg-rose-900/50;
+  }
+
+  .aside-toc-group {
+    @apply w-full rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm;
+    @apply dark:border-slate-700/70 dark:bg-slate-900/70;
+  }
+
+  .aside-toc-heading {
+    @apply mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500;
+    @apply dark:text-slate-400;
+  }
+
+  .aside-toc-icon {
+    @apply text-rose-500;
+  }
+
+  .aside-toc-links {
+    @apply text-sm text-slate-700 dark:text-slate-200;
+  }
+
+  .aside-toc-links nav > ul {
+    @apply m-0 list-none space-y-1 p-0;
+  }
+
+  .aside-toc-links nav ul ul {
+    @apply mt-1 space-y-1 border-l border-slate-200 pl-3;
+    @apply dark:border-slate-700;
+  }
+
+  .aside-toc-links li {
+    @apply m-0;
+  }
+
+  .aside-toc-links a {
+    @apply block rounded-md px-2 py-1.5 text-sm text-slate-700 no-underline transition-colors duration-150 ease-in-out;
+    @apply hover:bg-rose-50 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-rose-950/40 dark:hover:text-white;
   }
 
     /* Share buttons (sharingbuttons.io) --- */
