@@ -37,6 +37,10 @@ hugo --minify                     # Production build
 ### Testing
 The `exampleSite/` directory is the primary test environment. All theme changes MUST be tested here before release.
 
+## Release Maintenance
+
+- When the theme version receives a minor version bump or anything greater, refresh the Hugo themes submission screenshots in `images/screenshot.png` (1500x1000) and `images/tn.png` (900x600).
+
 ## Architecture Overview
 
 ### Template Hierarchy & Customization
