@@ -1,0 +1,6 @@
+{{- $provider := site.Params.analytics_provider | default "" -}}
+{{- if eq $provider "plausible" -}}
+  {{- partial "plausible.html" . -}}
+{{- else if eq $provider "posthog" -}}
+  {{- partial "posthog.html" . -}}
+{{- end -}}

@@ -23,7 +23,7 @@ Ryder is intentionally barebones — practical defaults, no bloat. Drop it in an
 - **Card layouts** — multiple variants, fully configurable
 - **Shortcodes** — alerts, maps, recipe schema, media embeds, CTAs, and more
 - **Schema markup** — structured data for recipes and articles out of the box
-- **Privacy-friendly analytics** — Plausible integration included
+- **Privacy-friendly analytics** — pluggable Plausible or PostHog integration
 
 {{< cta-button
   button_label="README on GitHub"

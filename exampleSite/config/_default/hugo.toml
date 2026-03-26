@@ -15,6 +15,7 @@ themesDir= "../../"
   pagerSize = 20
 [params]
   description = 'A barebones Hugo theme built with TailwindCSS, Alpine.js, and Font Awesome. Practical defaults, no bloat.'
+  # TODO: Add exampleSite analytics later under the arts-link account.
   tocOpen = true
   # enableDebugPanel = true
   # navbar_fixed = true
@@ -127,10 +128,6 @@ themesDir= "../../"
   [[module.mounts]]
     source = "assets"
     target = "assets"
-
-[services]
-  [services.plausibleAnalytics]
-    ID = "arts-link.github.io/ryder"
 
 [build]
   writeStats = true

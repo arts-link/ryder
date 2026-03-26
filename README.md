@@ -53,9 +53,11 @@ hugo server -D
 - **Two-level mobile nav** — Alpine-powered hamburger menu with configurable submenu trigger behavior
 - **Card layouts** — multiple variants, configurable per section or globally
 - **Featured grid** — promote any page to the homepage featured grid via front matter
-- **Shortcodes** — alerts, maps, recipe schema, media embeds, CTAs, and more
+- **Shortcodes** — alerts, maps, recipe schema, media embeds, CTAs, photo gallery, and more
+- **Image galleries** — page-bundle gallery layout or shortcode-driven gallery with lightbox
+- **Schema markup** — structured data for recipes (Schema.org/Recipe JSON-LD)
+- **Privacy-friendly analytics** — pluggable Plausible or PostHog integration
 - **SEO & GEO built-in** — full JSON-LD structured data, Open Graph, Twitter Cards, and dynamic OG image generation on every page (see [SEO & GEO](#seo--geo))
-- **Privacy-friendly analytics** — Plausible integration
 - **Custom RSS feed** — styled XSLT browser-readable feed
 - **Social links** — footer social icons via `data/social.json`
 - **i18n** — partial translations for English, German, French
@@ -170,12 +172,40 @@ Configured via `data/social.json` (not params):
 }
 ```
 
-### Analytics (Plausible)
+### Analytics
+
+Select a provider explicitly in your site params:
 
 ```toml
-[services.plausibleAnalytics]
-  ID = "yourdomain.com"
+[params]
+  analytics_provider = "plausible" # or "posthog"
 ```
+
+#### Plausible
+
+```toml
+[params]
+  plausible_domain = "yourdomain.com"
+  plausible_advanced = true
+```
+
+#### PostHog
+
+The theme supports PostHog via Hugo params or environment variables. Params take precedence.
+
+```toml
+[params]
+  analytics_provider = "posthog"
+  posthog_host = "https://t.example.com"
+  posthog_ui_host = "https://us.posthog.com"
+  posthog_person_profiles = "identified_only"
+```
+
+Supported environment variables:
+
+- `PUBLIC_POSTHOG_KEY`
+- `PUBLIC_POSTHOG_HOST`
+- `PUBLIC_POSTHOG_UI_HOST`
 
 ### Logo
 

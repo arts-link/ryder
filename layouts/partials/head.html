@@ -29,7 +29,7 @@
 {{- partial "head/css.html" . }}
 {{- partial "head/js.html" . }}
 {{- if hugo.IsProduction -}}
-  {{ partial "plausible.html" . }}
+  {{ partial "analytics.html" . }}
   {{ template "_internal/google_analytics.html" . }}
 {{- end -}}
 {{- partial "extend_head.html" . }}

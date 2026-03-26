@@ -9,7 +9,7 @@
   Default policy covers all resources that the theme itself loads:
     • Self-hosted (fingerprinted) CSS, JS and fonts
     • Google Fonts (googleapis.com / gstatic.com)
-    • Plausible Analytics and Google Analytics when configured
+    • Plausible, PostHog, and Google Analytics when configured
 
   Users can extend each directive by setting extra sources in hugo.toml:
 
@@ -35,13 +35,26 @@
 {{- end -}}
 
 {{- /* Plausible Analytics */ -}}
-{{- if site.Params.plausible_domain -}}
+{{- $plausibleDomain := site.Params.plausible_domain -}}
+{{- if $plausibleDomain -}}
   {{- $scriptSrc = $scriptSrc | append "https://plausible.io" -}}
   {{- /* SHA-256 hashes for Plausible advanced-mode inline scripts */ -}}
   {{- if site.Params.plausible_advanced -}}
     {{- $scriptSrc = $scriptSrc | append "'sha256-/6SBPqW+GW+//4nlXX6Y1nR9dWlh0gsQJ6KK71djH6A='" -}}
     {{- $scriptSrc = $scriptSrc | append "'sha256-RqYEbQ5LE8+gxvgfBOWbOoYTcxVwtSabsMrOzsDyWuQ='" -}}
   {{- end -}}
+{{- end -}}
+
+{{- /* PostHog Analytics */ -}}
+{{- $posthogProvider := eq (site.Params.analytics_provider | default "") "posthog" -}}
+{{- $posthogHost := site.Params.posthog_host | default "" -}}
+{{- if and $posthogProvider (not $posthogHost) -}}
+  {{- $posthogHost = getenv "PUBLIC_POSTHOG_HOST" -}}
+{{- end -}}
+{{- if and $posthogProvider $posthogHost -}}
+  {{- /* PostHog's bootstrap snippet is inline, so allow inline scripts when active. */ -}}
+  {{- $scriptSrc = $scriptSrc | append "'unsafe-inline'" -}}
+  {{- $scriptSrc = $scriptSrc | append (replace $posthogHost ".i.posthog.com" "-assets.i.posthog.com") -}}
 {{- end -}}
 
 {{- /* Google Analytics (Hugo internal template uses googletagmanager.com) */ -}}
@@ -93,8 +106,11 @@
 {{- if not hugo.IsProduction -}}
   {{- $connectSrc = $connectSrc | append "ws://localhost:*" "ws://127.0.0.1:*" "http://localhost:*" "http://127.0.0.1:*" -}}
 {{- end -}}
-{{- if site.Params.plausible_domain -}}
+{{- if $plausibleDomain -}}
   {{- $connectSrc = $connectSrc | append "https://plausible.io" -}}
+{{- end -}}
+{{- if and $posthogProvider $posthogHost -}}
+  {{- $connectSrc = $connectSrc | append $posthogHost -}}
 {{- end -}}
 {{- if and hugo.IsProduction (site.Config.Services.GoogleAnalytics.ID) -}}
   {{- $connectSrc = $connectSrc | append "https://www.google-analytics.com" "https://region1.google-analytics.com" -}}
