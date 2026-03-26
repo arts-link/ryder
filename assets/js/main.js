@@ -12,6 +12,7 @@ import {
   faBullhorn,
   faCalendarDays,
   faCameraRetro,
+  faChartLine,
   faCircleCheck,
   faCircleExclamation,
   faCircleInfo,
@@ -58,7 +59,7 @@ import {
 library.add(
   // solid
   faAngleDown, faAnglesRight, faBars, faBath, faBicycle, faBinoculars,
-  faBowlFood, faBullhorn, faCalendarDays, faCameraRetro, faCircleCheck, faCircleExclamation,
+  faBowlFood, faBullhorn, faCalendarDays, faCameraRetro, faChartLine, faCircleCheck, faCircleExclamation,
   faCircleInfo, faCode, faComputer, faDumpsterFire, faDungeon, faGlobe,
   faHouse, faImage, faMapLocationDot, faMoon, faMusic, faOm,
   faShieldDog, faSignsPost, faSnowflake, faSun, faTags, faTimes,
