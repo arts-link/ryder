@@ -22,7 +22,6 @@
     </main>
     {{ $footerType := .Param "footerType" | default "" }}
     {{- partial (printf "footer%s.html" $footerType) . }}
-    <i class="p-2 text-lg fa-solid fa-om"></i>
   </div>
 
 </body>

@@ -14,7 +14,8 @@
 {{- $hasSocials := site.Data.social.main }}
 {{- $hasDarkToggle := .Param "showDarkToggle" }}
 {{- $hasRightContent := or $hasSocials $hasDarkToggle }}
-{{- $hasLeftContent := or .Site.Copyright (ne (.Param "hideAttribution") true) (.Param "showPubDate") site.Params.enableGitInfo }}
+{{- $showPageMeta := and .Site.Params.showPubDate .IsPage }}
+{{- $hasLeftContent := or .Site.Copyright (ne (.Param "hideAttribution") true) $showPageMeta site.Params.enableGitInfo }}
 
 <footer class="border-t w-full mt-auto text-neutral-100 {{ $footerClass }} ">
 

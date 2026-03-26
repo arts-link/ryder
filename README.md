@@ -27,16 +27,21 @@ git submodule add https://github.com/arts-link/ryder.git themes/ryder
 # Copy config and npm setup from exampleSite
 cp -r themes/ryder/exampleSite/config/ ./config
 cp themes/ryder/exampleSite/package.json .
+cp themes/ryder/exampleSite/package-lock.json .
 cp themes/ryder/exampleSite/*.config.js .
-npm install
+npm ci
 
-# !! Delete the line `themesDir = "../.."` from config/_default/hugo.toml
-# !! Update baseURL in config/_default/hugo.toml to your own URL
+# You must delete the dev-only theme path override before building your site
+sed -i.bak '/^themesDir *=/d' config/_default/hugo.toml
+
+# Update baseURL in config/_default/hugo.toml to your own URL
 
 # Create a home page and start the server
 hugo new content _index.md
 hugo server -D
 ```
+
+The copied config is a starter configuration from the theme demo. Before building your site, update site-facing values in `config/_default/hugo.toml` such as `baseURL`, `title`, `homePageFeedHeader`, `homePageFeatureHeader`, and the logo text settings so they match your site.
 
 ---
 
@@ -79,11 +84,14 @@ git submodule add https://github.com/arts-link/ryder.git themes/ryder
 ```bash
 cp -r themes/ryder/exampleSite/config/ ./config
 cp themes/ryder/exampleSite/package.json .
+cp themes/ryder/exampleSite/package-lock.json .
 cp themes/ryder/exampleSite/*.config.js .
-npm install
+npm ci
 ```
 
-**Important:** Delete the line `themesDir = "../../"` from `config/_default/hugo.toml` — it exists only for theme development and will break your site.
+**Required:** Delete the line `themesDir = "../.."` or `themesDir = "../../"` from `config/_default/hugo.toml` before you build. It exists only for theme development inside this repository and will break a normal site installation.
+
+The copied config is a starter configuration from the theme demo. Update site-facing values in `config/_default/hugo.toml` such as `baseURL`, `title`, `homePageFeedHeader`, `homePageFeatureHeader`, and the logo text settings so they match your site.
 
 ---
 

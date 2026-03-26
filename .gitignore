@@ -3,7 +3,6 @@
 /resources/
 *.log
 **/node_modules
-exampleSite/hugo_stats.json
 
 # frontmatter
 .frontmatter/
