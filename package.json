@@ -1,6 +1,6 @@
 {
   "name": "ryder",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "A barebones Hugo theme built with TailwindCSS and Alpine.js",
   "author": "Ben Strawbridge",
   "license": "MIT",
