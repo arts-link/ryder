@@ -3,10 +3,6 @@ title = "Image Galleries"
 date = 2026-03-23T20:46:00-07:00
 draft = true
 description = "Create image galleries with a dedicated page layout or the photo-gallery shortcode."
-[menu]
- [menu.main]
-  weight = 65
-  parent = 'docs'
 +++
 
 ## Two ways to use galleries
@@ -15,8 +11,6 @@ Ryder supports image galleries in two forms:
 
 1. A dedicated gallery page using `type = "photo-gallery"`.
 2. A `photo-gallery` shortcode that renders images from a shared asset path.
-
-The live sample page is here: [Ryder Gallery](../../ryder-gallery/).
 
 <!--more-->
 

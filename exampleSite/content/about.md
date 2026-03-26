@@ -11,7 +11,7 @@ categories = ['home-page']
 
 ## About
 
-Ryder was my Italian Mastiff / Rhodesian Ridgeback dog. He was a good boy. He passed away in 2018, and this theme is dedicated to him. You can see a small [gallery of Ryder here](../ryder-gallery/).
+Ryder was my Italian Mastiff / Rhodesian Ridgeback dog. He was a good boy. He passed away in 2018, and this theme is dedicated to him.
 
 Ryder is an open source Hugo theme built and maintained by **[Ben Strawbridge](https://www.benstrawbridge.com)**, a project of **[Arts-Link](https://www.arts-link.com)**.
 
