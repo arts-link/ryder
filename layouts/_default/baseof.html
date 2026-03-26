@@ -21,7 +21,9 @@
       {{- block "main" . }}{{- end }}
     </main>
     {{ $footerType := .Param "footerType" | default "" }}
-    {{- partial (printf "footer%s.html" $footerType) . }}
+    <div class="pb-5">
+      {{- partial (printf "footer%s.html" $footerType) . }}
+    </div>
   </div>
 
 </body>
