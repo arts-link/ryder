@@ -26,29 +26,31 @@ By default it will have a background gradient in cayan.
   {{- end -}}
 {{- $headerBackgroundStyle = printf "background-image: url('%s')" $backgroundPath -}}
 {{- end -}}
-<header class=" w-full {{ $headerClass }}">
-<div class=" m-3 rounded-lg flex flex-row {{ $headerBackgroundFrameInner }}"{{ with $headerBackgroundStyle }} style="{{ . | safeCSS }}"{{ end }}>
-    <div class="mr-auto relative">
-        {{- partial "logo.html" . -}}
+<header class="w-full {{ $headerClass }}">
+  <div class="mx-auto w-full max-w-screen-2xl px-3 py-3 md:px-4">
+    <div class="flex flex-row rounded-lg {{ $headerBackgroundFrameInner }}"{{ with $headerBackgroundStyle }} style="{{ . | safeCSS }}"{{ end }}>
+      <div class="mr-auto relative">
+          {{- partial "logo.html" . -}}
+      </div>
+      <div class="ml-auto flex items-start z-50" x-data="mobileMenu" @click.away="openMenu = false">
+          <div class="relative shrink-0">
+              <!-- navbar toggler -->
+              {{/*  <input id="nav-toggle" type="checkbox" class="hidden" />  */}}
+              <button
+                  aria-label="Toggle Menu"
+                  class="relative z-50 cursor-pointer md:hidden p-3 text-sky-700 bg-neutral-200 rounded-full "
+                  @click="openMenu = ! openMenu">
+                  <div x-bind:class="openMenu ? 'hidden' : 'visible'" class="flex flex-col text-xs"><i class="size-8 text-2xl fas fa-bars"></i></div>
+                  <div x-bind:class="openMenu ? 'visible' : 'hidden'" class="flex flex-col text-xs"><i class="size-8 text-2xl fas fa-xmark"></i></div>
+              </button>
+              {{/*  <span x-text="openMenu"></span>  */}}
+              <div id="nav-menu" x-bind:class="{ 'hidden': !openMenu, 'block': openMenu }"
+                  class="absolute right-0 top-full mt-1 z-50 w-max md:inline md:relative md:top-auto md:mt-0 md:left-auto md:right-0 text-xl ">
+                  {{ $menuType := .Param "menuType" | default "" }}
+                  {{- partial (printf "menu%s.html" $menuType) (dict "menuID" "main" "page" . "shade" "rose") -}}
+              </div>
+          </div>
+      </div>
     </div>
-    <div class="ml-auto flex items-start z-50" x-data="mobileMenu"  @click.away="openMenu = false">
-        <div class="relative shrink-0">
-            <!-- navbar toggler -->
-            {{/*  <input id="nav-toggle" type="checkbox" class="hidden" />  */}}
-            <button
-                aria-label="Toggle Menu"
-                class="relative z-50 cursor-pointer md:hidden p-3 text-sky-700 bg-neutral-200 rounded-full "
-                @click="openMenu = ! openMenu">
-                <div x-bind:class="openMenu ? 'hidden' : 'visible'" class="flex flex-col text-xs"><i class="size-8 text-2xl fas fa-bars"></i></div>
-                <div x-bind:class="openMenu ? 'visible' : 'hidden'" class="flex flex-col text-xs"><i class="size-8 text-2xl fas fa-xmark"></i></div>
-            </button>
-            {{/*  <span x-text="openMenu"></span>  */}}
-            <div id="nav-menu"  x-bind:class="{ 'hidden': !openMenu, 'block': openMenu }"
-                class="absolute right-0 top-full mt-1 z-50 w-max md:inline md:relative md:top-auto md:mt-0 md:left-auto md:right-0 text-xl ">
-                {{ $menuType := .Param "menuType" | default "" }}
-                {{- partial (printf "menu%s.html" $menuType) (dict "menuID" "main" "page" . "shade" "rose") -}}
-            </div>
-        </div>
-    </div>
-</div>
+  </div>
 </header>

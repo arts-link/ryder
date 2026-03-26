@@ -10,73 +10,72 @@
   {{- $showMiddleColumn = true }}
 {{- end }}
 
-{{- $footerLayout := .Param "footerLayout" }} <!-- Check for footerLayout param -->
 {{- $hasSocials := site.Data.social.main }}
 {{- $hasDarkToggle := .Param "showDarkToggle" }}
 {{- $hasRightContent := or $hasSocials $hasDarkToggle }}
 {{- $showPageMeta := and .Site.Params.showPubDate .IsPage }}
-{{- $hasLeftContent := or .Site.Copyright (ne (.Param "hideAttribution") true) $showPageMeta site.Params.enableGitInfo }}
+{{- $footerMetaTopOnly := or .Site.Copyright (ne (.Param "hideAttribution") true) }}
+{{- $footerMetaLower := or $showPageMeta site.Params.enableGitInfo }}
 
 <footer class="border-t w-full mt-auto text-neutral-100 {{ $footerClass }} ">
-  <div class="w-full px-3 py-5 md:px-4">
-    {{ if eq $footerLayout "stacked" }}
-      <div class="flex flex-col gap-5">
-    {{ else }}
-      <div class="flex flex-col gap-5 md:flex-row md:items-start md:justify-between md:gap-8">
-    {{ end }}
+  <div class="mx-auto w-full max-w-screen-2xl px-3 py-5 md:px-4">
+    <div class="flex flex-col gap-5">
+      {{ if $footerMetaTopOnly }}
+      <div class="footer-stacked-top">
+        {{- with .Site.Copyright | safeHTML }}
+        <p>{{ . }}</p>
+        {{- end }}
+        {{- partial "utils/attribution.html" . }}
+      </div>
+      {{ end }}
 
-      <div class="min-w-0 flex-1">
-        {{- if and $hasLeftContent $showMiddleColumn }}
-        <div class="grid gap-5 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-8">
+      <div class="footer-stacked-divider"></div>
+
+      <div class="flex flex-col gap-5 md:flex-row md:items-start md:justify-between md:gap-8">
+        <div class="min-w-0 flex-1">
+          {{- if and $footerMetaLower $showMiddleColumn }}
+          <div class="grid gap-5 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-8">
+            <div class="footer-meta-group">
+              {{- partial "utils/page_meta.html" . }}
+            </div>
+            <div class="footer-secondary-group">
+              {{- partial "menu.html" (dict "menuID" "footer" "page" .) }}
+              {{- if .Site.Params.footer.tagCloud }}
+                {{- partial "utils/taxonomy-string.html" . }}
+              {{- end }}
+            </div>
+          </div>
+          {{- else if $footerMetaLower }}
           <div class="footer-meta-group">
-            {{- with .Site.Copyright | safeHTML }}
-            <p>{{ . }}</p>
-            {{- end }}
-            {{- partial "utils/attribution.html" . }}
             {{- partial "utils/page_meta.html" . }}
           </div>
+          {{- else if $showMiddleColumn }}
           <div class="footer-secondary-group">
             {{- partial "menu.html" (dict "menuID" "footer" "page" .) }}
             {{- if .Site.Params.footer.tagCloud }}
               {{- partial "utils/taxonomy-string.html" . }}
             {{- end }}
           </div>
-        </div>
-        {{- else if $hasLeftContent }}
-        <div class="footer-meta-group">
-          {{- with .Site.Copyright | safeHTML }}
-          <p>{{ . }}</p>
-          {{- end }}
-          {{- partial "utils/attribution.html" . }}
-          {{- partial "utils/page_meta.html" . }}
-        </div>
-        {{- else if $showMiddleColumn }}
-        <div class="footer-secondary-group">
-          {{- partial "menu.html" (dict "menuID" "footer" "page" .) }}
-          {{- if .Site.Params.footer.tagCloud }}
-            {{- partial "utils/taxonomy-string.html" . }}
           {{- end }}
         </div>
-        {{- end }}
-      </div>
 
-      {{- if $hasRightContent }}
-      <div class="footer-utility-rail">
-        {{- with $hasSocials }}
-        <div class="footer-utility-group">
-          <div class="footer-utility-label">Connect</div>
-          {{- partial "utils/socialslist.html" $ }}
-        </div>
-        {{- end }}
-        {{- if $hasDarkToggle }}
-        <div class="footer-utility-group">
-          <div class="footer-utility-label">Theme</div>
-          {{- partial "utils/dark-toggle.html" $ }}
+        {{- if $hasRightContent }}
+        <div class="footer-utility-rail">
+          {{- with $hasSocials }}
+          <div class="footer-utility-group">
+            <div class="footer-utility-label">Connect</div>
+            {{- partial "utils/socialslist.html" $ }}
+          </div>
+          {{- end }}
+          {{- if $hasDarkToggle }}
+          <div class="footer-utility-group">
+            <div class="footer-utility-label">Theme</div>
+            {{- partial "utils/dark-toggle.html" $ }}
+          </div>
+          {{- end }}
         </div>
         {{- end }}
       </div>
-      {{- end }}
-      
     </div>
   </div>
 </footer>

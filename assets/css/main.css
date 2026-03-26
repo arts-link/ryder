@@ -353,6 +353,21 @@
     }
   }
 
+  .footer-stacked-top {
+    @apply flex flex-col items-center gap-1 px-2 text-center text-sm leading-6 text-neutral-100/90;
+    p {
+      @apply m-0 font-semibold;
+    }
+
+    a {
+      @apply font-semibold;
+    }
+  }
+
+  .footer-stacked-divider {
+    @apply h-px w-full bg-white/10;
+  }
+
   .footer-secondary-group {
     @apply flex flex-col gap-5;
   }

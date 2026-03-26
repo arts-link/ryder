@@ -50,7 +50,6 @@ Mixed PascalCase, camelCase, and all-lowercase in `hugo.toml` params:
 
 ### Undocumented But Useful
 - `[params.twClasses]` block — powerful TailwindCSS class overrides for header/footer, completely hidden
-- `footerLayout = "stacked"` param — exists in footer.html, not documented anywhere
 - `cardCategoryColorsDefault`, `homeFeatureWide`, `detailpageURL` — used in templates, undocumented
 
 ### Shortcodes: Scope Audit
@@ -303,4 +302,3 @@ Surgical visual modernization. No new frameworks, no structural changes, no new 
 - `description`: removed Markdown fragment
 - `license`: `"ISC"` → `"MIT"` (matches theme.toml)
 - Removed `"main": "index.js"` (meaningless for a Hugo theme)
-

@@ -5,7 +5,7 @@ title= "The Ryder Theme"
 theme= ["ryder"]
 summaryLength = 15
 enableRobotsTXT = true
-copyright = "©️ Ryder Theme 2024"
+copyright = "©️ Ryder Theme 2026"
 enableEmoji = true
 # enableGitInfo = true  # adds git commit links to footer; 40-50% slower on large sites
 
@@ -41,12 +41,12 @@ themesDir= "../../"
   # articleBackgroundStyle = "bg-gradient-to-l from-blue-100 to-green-100"
   # featuredArticleBackgroundStyle = "bg-gradient-to-l from-yellow-200 to-lime-200"
   showPubDate = true
-  # headerType = "-fun" # "-fun" or "-custom" to make your own
-  # footerType = "-fun" # "-fun" or "-custom" to make your own
-  # menuType = "-fun" # "-fun" or "-custom" to make your own
-  # listCardType = "-super-simple" # "-fun" or "-custom" to make your own
-  # homeListCardType = "-fun" # "-fun" or "-custom" to make your own
-  # homeFeatureListCardType = "-fun" # "-fun" or "-custom" to make your own
+  # headerType = "-custom" # create layouts/partials/header-custom.html in your site
+  # footerType = "-custom" # create layouts/partials/footer-custom.html in your site
+  # menuType = "-custom" # create layouts/partials/menu-custom.html in your site
+  # listCardType = "-custom" # create a matching card partial in your site
+  # homeListCardType = "-custom"
+  # homeFeatureListCardType = "-custom"
 
   # Content Security Policy — applied via <meta http-equiv="Content-Security-Policy">.
   # The theme ships with secure defaults. Extend per-directive as needed.

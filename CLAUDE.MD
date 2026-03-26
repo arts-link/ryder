@@ -55,9 +55,9 @@ The theme uses Hugo's template lookup order with a powerful customization system
 
 2. **Dynamic Partial Loading** (`layouts/partials/`)
    Theme supports variants via configuration parameters:
-   - Header: `header.html` (default) or `header-fun.html` (via `headerType = "-fun"`)
-   - Menu: `menu.html` (default) or `menu-fun.html` (via `menuType = "-fun"`)
-   - Footer: `footer.html` (default) or `footer-fun.html` (via `footerType = "-fun"`)
+   - Header: `header.html` (default) or a site override like `header-custom.html` via `headerType = "-custom"`
+   - Menu: `menu.html` (default) or a site override like `menu-custom.html` via `menuType = "-custom"`
+   - Footer: `footer.html` (default) or a site override like `footer-custom.html` via `footerType = "-custom"`
    - Cards: Multiple variants (`card-super-simple.html`, etc.) via `listCardType`
 
    **Implementation pattern in baseof.html:**
@@ -206,10 +206,6 @@ Fields: `title`, `name`, `icon` (Font Awesome classes), `link`, `weight` (sort o
 
 Pages with `homeFeature: true` appear in the featured grid (not the paginated feed). The feed excludes pages with empty summaries, and respects site params `excludedSections`, `excludedCategories`, `excludedTags`. Sort order is controlled via `listSortBy` and `listSortOrder` params.
 
-**Footer layout option:**
-
-Set `footerLayout = "stacked"` in params for a single-column stacked footer instead of the default 2-3 column grid.
-
 ## Critical Installation Notes
 
 ### When Copying exampleSite Config
@@ -284,7 +280,7 @@ GitHub Actions (`.github/workflows/hugo.yml`) builds exampleSite and deploys to 
 When implementation approach is unclear:
 - Should this be a shortcode or a partial?
 - Does this need configuration via hugo.toml?
-- Should this support the variant suffix pattern (e.g., `-fun`, `-custom`)?
+- Should this support the variant suffix pattern (e.g., `-custom`)?
 - Should this be demonstrated in exampleSite?
 - Does this align with "barebones with practical additions"?
 - Will this work across all production sites using the theme?

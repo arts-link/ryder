@@ -7,14 +7,14 @@
   {{ if not hugo.IsProduction }}
     {{ partial "tw-size-indicator.html" . }}
   {{ end }}
-  <div class="min-h-lvh flex flex-col container mx-auto">
+  <div class="min-h-lvh flex w-full flex-col">
     {{ $headerType := .Param "headerType" | default "" }}
     {{- partial (printf "header%s.html" $headerType) . }}
     {{- partial "alphaAlert.html" . }}
-    <main class="container max-h-max mx-auto ">
+    <main class="w-full flex-1">
       {{ $showBreadCrumbs := .Param "showBreadCrumbs" | default true }}
       {{ if and (not .IsHome) $showBreadCrumbs }}
-      <div class="max-w-screen-lg mx-auto">
+      <div class="mx-auto max-w-screen-lg px-3 md:px-8 lg:px-12">
         {{- partial "breadcrumb.html" . }}
       </div>
       {{ end }}

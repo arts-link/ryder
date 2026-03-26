@@ -66,7 +66,7 @@ The copied config is a starter configuration from the theme demo. Before buildin
 - **Custom RSS feed** — styled XSLT browser-readable feed
 - **Social links** — footer social icons via `data/social.json`
 - **i18n** — partial translations for English, German, French
-- **Template variants** — header, footer, menu, and card partials support `-fun` and custom suffix variants
+- **Template overrides** — header, footer, menu, and card partials can be swapped with your own suffix-based variants
 - **Hidden home layout** — full-bleed cover image with minimal content for landing pages
 
 ---
@@ -138,6 +138,42 @@ Full example in [`exampleSite/config/_default/hugo.toml`](https://github.com/art
   name = "Your Name"
   email = "you@example.com"
 ```
+
+### Template Overrides
+
+Ryder keeps the page frame stable and lets you swap selected partials by suffix instead of editing the theme's base layout.
+
+For example, if you set:
+
+```toml
+[params]
+  headerType = "-custom"
+  footerType = "-custom"
+```
+
+then Hugo will look for:
+
+- `layouts/partials/header-custom.html`
+- `layouts/partials/footer-custom.html`
+
+in your site first, before falling back to the theme.
+
+The same pattern applies to other overridable partials:
+
+```toml
+[params]
+  menuType = "-custom"
+  listCardType = "-custom"
+  homeListCardType = "-custom"
+  homeFeatureListCardType = "-custom"
+```
+
+That resolves to partials such as:
+
+- `layouts/partials/menu-custom.html`
+- `layouts/partials/card-custom.html`
+
+Use this when you want to replace a whole component cleanly without editing `baseof.html` or forking the theme's default partial names.
 
 ### Global Banners
 
@@ -420,9 +456,9 @@ homeFeatureTitle = "Custom card title"
 Header, footer, menu, and card partials support variant suffixes. Set in `hugo.toml` or per-page front matter:
 
 ```toml
-headerType = "-fun"   # loads header-fun.html
-footerType = "-fun"
-menuType = "-fun"
+headerType = "-custom"   # loads header-custom.html
+footerType = "-custom"   # loads footer-custom.html
+menuType = "-custom"     # loads menu-custom.html
 listCardType = "-super-simple"
 ```
 
