@@ -37,6 +37,11 @@ hugo --minify                     # Production build
 ### Testing
 The `exampleSite/` directory is the primary test environment. All theme changes MUST be tested here before release.
 
+Required verification before push:
+- Run `npm test`
+- Run `hugo --source exampleSite --destination /tmp/ryder-check`
+- Do not rely only on a targeted test when the change touched shared templates, CSS, JS, or theme configuration
+
 ## Release Maintenance
 
 - When the theme version receives a minor version bump or anything greater, refresh the Hugo themes submission screenshots in `images/screenshot.png` (1500x1000) and `images/tn.png` (900x600).
@@ -236,7 +241,7 @@ By default, footer shows NO taxonomy lists. Must configure `params.footer.taxono
 ### Adding New Features
 1. Read existing code first to understand patterns
 2. Update `layouts/` or `layouts/partials/` as needed
-3. Test in `exampleSite/` directory
+3. Run `npm test` and `hugo --source exampleSite --destination /tmp/ryder-check`
 4. Document in README.md if user-facing
 5. Update `theme.toml` version if significant
 6. Maintain Hugo 0.146+ compatibility

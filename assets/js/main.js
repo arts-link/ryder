@@ -27,6 +27,7 @@ import {
   faMoon,
   faMusic,
   faOm,
+  faPenToSquare,
   faRss,
   faSeedling,
   faShieldDog,
@@ -62,6 +63,7 @@ library.add(
   faBowlFood, faBullhorn, faCalendarDays, faCameraRetro, faChartLine, faCircleCheck, faCircleExclamation,
   faCircleInfo, faCode, faComputer, faDumpsterFire, faDungeon, faGlobe,
   faHouse, faImage, faMapLocationDot, faMoon, faMusic, faOm,
+  faPenToSquare,
   faShieldDog, faSignsPost, faSnowflake, faSun, faTags, faTimes,
   faRss, faSeedling, faTriangleExclamation, faUtensils, faWandMagicSparkles, faXmark,
   // regular
