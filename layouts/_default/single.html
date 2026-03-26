@@ -1,29 +1,58 @@
 {{ define "main" }}
   <div class="p-2 max-w-screen-lg mx-auto ">
     <div class=" grid grid-cols-1 md:grid-cols-12 gap-x-1 ">
-      <header class="w-full md:col-span-12">
-        <div class="">
-          {{ $headerClass := "" }} 
-          {{ with .Param "twClasses.headerBackgroundFrameOuter" }}
+      <header class="article-header">
+        {{ $headerClass := "" }}
+        {{ with .Param "twClasses.headerBackgroundFrameOuter" }}
           {{ $headerClass = . }}
-          {{ end }}
-          <h1 class=" rounded-t-lg p-3 flex items-center {{ $headerClass }}">
-            {{- if .Params.homeFeatureIcon }}
-            <i class="{{ .Params.homeFeatureIcon }} mr-2 text-4xl"></i>
-            {{- end }}
-            {{ .Title }}
-          </h1>
-            {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
-            {{ $dateHuman := .Date | time.Format ":date_long" }}
-            <time datetime="{{ $dateMachine }}" class="{{- if ne site.Params.showDate true }}hidden{{- end }}">{{ $dateHuman }}</time>
-            <div class="{{- if ne site.Params.showShareButtons true }}hidden{{- end }}">
-              {{ partial "share-buttons" . }}
+        {{ end }}
+        {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
+        {{ $dateHuman := .Date | time.Format ":date_long" }}
+        {{ $lastmodMachine := .Lastmod | time.Format "2006-01-02T15:04:05-07:00" }}
+        {{ $lastmodHuman := .Lastmod | time.Format ":date_long" }}
+        {{ $showPublished := or (eq site.Params.showDate true) (eq site.Params.showPubDate true) }}
+        {{ $showUpdated := and (eq site.Params.showPubDate true) (ne .Lastmod .Date) }}
+        <div class="article-header-shell">
+          <div class="article-header-band {{ $headerClass }}">
+            <div class="article-header-title-row">
+              {{- if .Params.homeFeatureIcon }}
+                <i class="{{ .Params.homeFeatureIcon }} article-header-icon"></i>
+              {{- end }}
+              <h1 class="article-header-title">{{ .Title }}</h1>
             </div>
+          </div>
+          {{ if or $showPublished $showUpdated }}
+            <div class="article-header-body">
+              <div class="article-header-meta">
+                {{ if $showPublished }}
+                  <div class="article-header-meta-item">
+                    <i class="fa-solid fa-calendar-days article-header-meta-icon"></i>
+                    <div>
+                      <span class="article-header-meta-label">Published</span>
+                      <time datetime="{{ $dateMachine }}" class="article-header-meta-value">{{ $dateHuman }}</time>
+                    </div>
+                  </div>
+                {{ end }}
+                {{ if $showUpdated }}
+                  <div class="article-header-meta-item">
+                    <i class="fa-solid fa-pen-to-square article-header-meta-icon"></i>
+                    <div>
+                      <span class="article-header-meta-label">Updated</span>
+                      <time datetime="{{ $lastmodMachine }}" class="article-header-meta-value">{{ $lastmodHuman }}</time>
+                    </div>
+                  </div>
+                {{ end }}
+              </div>
+            </div>
+          {{ end }}
         </div>
       </header>
       <div class="w-full {{ if .Params.hideAsideBar }}md:col-span-12{{ else }}md:col-span-10{{ end }} prose max-w-max-screen-xl min-w-full lg:prose-lg dark:prose-invert ">
         <div class="content">
           {{ .Content |  safeHTML }}
+        </div>
+        <div class="not-prose mt-8 border-t border-slate-200/80 pt-5 dark:border-slate-700/70 {{- if ne site.Params.showShareButtons true }}hidden{{- end }}">
+          {{ partial "share-buttons" . }}
         </div>
         {{ if .Site.Config.Services.Disqus.Shortname }}
           <div id="disqus_container">
@@ -63,4 +92,3 @@
     </div>
   </div>
 {{ end }}
-

@@ -29,53 +29,184 @@
 
 
 @layer components {
+  .article-header {
+    @apply w-full md:col-span-12 mb-4;
+  }
+
+  .article-header-shell {
+    @apply overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-sm;
+    @apply dark:border-slate-700/70 dark:bg-slate-900/70;
+  }
+
+  .article-header-band {
+    @apply px-4 py-4 sm:px-5 sm:py-5 md:px-6 md:py-6;
+  }
+
+  .article-header-title-row {
+    @apply flex items-start gap-3 sm:gap-4;
+  }
+
+  .article-header-icon {
+    @apply mt-0.5 shrink-0 text-2xl text-white/90 sm:text-3xl;
+  }
+
+  .article-header-title {
+    @apply m-0 text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl;
+  }
+
+  .article-header-body {
+    @apply border-t border-slate-200/80 bg-white/95 px-4 py-4;
+    @apply sm:px-5 md:px-6 dark:border-slate-700/70 dark:bg-slate-950/30;
+  }
+
+  .article-header-meta {
+    @apply flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:gap-x-6 sm:gap-y-3;
+  }
+
+  .article-header-meta-item {
+    @apply inline-flex items-start gap-3 text-slate-700 dark:text-slate-200;
+  }
+
+  .article-header-meta-icon {
+    @apply mt-0.5 shrink-0 text-sm text-sky-700 dark:text-sky-300;
+  }
+
+  .article-header-meta-label {
+    @apply block text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400;
+  }
+
+  .article-header-meta-value {
+    @apply text-sm leading-tight sm:text-[15px];
+  }
+
     /* Share buttons (sharingbuttons.io) --- */
   .resp-sharing-button__link,
   .resp-sharing-button__icon { display: inline-block; }
   .resp-sharing-button__link {
     text-decoration: none;
-    color: #fff !important;
-    margin: var(--sb-margin, 0.5em);
+    color: inherit !important;
+    margin: 0;
   }
   .resp-sharing-button {
-    border-radius: 5px;
-    transition: 25ms ease-out;
-    padding: 0.5em 0.75em;
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300/70 bg-white px-2.5 py-2 text-slate-600 shadow-sm;
+    @apply transition-all duration-150 ease-in-out;
+    font-family: "Titillium Web", Helvetica Neue, Helvetica, Arial, sans-serif;
     font-size: var(--sb-font-size, 16px);
   }
   .resp-sharing-button__icon svg { width: 1em; height: 1em; margin-right: 0.4em; vertical-align: middle; }
   .resp-sharing-button--small svg { margin: 0; vertical-align: middle; }
-  .resp-sharing-button__icon { stroke: #fff; fill: none; }
+  .resp-sharing-button__icon { stroke: currentColor; fill: none; }
   .resp-sharing-button__icon--solid,
-  .resp-sharing-button__icon--solidcircle { fill: #fff; stroke: none; }
+  .resp-sharing-button__icon--solidcircle { fill: currentColor; stroke: none; }
 
-  .resp-sharing-button--disqus { background-color: #004C54; border-color: #004C54; }
-  .resp-sharing-button--disqus:hover, .resp-sharing-button--disqus:active { background-color: #006c78; border-color: #006c78; }
-  .resp-sharing-button--x { background-color: #333; border-color: #333; }
-  .resp-sharing-button--x:hover, .resp-sharing-button--x:active { background-color: #000; border-color: #000; }
-  .resp-sharing-button--pinterest { background-color: #bd081c; border-color: #bd081c; }
-  .resp-sharing-button--pinterest:hover, .resp-sharing-button--pinterest:active { background-color: #8c0615; border-color: #8c0615; }
-  .resp-sharing-button--facebook { background-color: #3b5998; border-color: #3b5998; }
-  .resp-sharing-button--facebook:hover, .resp-sharing-button--facebook:active { background-color: #2d4373; border-color: #2d4373; }
-  .resp-sharing-button--tumblr { background-color: #35465C; border-color: #35465C; }
-  .resp-sharing-button--tumblr:hover, .resp-sharing-button--tumblr:active { background-color: #222d3c; border-color: #222d3c; }
-  .resp-sharing-button--reddit { background-color: #ff4500; border-color: #ff4500; }
-  .resp-sharing-button--reddit:hover, .resp-sharing-button--reddit:active { background-color: #ff5700; border-color: #ff5700; }
-  .resp-sharing-button--linkedin { background-color: #0077b5; border-color: #0077b5; }
-  .resp-sharing-button--linkedin:hover, .resp-sharing-button--linkedin:active { background-color: #046293; border-color: #046293; }
-  .resp-sharing-button--email { background-color: #777; border-color: #777; }
-  .resp-sharing-button--email:hover, .resp-sharing-button--email:active { background-color: #5e5e5e; border-color: #5e5e5e; }
-  .resp-sharing-button--xing { background-color: #1a7576; border-color: #1a7576; }
-  .resp-sharing-button--xing:hover, .resp-sharing-button--xing:active { background-color: #114C4C; border-color: #114C4C; }
-  .resp-sharing-button--whatsapp { background-color: #25D366; border-color: #25D366; }
-  .resp-sharing-button--whatsapp:hover, .resp-sharing-button--whatsapp:active { background-color: #1DA851; border-color: #1DA851; }
-  .resp-sharing-button--hackernews { background-color: #FF6600; border-color: #FF6600; }
-  .resp-sharing-button--hackernews:hover, .resp-sharing-button--hackernews:active { background-color: #FB6200; border-color: #FB6200; }
-  .resp-sharing-button--vk { background-color: #507299; border-color: #507299; }
-  .resp-sharing-button--vk:hover, .resp-sharing-button--vk:active { background-color: #43648c; border-color: #43648c; }
-  .resp-sharing-button--telegram { background-color: #54A9EB; border-color: #54A9EB; }
-  .resp-sharing-button--telegram:hover, .resp-sharing-button--telegram:active { background-color: #4B97D1; border-color: #4B97D1; }
+  .share-module {
+    @apply flex flex-col items-start gap-2;
+  }
+
+  .share-module-label {
+    @apply text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500;
+  }
+
+  .share-module-list {
+    @apply flex flex-wrap items-center gap-2;
+  }
+
+  .share-module-comments {
+    @apply inline-flex items-center gap-2;
+  }
+
+  .resp-sharing-button__link:hover .resp-sharing-button,
+  .resp-sharing-button__link:focus-visible .resp-sharing-button {
+    @apply -translate-y-px border-slate-400 bg-slate-50 text-slate-900 shadow-md;
+  }
+
+  .resp-sharing-button__link:focus-visible {
+    @apply outline-none;
+  }
+
+  .resp-sharing-button--small {
+    @apply h-9 min-w-9 px-0;
+  }
+
+  .resp-sharing-button--medium {
+    @apply min-h-9 px-3;
+  }
+
+  .resp-sharing-button--large {
+    @apply min-h-10 px-3.5;
+  }
+
+  .resp-sharing-button--x,
+  .resp-sharing-button--facebook,
+  .resp-sharing-button--tumblr,
+  .resp-sharing-button--email,
+  .resp-sharing-button--pinterest,
+  .resp-sharing-button--linkedin,
+  .resp-sharing-button--reddit,
+  .resp-sharing-button--xing,
+  .resp-sharing-button--whatsapp,
+  .resp-sharing-button--hackernews,
+  .resp-sharing-button--vk,
+  .resp-sharing-button--telegram,
+  .resp-sharing-button--disqus {
+    @apply text-white border-transparent;
+  }
+
+  .resp-sharing-button--x:hover,
+  .resp-sharing-button--x:active,
+  .resp-sharing-button--facebook:hover,
+  .resp-sharing-button--facebook:active,
+  .resp-sharing-button--tumblr:hover,
+  .resp-sharing-button--tumblr:active,
+  .resp-sharing-button--email:hover,
+  .resp-sharing-button--email:active,
+  .resp-sharing-button--pinterest:hover,
+  .resp-sharing-button--pinterest:active,
+  .resp-sharing-button--linkedin:hover,
+  .resp-sharing-button--linkedin:active,
+  .resp-sharing-button--reddit:hover,
+  .resp-sharing-button--reddit:active,
+  .resp-sharing-button--xing:hover,
+  .resp-sharing-button--xing:active,
+  .resp-sharing-button--whatsapp:hover,
+  .resp-sharing-button--whatsapp:active,
+  .resp-sharing-button--hackernews:hover,
+  .resp-sharing-button--hackernews:active,
+  .resp-sharing-button--vk:hover,
+  .resp-sharing-button--vk:active,
+  .resp-sharing-button--telegram:hover,
+  .resp-sharing-button--telegram:active,
+  .resp-sharing-button--disqus:hover,
+  .resp-sharing-button--disqus:active {
+    @apply border-transparent text-white;
+  }
+
+  .resp-sharing-button--disqus { background-color: rgb(0 76 84 / 88%); }
+  .resp-sharing-button--disqus:hover, .resp-sharing-button--disqus:active { background-color: rgb(0 108 120 / 92%); }
+  .resp-sharing-button--x { background-color: rgb(51 51 51 / 88%); }
+  .resp-sharing-button--x:hover, .resp-sharing-button--x:active { background-color: rgb(0 0 0 / 92%); }
+  .resp-sharing-button--pinterest { background-color: rgb(189 8 28 / 88%); }
+  .resp-sharing-button--pinterest:hover, .resp-sharing-button--pinterest:active { background-color: rgb(140 6 21 / 92%); }
+  .resp-sharing-button--facebook { background-color: rgb(59 89 152 / 88%); }
+  .resp-sharing-button--facebook:hover, .resp-sharing-button--facebook:active { background-color: rgb(45 67 115 / 92%); }
+  .resp-sharing-button--tumblr { background-color: rgb(53 70 92 / 88%); }
+  .resp-sharing-button--tumblr:hover, .resp-sharing-button--tumblr:active { background-color: rgb(34 45 60 / 92%); }
+  .resp-sharing-button--reddit { background-color: rgb(255 69 0 / 88%); }
+  .resp-sharing-button--reddit:hover, .resp-sharing-button--reddit:active { background-color: rgb(255 87 0 / 92%); }
+  .resp-sharing-button--linkedin { background-color: rgb(0 119 181 / 88%); }
+  .resp-sharing-button--linkedin:hover, .resp-sharing-button--linkedin:active { background-color: rgb(4 98 147 / 92%); }
+  .resp-sharing-button--email { background-color: rgb(119 119 119 / 88%); }
+  .resp-sharing-button--email:hover, .resp-sharing-button--email:active { background-color: rgb(94 94 94 / 92%); }
+  .resp-sharing-button--xing { background-color: rgb(26 117 118 / 88%); }
+  .resp-sharing-button--xing:hover, .resp-sharing-button--xing:active { background-color: rgb(17 76 76 / 92%); }
+  .resp-sharing-button--whatsapp { background-color: rgb(37 211 102 / 88%); }
+  .resp-sharing-button--whatsapp:hover, .resp-sharing-button--whatsapp:active { background-color: rgb(29 168 81 / 92%); }
+  .resp-sharing-button--hackernews { background-color: rgb(255 102 0 / 88%); }
+  .resp-sharing-button--hackernews:hover, .resp-sharing-button--hackernews:active { background-color: rgb(251 98 0 / 92%); }
+  .resp-sharing-button--vk { background-color: rgb(80 114 153 / 88%); }
+  .resp-sharing-button--vk:hover, .resp-sharing-button--vk:active { background-color: rgb(67 100 140 / 92%); }
+  .resp-sharing-button--telegram { background-color: rgb(84 169 235 / 88%); }
+  .resp-sharing-button--telegram:hover, .resp-sharing-button--telegram:active { background-color: rgb(75 151 209 / 92%); }
   /* --- End share buttons --- */
 
   .article {
