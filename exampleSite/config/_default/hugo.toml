@@ -78,7 +78,7 @@ themesDir= "../../"
 
   [params.twClasses]
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
-    headerBackgroundFrameInner = "h-[400px] bg-cover bg-[center_30%]"
+    headerBackgroundFrameInner = "h-[240px] sm:h-[400px] bg-cover bg-center sm:bg-[center_30%]"
     headerBackgroundImage = "images/hyder_theme_header.webp"
 
 [[params.alphaAlert]]
