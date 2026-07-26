@@ -1,0 +1,38 @@
+{{- /*
+Spotify embed shortcode. The theme already bundles the faSpotify icon (used
+by cta-button.html) and the CSP already anticipates open.spotify.com via the
+"spotify" preset in params.csp.embeds — but until now there was no shortcode
+to actually embed a player. This one also registers its host on .Page.Store
+so head/csp.html folds it into frame-src automatically; the embeds preset is
+no longer required for this shortcode specifically (still useful for a raw
+hand-written iframe).
+
+@param {string} type   One of "track", "album", "playlist", "artist",
+                       "episode", "show". Defaults to "track".
+@param {string} id     Spotify ID for that type, e.g. "4uLU6hMCjMI75M1A2tKUQC" —
+                       the last path segment of a share URL
+                       (https://open.spotify.com/track/<id>). Also accepted
+                       positionally as the first argument.
+@param {string} height Iframe height in px. Defaults to 152 for track/episode,
+                       352 for album/playlist/artist/show.
+
+@example: {{< spotify-embed type="track" id="4uLU6hMCjMI75M1A2tKUQC" >}}
+@example: {{< spotify-embed type="playlist" id="37i9dQZF1DXcBWIGoYBM5M" >}}
+*/ -}}
+{{- $id := .Get "id" | default (.Get 0) -}}
+{{- if not $id -}}
+  {{- errorf "spotify-embed shortcode requires an id param, e.g. id=%q" "4uLU6hMCjMI75M1A2tKUQC" -}}
+{{- end -}}
+{{- $type := .Get "type" | default "track" -}}
+{{- $compact := in (slice "track" "episode") $type -}}
+{{- $height := .Get "height" | default (cond $compact "152" "352") -}}
+{{- .Page.Store.SetInMap "cspFrameSrc" "https://open.spotify.com" "https://open.spotify.com" -}}
+<iframe
+  style="border-radius:12px"
+  src="https://open.spotify.com/embed/{{ $type }}/{{ $id }}?utm_source=generator"
+  width="100%"
+  height="{{ $height }}"
+  frameborder="0"
+  allowfullscreen
+  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+  loading="lazy"></iframe>

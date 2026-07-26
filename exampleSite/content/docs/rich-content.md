@@ -19,7 +19,7 @@ Embed YouTube, Vimeo, and SoundCloud with shortcodes. Video and iframe embeds re
 
 ## CSP setup for video embeds
 
-Iframes from external domains are blocked by the theme's Content Security Policy by default. The `soundcloud` and `openstreetmap` shortcodes register their own host automatically, but Hugo's built-in `youtube` and `vimeo` shortcodes have no such hook — allow their hosts with the `embeds` preset under `[params.csp]` in `hugo.toml`:
+Iframes from external domains are blocked by the theme's Content Security Policy by default. The `soundcloud`, `openstreetmap`, `youtube-embed`, and `spotify-embed` shortcodes register their own host automatically, but Hugo's built-in `youtube` and `vimeo` shortcodes have no such hook — allow their hosts with the `embeds` preset under `[params.csp]` in `hugo.toml`:
 
 ```toml
 [params.csp]
@@ -46,6 +46,20 @@ https://www.youtube.com/watch?v=VLvVNMbQIRY
 {{< /highlight >}}
 
 {{< youtube VLvVNMbQIRY >}}
+
+### `youtube-embed` — the theme's own shortcode
+
+Ryder also ships its own `youtube-embed` shortcode, named distinctly rather
+than overriding Hugo's built-in one (so the built-in keeps working exactly as
+above). The difference: `youtube-embed` registers its host on `.Page.Store`
+the same way `soundcloud` and `openstreetmap` do, so it needs **no**
+`embeds` config at all.
+
+{{< highlight go-html-template >}}
+{{</* youtube-embed id="VLvVNMbQIRY" */>}}
+{{< /highlight >}}
+
+{{< youtube-embed id="VLvVNMbQIRY" >}}
 
 ---
 
@@ -87,3 +101,26 @@ Use the `soundcloud` shortcode with an API resource URL. To find a track's API U
   url="https://api.soundcloud.com/tracks/1120047793"
   show_user="false"
 >}}
+
+---
+
+## Spotify
+
+The `spotify-embed` shortcode covers tracks, albums, playlists, artists,
+episodes, and shows, and registers `open.spotify.com` on `.Page.Store`
+automatically — no `embeds` config needed for it specifically (the
+`spotify` preset is still there for a hand-written iframe).
+
+{{< highlight go-html-template >}}
+{{</* spotify-embed type="track" id="4uLU6hMCjMI75M1A2tKUQC" */>}}
+{{< /highlight >}}
+
+{{< spotify-embed type="track" id="4uLU6hMCjMI75M1A2tKUQC" >}}
+
+### Parameters
+
+| Parameter | Default | Description |
+|---|---|---|
+| `id` | — | Spotify ID for the given type (required); also accepted positionally |
+| `type` | `track` | `track`, `album`, `playlist`, `artist`, `episode`, or `show` |
+| `height` | `152` (track/episode) or `352` (others) | Iframe height in px |

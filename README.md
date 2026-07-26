@@ -474,6 +474,8 @@ enableGitInfo = true
 | `recipe-howto-steps-list` | Render recipe steps from front matter |
 | `picture` | Responsive image with lazy loading |
 | `soundcloud` | SoundCloud embed |
+| `youtube-embed` | YouTube embed that auto-registers its CSP host (named distinctly from Hugo's built-in `youtube`) |
+| `spotify-embed` | Spotify track/album/playlist/artist/episode/show embed, auto-registers its CSP host |
 | `amazon-associate-link` | Affiliate link with disclosure |
 | `font-awesome` | Inline Font Awesome icon |
 | `highlight-github` | GitHub-styled syntax highlight block |
