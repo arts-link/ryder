@@ -517,6 +517,8 @@ npm run build-tw    # Build
 npm run deploy-tw   # Build + minify for production
 ```
 
+The theme's own `hugo.toml` sets `[build] writeStats = true` plus cachebusters for `tailwind.config.js`/`postcss.config.js`/`assets/**`, and consuming sites inherit both (theme config merges into the site's; your own `[build]` block, if you set one, still wins). This writes `hugo_stats.json` to your project root on every build — add it to `.gitignore`, or track it deliberately if you rely on reproducing exact Tailwind class-discovery output across clones.
+
 ---
 
 ## JavaScript Dependencies

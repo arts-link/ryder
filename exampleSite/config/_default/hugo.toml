@@ -130,14 +130,7 @@ themesDir= "../../"
     source = "assets"
     target = "assets"
 
-[build]
-  writeStats = true
-  [[build.cachebusters]]
-    source = "(postcss|tailwind)\\.config\\.js"
-    target = "css"
-  [[build.cachebusters]]
-    source = "assets/.*\\.(js|ts|jsx|tsx)"
-    target = "js"
-  [[build.cachebusters]]
-    source = "assets/.*\\.(.*)$"
-    target = "$1"
+# writeStats and the cachebusters below are inherited from the theme's own
+# hugo.toml (theme config merges into the site's) as of v0.2.4 — no need to
+# duplicate them here. exampleSite doubles as the reference implementation,
+# so its absence here is deliberate: consumers should get these for free.

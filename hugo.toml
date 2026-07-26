@@ -12,3 +12,20 @@
 
 [outputs]
   home = ["HTML", "RSS", "LLMSTxt"]
+
+# Theme config merges into the consuming site's config, so these are inherited
+# by every site that uses this theme (a site's own [build] block still wins).
+# writeStats feeds tailwind.config.js's hugo_stats.json content glob for class
+# discovery; the cachebusters make `hugo server` pick up CSS/JS rebuilds after
+# editing tailwind.config.js, postcss.config.js, or assets/**.
+[build]
+  writeStats = true
+  [[build.cachebusters]]
+    source = "(postcss|tailwind)\\.config\\.js"
+    target = "css"
+  [[build.cachebusters]]
+    source = "assets/.*\\.(js|ts|jsx|tsx)"
+    target = "js"
+  [[build.cachebusters]]
+    source = "assets/.*\\.(.*)$"
+    target = "$1"
