@@ -749,7 +749,25 @@ npm run build-tw    # Build
 npm run deploy-tw   # Build + minify for production
 ```
 
-The theme's own `hugo.toml` sets `[build] writeStats = true` plus cachebusters for `tailwind.config.js`/`postcss.config.js`/`assets/**`, and consuming sites inherit both (theme config merges into the site's; your own `[build]` block, if you set one, still wins). This writes `hugo_stats.json` to your project root on every build — add it to `.gitignore`, or track it deliberately if you rely on reproducing exact Tailwind class-discovery output across clones.
+**Add this `[build]` block to your own site config** — Hugo merges only a subset of root config sections from themes, and `build` is not one of them, so you do **not** inherit it from Ryder:
+
+```toml
+[build]
+  writeStats = true
+  [[build.cachebusters]]
+    source = "(postcss|tailwind)\\.config\\.js"
+    target = "css"
+  [[build.cachebusters]]
+    source = "assets/.*\\.(js|ts|jsx|tsx)"
+    target = "js"
+  [[build.cachebusters]]
+    source = "assets/.*\\.(css|scss|sass)"
+    target = "css"
+```
+
+`writeStats` produces `hugo_stats.json` at your project root, which `tailwind.config.js` globs for class discovery; the cachebusters make `hugo server` pick up CSS/JS rebuilds. Without the block, Tailwind silently falls back to the `layouts/**/*.html` globs — most classes are still found, so nothing appears broken, but any class assembled dynamically in a template is purged from the CSS. Add `hugo_stats.json` to `.gitignore`, or track it deliberately if you need reproducible class discovery across clones.
+
+> **v0.2.4 note.** That release moved this block into the theme's own config on the assumption that consumers would inherit it. They don't. If you upgraded to v0.2.4 and deleted your `[build]` block, put it back.
 
 ---
 
