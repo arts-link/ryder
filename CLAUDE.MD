@@ -124,8 +124,13 @@ Partial translations exist for English (`en`), German (`de`), and French (`fr`) 
 ### CSS Architecture
 
 - **Source:** `assets/css/main.css` (TailwindCSS source)
-- **Output:** `assets/css/style.css` (generated, don't edit directly)
-- **Config:** `tailwind.config.js` with custom screens, fonts, background images
+- **Output:** none on disk. `head/css.html` resolves `css/main.css`, concatenates
+  `css/extended/*.css`, and pipes the result through `css.PostCSS` inside the
+  Hugo build, emitting a fingerprinted stylesheet to `public/css/`. There is no
+  checked-in build artifact — `assets/css/style.css` was one, read by nothing,
+  and was deleted in v0.3.0.
+- **Tokens:** `tailwind.preset.js` (theme, darkMode, plugins — what consumers require)
+- **Config:** `tailwind.config.js`, a thin wrapper adding only this repo's dev `content` globs
 - **PostCSS:** `postcss.config.js` (autoprefixer processing)
 - **JIT Compilation:** TailwindCSS scans `hugo_stats.json` for class usage (configured in `build.cachebusters`)
 
