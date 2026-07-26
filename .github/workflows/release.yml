@@ -39,33 +39,84 @@ jobs:
 
       - name: Determine version
         id: version
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+          INPUT_PRERELEASE: ${{ github.event.inputs.prerelease }}
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "tag=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
-            echo "prerelease=${{ github.event.inputs.prerelease }}" >> $GITHUB_OUTPUT
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            TAG="$INPUT_VERSION"
+            PRERELEASE="$INPUT_PRERELEASE"
           else
-            VERSION=$(grep '^version' theme.toml | sed "s/version = '//;s/'//")
-            echo "tag=$VERSION" >> $GITHUB_OUTPUT
-            echo "prerelease=true" >> $GITHUB_OUTPUT
+            TAG=$(grep '^version' theme.toml | sed "s/version = '//;s/'//")
+            # Only a version carrying a suffix (v0.0.5-alpha, v1.0.0-rc1) is a
+            # pre-release. GitHub excludes pre-releases from the repo's "Latest
+            # release" badge, so marking every automated release as one left the
+            # badge pinned to the last hand-made release from 2024.
+            case "$TAG" in
+              *-*) PRERELEASE=true ;;
+              *)   PRERELEASE=false ;;
+            esac
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "prerelease=$PRERELEASE" >> "$GITHUB_OUTPUT"
+
+      - name: Resolve release notes
+        id: notes
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+          INPUT_BODY: ${{ github.event.inputs.body }}
+        run: |
+          # Precedence: an explicit workflow_dispatch body, then the matching
+          # CHANGELOG.md section, then GitHub's auto-generated PR list.
+          NOTES="$INPUT_BODY"
+          if [ -z "$NOTES" ] && [ -f CHANGELOG.md ]; then
+            NOTES=$(awk -v tag="## $TAG" '
+              $0 == tag { found = 1; next }
+              found && /^## / { exit }
+              found { print }
+            ' CHANGELOG.md)
+          fi
+          # Trim leading/trailing blank lines.
+          NOTES=$(printf '%s' "$NOTES" | sed -e '/./,$!d' | sed -e :a -e '/^\n*$/{$d;N;ba' -e '}')
+          if [ -n "$NOTES" ]; then
+            {
+              echo "body<<RELEASE_NOTES_EOF"
+              echo "$NOTES"
+              echo "RELEASE_NOTES_EOF"
+              echo "found=true"
+            } >> "$GITHUB_OUTPUT"
+          else
+            echo "No release notes found for $TAG — falling back to generated notes."
+            {
+              echo "body="
+              echo "found=false"
+            } >> "$GITHUB_OUTPUT"
           fi
 
       - name: Check tag does not already exist
         id: check_tag
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
         run: |
-          if git ls-remote --tags origin | grep -q "refs/tags/${{ steps.version.outputs.tag }}$"; then
-            echo "Tag ${{ steps.version.outputs.tag }} already exists — skipping release."
-            echo "skip=true" >> $GITHUB_OUTPUT
+          if git ls-remote --tags origin | grep -q "refs/tags/$TAG$"; then
+            echo "Tag $TAG already exists — skipping release."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
           else
-            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Create tag
         if: steps.check_tag.outputs.skip == 'false'
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag ${{ steps.version.outputs.tag }}
-          git push origin ${{ steps.version.outputs.tag }}
+          # Annotated, so the tag itself carries the release name rather than
+          # being a bare pointer.
+          git tag -a "$TAG" -m "Ryder $TAG"
+          git push origin "$TAG"
 
       - name: Create GitHub release
         if: steps.check_tag.outputs.skip == 'false'
@@ -73,6 +124,7 @@ jobs:
         with:
           tag_name: ${{ steps.version.outputs.tag }}
           name: ${{ steps.version.outputs.tag }}
-          body: ${{ github.event.inputs.body }}
-          generate_release_notes: ${{ github.event.inputs.body == '' }}
+          body: ${{ steps.notes.outputs.body }}
+          generate_release_notes: ${{ steps.notes.outputs.found == 'false' }}
           prerelease: ${{ steps.version.outputs.prerelease == 'true' }}
+          make_latest: ${{ steps.version.outputs.prerelease == 'false' }}
