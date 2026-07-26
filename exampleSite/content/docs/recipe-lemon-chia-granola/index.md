@@ -12,6 +12,7 @@ tags = [
 ]
 homeFeature = true
 homeFeatureIcon = "fa-solid fa-bowl-food"
+og_image = "granola_fini_lemon_chia_seed.webp" # demonstrates the og_image front-matter escape hatch (see README > Dynamic OG Image)
 [menu]
  [menu.main]
   weight = 150

@@ -527,7 +527,28 @@ Most SEO metadata is automatic. A few optional settings unlock additional featur
 
 ### Dynamic OG Image
 
-If a page has no `feature*`, `cover*`, or `thumbnail*` image in its bundle, Ryder generates an Open Graph image at build time by overlaying the page title and site name onto your `og_image_default` base image. The result is a static `.webp` baked into your build — no server-side rendering.
+The OG image resolver checks, in order:
+
+1. **`og_image` front matter** — a per-page escape hatch. Point it at a
+   resource (a page-bundle image, or a path under `assets/`; a leading slash
+   is tolerated and stripped) and it's used as-is for that page, no
+   generation.
+2. **Page-bundle resources** — a `feature*`, `cover*`, or `thumbnail*` image
+   already in the page's bundle.
+3. **Generated card** — if neither of the above applies, Ryder generates an
+   Open Graph image at build time by overlaying the page title and site name
+   onto your `og_image_default` base image. The result is a static `.webp`
+   baked into your build — no server-side rendering.
+
+```toml
++++
+title = "A specific page"
+og_image = "my-hand-designed-card.png"   # page-bundle resource, or assets/-relative
++++
+```
+
+If you already have front matter named `og_image` for something else, note
+that it is now consumed by this resolver as of this widening.
 
 **`og_image_default` must live under `assets/`, not `static/`.** It is resolved with `resources.Get`, which only sees files under `assets/` — unlike `logo_png` (see [Logo](#logo)), which works from either `static/` or `assets/`. A leading slash is tolerated and stripped, but the file itself must be under `assets/`; a missing or `static/`-only file now fails the build with a named error instead of a nil-pointer panic.
 
