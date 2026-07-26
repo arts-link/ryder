@@ -396,6 +396,26 @@ Example:
 See the example docs page for a complete menu setup:
 [`exampleSite/content/docs/menus.md`](https://github.com/arts-link/ryder/blob/main/exampleSite/content/docs/menus.md)
 
+#### Conditional menu entries
+
+Hide a menu entry unless a `data/*.json` file (shaped `{"items": [...]}`) has
+content, via `hideIfEmptyData` under the entry's own `[menus.main.params]`:
+
+```toml
+[[menus.main]]
+  name = "Press"
+  pageRef = "/press"
+  weight = 40
+  [menus.main.params]
+    hideIfEmptyData = "press"   # renders only if data/press.json's items is non-empty
+```
+
+This replaces forking the entire nav to append a hand-rolled
+`{{ if gt (len (.Site.Data.press.items | default slice)) 0 }}` check — see
+`exampleSite/config/_default/hugo.toml`, where "Press" (backed by
+`data/press.json`) renders and "Merch" (backed by a `data/merch.json` that
+doesn't exist) does not.
+
 ### GitInfo (optional)
 
 Enables GitHub commit/history/blame links in the footer. Has a 40–50% build time cost on large sites — disabled by default.
