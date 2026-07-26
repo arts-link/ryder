@@ -1,6 +1,7 @@
 {{- $loadLeaflet := .Param "loadLeaflet" | default false -}}
+{{- $darkMode := partial "utils/dark-mode.html" . -}}
 <template id="theme-config">{
-  "showDarkToggle": {{ .Param "showDarkToggle" | default false }},
+  "showDarkToggle": {{ eq $darkMode "toggle" }},
   "loadLeaflet": {{ $loadLeaflet }}
   {{- if $loadLeaflet }}
   {{- with resources.Get "images/leaflet/marker-icon.png" }},"leafletMarkerIconUrl": "{{ (. | fingerprint).RelPermalink }}"{{ end }}

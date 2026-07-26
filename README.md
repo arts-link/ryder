@@ -103,7 +103,7 @@ Full example in [`exampleSite/config/_default/hugo.toml`](https://github.com/art
 
 ```toml
 [params]
-  showDarkToggle = true          # Dark mode toggle
+  darkMode = "system"             # "system" (default), "toggle", or "off" — see Dark Mode below
   showHomeFeed = true            # Paginated feed on home page
   showDate = true
   showAuthor = true
@@ -138,6 +138,26 @@ Full example in [`exampleSite/config/_default/hugo.toml`](https://github.com/art
   name = "Your Name"
   email = "you@example.com"
 ```
+
+### Dark Mode
+
+```toml
+[params]
+  darkMode = "system"   # "system" (default), "toggle", or "off"
+```
+
+- `"system"` (default) — the page follows the visitor's OS/browser preference. No toggle is shown.
+- `"toggle"` — same as `"system"` on first load, plus a footer toggle that lets visitors switch and persists their choice to `localStorage`.
+- `"off"` — dark mode is disabled entirely: the theme-boot script that applies the `dark` class is not loaded, no toggle is shown, and the `<body>` element is rendered without any `dark:` Tailwind classes at all (not just an unused `dark` class — the classes themselves are omitted).
+
+`showDarkToggle = true` is a **legacy alias** for `darkMode = "toggle"`, kept for existing sites. If `darkMode` is not set explicitly:
+
+| Site config | Resolved `darkMode` |
+|---|---|
+| nothing set | `"system"` |
+| `showDarkToggle = true` | `"toggle"` |
+
+Prefer `darkMode` in new configuration; `showDarkToggle` is only read as a fallback when `darkMode` is absent.
 
 ### Template Overrides
 

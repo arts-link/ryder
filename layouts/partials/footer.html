@@ -11,7 +11,7 @@
 {{- end }}
 
 {{- $hasSocials := site.Data.social.main }}
-{{- $hasDarkToggle := .Param "showDarkToggle" }}
+{{- $hasDarkToggle := eq (partial "utils/dark-mode.html" .) "toggle" }}
 {{- $hasRightContent := or $hasSocials $hasDarkToggle }}
 {{- $showPageMeta := and .Site.Params.showPubDate .IsPage }}
 {{- $footerMetaTopOnly := or .Site.Copyright (ne (.Param "hideAttribution") true) }}
