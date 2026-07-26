@@ -432,6 +432,28 @@ Steps:
 1. Copy your file (`.png`, `.svg`, `.webp`, etc.) into `static/images/` in your site.
 2. Set `logo_png = "/images/logo.png"` in `[params]` inside `config/_default/hugo.toml`.
 
+`logo_png` is read via `.Param`, so it is page-overridable (front matter wins
+over site config) — this is the authoritative contract; a `.Site.Params.logo_png`-only
+reading is not supported.
+
+**Wrapper chrome.** The grey rounded box (background, hover state, padding)
+around the logo makes sense as a frame for the generated text mark, but is
+usually unwanted around a real logo image. It is dropped automatically once
+`logo_png` is set:
+
+```toml
+[params]
+  logo_png = "/images/logo.png"   # wrapper chrome is dropped automatically
+```
+
+To keep some wrapper styling (with either logo type), set `logo_wrapperClass`
+explicitly — it always wins over the default:
+
+```toml
+[params]
+  logo_wrapperClass = "bg-white/80 rounded-lg p-2"
+```
+
 ### Menus
 
 Ryder supports two-level menus on desktop and mobile. Parent items with children can use one of two submenu trigger modes:
