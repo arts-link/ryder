@@ -58,7 +58,8 @@ themesDir= "../../"
     # styleSrc  = "https://cdn.example.com"       # extra style hosts
     # fontSrc   = "https://cdn.example.com"       # extra font hosts
     # connectSrc = "https://api.example.com"      # extra connect hosts
-    frameSrc  = "https://www.youtube-nocookie.com https://www.youtube.com https://player.vimeo.com https://w.soundcloud.com"
+    # frameSrc = "https://your-embed-host.example.com" # any additional embed hosts, verbatim
+    embeds = ["youtube", "vimeo", "soundcloud", "umap"] # known embed-host presets; folded into frame-src alongside auto-detected shortcode hosts
     # extraDirectives = "worker-src 'none';"      # append any additional directives
 
   [params.shareButtons]

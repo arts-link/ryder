@@ -1,3 +1,6 @@
+{{/* Register the iframe host so head/csp.html can allow it in frame-src automatically. */}}
+{{ .Page.Store.SetInMap "cspFrameSrc" "https://w.soundcloud.com" "https://w.soundcloud.com" }}
+
 {{ $url := .Get "url" | default "https://api.soundcloud.com/tracks/1120047793" }}
 {{ $color := .Get "color" | default "#ff5500" }}
 {{ $auto_play := .Get "auto_play" | default "false" }}

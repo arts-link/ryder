@@ -19,14 +19,14 @@ Embed YouTube, Vimeo, and SoundCloud with shortcodes. Video and iframe embeds re
 
 ## CSP setup for video embeds
 
-Iframes from external domains are blocked by the theme's Content Security Policy by default. Add the domains you need under `[params.csp]` in `hugo.toml`:
+Iframes from external domains are blocked by the theme's Content Security Policy by default. The `soundcloud` and `openstreetmap` shortcodes register their own host automatically, but Hugo's built-in `youtube` and `vimeo` shortcodes have no such hook — allow their hosts with the `embeds` preset under `[params.csp]` in `hugo.toml`:
 
 ```toml
 [params.csp]
-  frameSrc = "https://www.youtube-nocookie.com https://www.youtube.com https://player.vimeo.com https://w.soundcloud.com"
+  embeds = ["youtube", "vimeo", "soundcloud", "umap"]
 ```
 
-Without this, the embed renders in the HTML but the browser silently refuses to load it.
+`embeds` accepts any of `youtube`, `vimeo`, `soundcloud`, `spotify`, `umap` and maps each to its known host(s). Use `frameSrc` instead (or as well) for hosts the preset doesn't cover. Without one of these, the embed renders in the HTML but the browser silently refuses to load it.
 
 ---
 

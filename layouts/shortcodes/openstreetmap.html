@@ -1,5 +1,8 @@
 {{/*  https://github.com/hanzei/hugo-component-osm/blob/master/layouts/shortcodes/openstreetmap.html  */}}
 
+{{/* Register the iframe host so head/csp.html can allow it in frame-src automatically. */}}
+{{ .Page.Store.SetInMap "cspFrameSrc" "https://umap.openstreetmap.fr" "https://umap.openstreetmap.fr" }}
+
 {{ $mapName := .Get "mapName" }}
 
 {{ $mapWidth := .Get "mapWidth" | default "100%" }}
