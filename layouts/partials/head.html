@@ -1,6 +1,8 @@
   <!-- The primary content of the <head> tag -->
   <meta charset="utf-8" />
   <!-- Dark mode: apply class immediately to prevent flash of light content -->
+  {{- $darkMode := partial "utils/dark-mode.html" . }}
+  {{- if ne $darkMode "off" }}
   {{- with resources.Get "js/themeBoot.js" }}
     {{- if eq hugo.Environment "development" }}
       {{- with . | js.Build }}
@@ -11,6 +13,7 @@
   <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
       {{- end }}
     {{- end }}
+  {{- end }}
   {{- end }}
   <meta name="viewport" content="width=device-width" />
   <link rel="canonical" href="{{ .Permalink }}" />

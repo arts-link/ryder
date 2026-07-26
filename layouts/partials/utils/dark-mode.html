@@ -1,0 +1,25 @@
+{{- /*
+  Resolves the effective params.darkMode value: "toggle", "system", or "off".
+
+  params.darkMode is the preferred param. params.showDarkToggle is a legacy
+  alias, kept only to preserve existing sites' behavior when darkMode is not
+  set explicitly:
+
+    - nothing set                  -> "system" (unchanged pre-v0.2.4 behavior)
+    - showDarkToggle = true        -> "toggle" (unchanged pre-v0.2.4 behavior)
+    - darkMode set explicitly      -> as written (opt-in)
+
+  head/js.html defaults showDarkToggle to false, so a naive mapping straight
+  from showDarkToggle would resolve every site that never set it to "off" and
+  silently strip the system-preference dark mode themeBoot.js already gives
+  them. Do not "simplify" this without re-reading 1.5 in the v0.3 spec.
+*/ -}}
+{{- $darkMode := .Param "darkMode" -}}
+{{- if not $darkMode -}}
+  {{- if .Param "showDarkToggle" -}}
+    {{- $darkMode = "toggle" -}}
+  {{- else -}}
+    {{- $darkMode = "system" -}}
+  {{- end -}}
+{{- end -}}
+{{- return $darkMode -}}

@@ -23,7 +23,7 @@ themesDir= "../../"
   showDate = true 
   showAuthor = true 
   showBreadCrumbs = true # defaults to true
-  showDarkToggle = true # defaults to true
+  darkMode = "toggle" # "system" (default), "toggle", or "off"; showDarkToggle=true is a legacy alias for "toggle"
   showShareButtons = true # defaults to false
   showCardLinkOverlay = false # defaults to true
   showSummaryMeta = false # defaults to true
