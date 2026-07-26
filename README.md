@@ -62,6 +62,7 @@ The copied config is a starter configuration from the theme demo. Before buildin
 - **Image galleries** — page-bundle gallery layout or shortcode-driven gallery with lightbox
 - **Schema markup** — structured data for recipes (Schema.org/Recipe JSON-LD)
 - **Privacy-friendly analytics** — pluggable Plausible or PostHog integration
+- **CSP-safe Alpine** — runs without `'unsafe-eval'`, with `ryderTrack`/`ryderForm` components, a custom-JS hook, and a dev-only linter (see [CSP-Safe Alpine](#csp-safe-alpine))
 - **SEO & GEO built-in** — full JSON-LD structured data, Open Graph, Twitter Cards, and dynamic OG image generation on every page (see [SEO & GEO](#seo--geo))
 - **Custom RSS feed** — styled XSLT browser-readable feed
 - **Social links** — footer social icons via `data/social.json`
@@ -529,6 +530,166 @@ npm run deploy-tw   # Build + minify for production
 ```
 
 The theme's own `hugo.toml` sets `[build] writeStats = true` plus cachebusters for `tailwind.config.js`/`postcss.config.js`/`assets/**`, and consuming sites inherit both (theme config merges into the site's; your own `[build]` block, if you set one, still wins). This writes `hugo_stats.json` to your project root on every build — add it to `.gitignore`, or track it deliberately if you rely on reproducing exact Tailwind class-discovery output across clones.
+
+---
+
+## CSP-Safe Alpine
+
+**Read this before writing any `x-` or `@` attribute.** Ryder bundles
+[`@alpinejs/csp`](https://alpinejs.dev/advanced/csp), not standard Alpine, so the
+theme works under a Content Security Policy without `'unsafe-eval'`. The tradeoff
+is that inline Alpine expressions are **not** JavaScript. They are parsed by a
+small evaluator that resolves every identifier against the component's own
+Alpine scope.
+
+Two consequences, and they have caused real outages in production sites built on
+this theme — silently, because a broken directive renders normally and the
+handler simply never fires:
+
+**1. Inline expressions cannot reach globals.** `posthog`, `window`, `document`,
+`fetch`, `gtag` — none of them are in Alpine's scope, so none of them resolve.
+
+```html
+<!-- BROKEN: `posthog` is a global, not component state -->
+<a @click="posthog.capture('signup_click')">Sign up</a>
+
+<!-- BROKEN: `window` is no more reachable than `posthog` -->
+<button @click="window.myHelper()">Go</button>
+```
+
+**2. Arrow functions are a parse error.** `@click="$nextTick(() => x)"` never
+runs.
+
+What *does* work is referencing properties and methods that live on the
+component, including calling them with arguments — `@click="dismiss()"`,
+`x-show="!isValidAsin(asin)"`. So the fix is always the same: **put the logic in
+an `Alpine.data()` component and pass what it needs through `data-*`
+attributes.**
+
+The theme ships the two components sites reach for most.
+
+### `ryderTrack` — analytics click tracking
+
+```html
+<a href="/tickets/" x-data="ryderTrack" @click="track"
+   data-track-event="ticket_link_click"
+   data-track-props='{"venue":"The Roxy"}'>Tickets</a>
+```
+
+The event name and props are read off the clicked element and forwarded to
+whichever provider [`analytics_provider`](#analytics) selects (PostHog and
+Plausible are both handled). It is deliberately forgiving: if no provider is
+present — unset, or the script was blocked by an ad blocker — the click is a
+silent no-op rather than an error, and malformed `data-track-props` JSON warns in
+the console and degrades to `{}` instead of breaking the handler, which is often
+also responsible for a navigation.
+
+`data-track-props` is optional and must be a JSON **object**. Mind the quoting:
+single quotes outside, double quotes inside.
+
+### `ryderForm` — declarative JSON form POST
+
+```html
+<form x-data="ryderForm" @submit.prevent="submit"
+      data-form-action="https://api.example.com/subscribe"
+      data-track-event="signup_submit">
+  <input type="email" name="email" required>
+
+  <!-- honeypot: bots fill it, humans never see it -->
+  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"
+         class="hidden" aria-hidden="true">
+
+  <button type="submit" :disabled="isLoading">Subscribe</button>
+
+  <p x-show="isSuccess">Thanks!</p>
+  <p x-show="isError" x-text="errorMessage"></p>
+</form>
+```
+
+Every named field is serialized to a JSON object and POSTed to
+`data-form-action`.
+
+| Property | Meaning |
+|---|---|
+| `status` | `''`, `'loading'`, `'success'` or `'error'` |
+| `isIdle` / `isLoading` / `isSuccess` / `isError` | booleans for `x-show` and `:disabled` |
+| `errorMessage` | failure message; override the default with `data-error-message` |
+
+The booleans exist because the CSP evaluator cannot evaluate a comparison like
+`status === 'success'` — only a plain property lookup — so `x-show` needs
+something that is already a boolean.
+
+A field named `_gotcha` is a spam honeypot: if it has a value the component
+reports success and sends nothing, and it is never included in the payload. An
+optional `data-track-event` on the `<form>` fires through the `ryderTrack` path
+above, on success only.
+
+**CSP:** posting to another origin requires the action's host in `connect-src`,
+or the browser blocks the request:
+
+```toml
+[params.csp]
+  connectSrc = "https://api.example.com"
+```
+
+Same-origin actions need nothing; `connect-src 'self'` is always present.
+
+### The dev-only linter
+
+In `hugo.Environment == "development"` the theme also loads
+`assets/js/cspLint.js`, which scans the rendered page for Alpine directives the
+CSP evaluator cannot run — globals and arrow functions — and `console.warn`s
+naming the offending element. It never loads in any other environment. Re-run it
+by hand over dynamically rendered content with `__ryderCspLint()`.
+
+### `assets/js/extended.js` — the custom-JS hook
+
+For anything beyond the shipped components, **`assets/js/extended.js` is the
+theme's sanctioned extension point.** In the theme it is a comment-only stub
+imported by the last line of `assets/js/main.js`. Create the same path in your
+own project:
+
+```
+your-site/assets/js/extended.js
+```
+
+Hugo's union asset filesystem gives your project's `assets/` precedence over the
+theme's, so your file replaces the stub with no theme edit, no fork, and nothing
+to re-merge on upgrade. (`exampleSite/assets/js/extended.js` in this repo does
+exactly that.) Your code is bundled into `main.js` by the same `js.Build` call,
+so imports, JSX-free ESM, and `node_modules` packages all work.
+
+Because ES `import` statements are hoisted, **`extended.js` runs before
+`Alpine.start()`** — early enough to register your own components. It runs before
+`window.Alpine` is assigned, though, so register on the `alpine:init` event
+rather than reaching for `window.Alpine` at the top level:
+
+```js
+// assets/js/extended.js
+document.addEventListener('alpine:init', () => {
+  window.Alpine.data('myWidget', () => ({
+    open: false,
+    toggle() { this.open = !this.open },
+    // Read config off the element instead of inlining it in the template.
+    init() { this.endpoint = this.$el.dataset.endpoint },
+  }))
+})
+```
+
+```html
+<div x-data="myWidget" data-endpoint="/api/thing">
+  <button @click="toggle">Toggle</button>
+  <div x-show="open">…</div>
+</div>
+```
+
+Add extra Font Awesome icons here too:
+
+```js
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faSmileWink } from '@fortawesome/free-regular-svg-icons'
+library.add(faSmileWink)
+```
 
 ---
 
