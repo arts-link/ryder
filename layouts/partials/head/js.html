@@ -39,3 +39,18 @@
     {{- end }}
   {{- end }}
 {{- end }}
+
+{{- /* Dev-only CSP-Alpine linter. @alpinejs/csp resolves every identifier in an
+       inline directive against the Alpine component scope, so an expression
+       reaching for a browser global (posthog, window, fetch) — or using an
+       arrow function, which its parser rejects — silently does nothing. Three
+       production outages came from exactly that. This warns in the console at
+       dev time; it is deliberately never emitted in any other environment. */ -}}
+{{- if eq hugo.Environment "development" }}
+  {{- with resources.Get "js/cspLint.js" }}
+    {{- $opts := dict "sourceMap" "linked" }}
+    {{- with . | js.Build $opts }}
+      <script defer src="{{ .RelPermalink }}"></script>
+    {{- end }}
+  {{- end }}
+{{- end }}
