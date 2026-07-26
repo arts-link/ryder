@@ -1,0 +1,25 @@
+{{- /*
+Returns the `items` array from a data/*.json file as a slice, defaulting to
+an empty slice when the file or its `items` key is missing. Centralizes the
+`.Site.Data.<name>.items | default slice` idiom that used to be hand-rolled
+at every call site (e.g. a section list checking whether a companion data
+file has anything to show before rendering).
+
+Callers should check `len()` on the result rather than testing the data file
+for existence directly — indexing a missing key on .Site.Data panics, this
+partial is the guard.
+
+@context {string} .  The data file name under data/, without the extension
+                     (e.g. "press" for data/press.json). The file must be
+                     shaped {"items": [...]}; any other top-level keys are
+                     ignored by this helper.
+
+@example: {{ $items := partial "utils/data-items.html" "press" }}
+@example: {{ if gt (len $items) 0 }}...{{ end }}
+*/ -}}
+{{- $name := . -}}
+{{- $items := slice -}}
+{{- with index site.Data $name -}}
+  {{- $items = .items | default slice -}}
+{{- end -}}
+{{- return $items -}}

@@ -198,6 +198,43 @@ That resolves to partials such as:
 
 Use this when you want to replace a whole component cleanly without editing `baseof.html` or forking the theme's default partial names.
 
+### List Layouts
+
+`_default/list.html` always paginates `.Pages` into a card grid. For a section
+that's really a single data-driven page with no children (an "about" or
+"contact" page sourced from `data/*.json`, say), that pagination shell is dead
+weight and used to force a full fork of `list.html`. Set `layout` in the
+section's `_index.md` front matter instead:
+
+```toml
++++
+title = "About"
+layout = "list-plain"
++++
+```
+
+`_default/list-plain.html` renders title + `.Content` only — no pagination, no
+card grid. This uses Hugo's own `layout` front-matter field (not a theme
+param) because, unlike `headerType`/`menuType` above, Hugo has no other
+mechanism for choosing between two *top-level* list templates.
+
+Pair it with `partials/utils/data-items.html`, a returning partial for the
+"does this data file have anything in it" check that's easy to end up
+hand-rolling at every call site:
+
+```go-html-template
+{{ $items := partial "utils/data-items.html" "press" }}
+{{ if gt (len $items) 0 }}
+  ...
+{{ end }}
+```
+
+It resolves `.Site.Data.<name>.items`, defaulting to an empty slice when the
+data file or its `items` key is missing, so callers only need to check
+`len()`. See [`exampleSite/content/press/_index.md`](https://github.com/arts-link/ryder/blob/main/exampleSite/content/press/_index.md)
+for both in use together, and the [conditional menu entries](#menus) below,
+which reuse the same partial.
+
 ### Global Banners
 
 ```toml
