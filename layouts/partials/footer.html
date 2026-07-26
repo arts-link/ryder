@@ -6,7 +6,7 @@
 {{- with .Site.Menus.footer }}
   {{- $showMiddleColumn = true }}
 {{- end }}
-{{- if or .Site.Params.footer.tagCloud $showMiddleColumn }}
+{{- if or (.Param "footer.tagCloud") $showMiddleColumn }}
   {{- $showMiddleColumn = true }}
 {{- end }}
 
@@ -40,7 +40,7 @@
             </div>
             <div class="footer-secondary-group">
               {{- partial "menu.html" (dict "menuID" "footer" "page" .) }}
-              {{- if .Site.Params.footer.tagCloud }}
+              {{- if (.Param "footer.tagCloud") }}
                 {{- partial "utils/taxonomy-string.html" . }}
               {{- end }}
             </div>
@@ -52,7 +52,7 @@
           {{- else if $showMiddleColumn }}
           <div class="footer-secondary-group">
             {{- partial "menu.html" (dict "menuID" "footer" "page" .) }}
-            {{- if .Site.Params.footer.tagCloud }}
+            {{- if (.Param "footer.tagCloud") }}
               {{- partial "utils/taxonomy-string.html" . }}
             {{- end }}
           </div>
