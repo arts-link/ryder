@@ -300,7 +300,9 @@ which reuse the same partial.
 
 ### Social Links
 
-Configured via `data/social.json` (not params):
+Configured via `data/social.json` (not params), in either of two shapes.
+
+**Structured** — an `icon` is a Font Awesome class string:
 
 ```json
 {
@@ -309,6 +311,27 @@ Configured via `data/social.json` (not params):
   ]
 }
 ```
+
+**Flat name → URL map** — what Decap CMS emits, and what used to render
+nothing at all:
+
+```json
+{
+  "instagram": "https://instagram.com/you",
+  "tiktok": "https://tiktok.com/@you"
+}
+```
+
+Entries in the flat shape have no `icon` field, so one is resolved by
+platform name instead. Ryder ships inline SVGs for Instagram, TikTok, Apple
+Music, Tidal, and Spotify — matched case-insensitively, ignoring spaces,
+dashes, and underscores (`"Apple Music"`, `"apple-music"`, and
+`"apple_music"` all resolve the same icon) — rather than widening the
+tree-shaken Font Awesome brand set that `tests/unit/faIcons.test.js` enforces
+against unused imports. Anything else falls back to a generic external-link
+icon. The same fallback also applies to structured entries that omit `icon`,
+so you can mix both within `main` (see
+[`exampleSite/data/social.json`](https://github.com/arts-link/ryder/blob/main/exampleSite/data/social.json)).
 
 ### Analytics
 

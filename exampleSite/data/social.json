@@ -17,6 +17,31 @@
       "name": "feed",
       "icon": "fa-solid fa-rss",
       "link": "/index.xml"
+    },
+    {
+      "title": "Instagram",
+      "name": "instagram",
+      "link": "https://www.instagram.com/arts.link/"
+    },
+    {
+      "title": "TikTok",
+      "name": "tiktok",
+      "link": "https://www.tiktok.com/@arts.link"
+    },
+    {
+      "title": "Apple Music",
+      "name": "apple-music",
+      "link": "https://music.apple.com/"
+    },
+    {
+      "title": "Tidal",
+      "name": "tidal",
+      "link": "https://tidal.com/"
+    },
+    {
+      "title": "Spotify",
+      "name": "spotify",
+      "link": "https://open.spotify.com/"
     }
   ]
 }
