@@ -8,6 +8,8 @@ no dead code, and a cleaner experience for the person setting up a new site with
 
 ---
 
+> **Correction (2026-07-26):** Several entries below reference `header-fun.html`, `footer-fun.html`, and `menu-fun.html` as existing (or instruct work against them). These references were accurate at the time each entry was written — `footer-fun.html` was created 2026-03-17 (Phase 2) and `header-fun.html` predates the rewrite. However, commit `ea2538c` ("Refine site frame and simplify footer overrides", 2026-03-26) deleted both `header-fun.html` and `footer-fun.html` as collateral cleanup, without touching this log or the `headerType`/`footerType` dispatch mechanism that references them. `menu-fun.html` was already removed earlier, in Phase 3 (below). **As of today, no `-fun` variant files ship in this theme** — only `header.html`, `footer.html`, and `menu.html` exist. The entries below are left as originally written for historical accuracy, with `[Update: ...]` notes added where a claim or instruction is now stale.
+
 ## Audit Findings (Pre-Rewrite)
 
 Full code review conducted before any changes. Key findings:
@@ -42,7 +44,7 @@ Mixed PascalCase, camelCase, and all-lowercase in `hugo.toml` params:
 - Custom TOC vs `UseHugoToc` — two systems in parallel, one should win
 
 ### Gaps / Broken Promises
-- `footer-fun.html` doesn't exist but `baseof.html` supports `footerType = "-fun"` — will silently fail
+- `footer-fun.html` doesn't exist but `baseof.html` supports `footerType = "-fun"` — will silently fail [Update: `footer-fun.html` was created in Phase 2 below, then deleted again in `ea2538c` (2026-03-26) — this gap is true again today. Phase 0 (2026-07-26) added a `templates.Exists` guard so an unrecognized `footerType` now warns naming the bad param/partial and falls back to `footer.html` instead of failing.]
 - `archetypes/recipe.md` bug: `recipeInstructions` is a string but `schema-recipe.html` treats it as an array
 - CI/CD (GitHub Actions) uses Hugo `0.138.0` but theme requires `0.146+` — masks compatibility bugs
 - `package.json` at root: `name = "benstraw"`, `license = "ISC"` (should be MIT), description is a Markdown fragment
@@ -83,16 +85,16 @@ Shortcodes that are personal site utilities, not theme features:
 - [x] Rename params to camelCase in templates and exampleSite config: `TocOpen→tocOpen`, `UseHugoToc→useHugoToc`, `ShowPubDate→showPubDate`, `enabledebugpanel→enableDebugPanel`
 - [x] Fix `archetypes/recipe.md` (both root and exampleSite) — `recipeInstructions` was a string, now correctly a TOML array of `[[recipeInstructions]]` objects with `name` and `text` fields. Also fixed bare unquoted TOML values in exampleSite version (`recipeCuisine = American` → quoted).
 - [x] Social links: confirmed `[[params.social]]` never existed in templates or config — implementation always used `data/social.json`. CLAUDE.md was already corrected in Phase 1 setup. No template changes needed.
-- [x] Created `footer-fun.html` — simple single-row flex footer (copyright + socials + dark toggle). The `footerType = "-fun"` param in baseof.html now has a real target.
+- [x] Created `footer-fun.html` — simple single-row flex footer (copyright + socials + dark toggle). The `footerType = "-fun"` param in baseof.html now has a real target. [Update: removed in `ea2538c`, 2026-03-26 — no `-fun` variants ship today.]
 - [x] CI/CD Hugo version: `0.138.0` → `0.146.0` (matches stated minimum requirement)
 - [x] Fix `archetypes/default.md` and `archetypes/recipe.md`: `showTOC` → `showToc` to match template (`.Params.showToc` in single.html)
 - [x] Simplify `hidden-home/baseof.html` debug panel condition: `or (.Params.enabledebugpanel) (and (not .Params.enabledebugpanel) (site.Params.enabledebugpanel))` → `.Param "enableDebugPanel"` (standard Hugo cascade)
-- [x] Remove stale comment block from `header-fun.html` ("Not sure I'll use those but leave'm for now")
+- [x] Remove stale comment block from `header-fun.html` ("Not sure I'll use those but leave'm for now") [Update: `header-fun.html` itself was removed in `ea2538c`, 2026-03-26 — see correction note above.]
 
 ### Phase 3 — Consolidate (Remove duplication)
 **Status:** Complete — 2026-03-17
 
-- [x] Merged `menu.html` and `menu-fun.html` into single `menu.html`. Added optional `navClass` param (defaults to `main-menu-nav`; footer menus use `footer-menu-nav`). Deleted `menu-fun.html`. Updated `header-fun.html` to call `menu.html` with `navClass = "main-fun-menu-nav"`. Removed unused `shade` param that was passed but never read.
+- [x] Merged `menu.html` and `menu-fun.html` into single `menu.html`. Added optional `navClass` param (defaults to `main-menu-nav`; footer menus use `footer-menu-nav`). Deleted `menu-fun.html`. Updated `header-fun.html` to call `menu.html` with `navClass = "main-fun-menu-nav"`. Removed unused `shade` param that was passed but never read. [Update: `header-fun.html` was itself removed in `ea2538c`, 2026-03-26 — `header.html` is the only header partial shipping today.]
 - [x] Created `utils/card-meta.html` — returning partial (Hugo `return`) that computes all shared card metadata. Both card templates now call it and receive a dict. Each card is only its rendering logic.
 - [x] Moved ~275 lines of share-buttons CSS from inline `<style>` block into `assets/css/main.css`. Eliminated the duplicate first color set (which lacked `border-color` and `:active` states). Removed dead Google+ network styles. Dynamic values (`margin`, `font-size`) now use CSS custom properties `--sb-margin` and `--sb-font-size` set by a small remaining `<style>` block.
 - [x] Removed dead commented-out navbar toggler CSS from `main.css`
@@ -129,7 +131,7 @@ Surgical visual modernization. No new frameworks, no structural changes, no new 
 - [x] **`static/leaflet/` removed.** The theme ships Leaflet as an npm dependency (used by `main.js` via `import('leaflet')`), and the CSS is in `assets/css/leaflet.css`. The `static/leaflet/` directory was a redundant manual copy (~300KB) serving no purpose in the build pipeline. Marker images referenced by the CSS are served from `static/css/images/` which remains.
 - [x] **`exampleSite/package.json` fixed.** Same issues as root: name, description, license (ISC → MIT), removed spurious `main` field.
 - [ ] **`[params.twClasses]` rename** — deferred. The name is not ideal but renaming is a breaking change requiring a migration guide. Document thoroughly instead.
-- [ ] **`-fun` variant suffix rename** — deferred. Renaming (`headerType = "-fun"` → something descriptive) is a breaking change for existing users. Flag for v0.2 with clear migration note.
+- [x] **`-fun` variant suffix rename** — moot. `header-fun.html` and `footer-fun.html` (and, earlier, `menu-fun.html`) were removed in `ea2538c` (2026-03-26, "Refine site frame and simplify footer overrides") as collateral to unrelated cleanup. No `-fun` variant files ship today, so there is no suffix left to rename or migrate. The `headerType`/`footerType`/`menuType` dispatch mechanism itself is unchanged and still accepts arbitrary suffixes; Phase 0 (2026-07-26) added a `templates.Exists` guard so an unrecognized value now warns naming the bad param and resolved partial, then falls back to `header.html`/`footer.html`/`menu.html`, instead of aborting the build.
 
 ---
 
@@ -194,7 +196,7 @@ Surgical visual modernization. No new frameworks, no structural changes, no new 
 
 **Deferred to v0.2:**
 - `[params.twClasses]` rename — breaking change, needs migration guide
-- `-fun` variant suffix rename — breaking change, needs migration guide
+- `-fun` variant suffix rename — breaking change, needs migration guide [Update: moot — see reworded Phase 5 entry above. `header-fun.html`/`footer-fun.html` were deleted in `ea2538c` (2026-03-26); `header.html`/`footer.html` are the only variants shipping.]
 
 ---
 
