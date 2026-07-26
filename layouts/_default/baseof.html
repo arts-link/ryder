@@ -9,7 +9,13 @@
   {{ end }}
   <div class="min-h-lvh flex w-full flex-col">
     {{ $headerType := .Param "headerType" | default "" }}
-    {{- partial (printf "header%s.html" $headerType) . }}
+    {{ $headerPartial := printf "header%s.html" $headerType }}
+    {{- if templates.Exists (printf "partials/%s" $headerPartial) }}
+      {{- partial $headerPartial . }}
+    {{- else }}
+      {{- warnf "headerType %q resolves to missing partial %q; falling back to header.html" $headerType $headerPartial }}
+      {{- partial "header.html" . }}
+    {{- end }}
     {{- partial "alphaAlert.html" . }}
     <main class="w-full flex-1">
       {{ $showBreadCrumbs := .Param "showBreadCrumbs" | default true }}
@@ -21,8 +27,14 @@
       {{- block "main" . }}{{- end }}
     </main>
     {{ $footerType := .Param "footerType" | default "" }}
+    {{ $footerPartial := printf "footer%s.html" $footerType }}
     <div class="pb-5">
-      {{- partial (printf "footer%s.html" $footerType) . }}
+      {{- if templates.Exists (printf "partials/%s" $footerPartial) }}
+        {{- partial $footerPartial . }}
+      {{- else }}
+        {{- warnf "footerType %q resolves to missing partial %q; falling back to footer.html" $footerType $footerPartial }}
+        {{- partial "footer.html" . }}
+      {{- end }}
     </div>
   </div>
 
