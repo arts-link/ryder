@@ -476,6 +476,7 @@ enableGitInfo = true
 | `soundcloud` | SoundCloud embed |
 | `youtube-embed` | YouTube embed that auto-registers its CSP host (named distinctly from Hugo's built-in `youtube`) |
 | `spotify-embed` | Spotify track/album/playlist/artist/episode/show embed, auto-registers its CSP host |
+| `video-lightbox` | Clickable thumbnail that opens a modal with a YouTube or Vimeo embed (beside `imageGallery`'s image-only lightbox) |
 | `amazon-associate-link` | Affiliate link with disclosure |
 | `font-awesome` | Inline Font Awesome icon |
 | `highlight-github` | GitHub-styled syntax highlight block |

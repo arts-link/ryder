@@ -124,3 +124,29 @@ automatically — no `embeds` config needed for it specifically (the
 | `id` | — | Spotify ID for the given type (required); also accepted positionally |
 | `type` | `track` | `track`, `album`, `playlist`, `artist`, `episode`, or `show` |
 | `height` | `152` (track/episode) or `352` (others) | Iframe height in px |
+
+---
+
+## Video Lightbox
+
+Beside `main.js`'s existing `imageGallery` (images only), `video-lightbox`
+shows a clickable tile that opens a modal with the video — nothing is
+requested from the embed host until you actually click. Provide a
+`thumbnail` (a page-bundle resource or an `assets/`-relative path) for a
+real preview image; without one it falls back to a plain play-button tile,
+as below.
+
+{{< highlight go-html-template >}}
+{{</* video-lightbox provider="youtube" id="VLvVNMbQIRY" title="Rob Pike at Gopherfest" */>}}
+{{< /highlight >}}
+
+{{< video-lightbox provider="youtube" id="VLvVNMbQIRY" title="Rob Pike at Gopherfest" >}}
+
+### Parameters
+
+| Parameter | Default | Description |
+|---|---|---|
+| `id` | — | Video ID for the given provider (required) |
+| `provider` | `youtube` | `youtube` or `vimeo` |
+| `thumbnail` | — | Page-bundle resource or `assets/`-relative image path; omit for a play-button-only tile |
+| `title` | `Play video` | Accessible label for the trigger button and the iframe |
