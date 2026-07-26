@@ -3,6 +3,11 @@
     min = "0.146.0"
     extended = false
 
+# `outputFormats` IS inherited by consuming sites — this is the definition of
+# the LLMSTxt format, and a site can name "LLMSTxt" in its own [outputs]
+# without declaring the format itself. Verified against a scratch consumer:
+# with only `theme = "ryder"` set, `hugo config` reports
+# [outputformats.llmstxt] present.
 [outputFormats]
   [outputFormats.LLMSTxt]
     mediaType = "text/plain"
@@ -10,6 +15,16 @@
     isPlainText = true
     notAlternative = true
 
+# `outputs`, by contrast, is NOT inherited — same story as [build] below. This
+# block serves THIS repo's own builds only. Verified the same way: a consumer
+# with only `theme = "ryder"` gets Hugo's stock
+# `[outputs] home = ['html','rss']`, no llmstxt substep in the render log, and
+# no llms.txt on disk. Adding `home = ["HTML", "RSS", "LLMSTxt"]` to the
+# CONSUMER's config produces it.
+#
+# So a consuming site must declare [outputs] itself to get llms.txt. The
+# README says so, and exampleSite carries its own copy — which is required,
+# not redundant.
 [outputs]
   home = ["HTML", "RSS", "LLMSTxt"]
 

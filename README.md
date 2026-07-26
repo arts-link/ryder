@@ -649,6 +649,40 @@ Ryder ships with a complete search and AI optimisation stack — no plugins, no 
 | JSON-LD `Recipe` | Full recipe structured data (ingredients, steps, nutrition) when `recipe = true` |
 | Dynamic OG image | Auto-generated Open Graph image with title text when no page image exists |
 
+### `llms.txt` — you must declare `[outputs]` yourself
+
+Ryder defines an `LLMSTxt` output format and ships the
+`_default/home.llmstxt.txt` template that renders it: a plain-text index of
+your site for AI crawlers, served at `/llms.txt`.
+
+**The format definition is inherited from the theme. The `[outputs]` block is
+not.** Add this to your own site config, or no `llms.txt` is ever written:
+
+```toml
+[outputs]
+  home = ["HTML", "RSS", "LLMSTxt"]
+```
+
+You do **not** need to redeclare `[outputFormats.LLMSTxt]` — Hugo does merge a
+theme's `outputFormats` into the site's, so naming `"LLMSTxt"` above is enough.
+It is specifically `outputs` that does not propagate, the same way `build`
+does not (see [Build configuration](#build-configuration)).
+
+Verified against a scratch consumer site whose entire config was `baseURL`,
+`title`, and `theme = "ryder"`:
+
+| Consumer config | `hugo config` reports | `/llms.txt` |
+|---|---|---|
+| no `[outputs]` | `home = ['html', 'rss']` — Hugo's stock default | not written |
+| `home = ["HTML", "RSS", "LLMSTxt"]` | as written | written |
+
+In both runs `[outputformats.llmstxt]` was present in the merged config, which
+is what makes the one-line block above sufficient.
+
+> If you are reading older guidance that calls this block redundant because
+> "theme config merges into the site's" — it isn't, and it doesn't. Hugo merges
+> only a subset of root config sections from a theme.
+
 ### What Is GEO?
 
 **Generative Engine Optimization (GEO)** is the practice of structuring content so AI-powered search tools (ChatGPT, Perplexity, Google AI Overviews, Gemini) can understand, cite, and accurately attribute it. Ryder's JSON-LD blocks give every post clear authorship, semantic type information, and machine-readable facts — exactly what these systems need to surface your content confidently.

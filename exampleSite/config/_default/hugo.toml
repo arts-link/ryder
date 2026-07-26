@@ -174,6 +174,10 @@ themesDir= "../../"
     pageRef = '/contact'
     weight = 10
 
+# REQUIRED, not redundant. The theme defines the LLMSTxt *output format* and
+# that definition IS inherited — but Hugo does not merge a theme's [outputs]
+# into a site's, so without this block the home page renders HTML and RSS only
+# and no llms.txt is written. See README > llms.txt.
 [outputs]
   home = ["HTML", "RSS", "LLMSTxt"]
 
