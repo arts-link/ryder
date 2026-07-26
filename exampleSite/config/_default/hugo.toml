@@ -9,8 +9,19 @@ copyright = "©️ Ryder Theme 2026"
 enableEmoji = true
 # enableGitInfo = true  # adds git commit links to footer; 40-50% slower on large sites
 
-# !!! exampleSite only, you may need to delete the line: `themesDir: ../../` 
+# !!! exampleSite only, you may need to delete the line: `themesDir: ../../`
 themesDir= "../../"
+
+# Only needed if you drive PostHog via PUBLIC_POSTHOG_* environment variables
+# instead of the posthog_key/posthog_host params (see README > Analytics >
+# PostHog). Hugo's getenv only allows vars matching ^HUGO_ or ^CI$ by default;
+# without this explicit allowlist entry, a PUBLIC_POSTHOG_* var is blocked and
+# the theme falls back to treating it as unset (with a build warning explaining
+# why, when analytics_provider = "posthog"). Uncomment if you use the env var path.
+# [security]
+#   [security.funcs]
+#     getenv = ['^HUGO_', '^CI$', '^PUBLIC_']
+
 [pagination]
   pagerSize = 20
 [params]

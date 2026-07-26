@@ -255,21 +255,32 @@ Select a provider explicitly in your site params:
 
 #### PostHog
 
-The theme supports PostHog via Hugo params or environment variables. Params take precedence.
+**Preferred: set it directly in params.** No Hugo security configuration required — this is the simplest path and the one to reach for first:
 
 ```toml
 [params]
   analytics_provider = "posthog"
+  posthog_key = "phc_yourprojectkey"
   posthog_host = "https://t.example.com"
   posthog_ui_host = "https://us.posthog.com"
   posthog_person_profiles = "identified_only"
 ```
 
-Supported environment variables:
+**Alternative: environment variables.** Useful for keeping the key out of version control (e.g. injecting it at CI/deploy time). Params always take precedence when both are set.
 
 - `PUBLIC_POSTHOG_KEY`
 - `PUBLIC_POSTHOG_HOST`
 - `PUBLIC_POSTHOG_UI_HOST`
+
+This path requires one extra step the params path doesn't: Hugo's `getenv` only reads environment variables matching `^HUGO_` or `^CI$` by default. Any `PUBLIC_POSTHOG_*` variable is silently read as empty — no error, no warning — unless you explicitly widen the allowlist:
+
+```toml
+[security]
+  [security.funcs]
+    getenv = ['^HUGO_', '^CI$', '^PUBLIC_']
+```
+
+Without this block, PostHog renders nothing at all, with no signal as to why — the same silent-empty result as simply never setting the variables. If `analytics_provider = "posthog"` is set and no key can be found from either source, the build now emits a warning naming both possible causes.
 
 ### Content Security Policy
 
