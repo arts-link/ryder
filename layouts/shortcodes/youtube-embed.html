@@ -1,0 +1,34 @@
+{{- /*
+YouTube embed shortcode, named distinctly from Hugo's own built-in `youtube`
+shortcode (which exampleSite already demonstrates and which this theme does
+not override) rather than shadowing it — a site that wants Hugo's built-in
+keeps it working unchanged.
+
+Unlike Hugo's built-in, this one registers its iframe host on .Page.Store so
+head/csp.html folds https://www.youtube-nocookie.com into frame-src
+automatically — no params.csp.embeds entry required.
+
+@param {string} id     YouTube video ID (required), e.g. "VLvVNMbQIRY" from
+                       https://www.youtube.com/watch?v=VLvVNMbQIRY — also
+                       accepted positionally as the first argument.
+@param {string} title  Accessible iframe title. Defaults to "YouTube video player".
+
+@example: {{< youtube-embed id="VLvVNMbQIRY" >}}
+@example: {{< youtube-embed VLvVNMbQIRY >}}
+*/ -}}
+{{- $id := .Get "id" | default (.Get 0) -}}
+{{- if not $id -}}
+  {{- errorf "youtube-embed shortcode requires an id param, e.g. id=%q" "VLvVNMbQIRY" -}}
+{{- end -}}
+{{- .Page.Store.SetInMap "cspFrameSrc" "https://www.youtube-nocookie.com" "https://www.youtube-nocookie.com" -}}
+{{- $title := .Get "title" | default "YouTube video player" -}}
+<div class="relative w-full aspect-video">
+  <iframe
+    class="absolute inset-0 w-full h-full"
+    src="https://www.youtube-nocookie.com/embed/{{ $id }}"
+    title="{{ $title }}"
+    loading="lazy"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen></iframe>
+</div>

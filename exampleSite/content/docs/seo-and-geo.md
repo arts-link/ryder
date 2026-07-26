@@ -104,9 +104,22 @@ Set your Twitter/X handle in `hugo.toml`:
   twitter = "yourtwitterhandle"
 ```
 
-### 4. Dynamic OG Image Generation
+### 4. OG Image Resolution
 
-No featured image? No problem. Ryder auto-generates an Open Graph image at build time by overlaying your page title (and site name) onto a base image. The image is baked into your static output — no server-side rendering needed.
+Ryder resolves a page's Open Graph image in order: front-matter `og_image` (a
+per-page escape hatch — a page-bundle resource or an `assets/`-relative path,
+pointing at an image you designed yourself), then a `feature*`/`cover*`/
+`thumbnail*` image already in the page's bundle, then a generated card as the
+last resort.
+
+```toml
++++
+title = "A specific page"
+og_image = "my-hand-designed-card.png"
++++
+```
+
+No featured image and no `og_image`? No problem. Ryder auto-generates an Open Graph image at build time by overlaying your page title (and site name) onto a base image. The image is baked into your static output — no server-side rendering needed.
 
 To use a custom base image, drop a file into your site's `assets/` and set:
 

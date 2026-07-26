@@ -105,7 +105,7 @@ Full example in [`exampleSite/config/_default/hugo.toml`](https://github.com/art
 ```toml
 [params]
   darkMode = "system"             # "system" (default), "toggle", or "off" — see Dark Mode below
-  showHomeFeed = true            # Paginated feed on home page
+  showHomeFeed = true            # Paginated feed on home page (page-overridable via .Param, e.g. in the home page's own front matter)
   showDate = true
   showAuthor = true
   showBreadCrumbs = true
@@ -198,6 +198,77 @@ That resolves to partials such as:
 
 Use this when you want to replace a whole component cleanly without editing `baseof.html` or forking the theme's default partial names.
 
+#### One variant plus `.Param` for the skin
+
+Reach for a `-suffix` variant (above) only when you need a genuinely different
+*structure*. For a cosmetic change — different background, different nav
+treatment — prefer a `.Param` the base partial already reads, so you get the
+one bug fix or feature added to `header.html` in the future for free instead
+of carrying it into a forked copy forever.
+
+`header.html` already reads page-overridable `twClasses.headerBackgroundFrameOuter`,
+`twClasses.headerBackgroundFrameInner`, and `twClasses.headerBackgroundImage`
+for exactly this. It also resolves a nav skin — `navClass` (or the
+`twClasses.nav` convention) — and passes it into the menu partial, so a single
+page or section can restyle just the `<nav>` without forking `header.html`
+into a new `headerType` variant just to change classes:
+
+```toml
++++
+title = "A page with a different nav treatment"
+navClass = "main-menu-nav bg-fuchsia-900/40 rounded-full px-2"
++++
+```
+
+or site-wide:
+
+```toml
+[params.twClasses]
+  nav = "main-menu-nav bg-fuchsia-900/40 rounded-full px-2"
+```
+
+(Keep the base `main-menu-nav` class if you only mean to add to it, not
+replace it — `main.css`'s nav styling lives on that class.) This is the pattern to
+reach for before writing a new `header-*.html` variant whose only difference
+from `header.html` is a handful of classes.
+
+### List Layouts
+
+`_default/list.html` always paginates `.Pages` into a card grid. For a section
+that's really a single data-driven page with no children (an "about" or
+"contact" page sourced from `data/*.json`, say), that pagination shell is dead
+weight and used to force a full fork of `list.html`. Set `layout` in the
+section's `_index.md` front matter instead:
+
+```toml
++++
+title = "About"
+layout = "list-plain"
++++
+```
+
+`_default/list-plain.html` renders title + `.Content` only — no pagination, no
+card grid. This uses Hugo's own `layout` front-matter field (not a theme
+param) because, unlike `headerType`/`menuType` above, Hugo has no other
+mechanism for choosing between two *top-level* list templates.
+
+Pair it with `partials/utils/data-items.html`, a returning partial for the
+"does this data file have anything in it" check that's easy to end up
+hand-rolling at every call site:
+
+```go-html-template
+{{ $items := partial "utils/data-items.html" "press" }}
+{{ if gt (len $items) 0 }}
+  ...
+{{ end }}
+```
+
+It resolves `.Site.Data.<name>.items`, defaulting to an empty slice when the
+data file or its `items` key is missing, so callers only need to check
+`len()`. See [`exampleSite/content/press/_index.md`](https://github.com/arts-link/ryder/blob/main/exampleSite/content/press/_index.md)
+for both in use together, and the [conditional menu entries](#menus) below,
+which reuse the same partial.
+
 ### Global Banners
 
 ```toml
@@ -229,7 +300,9 @@ Use this when you want to replace a whole component cleanly without editing `bas
 
 ### Social Links
 
-Configured via `data/social.json` (not params):
+Configured via `data/social.json` (not params), in either of two shapes.
+
+**Structured** — an `icon` is a Font Awesome class string:
 
 ```json
 {
@@ -238,6 +311,27 @@ Configured via `data/social.json` (not params):
   ]
 }
 ```
+
+**Flat name → URL map** — what Decap CMS emits, and what used to render
+nothing at all:
+
+```json
+{
+  "instagram": "https://instagram.com/you",
+  "tiktok": "https://tiktok.com/@you"
+}
+```
+
+Entries in the flat shape have no `icon` field, so one is resolved by
+platform name instead. Ryder ships inline SVGs for Instagram, TikTok, Apple
+Music, Tidal, and Spotify — matched case-insensitively, ignoring spaces,
+dashes, and underscores (`"Apple Music"`, `"apple-music"`, and
+`"apple_music"` all resolve the same icon) — rather than widening the
+tree-shaken Font Awesome brand set that `tests/unit/faIcons.test.js` enforces
+against unused imports. Anything else falls back to a generic external-link
+icon. The same fallback also applies to structured entries that omit `icon`,
+so you can mix both within `main` (see
+[`exampleSite/data/social.json`](https://github.com/arts-link/ryder/blob/main/exampleSite/data/social.json)).
 
 ### Analytics
 
@@ -338,6 +432,86 @@ Steps:
 1. Copy your file (`.png`, `.svg`, `.webp`, etc.) into `static/images/` in your site.
 2. Set `logo_png = "/images/logo.png"` in `[params]` inside `config/_default/hugo.toml`.
 
+`logo_png` is read via `.Param`, so it is page-overridable (front matter wins
+over site config) — this is the authoritative contract; a `.Site.Params.logo_png`-only
+reading is not supported.
+
+**Wrapper chrome.** The grey rounded box (background, hover state, padding)
+around the logo makes sense as a frame for the generated text mark, but is
+usually unwanted around a real logo image. It is dropped automatically once
+`logo_png` is set:
+
+```toml
+[params]
+  logo_png = "/images/logo.png"   # wrapper chrome is dropped automatically
+```
+
+To keep some wrapper styling (with either logo type), set `logo_wrapperClass`
+explicitly — it always wins over the default:
+
+```toml
+[params]
+  logo_wrapperClass = "bg-white/80 rounded-lg p-2"
+```
+
+### Favicon
+
+`head/favicon.html` used to pin a single hardcoded `/favicon.ico?v=4` with no
+way to change the path, cache-busting version, or add an apple-touch-icon /
+web manifest link short of overriding the whole partial. Configure it under
+`[params.favicon]`:
+
+```toml
+[params.favicon]
+  ico            = "/favicon.ico"                 # default; the theme ships this file
+  version        = "4"                            # cache-busting ?v= suffix; set "" to omit
+  svg            = "/images/favicon.svg"          # default; the theme ships this file
+  appleTouchIcon = "/images/apple-touch-icon.png"  # default; the theme ships this file
+  webmanifest    = ""                              # no default; the theme ships no manifest file
+```
+
+Every key defaults to the file the theme already ships (except
+`webmanifest`, which has none) — set a key to `""` explicitly to omit that
+tag entirely, or to a different path to replace it.
+
+**Site-level only, not page-overridable.** `head.html` loads this partial via
+`partialCached` with no explicit cache key, so it renders once and that
+single render is reused for every page — a per-page override would silently
+leak onto every other page too. Read `site.Params` directly, in
+`config/_default/hugo.toml` (or equivalent), not front matter.
+
+### Fonts
+
+Titillium Web is hardcoded in four places in the theme (tracked as
+[issue #3](https://github.com/arts-link/ryder/issues/3)): `head/fonts.html`'s
+Google Fonts URL, `baseof.html`'s `font-titillium` body class,
+`tailwind.config.js`'s `fontFamily.titillium` key, and a raw `font-family` in
+`assets/css/main.css`. Two of those four are covered by `params.fonts`:
+
+```toml
+[params.fonts]
+  family             = "Titillium Web"                   # default; sets --ryder-font-family and the display name below
+  googleFontsFamily  = "Titillium+Web:wght@400;600;700"  # default; the family= query value Google Fonts expects
+  disableGoogleFonts = false                             # true if you self-host fonts, or don't want this stylesheet at all
+```
+
+`family` sets a `--ryder-font-family` CSS custom property that
+`assets/css/main.css`'s `.resp-sharing-button` rule now reads (falling back
+to Titillium Web if unset), rather than hardcoding the font name directly.
+Set only `family` (without `googleFontsFamily`) to point at a font you load
+some other way — self-hosted, a different provider — while skipping this
+partial's Google Fonts request via `disableGoogleFonts`.
+
+Site-level only, same `partialCached` constraint as [Favicon](#favicon)
+above.
+
+**The other two hardcoded sites are covered elsewhere, not here**: the body
+class is already overridable via `[params.twClasses] body` (added
+alongside the `.site-shell` wrapper), and `tailwind.config.js`'s
+`fontFamily.titillium` key will move into the Tailwind preset. This does not
+close issue #3 by itself, since three of the four sites are theme files a
+consumer must not edit directly — see the issue for the full picture.
+
 ### Menus
 
 Ryder supports two-level menus on desktop and mobile. Parent items with children can use one of two submenu trigger modes:
@@ -358,6 +532,26 @@ Example:
 
 See the example docs page for a complete menu setup:
 [`exampleSite/content/docs/menus.md`](https://github.com/arts-link/ryder/blob/main/exampleSite/content/docs/menus.md)
+
+#### Conditional menu entries
+
+Hide a menu entry unless a `data/*.json` file (shaped `{"items": [...]}`) has
+content, via `hideIfEmptyData` under the entry's own `[menus.main.params]`:
+
+```toml
+[[menus.main]]
+  name = "Press"
+  pageRef = "/press"
+  weight = 40
+  [menus.main.params]
+    hideIfEmptyData = "press"   # renders only if data/press.json's items is non-empty
+```
+
+This replaces forking the entire nav to append a hand-rolled
+`{{ if gt (len (.Site.Data.press.items | default slice)) 0 }}` check — see
+`exampleSite/config/_default/hugo.toml`, where "Press" (backed by
+`data/press.json`) renders and "Merch" (backed by a `data/merch.json` that
+doesn't exist) does not.
 
 ### GitInfo (optional)
 
@@ -383,6 +577,9 @@ enableGitInfo = true
 | `recipe-howto-steps-list` | Render recipe steps from front matter |
 | `picture` | Responsive image with lazy loading |
 | `soundcloud` | SoundCloud embed |
+| `youtube-embed` | YouTube embed that auto-registers its CSP host (named distinctly from Hugo's built-in `youtube`) |
+| `spotify-embed` | Spotify track/album/playlist/artist/episode/show embed, auto-registers its CSP host |
+| `video-lightbox` | Clickable thumbnail that opens a modal with a YouTube or Vimeo embed (beside `imageGallery`'s image-only lightbox) |
 | `amazon-associate-link` | Affiliate link with disclosure |
 | `font-awesome` | Inline Font Awesome icon |
 | `highlight-github` | GitHub-styled syntax highlight block |
@@ -490,7 +687,28 @@ Most SEO metadata is automatic. A few optional settings unlock additional featur
 
 ### Dynamic OG Image
 
-If a page has no `feature*`, `cover*`, or `thumbnail*` image in its bundle, Ryder generates an Open Graph image at build time by overlaying the page title and site name onto your `og_image_default` base image. The result is a static `.webp` baked into your build — no server-side rendering.
+The OG image resolver checks, in order:
+
+1. **`og_image` front matter** — a per-page escape hatch. Point it at a
+   resource (a page-bundle image, or a path under `assets/`; a leading slash
+   is tolerated and stripped) and it's used as-is for that page, no
+   generation.
+2. **Page-bundle resources** — a `feature*`, `cover*`, or `thumbnail*` image
+   already in the page's bundle.
+3. **Generated card** — if neither of the above applies, Ryder generates an
+   Open Graph image at build time by overlaying the page title and site name
+   onto your `og_image_default` base image. The result is a static `.webp`
+   baked into your build — no server-side rendering.
+
+```toml
++++
+title = "A specific page"
+og_image = "my-hand-designed-card.png"   # page-bundle resource, or assets/-relative
++++
+```
+
+If you already have front matter named `og_image` for something else, note
+that it is now consumed by this resolver as of this widening.
 
 **`og_image_default` must live under `assets/`, not `static/`.** It is resolved with `resources.Get`, which only sees files under `assets/` — unlike `logo_png` (see [Logo](#logo)), which works from either `static/` or `assets/`. A leading slash is tolerated and stripped, but the file itself must be under `assets/`; a missing or `static/`-only file now fails the build with a named error instead of a nil-pointer panic.
 
@@ -531,7 +749,25 @@ npm run build-tw    # Build
 npm run deploy-tw   # Build + minify for production
 ```
 
-The theme's own `hugo.toml` sets `[build] writeStats = true` plus cachebusters for `tailwind.config.js`/`postcss.config.js`/`assets/**`, and consuming sites inherit both (theme config merges into the site's; your own `[build]` block, if you set one, still wins). This writes `hugo_stats.json` to your project root on every build — add it to `.gitignore`, or track it deliberately if you rely on reproducing exact Tailwind class-discovery output across clones.
+**Add this `[build]` block to your own site config** — Hugo merges only a subset of root config sections from themes, and `build` is not one of them, so you do **not** inherit it from Ryder:
+
+```toml
+[build]
+  writeStats = true
+  [[build.cachebusters]]
+    source = "(postcss|tailwind)\\.config\\.js"
+    target = "css"
+  [[build.cachebusters]]
+    source = "assets/.*\\.(js|ts|jsx|tsx)"
+    target = "js"
+  [[build.cachebusters]]
+    source = "assets/.*\\.(css|scss|sass)"
+    target = "css"
+```
+
+`writeStats` produces `hugo_stats.json` at your project root, which `tailwind.config.js` globs for class discovery; the cachebusters make `hugo server` pick up CSS/JS rebuilds. Without the block, Tailwind silently falls back to the `layouts/**/*.html` globs — most classes are still found, so nothing appears broken, but any class assembled dynamically in a template is purged from the CSS. Add `hugo_stats.json` to `.gitignore`, or track it deliberately if you need reproducible class discovery across clones.
+
+> **v0.2.4 note.** That release moved this block into the theme's own config on the assumption that consumers would inherit it. They don't. If you upgraded to v0.2.4 and deleted your `[build]` block, put it back.
 
 ---
 

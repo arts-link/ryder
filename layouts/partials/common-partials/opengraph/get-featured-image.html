@@ -1,5 +1,29 @@
+{{/* Per-page escape hatch, checked before any auto-discovery: front matter
+     og_image names a resource (page-bundle or assets/-relative, leading slash
+     tolerated) to use as-is for this page's OG image. Prepended ahead of the
+     existing bundle-resource / og_image_default chain below, which is
+     otherwise unchanged. */}}
+{{ $featured := "" }}
+{{ with .Param "og_image" }}
+  {{ $ogImage := strings.TrimPrefix "/" . }}
+  {{/* Page-bundle resources resolve relative to the bundle via $.Resources.Get;
+       resources.Get only ever sees assets/. Try the bundle first since
+       og_image is meant to name a resource "for this page" first and foremost,
+       then fall back to a site-wide assets/ path. */}}
+  {{ $resolved := $.Resources.Get $ogImage }}
+  {{ if not $resolved }}
+    {{ $resolved = resources.Get $ogImage }}
+  {{ end }}
+  {{ with $resolved }}
+    {{ $featured = . }}
+  {{ else }}
+    {{ errorf "og_image %q not found — the path must be a page-bundle resource or a file under assets/" $ogImage }}
+  {{ end }}
+{{ end }}
+
 {{ $images := $.Resources.ByType "image" }}
-{{ $featured := $images.GetMatch "*feature*" }}
+{{ if not $featured }}
+{{ $featured = $images.GetMatch "*feature*" }}
 {{ if not $featured }}
   {{ $featured = $images.GetMatch "{*cover*,*thumbnail*}" }}
 {{ end }}
@@ -47,6 +71,7 @@
   {{ else }}
     {{ errorf "og_image_default %q not found under assets/ — the path must be assets/-relative" $customImage }}
   {{ end }}
+{{ end }}
 {{ end }}
 
 {{ return $featured }}

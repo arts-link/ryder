@@ -1,0 +1,43 @@
+{{- /*
+A feed-less list layout: title + .Content, nothing else. No .Paginate, no
+card grid, no taxonomy cloud.
+
+_default/list.html is hardwired to paginate .Pages into a card grid, with no
+way to suppress that shell — every listCardType still renders inside the
+pagination wrapper. That forces a full fork for any section that is really
+just a data-driven singleton page with zero child pages (e.g. an "about" or
+"contact" section sourced from data/*.json rather than child content files).
+
+Selectable via Hugo's own `layout` front matter field — no theme-specific
+param, since Hugo cannot dispatch between two top-level list templates any
+other way (unlike headerType/menuType, which pick a *partial* included from
+within a single fixed entry template). Set, in the section's _index.md:
+
+    +++
+    title = "About"
+    layout = "list-plain"
+    +++
+
+Pair with the utils/data-items.html partial for the empty-data idiom this
+layout's pages typically need:
+
+    {{ $items := partial "utils/data-items.html" "about" }}
+    {{ if gt (len $items) 0 }}...{{ end }}
+
+@example content/about/_index.md front matter: layout = "list-plain"
+*/ -}}
+{{- define "main" -}}
+<div class="p-2 max-w-screen-lg mx-auto">
+  {{- $headerClass := "" -}}
+  {{- with .Param "twClasses.headerBackgroundFrameOuter" -}}{{- $headerClass = . -}}{{- end -}}
+  <header class="max-w-screen-xl">
+    <h1 class="{{ $headerClass }} rounded-t-lg p-3 flex items-center">
+      {{- if .Params.homeFeatureIcon -}}<i class="{{ .Params.homeFeatureIcon }} mr-2 text-4xl"></i>{{- end -}}
+      {{- .Title -}}
+    </h1>
+  </header>
+  <div class="mt-2 prose w-full max-w-max-screen-xl min-w-full lg:prose-lg dark:prose-invert">
+    {{- .Content -}}
+  </div>
+</div>
+{{- end -}}

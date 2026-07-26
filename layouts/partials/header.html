@@ -16,6 +16,14 @@ By default it will have a background gradient in cayan.
 {{- with .Param "twClasses.headerBackgroundFrameInner" -}}
 {{- $headerBackgroundFrameInner = . -}}
 {{- end -}}
+{{- /* Page-overridable nav skin: lets a site restyle the nav (e.g. a "pill"
+       treatment, or a dark variant on one section) without forking header.html
+       into a whole new headerType variant just to change classes. Checked in
+       order: an explicit navClass param, then the twClasses.nav convention
+       used elsewhere in this file, defaulting to "" (menu.html's own default
+       of "main-menu-nav" applies). See README > Template Variants for the
+       "one variant plus .Param for the skin" pattern this exists to enable. */ -}}
+{{- $navClass := or (.Param "navClass") (.Param "twClasses.nav") "" -}}
 {{- $headerBackgroundStyle := "" -}}
 {{- with .Param "twClasses.headerBackgroundImage" -}}
   {{- $backgroundPath := . -}}
@@ -49,10 +57,10 @@ By default it will have a background gradient in cayan.
                   {{ $menuType := .Param "menuType" | default "" }}
                   {{ $menuPartial := printf "menu%s.html" $menuType }}
                   {{- if templates.Exists (printf "partials/%s" $menuPartial) -}}
-                    {{- partial $menuPartial (dict "menuID" "main" "page" . "shade" "rose") -}}
+                    {{- partial $menuPartial (dict "menuID" "main" "page" . "shade" "rose" "navClass" $navClass) -}}
                   {{- else -}}
                     {{- warnf "menuType %q resolves to missing partial %q; falling back to menu.html" $menuType $menuPartial -}}
-                    {{- partial "menu.html" (dict "menuID" "main" "page" . "shade" "rose") -}}
+                    {{- partial "menu.html" (dict "menuID" "main" "page" . "shade" "rose" "navClass" $navClass) -}}
                   {{- end -}}
               </div>
           </div>

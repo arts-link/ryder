@@ -162,7 +162,11 @@
   .resp-sharing-button {
     @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300/70 bg-white px-2.5 py-2 text-slate-600 shadow-sm;
     @apply transition-all duration-150 ease-in-out;
-    font-family: "Titillium Web", Helvetica Neue, Helvetica, Arial, sans-serif;
+    /* --ryder-font-family is set by head/fonts.html from params.fonts.family
+       when a site configures it, falling back to the theme's default
+       Titillium Web otherwise -- part of the params.fonts story for issue #3
+       (configurable fonts). See head/fonts.html and README > Fonts. */
+    font-family: var(--ryder-font-family, "Titillium Web", Helvetica Neue, Helvetica, Arial, sans-serif);
     font-size: var(--sb-font-size, 16px);
   }
   .resp-sharing-button__icon svg { width: 1em; height: 1em; margin-right: 0.4em; vertical-align: middle; }

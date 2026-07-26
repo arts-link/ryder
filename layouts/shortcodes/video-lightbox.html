@@ -1,0 +1,108 @@
+{{- /*
+Video lightbox: a clickable thumbnail that opens a modal with the video
+embedded, beside main.js's existing imageGallery (images only). Uses the
+videoLightbox Alpine.data() component registered in main.js — CSP-safe: no
+inline calls, everything the handler needs travels as a data attribute or
+lives on the component.
+
+The iframe's src is only set once the modal opens (videoLightboxEmbedUrl
+starts empty), so nothing is requested from the embed host until the visitor
+actually clicks.
+
+Registers its provider's iframe host on .Page.Store, same as
+soundcloud/openstreetmap/youtube-embed/spotify-embed, so head/csp.html folds
+it into frame-src automatically.
+
+@param {string} provider  "youtube" or "vimeo". Defaults to "youtube".
+@param {string} id        Video ID for that provider (required).
+@param {string} thumbnail Thumbnail image: a page-bundle resource name, or an
+                          assets/-relative path. Falls back to a plain
+                          play-button tile with no image if omitted.
+@param {string} title     Accessible label for the trigger and iframe title.
+                          Defaults to "Play video".
+
+@example: {{< video-lightbox provider="youtube" id="VLvVNMbQIRY" thumbnail="video-thumb.jpg" >}}
+*/ -}}
+{{- $id := .Get "id" -}}
+{{- if not $id -}}
+  {{- errorf "video-lightbox shortcode requires an id param" -}}
+{{- end -}}
+{{- $provider := .Get "provider" | default "youtube" -}}
+{{- $embedHosts := dict
+    "youtube" "https://www.youtube-nocookie.com"
+    "vimeo"   "https://player.vimeo.com"
+-}}
+{{- $host := index $embedHosts $provider -}}
+{{- if not $host -}}
+  {{- errorf "video-lightbox shortcode: unknown provider %q (known: youtube, vimeo)" $provider -}}
+{{- end -}}
+{{- .Page.Store.SetInMap "cspFrameSrc" $host $host -}}
+{{- $embedUrl := "" -}}
+{{- if eq $provider "youtube" -}}
+  {{- $embedUrl = printf "https://www.youtube-nocookie.com/embed/%s?autoplay=1" $id -}}
+{{- else -}}
+  {{- $embedUrl = printf "https://player.vimeo.com/video/%s?autoplay=1" $id -}}
+{{- end -}}
+{{- $title := .Get "title" | default "Play video" -}}
+{{- $thumbSrc := "" -}}
+{{- with .Get "thumbnail" -}}
+  {{- $thumbPath := . -}}
+  {{- with $.Page.Resources.Get $thumbPath -}}
+    {{- $thumbSrc = .RelPermalink -}}
+  {{- else -}}
+    {{- with resources.Get (strings.TrimPrefix "/" $thumbPath) -}}
+      {{- $thumbSrc = .RelPermalink -}}
+    {{- else -}}
+      {{- $thumbSrc = $thumbPath -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+<div x-data="videoLightbox" class="not-prose">
+  <button type="button"
+    @click="videoLightboxOpen"
+    data-embed-url="{{ $embedUrl }}"
+    class="group relative block w-full aspect-video overflow-hidden rounded-lg bg-neutral-800"
+    aria-label="{{ $title }}">
+    {{- with $thumbSrc }}
+    <img src="{{ . }}" alt="{{ $title }}" class="absolute inset-0 h-full w-full object-cover" loading="lazy">
+    {{- end }}
+    <span class="absolute inset-0 flex items-center justify-center bg-black/30 transition group-hover:bg-black/40">
+      <span class="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-black shadow-lg">
+        <svg class="h-7 w-7 translate-x-0.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      </span>
+    </span>
+  </button>
+
+  <template x-teleport="body">
+    <div
+      x-show="videoLightboxOpened"
+      x-transition:enter="transition ease-in-out duration-300"
+      x-transition:enter-start="opacity-0"
+      x-transition:leave="transition ease-in-in duration-300"
+      x-transition:leave-end="opacity-0"
+      @click="videoLightboxClose"
+      @keydown.window.escape="videoLightboxClose"
+      x-trap.inert.noscroll="videoLightboxOpened"
+      class="fixed inset-0 z-[99] flex items-center justify-center bg-black bg-opacity-70 select-none"
+      x-cloak>
+      <div class="relative w-[96vw] max-w-4xl aspect-video" @click.stop>
+        <button type="button" @click="videoLightboxClose"
+          class="absolute -top-10 right-0 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition hover:bg-black/70"
+          aria-label="Close video">
+          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+        </button>
+        {{/* @alpinejs/csp refuses to evaluate any directive on an <iframe>
+             itself, so this carries only a plain x-ref (a name, not an
+             evaluated expression) — no x-show, no :src. main.js's
+             videoLightboxOpen/Close set .src imperatively via the ref, and
+             the show/hide toggle lives on the wrapper div above instead. */}}
+        <iframe
+          x-ref="videoLightboxFrame"
+          class="h-full w-full rounded-lg"
+          title="{{ $title }}"
+          allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </template>
+</div>

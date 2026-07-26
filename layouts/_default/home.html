@@ -26,7 +26,10 @@
   {{- $pages = where $pages "Permalink" "ne" $current }}
 
   {{/*  Prepare feed and create paginator after filtering to avoid Hugo's paginator cache issue  */}}
-  {{- $showHomeFeed := site.Params.showHomeFeed | default true }}
+  {{/*  .Param (not site.Params): showHomeFeed used to be site-scoped only, which made it a
+        no-op for any site overriding this layout with front matter set on the home page
+        itself (e.g. via a cascade). .Param still falls back to the site config value.  */}}
+  {{- $showHomeFeed := .Param "showHomeFeed" | default true }}
   {{- $pageNum := 1 }}
   {{- $paginator := dict }}
   {{- if $showHomeFeed }}

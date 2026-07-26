@@ -13,8 +13,11 @@
 [outputs]
   home = ["HTML", "RSS", "LLMSTxt"]
 
-# Theme config merges into the consuming site's config, so these are inherited
-# by every site that uses this theme (a site's own [build] block still wins).
+# These serve THIS repo's own builds only. Hugo merges only a subset of root
+# config sections from themes and `build` is NOT among them, so a consuming
+# site does not inherit any of this — v0.2.4 assumed otherwise and was wrong.
+# Consumers must copy this block into their own config; the README says so, and
+# exampleSite carries its own copy as the reference implementation.
 # writeStats feeds tailwind.config.js's hugo_stats.json content glob for class
 # discovery; the cachebusters make `hugo server` pick up CSS/JS rebuilds after
 # editing tailwind.config.js, postcss.config.js, or assets/**.

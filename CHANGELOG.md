@@ -28,6 +28,48 @@ All notable changes to the Ryder Hugo theme are documented in this file.
 - **4.5** — Document the CSP-Alpine restriction in `README.md`, along with both
   new components and `assets/js/extended.js`, the theme's sanctioned custom-JS
   hook, which was previously undocumented.
+- **2.1** — Ship `_default/list-plain.html` (title + `.Content`, no
+  pagination/card grid) for data-driven singleton sections, selected via
+  Hugo's own `layout` front-matter field; ship `partials/utils/data-items.html`,
+  a returning partial for the `.Site.Data.<name>.items | default slice` idiom.
+- **2.3** — Widen the OG image resolver with a front-matter `og_image` escape
+  hatch, checked before the existing bundle-resource / `og_image_default`
+  chain (which is otherwise unchanged).
+- **2.4** — Support `hideIfEmptyData` under `[menus.<id>.params]`, naming a
+  `data/*.json` file whose `items` array must be non-empty for that menu
+  entry to render.
+- **2.5** — Resolve a page-overridable `navClass` (or `twClasses.nav`) in
+  `header.html` and pass it into the menu partial, so a single page can
+  restyle just the nav without forking `header.html` into a new `headerType`
+  variant. Documented as the "one variant plus `.Param` for the skin"
+  pattern.
+- **5.1** — Ship `youtube-embed` and `spotify-embed` shortcodes, following
+  the `soundcloud`/`openstreetmap` pattern of auto-registering their iframe
+  host in CSP `frame-src`. Named distinctly from Hugo's built-in `youtube`
+  shortcode rather than overriding it.
+- **5.2** — Add a `video-lightbox` shortcode and a `videoLightbox`
+  `Alpine.data()` component beside the existing `imageGallery` (images
+  only); the iframe's `src` is only set once the modal opens.
+- **5.3** — `utils/socialslist.html` now accepts a flat name → URL map (what
+  Decap CMS emits) in addition to the original `{main:[...]}` shape, and
+  ships inline SVGs for Instagram, TikTok, Apple Music, Tidal, and Spotify
+  for entries with no `icon` field, rather than widening the tree-shaken
+  Font Awesome brand set.
+- **5.4** — Add `logo_wrapperClass`; the wrapper chrome (background, hover
+  state, padding) around the logo is now dropped automatically once
+  `logo_png` is set. `logo_png`'s `.Param` (page-overridable) contract is
+  documented as authoritative.
+- **5.5** — Parameterize `head/favicon.html` via `[params.favicon]` (`ico`,
+  `version`, `svg`, `appleTouchIcon`, `webmanifest`), each defaulting to a
+  file the theme already ships.
+- **5.6** — `_default/home.html` now reads `showHomeFeed` via `.Param`
+  instead of `site.Params`, so a page-level override (e.g. a cascade) is
+  honored instead of being a silent no-op.
+- **Issue #3 (partial)** — Add `[params.fonts]` (`family`,
+  `googleFontsFamily`, `disableGoogleFonts`), covering `head/fonts.html`'s
+  Google Fonts URL and a new `--ryder-font-family` CSS custom property that
+  `assets/css/main.css`'s `.resp-sharing-button` rule now reads. Does not
+  close issue #3 — see `docs/specs/v0.3.md`'s cross-check for what remains.
 
 ### Breaking
 

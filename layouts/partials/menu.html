@@ -8,6 +8,23 @@ Renders a menu for the given menu ID.
 
 @example: {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
 @example: {{ partial "menu.html" (dict "menuID" "main" "page" . "navClass" "main-custom-menu-nav") }}
+
+Menu entries can be gated on a data file having content, so nav items tied to
+a data-driven section (e.g. "Press", populated from data/press.json) don't
+render a dead link when that data is empty. Set `hideIfEmptyData` under the
+entry's own [menus.<id>.params] to the data/*.json file name (without the
+extension); the entry renders only when that file's `items` array is
+non-empty (checked via utils/data-items.html):
+
+    [[menus.main]]
+      name = "Press"
+      pageRef = "/press"
+      weight = 40
+      [menus.main.params]
+        hideIfEmptyData = "press"   # gates on data/press.json .items
+
+This replaces the pattern of forking the whole nav to append a few lines of
+`{{ if gt (len (.Site.Data.press.items | default slice)) 0 }}`.
 */}}
 {{- $page := .page }}
 {{- $menuID := .menuID }}
@@ -28,6 +45,12 @@ Renders a menu for the given menu ID.
 {{- define "partials/inline/menu/walk.html" }}
   {{- $page := .page }}
   {{- range .menuEntries }}
+    {{- with .Params.hideIfEmptyData }}
+      {{- $items := partial "utils/data-items.html" . }}
+      {{- if eq (len $items) 0 }}
+        {{- continue }}
+      {{- end }}
+    {{- end }}
     {{- $attrs := dict "href" .URL }}
     {{- $triggerMode := "caret" }}
     {{- if $page.IsMenuCurrent .Menu . }}

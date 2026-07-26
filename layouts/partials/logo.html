@@ -2,15 +2,30 @@
 {{ with .Param "logo_fontClass" }} 
   {{- $fontClass = . }} 
 {{- end }} 
-{{- $lettersClass := "inline" -}} 
-{{- $roundedClass := "rounded-lg" }} 
-{{ with .Param "logo_collapse" }} 
-{{- $lettersClass = "hidden sm:inline" -}} 
-{{- $roundedClass = "rounded-full sm:rounded-lg" }} 
+{{- $lettersClass := "inline" -}}
+{{- $roundedClass := "rounded-lg" }}
+{{ with .Param "logo_collapse" }}
+{{- $lettersClass = "hidden sm:inline" -}}
+{{- $roundedClass = "rounded-full sm:rounded-lg" }}
+{{- end -}}
+{{- /* The grey rounded box (background, hover state, padding) makes sense as
+       a frame for the generated text mark, but is unwanted chrome around a
+       real logo image — before logo_wrapperClass existed, a site with
+       logo_png had no way to drop it short of overriding this whole partial.
+       So: an explicit logo_wrapperClass always wins; otherwise the chrome
+       applies only in text-mark mode (unchanged default) and is dropped
+       entirely once logo_png is set. */ -}}
+{{- $wrapperClass := "" -}}
+{{- $logoPng := .Param "logo_png" -}}
+{{- $logoWrapperClass := .Param "logo_wrapperClass" -}}
+{{- if $logoWrapperClass -}}
+  {{- $wrapperClass = $logoWrapperClass -}}
+{{- else if not $logoPng -}}
+  {{- $wrapperClass = printf "bg-neutral-200 hover:bg-neutral-300 transition-colors duration-150 %s p-3 sm:p-3" $roundedClass -}}
 {{- end -}}
   <div class="flex relative">
   <a class="" href="{{ .Site.Home.RelPermalink }}" >
-    <div class="{{ $fontClass }} max-h-none max-w-max inline-block bg-neutral-200 hover:bg-neutral-300 transition-colors duration-150 {{ $roundedClass }} p-3 sm:p-3" >
+    <div class="{{ $fontClass }} max-h-none max-w-max inline-block {{ $wrapperClass }}" >
       <div class="flex flex-col">
         {{- with .Param "logo_png" }}
         <img src="{{ . }}" alt="{{ site.Title }}" class="max-h-16 w-auto">

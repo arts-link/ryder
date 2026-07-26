@@ -88,6 +88,25 @@ themesDir= "../../"
     email = 'you@example.com'
     name = 'Ben Strawbridge'
 
+  # ico/svg/appleTouchIcon default to the files the theme already ships
+  # (favicon.ico, images/favicon.svg, images/apple-touch-icon.png) — only
+  # webmanifest has no default, since the theme ships no manifest file.
+  # Site-level only: head.html loads this partial via partialCached with no
+  # explicit cache key, so it cannot vary per page.
+  [params.favicon]
+    webmanifest = "/site.webmanifest"
+    # Set explicitly to the file the theme ships, so the e2e suite exercises a
+    # site-supplied value rather than only the built-in default — the casing of
+    # this key is load-bearing (Hugo lower-cases config keys, so the partial's
+    # isset lookup must too), and a default-only test cannot catch getting it
+    # wrong. Array-of-tables entries must come after every scalar key above.
+    appleTouchIcon = "/images/apple-touch-icon.png"
+
+  # Sized PNG icons — opt-in, no default, since the theme ships no such files.
+  [[params.favicon.icons]]
+    size = "32x32"
+    href = "/images/favicon.svg"
+
   [params.twClasses]
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
     headerBackgroundFrameInner = "h-[240px] sm:h-[400px] bg-cover bg-center sm:bg-[center_30%]"
@@ -121,6 +140,23 @@ themesDir= "../../"
     pageRef = '/tags'
     parent = 'docs'
     weight = 9990
+# Conditional menu entries: hideIfEmptyData names a data/*.json file (shaped
+# {"items": [...]}) that must be non-empty for the entry to render — see
+# README > Menus and exampleSite/content/docs/list-layouts. "Press" shows
+# because data/press.json has items; "Merch" stays hidden because
+# data/merch.json does not exist (an empty items array behaves the same way).
+[[menus.main]]
+    name = 'Press'
+    pageRef = '/press'
+    weight = 45
+    [menus.main.params]
+      hideIfEmptyData = 'press'
+[[menus.main]]
+    name = 'Merch'
+    url = '/merch/'
+    weight = 46
+    [menus.main.params]
+      hideIfEmptyData = 'merch'
 [[menus.footer]]
     name = 'File a Bug or Feature Request'
     url = 'https://github.com/arts-link/ryder/issues/new/choose'
@@ -141,7 +177,24 @@ themesDir= "../../"
     source = "assets"
     target = "assets"
 
-# writeStats and the cachebusters below are inherited from the theme's own
-# hugo.toml (theme config merges into the site's) as of v0.2.4 — no need to
-# duplicate them here. exampleSite doubles as the reference implementation,
-# so its absence here is deliberate: consumers should get these for free.
+# [build] is NOT inherited from the theme. Hugo merges only a subset of root
+# config sections from themes, and `build` is not among them — verified by
+# building a real consumer site against the theme and getting no
+# hugo_stats.json at all. v0.2.4 removed this block on the assumption that
+# inheritance covered it; that was wrong, and the effect was silent (Tailwind
+# quietly falls back to the layouts globs, so only dynamically-assembled
+# classes go missing).
+#
+# Every consuming site needs its own copy of this block. exampleSite is the
+# reference implementation, so it carries one.
+[build]
+  writeStats = true
+  [[build.cachebusters]]
+    source = "(postcss|tailwind)\\.config\\.js"
+    target = "css"
+  [[build.cachebusters]]
+    source = "assets/.*\\.(js|ts|jsx|tsx)"
+    target = "js"
+  [[build.cachebusters]]
+    source = "assets/.*\\.(css|scss|sass)"
+    target = "css"

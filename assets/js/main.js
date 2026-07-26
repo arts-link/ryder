@@ -350,6 +350,36 @@ Alpine.data('imageGallery', () => ({
   },
 }));
 
+// Register the video-lightbox component (click a thumbnail, open a modal
+// with the video iframe — mirrors imageGallery's open/close/teardown shape).
+//
+// @alpinejs/csp refuses to evaluate ANY directive on an <iframe> element
+// itself ("Evaluating expressions on an iframe is prohibited in the CSP
+// build") — not just calls/arrows, unlike everywhere else in this file. So
+// the iframe carries only a plain x-ref (a name, not an evaluated
+// expression); its `src` is set imperatively here instead of via `:src` or
+// `x-show` on the tag. The show/hide toggle lives on the iframe's *wrapper*,
+// which is a normal element and unaffected by that restriction. The src is
+// only set once the modal opens, so nothing is requested from the embed
+// host until the visitor actually clicks.
+Alpine.data('videoLightbox', () => ({
+  videoLightboxOpened: false,
+  videoLightboxOpen(event) {
+    const el = (event && event.currentTarget) || this.$el;
+    const url = (el.dataset && el.dataset.embedUrl) || '';
+    this.videoLightboxOpened = true;
+    if (this.$refs.videoLightboxFrame) this.$refs.videoLightboxFrame.src = url;
+  },
+  videoLightboxClose() {
+    this.videoLightboxOpened = false;
+    // Clear src after the close transition so the video stops playing
+    // instead of continuing in a hidden iframe.
+    setTimeout(() => {
+      if (this.$refs.videoLightboxFrame) this.$refs.videoLightboxFrame.src = '';
+    }, 300);
+  },
+}));
+
 // Register the affiliate-link-builder component (default tag injected by Hugo
 // via a data attribute so the shortcode needs no inline <script> tag)
 Alpine.data('affiliateLinkBuilder', () => ({

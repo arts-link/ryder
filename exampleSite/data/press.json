@@ -1,0 +1,14 @@
+{
+  "items": [
+    {
+      "title": "Ryder theme review",
+      "outlet": "Example Weekly",
+      "link": "https://example.com/ryder-review"
+    },
+    {
+      "title": "Hugo themes roundup, 2026 edition",
+      "outlet": "Static Site News",
+      "link": "https://example.com/static-site-roundup"
+    }
+  ]
+}
