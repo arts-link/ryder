@@ -17,6 +17,7 @@
 {{- $darkMode := partial "utils/dark-mode.html" . -}}
 <template id="theme-config">{
   "showDarkToggle": {{ eq $darkMode "toggle" }},
+  "analyticsProvider": {{ site.Params.analytics_provider | default "" | jsonify }},
   "loadLeaflet": {{ $loadLeaflet }}
   {{- if $loadLeaflet }}
   {{- with resources.Get "images/leaflet/marker-icon.png" }},"leafletMarkerIconUrl": "{{ (. | fingerprint).RelPermalink }}"{{ end }}

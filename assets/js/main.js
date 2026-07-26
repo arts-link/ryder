@@ -77,6 +77,100 @@ dom.watch()
 import Alpine from '@alpinejs/csp';
 import focus from '@alpinejs/focus';
 
+// Theme configuration emitted by layouts/partials/head/js.html. Parsed here,
+// ahead of the Alpine component registrations, because ryderTrack needs to know
+// which analytics provider the site selected.
+const themeConfigEl = document.getElementById('theme-config');
+let themeConfig = {};
+if (themeConfigEl) {
+  try {
+    const rawThemeConfig = themeConfigEl.tagName === 'TEMPLATE'
+      ? themeConfigEl.innerHTML
+      : themeConfigEl.textContent;
+    themeConfig = JSON.parse((rawThemeConfig || '{}').trim());
+  } catch (e) {
+    console.error('Error parsing theme-config:', e);
+  }
+}
+const loadLeaflet = themeConfig.loadLeaflet || false;
+const showDarkToggle = themeConfig.showDarkToggle || false;
+
+// --- Analytics primitives -------------------------------------------------
+//
+// @alpinejs/csp cannot evaluate function calls, member calls, or arrow
+// functions inside inline directives, and it does NOT throw when it meets one —
+// the handler simply never runs. So an inline `@click="posthog.capture(...)"`
+// is silently dead. Everything the handler needs travels as data attributes
+// instead, and the handler itself is a named method on a registered component.
+
+// Forward one event to whichever provider `params.analytics_provider` selected.
+// Falls back to feature detection when no provider is configured, and no-ops
+// (rather than throwing) when no provider is present at all — the provider
+// script may be absent, blocked by an ad blocker, or still loading.
+function ryderSendEvent(name, props) {
+  if (!name) return false;
+  const provider = String(themeConfig.analyticsProvider || '').toLowerCase();
+  const payload = props || {};
+
+  try {
+    const posthog = window.posthog;
+    if ((provider === 'posthog' || provider === '')
+      && posthog && typeof posthog.capture === 'function') {
+      posthog.capture(name, payload);
+      return true;
+    }
+
+    const plausible = window.plausible;
+    if ((provider === 'plausible' || provider === '')
+      && typeof plausible === 'function') {
+      plausible(name, { props: payload });
+      return true;
+    }
+  } catch (e) {
+    // A provider that throws must never break the click handler it is attached
+    // to — the link or form submit has to keep working regardless.
+    console.warn('ryderTrack: analytics provider threw while capturing', name, e);
+    return false;
+  }
+
+  return false;
+}
+
+// Read `data-track-props` off an element defensively. Invalid JSON warns and
+// yields an empty props object; it must never break the handler, because the
+// handler is usually also responsible for a navigation or a form submit.
+function ryderTrackProps(el) {
+  const raw = el && el.dataset ? el.dataset.trackProps : '';
+  if (!raw) return {};
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed;
+    console.warn('ryderTrack: data-track-props must be a JSON object, got:', raw, el);
+    return {};
+  } catch (e) {
+    console.warn('ryderTrack: data-track-props is not valid JSON:', raw, el);
+    return {};
+  }
+}
+
+// Track one element's configured event. Shared by ryderTrack and ryderForm.
+function ryderTrackElement(el) {
+  if (!el || !el.dataset) return false;
+  return ryderSendEvent(el.dataset.trackEvent, ryderTrackProps(el));
+}
+
+// Register the analytics click-tracking component.
+//
+//   <a x-data="ryderTrack" @click="track"
+//      data-track-event="ticket_link_click"
+//      data-track-props='{"venue":"The Roxy"}'>Tickets</a>
+//
+Alpine.data('ryderTrack', () => ({
+  track(event) {
+    ryderTrackElement((event && event.currentTarget) || this.$el);
+  },
+}));
+
 // Register the mobile menu component (header nav toggle)
 Alpine.data('mobileMenu', () => ({
   openMenu: false,
@@ -185,21 +279,6 @@ Alpine.data('affiliateLinkBuilder', () => ({
 Alpine.plugin(focus);
 window.Alpine = Alpine;
 Alpine.start();
-
-const themeConfigEl = document.getElementById('theme-config');
-let themeConfig = {};
-if (themeConfigEl) {
-  try {
-    const rawThemeConfig = themeConfigEl.tagName === 'TEMPLATE'
-      ? themeConfigEl.innerHTML
-      : themeConfigEl.textContent;
-    themeConfig = JSON.parse((rawThemeConfig || '{}').trim());
-  } catch (e) {
-    console.error('Error parsing theme-config:', e);
-  }
-}
-const loadLeaflet = themeConfig.loadLeaflet || false;
-const showDarkToggle = themeConfig.showDarkToggle || false;
 
 function initLeafletMaps() {
   document.querySelectorAll('[data-leaflet-map]').forEach(function(el) {
