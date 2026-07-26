@@ -11,6 +11,12 @@ updates:
     groups:
       npm-dev-dependencies:
         dependency-type: "development"
+    ignore:
+      # The theme is built on Tailwind CSS v3 (tailwind.config.js, PostCSS
+      # pipeline). v4 moves the PostCSS plugin to @tailwindcss/postcss and
+      # breaks the build — hold major bumps until a deliberate migration.
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "npm"
     directory: "/exampleSite"
@@ -23,6 +29,11 @@ updates:
       example-site-dependencies:
         patterns:
           - "*"
+    ignore:
+      # See above — Tailwind v4 breaks exampleSite's postcss.config.js and
+      # with it the E2E suite (PR #52's failure).
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
