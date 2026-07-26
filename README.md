@@ -105,7 +105,7 @@ Full example in [`exampleSite/config/_default/hugo.toml`](https://github.com/art
 ```toml
 [params]
   darkMode = "system"             # "system" (default), "toggle", or "off" — see Dark Mode below
-  showHomeFeed = true            # Paginated feed on home page
+  showHomeFeed = true            # Paginated feed on home page (page-overridable via .Param, e.g. in the home page's own front matter)
   showDate = true
   showAuthor = true
   showBreadCrumbs = true
