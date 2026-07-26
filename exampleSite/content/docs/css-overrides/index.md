@@ -164,8 +164,15 @@ Change `border-fuchsia-600` to any Tailwind color class. For no border, omit bot
 
 TailwindCSS JIT only generates CSS for classes it can detect at build time. Classes you add in `hugo.toml` are scanned automatically — but **arbitrary value classes** like `bg-[url(...)]` or `h-[400px]` must appear literally in a file that Tailwind scans.
 
-The theme's `tailwind.config.js` already includes your config and content directories. If you're adding completely new arbitrary values and they aren't rendering, verify the file path is listed in the `content` array of `tailwind.config.js` and rebuild CSS with:
+Your site's `tailwind.config.js` owns the `content` array — the theme ships only
+a preset (`tailwind.preset.js`), which carries design tokens and deliberately no
+content globs, since those resolve from your project root. If you add
+arbitrary values and they aren't rendering, verify the file path is listed in
+your own `content` array, then restart the build:
 
 ```bash
-npm run deploy-tw
+hugo server
 ```
+
+There is no separate CSS build command. Tailwind runs inside the Hugo build via
+`css.PostCSS`.

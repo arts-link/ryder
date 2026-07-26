@@ -21,11 +21,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Development Commands
 
 ### CSS Development
-```bash
-npm run build-tw     # Build TailwindCSS
-npm run deploy-tw    # Build and minify for production
-npm run watch-tw     # Watch mode for development
-```
+
+There is no separate CSS build step. Tailwind compiles inside the Hugo build via
+`head/css.html`'s `css.PostCSS` and `postcss.config.js`, so `hugo server` and
+`hugo --minify` are the whole workflow. The `build-tw` / `deploy-tw` /
+`watch-tw` scripts were removed in v0.3.0 — they wrote a `style.css` no
+template read.
 
 ### Hugo Commands
 ```bash
@@ -253,9 +254,9 @@ By default, footer shows NO taxonomy lists. Must configure `params.footer.taxono
 
 ### Modifying CSS
 1. Edit source files in `assets/css/main.css`
-2. Run `npm run watch-tw` during development
-3. Test with `hugo server -D`
-4. Build production CSS with `npm run deploy-tw`
+2. Run `hugo server -D --source exampleSite` — Tailwind recompiles in-build
+3. Design tokens (theme, darkMode, plugins) live in `tailwind.preset.js`, which
+   consumers require; `tailwind.config.js` only adds this repo's `content` globs
 
 ### Creating Shortcodes
 1. Add to `layouts/shortcodes/`

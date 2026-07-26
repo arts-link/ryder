@@ -819,6 +819,49 @@ listCardType = "-super-simple"
 
 ## CSS Development
 
+### There is no separate CSS build step
+
+**`hugo server` and `hugo --minify` are the whole workflow.** Tailwind compiles
+*inside* the Hugo build: `head/css.html` pipes `assets/css/main.css` through
+`css.PostCSS`, which runs your `postcss.config.js`, which runs Tailwind. There
+is no watcher to start in a second terminal and no artifact to commit.
+
+What that requires at your **project root** (not in `themes/ryder/` — Hugo
+invokes PostCSS from your project root, so that is the only `node_modules` it
+consults):
+
+```bash
+npm i -D tailwindcss postcss postcss-cli autoprefixer @tailwindcss/typography
+```
+
+plus a `postcss.config.js`:
+
+```js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+```
+
+and a `tailwind.config.js` requiring the theme's preset (see below). With those
+in place:
+
+```bash
+hugo server        # dev, with live CSS rebuilds
+hugo --minify      # production
+```
+
+> **Removed in v0.3.0: `npm run build-tw`, `watch-tw`, and `deploy-tw`.** They
+> ran the Tailwind CLI to write `themes/ryder/assets/css/style.css`, a file no
+> template ever read, and earlier versions of this README presented them as
+> *the* build workflow — which pushed consuming sites into a two-terminal dev
+> loop that was never required. If any CI, Vercel, or Netlify build command
+> runs `npm run build-tw && hugo --minify`, drop the first half; it will now
+> fail on a missing script. Confirm `hugo --minify` alone works before you
+> upgrade.
+
 ### The Tailwind preset
 
 Ryder ships its design tokens as a **preset**, `tailwind.preset.js`. Your site's
