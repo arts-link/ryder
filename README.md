@@ -27,16 +27,21 @@ git submodule add https://github.com/arts-link/ryder.git themes/ryder
 # Copy config and npm setup from exampleSite
 cp -r themes/ryder/exampleSite/config/ ./config
 cp themes/ryder/exampleSite/package.json .
+cp themes/ryder/exampleSite/package-lock.json .
 cp themes/ryder/exampleSite/*.config.js .
-npm install
+npm ci
 
-# !! Delete the line `themesDir = "../.."` from config/_default/hugo.toml
-# !! Update baseURL in config/_default/hugo.toml to your own URL
+# You must delete the dev-only theme path override before building your site
+sed -i.bak '/^themesDir *=/d' config/_default/hugo.toml
+
+# Update baseURL in config/_default/hugo.toml to your own URL
 
 # Create a home page and start the server
 hugo new content _index.md
 hugo server -D
 ```
+
+The copied config is a starter configuration from the theme demo. Before building your site, update site-facing values in `config/_default/hugo.toml` such as `baseURL`, `title`, `homePageFeedHeader`, `homePageFeatureHeader`, and the logo text settings so they match your site.
 
 ---
 
@@ -61,7 +66,7 @@ hugo server -D
 - **Custom RSS feed** — styled XSLT browser-readable feed
 - **Social links** — footer social icons via `data/social.json`
 - **i18n** — partial translations for English, German, French
-- **Template variants** — header, footer, menu, and card partials support `-fun` and custom suffix variants
+- **Template overrides** — header, footer, menu, and card partials can be swapped with your own suffix-based variants
 - **Hidden home layout** — full-bleed cover image with minimal content for landing pages
 
 ---
@@ -79,11 +84,14 @@ git submodule add https://github.com/arts-link/ryder.git themes/ryder
 ```bash
 cp -r themes/ryder/exampleSite/config/ ./config
 cp themes/ryder/exampleSite/package.json .
+cp themes/ryder/exampleSite/package-lock.json .
 cp themes/ryder/exampleSite/*.config.js .
-npm install
+npm ci
 ```
 
-**Important:** Delete the line `themesDir = "../../"` from `config/_default/hugo.toml` — it exists only for theme development and will break your site.
+**Required:** Delete the line `themesDir = "../.."` or `themesDir = "../../"` from `config/_default/hugo.toml` before you build. It exists only for theme development inside this repository and will break a normal site installation.
+
+The copied config is a starter configuration from the theme demo. Update site-facing values in `config/_default/hugo.toml` such as `baseURL`, `title`, `homePageFeedHeader`, `homePageFeatureHeader`, and the logo text settings so they match your site.
 
 ---
 
@@ -130,6 +138,42 @@ Full example in [`exampleSite/config/_default/hugo.toml`](https://github.com/art
   name = "Your Name"
   email = "you@example.com"
 ```
+
+### Template Overrides
+
+Ryder keeps the page frame stable and lets you swap selected partials by suffix instead of editing the theme's base layout.
+
+For example, if you set:
+
+```toml
+[params]
+  headerType = "-custom"
+  footerType = "-custom"
+```
+
+then Hugo will look for:
+
+- `layouts/partials/header-custom.html`
+- `layouts/partials/footer-custom.html`
+
+in your site first, before falling back to the theme.
+
+The same pattern applies to other overridable partials:
+
+```toml
+[params]
+  menuType = "-custom"
+  listCardType = "-custom"
+  homeListCardType = "-custom"
+  homeFeatureListCardType = "-custom"
+```
+
+That resolves to partials such as:
+
+- `layouts/partials/menu-custom.html`
+- `layouts/partials/card-custom.html`
+
+Use this when you want to replace a whole component cleanly without editing `baseof.html` or forking the theme's default partial names.
 
 ### Global Banners
 
@@ -412,9 +456,9 @@ homeFeatureTitle = "Custom card title"
 Header, footer, menu, and card partials support variant suffixes. Set in `hugo.toml` or per-page front matter:
 
 ```toml
-headerType = "-fun"   # loads header-fun.html
-footerType = "-fun"
-menuType = "-fun"
+headerType = "-custom"   # loads header-custom.html
+footerType = "-custom"   # loads footer-custom.html
+menuType = "-custom"     # loads menu-custom.html
 listCardType = "-super-simple"
 ```
 

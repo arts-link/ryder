@@ -2,20 +2,24 @@
 
 {{- /* Only render if taxonomies are explicitly configured */ -}}
 {{- if $taxonomies }}
+  <div class="footer-taxonomy-groups">
   {{- range $taxonomies }}
     {{- $taxonomy := .name }}
     {{- $title := .title }}
     {{- $minCount := .minCount | default 1 }}
     {{- $baseURL := $.Site.BaseURL }}
 
-    <div class="items-center justify-center text-center">
-      <h4>{{ $title }}</h4>
+    <div class="footer-taxonomy-group">
+      <h4 class="footer-section-title">{{ $title }}</h4>
+      <div class="footer-taxonomy-links">
       {{- range $name, $taxonomyPage := (index $.Site.Taxonomies $taxonomy) }}
         {{- $tagCount := len $taxonomyPage.Pages }}
         {{- if ge $tagCount $minCount }}
-          <a href="{{ printf "%s%s/%s" $baseURL $taxonomy ($name | urlize) }}" class="px-2 inline-block text-center break-words">{{ $name }}<sup>{{ $tagCount }}</sup></a>
+          <a href="{{ printf "%s%s/%s" $baseURL $taxonomy ($name | urlize) }}" class="footer-taxonomy-link">{{ $name }}<sup>{{ $tagCount }}</sup></a>
         {{- end }}
       {{- end }}
+      </div>
     </div>
   {{- end }}
+  </div>
 {{- end }}

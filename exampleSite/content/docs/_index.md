@@ -4,7 +4,7 @@ description = "Documentation pages to show how that might look."
 date = "2024-01-24"
 author = "Hugo Authors"
 enableComments = false
-# headerType = "-fun"
+# headerType = "-custom"
 [cascade]
   # showCardLinkOverlay = false
   homeFeatureIcon = "fa-solid fa-signs-post"
@@ -21,8 +21,8 @@ enableComments = false
 
 {{< alert-wrapper 
   alertType="info" 
-  alertTitle="Alternate header options" 
-  alertMessage="This page has the `headerType` front matter key set to `-fun`, which causes a different header layout to be loaded, this can be set in page front matter or globally in `hugo.toml`." 
+  alertTitle="Template overrides" 
+  alertMessage="Use keys like `headerType = '-custom'` or `footerType = '-custom'` to load your own suffixed partials, such as `layouts/partials/header-custom.html`, without editing the theme's base layout." 
   alertIconClass="fa-solid fa-snowflake"
   dismissable=false
 >}}

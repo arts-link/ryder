@@ -1,12 +1,11 @@
 {{- if .TableOfContents }}
-<div class="toc">
-  <details {{ if .Param "tocOpen" }}open{{ end }}>
-    <summary accesskey="c" title="(Alt + C)" class="mb-1">
-      <span class="details text-rose-500">{{- i18n "toc" | default "On this page" }}</span>
-    </summary>
-    <div class="inner">
-      {{- .TableOfContents }}
-    </div>
-  </details>
-</div>
+<section class="aside-toc-group" aria-labelledby="aside-toc-title">
+  <h2 id="aside-toc-title" class="aside-toc-heading">
+    <i class="fa-solid fa-signs-post aside-toc-icon"></i>
+    <span>{{- i18n "toc" | default "On this page" }}</span>
+  </h2>
+  <div class="aside-toc-links">
+    {{- .TableOfContents }}
+  </div>
+</section>
 {{- end }}

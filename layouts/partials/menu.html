@@ -7,7 +7,7 @@ Renders a menu for the given menu ID.
                            Defaults to "main-menu-nav" for non-footer menus.
 
 @example: {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
-@example: {{ partial "menu.html" (dict "menuID" "main" "page" . "navClass" "main-fun-menu-nav") }}
+@example: {{ partial "menu.html" (dict "menuID" "main" "page" . "navClass" "main-custom-menu-nav") }}
 */}}
 {{- $page := .page }}
 {{- $menuID := .menuID }}
