@@ -171,6 +171,102 @@ Alpine.data('ryderTrack', () => ({
   },
 }));
 
+// Register the declarative form component: POST the form as JSON to
+// `data-form-action`, expose the request state, honour a `_gotcha` honeypot,
+// and fire an optional `data-track-event` on success.
+//
+//   <form x-data="ryderForm" @submit.prevent="submit"
+//         data-form-action="https://api.example.com/subscribe"
+//         data-track-event="signup_submit">
+//     <input type="email" name="email" required>
+//     <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"
+//            class="hidden" aria-hidden="true">
+//     <button type="submit" :disabled="isLoading">Subscribe</button>
+//     <p x-show="isSuccess">Thanks!</p>
+//     <p x-show="isError" x-text="errorMessage"></p>
+//   </form>
+//
+// `status` is the raw string ('' | 'loading' | 'success' | 'error'). The
+// booleans exist because the CSP evaluator cannot evaluate a comparison like
+// `status === 'success'` — only a plain property lookup — so `x-show` needs a
+// property that is already a boolean.
+Alpine.data('ryderForm', () => ({
+  status: '',
+  errorMessage: '',
+
+  get isIdle() { return this.status === ''; },
+  get isLoading() { return this.status === 'loading'; },
+  get isSuccess() { return this.status === 'success'; },
+  get isError() { return this.status === 'error'; },
+
+  async submit(event) {
+    // Capture the form before any await — `event.currentTarget` is nulled once
+    // the event finishes dispatching. preventDefault is called here as well as
+    // by the recommended `.prevent` modifier, so plain `@submit="submit"` also
+    // behaves.
+    const form = (event && event.currentTarget) || this.$el;
+    if (event && typeof event.preventDefault === 'function') event.preventDefault();
+    if (this.status === 'loading') return;
+
+    const action = form && form.dataset ? form.dataset.formAction : '';
+    if (!action) {
+      console.warn('ryderForm: no data-form-action on', form);
+      this.status = 'error';
+      this.errorMessage = this.fallbackError(form);
+      return;
+    }
+
+    const payload = {};
+    let honeypot = '';
+    new FormData(form).forEach((value, key) => {
+      // Files cannot travel in a JSON body; this primitive is for text fields.
+      if (typeof value !== 'string') return;
+      if (key === '_gotcha') { honeypot = value.trim(); return; }
+      if (Object.prototype.hasOwnProperty.call(payload, key)) {
+        if (!Array.isArray(payload[key])) payload[key] = [payload[key]];
+        payload[key].push(value);
+      } else {
+        payload[key] = value;
+      }
+    });
+
+    // Honeypot filled means a bot. Report success and send nothing, so the bot
+    // gets no signal that it was caught.
+    if (honeypot) {
+      this.status = 'success';
+      return;
+    }
+
+    this.status = 'loading';
+    this.errorMessage = '';
+
+    try {
+      const response = await fetch(action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
+        throw new Error(`ryderForm: ${action} responded ${response.status}`);
+      }
+      this.status = 'success';
+      // Reuse the ryderTrack path: fires only if data-track-event is present.
+      ryderTrackElement(form);
+      if (typeof form.reset === 'function') form.reset();
+    } catch (e) {
+      // The action host must be in CSP connect-src, or fetch rejects here.
+      console.warn('ryderForm: submission to', action, 'failed', e);
+      this.status = 'error';
+      this.errorMessage = this.fallbackError(form);
+    }
+  },
+
+  fallbackError(form) {
+    const custom = form && form.dataset ? form.dataset.errorMessage : '';
+    return custom || 'Something went wrong. Please try again.';
+  },
+}));
+
 // Register the mobile menu component (header nav toggle)
 Alpine.data('mobileMenu', () => ({
   openMenu: false,
