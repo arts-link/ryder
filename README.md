@@ -393,8 +393,59 @@ Ryder emits a `Content-Security-Policy` via `<meta http-equiv>` with secure defa
   # fontSrc   = "https://cdn.example.com"
   frameSrc  = "https://your-embed-host.example.com"   # any additional iframe hosts, verbatim
   embeds    = ["youtube", "vimeo", "soundcloud", "spotify", "umap"]
+  # scriptSrcHashes = ["sha256-…"]                    # SHA-256 of each of your inline <script>s
   # extraDirectives = "worker-src 'none';"
 ```
+
+#### `script-src` does not allow inline scripts
+
+Every script Ryder emits — `main.js`, `themeBoot.js`, the dev linter, and the
+PostHog bootstrap — is a real asset served from `'self'` with a Subresource
+Integrity hash, so `script-src 'self'` covers all of them. **`'unsafe-inline'`
+is never added to `script-src` in production**, and turning on analytics no
+longer adds it for you.
+
+> **Changed in v0.3.0 — this can break an existing site silently.** Before
+> v0.3.0, enabling PostHog appended `'unsafe-inline'` to `script-src` for the
+> whole site, because `posthog.html` inlined its bootstrap snippet. Any inline
+> `<script>` of your own was being permitted by that side effect. It no longer
+> is. CSP violations do not fail the build — they fail in the visitor's
+> browser — so grep your templates for `<script>` without a `src` before
+> upgrading, and verify with a production build and a browser console showing
+> zero violations rather than by reading the config.
+
+If your site has an inline script of its own, you have two options.
+
+**Preferred — list its hash.** The policy ships as a `<meta http-equiv>` tag,
+and a meta-delivered CSP cannot carry a nonce (nonces must be generated per
+response, which a static site never gets to do). Hashes are the alternative:
+
+```toml
+[params.csp]
+  scriptSrcHashes = ["sha256-Ki9lqrTGVaMOtvJBiJhb3D2Cu5g0S4XLNJfDmxvGvBM="]
+```
+
+Load the page and read the hash out of the CSP violation message in the
+browser console — it names the exact value the blocked script needs. Quotes
+are added for you if you leave them off. This is the same mechanism Ryder
+already used for Plausible's advanced-mode inline scripts.
+
+**Escape hatch — turn script CSP off.** Still supported, but now something
+you say deliberately rather than something analytics does to you:
+
+```toml
+[params.csp]
+  scriptSrc = "'unsafe-inline'"
+```
+
+A third option is usually better than both: move the code into
+[`assets/js/extended.js`](#assetsjsextendedjs--the-custom-js-hook), where it
+is bundled into `main.js` and needs no CSP allowance at all.
+
+Note that **`style-src` does keep `'unsafe-inline'`**, and that is deliberate:
+Alpine's `x-show` sets `display:none` as an inline style, so removing it would
+break every collapsible element in the theme. `head/csp.html` documents both
+decisions inline.
 
 By default `default-src 'self'` blocks every iframe, including the theme's own `soundcloud` and `openstreetmap` shortcodes. `frame-src` is assembled from three sources and folded together (deduped), and omitted entirely when none apply:
 

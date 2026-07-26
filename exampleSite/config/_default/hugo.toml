@@ -71,6 +71,14 @@ themesDir= "../../"
     # connectSrc = "https://api.example.com"      # extra connect hosts
     # frameSrc = "https://your-embed-host.example.com" # any additional embed hosts, verbatim
     embeds = ["youtube", "vimeo", "soundcloud", "umap"] # known embed-host presets; folded into frame-src alongside auto-detected shortcode hosts
+    # SHA-256 of each inline <script> your site emits. A meta-delivered CSP
+    # cannot carry a nonce, so hashes are the only way to permit one inline
+    # script without permitting all of them via scriptSrc = "'unsafe-inline'".
+    # The entry below is a placeholder with no matching script — it is here so
+    # the shape is visible, and so tests/e2e/csp.spec.js can assert that a
+    # configured hash actually reaches the policy. Replace it with your own;
+    # the browser console names the hash a blocked script needs.
+    scriptSrcHashes = ["sha256-Ryd3rExampleHashAAAAAAAAAAAAAAAAAAAAAAAAAAA="]
     # extraDirectives = "worker-src 'none';"      # append any additional directives
 
   [params.shareButtons]
