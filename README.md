@@ -47,7 +47,7 @@ The copied config is a starter configuration from the theme demo. Before buildin
 
 ## Requirements
 
-- Hugo 0.146+
+- Hugo 0.146+ (**extended** recommended; **required** if any Open Graph / processed image — including `og_image_default` — is a WebP)
 - Node.js / npm
 
 ---
@@ -405,7 +405,7 @@ Most SEO metadata is automatic. A few optional settings unlock additional featur
 
 ```toml
 [params]
-  og_image_default = "images/og-default.webp"   # Base image for generated OG cards
+  og_image_default = "images/og-default.webp"   # Base image for generated OG cards; assets/-relative ONLY (see note below)
 
 [params.author]
   name  = "Your Name"
@@ -434,6 +434,8 @@ Most SEO metadata is automatic. A few optional settings unlock additional featur
 ### Dynamic OG Image
 
 If a page has no `feature*`, `cover*`, or `thumbnail*` image in its bundle, Ryder generates an Open Graph image at build time by overlaying the page title and site name onto your `og_image_default` base image. The result is a static `.webp` baked into your build — no server-side rendering.
+
+**`og_image_default` must live under `assets/`, not `static/`.** It is resolved with `resources.Get`, which only sees files under `assets/` — unlike `logo_png` (see [Logo](#logo)), which works from either `static/` or `assets/`. A leading slash is tolerated and stripped, but the file itself must be under `assets/`; a missing or `static/`-only file now fails the build with a named error instead of a nil-pointer panic.
 
 See the full feature breakdown and tips in the [SEO & GEO docs post](https://arts-link.github.io/ryder/docs/seo-and-geo/).
 
