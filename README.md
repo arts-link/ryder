@@ -519,6 +519,22 @@ npm run deploy-tw   # Build + minify for production
 
 ---
 
+## JavaScript Dependencies
+
+`assets/js/main.js` imports `@alpinejs/csp`, `@alpinejs/focus`, `leaflet`, `@fortawesome/fontawesome-svg-core`, `@fortawesome/free-solid-svg-icons`, `@fortawesome/free-regular-svg-icons`, and `@fortawesome/free-brands-svg-icons`. They're declared in this theme's own `package.json` for the theme's dev loop and `exampleSite`, but **that is documentation, not an install mechanism** — Hugo's `js.Build` resolves imports from your site's **project root** `node_modules`, not the theme's. A theme consumed as a git submodule (or Hugo Module) is never `npm install`-ed itself, so you must install these packages at your own project root regardless of anything in the theme:
+
+```bash
+npm i @alpinejs/csp @alpinejs/focus leaflet \
+  @fortawesome/fontawesome-svg-core \
+  @fortawesome/free-solid-svg-icons \
+  @fortawesome/free-regular-svg-icons \
+  @fortawesome/free-brands-svg-icons
+```
+
+If they're missing, `hugo build`/`hugo server` prints a warning naming the missing packages and this same install command before `js.Build` fails (or, if you rely on dependency hoisting and the packages genuinely resolve from elsewhere, the warning is a harmless false positive and the build proceeds).
+
+---
+
 ## Sites Using Ryder
 
 - [benstrawbridge.com](https://www.benstrawbridge.com)
