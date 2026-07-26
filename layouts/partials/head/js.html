@@ -1,3 +1,18 @@
+{{- /* main.js imports @alpinejs/csp, @alpinejs/focus, leaflet, and the three
+       @fortawesome/free-*-svg-icons packages plus fontawesome-svg-core.
+       js.Build resolves these from the project root's node_modules — the
+       consuming site's, not the theme's — so a site that never installed
+       them gets an opaque esbuild resolution error out of js.Build below.
+       Check for one sentinel package and warn with the install command if
+       it's missing. This is a warnf, not an errorf: dependency-hoisting
+       setups can legitimately have the package present elsewhere on the
+       resolution path (e.g. hoisted to a monorepo root) and would
+       false-positive here, so js.Build itself remains the authority on
+       whether the build actually fails. */ -}}
+{{- if not (os.FileExists "node_modules/@alpinejs/csp/package.json") -}}
+  {{- warnf "Ryder: node_modules/@alpinejs/csp not found at the project root. assets/js/main.js imports @alpinejs/csp, @alpinejs/focus, leaflet, @fortawesome/fontawesome-svg-core, @fortawesome/free-solid-svg-icons, @fortawesome/free-regular-svg-icons, and @fortawesome/free-brands-svg-icons — install them at your site's project root (not themes/ryder/): npm i @alpinejs/csp @alpinejs/focus leaflet @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/free-regular-svg-icons @fortawesome/free-brands-svg-icons — if you use dependency hoisting and know these resolve correctly, this warning is a false positive and js.Build below will succeed regardless." -}}
+{{- end -}}
+
 {{- $loadLeaflet := .Param "loadLeaflet" | default false -}}
 {{- $darkMode := partial "utils/dark-mode.html" . -}}
 <template id="theme-config">{
