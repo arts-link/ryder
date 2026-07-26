@@ -95,6 +95,17 @@ themesDir= "../../"
   # explicit cache key, so it cannot vary per page.
   [params.favicon]
     webmanifest = "/site.webmanifest"
+    # Set explicitly to the file the theme ships, so the e2e suite exercises a
+    # site-supplied value rather than only the built-in default — the casing of
+    # this key is load-bearing (Hugo lower-cases config keys, so the partial's
+    # isset lookup must too), and a default-only test cannot catch getting it
+    # wrong. Array-of-tables entries must come after every scalar key above.
+    appleTouchIcon = "/images/apple-touch-icon.png"
+
+  # Sized PNG icons — opt-in, no default, since the theme ships no such files.
+  [[params.favicon.icons]]
+    size = "32x32"
+    href = "/images/favicon.svg"
 
   [params.twClasses]
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"

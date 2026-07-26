@@ -15,6 +15,18 @@ impossible to miss by copying the wrong pattern from elsewhere in the theme.
       webmanifest     = ""                               # no default; theme ships no manifest file
 
 Set any of these to "" explicitly to omit that tag entirely.
+
+Sized PNG icons — the `favicon-32x32.png` / `favicon-16x16.png` pair most
+favicon generators emit — have no default and are opt-in, since the theme
+ships no such files. Each entry needs `href`; `size` is optional and, when
+present, is emitted as both the `sizes` attribute and nothing else:
+
+    [[params.favicon.icons]]
+      size = "32x32"
+      href = "/favicon-32x32.png"
+    [[params.favicon.icons]]
+      size = "16x16"
+      href = "/favicon-16x16.png"
 */ -}}
 {{- $favicon := site.Params.favicon | default dict -}}
 {{- $icoPath := $favicon.ico -}}
@@ -23,8 +35,11 @@ Set any of these to "" explicitly to omit that tag entirely.
 {{- if not (isset $favicon "version") -}}{{- $version = "4" -}}{{- end -}}
 {{- $svgPath := $favicon.svg -}}
 {{- if not (isset $favicon "svg") -}}{{- $svgPath = "/images/favicon.svg" -}}{{- end -}}
-{{- $appleTouchIcon := $favicon.appleTouchIcon -}}
-{{- if not (isset $favicon "appleTouchIcon") -}}{{- $appleTouchIcon = "/images/apple-touch-icon.png" -}}{{- end -}}
+{{- /* NOTE: Hugo lower-cases config keys, so every isset lookup here must use
+       the lower-cased form. "appleTouchIcon" never matches, which silently
+       discards the site's value and falls back to the default. */ -}}
+{{- $appleTouchIcon := $favicon.appletouchicon -}}
+{{- if not (isset $favicon "appletouchicon") -}}{{- $appleTouchIcon = "/images/apple-touch-icon.png" -}}{{- end -}}
 {{- $webmanifest := $favicon.webmanifest -}}
 {{- with $icoPath -}}
   {{- $icoURL := . | relURL -}}
@@ -33,6 +48,12 @@ Set any of these to "" explicitly to omit that tag entirely.
 {{- end -}}
 {{- with $svgPath -}}
 <link rel="icon" href="{{ . | relURL }}" type="image/svg+xml" />
+{{- end -}}
+{{- range $favicon.icons -}}
+  {{- $size := .size -}}
+  {{- with .href -}}
+<link rel="icon" type="image/png"{{ with $size }} sizes="{{ . }}"{{ end }} href="{{ . | relURL }}" />
+  {{- end -}}
 {{- end -}}
 {{- with $appleTouchIcon -}}
 <link rel="apple-touch-icon" href="{{ . | relURL }}" />

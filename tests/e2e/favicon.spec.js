@@ -15,6 +15,19 @@ test('favicon, apple-touch-icon, and webmanifest links are present', async ({ pa
   await expect(page.locator('link[rel="manifest"]')).toHaveAttribute('href', /site\.webmanifest/)
 })
 
+// Hugo lower-cases config keys, so `isset $favicon "appleTouchIcon"` never
+// matched and the site's value was silently discarded in favour of the
+// default. The bug survived the test above because that assertion passes
+// whether the value came from config or from the fallback — so this asserts
+// the sized-icon array, which has NO default and therefore can only render
+// when the params are actually being read.
+test('sized PNG icons come from [[params.favicon.icons]]', async ({ page }) => {
+  await page.goto(`${BASE}/`)
+  const sized = page.locator('link[rel="icon"][type="image/png"][sizes="32x32"]')
+  await expect(sized).toHaveCount(1)
+  await expect(sized).toHaveAttribute('href', /favicon\.svg/)
+})
+
 test('the webmanifest file itself is served and valid JSON', async ({ request }) => {
   const response = await request.get(`${BASE}/site.webmanifest`)
   expect(response.status()).toBe(200)
