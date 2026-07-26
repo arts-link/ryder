@@ -480,6 +480,38 @@ single render is reused for every page — a per-page override would silently
 leak onto every other page too. Read `site.Params` directly, in
 `config/_default/hugo.toml` (or equivalent), not front matter.
 
+### Fonts
+
+Titillium Web is hardcoded in four places in the theme (tracked as
+[issue #3](https://github.com/arts-link/ryder/issues/3)): `head/fonts.html`'s
+Google Fonts URL, `baseof.html`'s `font-titillium` body class,
+`tailwind.config.js`'s `fontFamily.titillium` key, and a raw `font-family` in
+`assets/css/main.css`. Two of those four are covered by `params.fonts`:
+
+```toml
+[params.fonts]
+  family             = "Titillium Web"                   # default; sets --ryder-font-family and the display name below
+  googleFontsFamily  = "Titillium+Web:wght@400;600;700"  # default; the family= query value Google Fonts expects
+  disableGoogleFonts = false                             # true if you self-host fonts, or don't want this stylesheet at all
+```
+
+`family` sets a `--ryder-font-family` CSS custom property that
+`assets/css/main.css`'s `.resp-sharing-button` rule now reads (falling back
+to Titillium Web if unset), rather than hardcoding the font name directly.
+Set only `family` (without `googleFontsFamily`) to point at a font you load
+some other way — self-hosted, a different provider — while skipping this
+partial's Google Fonts request via `disableGoogleFonts`.
+
+Site-level only, same `partialCached` constraint as [Favicon](#favicon)
+above.
+
+**The other two hardcoded sites are covered elsewhere, not here**: the body
+class is already overridable via `[params.twClasses] body` (added
+alongside the `.site-shell` wrapper), and `tailwind.config.js`'s
+`fontFamily.titillium` key will move into the Tailwind preset. This does not
+close issue #3 by itself, since three of the four sites are theme files a
+consumer must not edit directly — see the issue for the full picture.
+
 ### Menus
 
 Ryder supports two-level menus on desktop and mobile. Parent items with children can use one of two submenu trigger modes:

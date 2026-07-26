@@ -1,4 +1,38 @@
-{{/*  add your custom font links here, google fonts or etc.  */}}
+{{- /*
+Google Fonts loader, and half of the params.fonts story for issue #3
+(configurable fonts). Titillium Web is hardcoded in four places in the
+theme; this file is one, and assets/css/main.css's .resp-sharing-button rule
+is the other one this item covers. (The other two -- baseof.html's
+font-titillium body class, and tailwind.config.js's fontFamily.titillium key
+-- are covered by 2.7's twClasses.body and Phase 3's Tailwind preset,
+respectively; see docs/specs/v0.3.md's issue #3 cross-check. This does not
+close issue #3 on its own.)
+
+Site-level only: called via partialCached (see head.html), so this cannot
+vary per page.
+
+    [params.fonts]
+      family             = "Titillium Web"                    # sets --ryder-font-family (main.css) and the display name below
+      googleFontsFamily  = "Titillium+Web:wght@400;600;700"   # the family= query value Google Fonts expects; defaults to the theme's own font
+      disableGoogleFonts = false                              # true if you self-host fonts, or don't want this stylesheet at all
+
+Setting only `family` (without `googleFontsFamily`) re-points --ryder-font-family
+at a font you load some other way (self-hosted, a different provider) while
+still skipping this Google Fonts request via disableGoogleFonts.
+*/ -}}
+{{- $fonts := site.Params.fonts | default dict -}}
+{{- if not $fonts.disableGoogleFonts }}
+{{- $googleFamily := $fonts.googleFontsFamily | default "Titillium+Web:wght@400;600;700" }}
+{{- /* safeURL: Go's html/template auto-escapes a dynamic value inside a URL
+       attribute (percent-encoding +, :, ; — which Google Fonts' API would
+       still resolve correctly, but it changes the emitted URL from the
+       literal this replaces). safeURL keeps the query string byte-for-byte
+       what a site actually configured. */ -}}
+{{- $fontsURL := printf "https://fonts.googleapis.com/css2?family=%s&display=swap" $googleFamily -}}
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap" fetchpriority="high">
+<link rel="stylesheet" href="{{ $fontsURL | safeURL }}" fetchpriority="high">
+{{- end }}
+{{- with $fonts.family }}
+<style>:root{--ryder-font-family:{{ printf "%q, Helvetica Neue, Helvetica, Arial, sans-serif" . | safeCSS }};}</style>
+{{- end }}
