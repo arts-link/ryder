@@ -19,7 +19,19 @@
       styleSrc  = "https://cdn.example.com"
       connectSrc = "https://api.example.com"
       fontSrc   = "https://cdn.example.com"
+      frameSrc  = "https://your-embed-host.example.com"
+      embeds    = ["youtube", "vimeo", "soundcloud", "spotify", "umap"]
       extraDirectives = "worker-src 'none';"
+
+  frame-src is assembled from three sources, folded together and deduped:
+    1. Hosts the theme's own embed shortcodes (soundcloud, openstreetmap)
+       register automatically on the page's .Store when used on the page.
+    2. params.csp.embeds — a list of preset names mapped to known hosts,
+       for embeds the theme cannot auto-detect (e.g. Hugo's built-in
+       youtube/vimeo shortcodes).
+    3. params.csp.frameSrc — any additional hosts, verbatim.
+  If none of the three produce anything, frame-src is omitted from the
+  policy entirely, same as before this existed.
 
   Set params.csp.disabled = true to opt out of the meta CSP tag entirely
   (e.g. when the hosting platform delivers CSP via HTTP headers instead).
@@ -97,9 +109,41 @@
 
 {{- /* ── frame-src ───────────────────────────────────────────────────── */ -}}
 {{- $frameSrc := slice -}}
+
+{{- /* Hugo renders <head> (and this partial) before .Content, so any host
+       an embed shortcode registers via .Store would otherwise arrive too
+       late to read here. Force .Content evaluation now so shortcodes have
+       already run. `with` no-ops safely on pages with no content (e.g. a
+       section without an _index.md body) instead of erroring. */ -}}
+{{- with .Content -}}{{- end -}}
+{{- with .Store.GetSortedMapValues "cspFrameSrc" -}}
+  {{- range . -}}
+    {{- $frameSrc = $frameSrc | append . -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Known embed-host presets, for embeds the theme cannot auto-detect
+       (e.g. Hugo's internal youtube/vimeo shortcodes, which have no hook
+       to register themselves on .Store). */ -}}
+{{- $embedHostPresets := dict
+    "youtube"    (slice "https://www.youtube-nocookie.com" "https://www.youtube.com")
+    "vimeo"      (slice "https://player.vimeo.com")
+    "soundcloud" (slice "https://w.soundcloud.com")
+    "spotify"    (slice "https://open.spotify.com")
+    "umap"       (slice "https://umap.openstreetmap.fr")
+-}}
+{{- range ($cspParams.embeds | default slice) -}}
+  {{- with index $embedHostPresets . -}}
+    {{- $frameSrc = $frameSrc | append . -}}
+  {{- else -}}
+    {{- warnf "params.csp.embeds: unknown preset %q (known: youtube, vimeo, soundcloud, spotify, umap)" . -}}
+  {{- end -}}
+{{- end -}}
+
 {{- with $cspParams.frameSrc -}}
   {{- $frameSrc = $frameSrc | append . -}}
 {{- end -}}
+{{- $frameSrc = $frameSrc | uniq -}}
 
 {{- /* ── connect-src ───────────────────────────────────────────────────── */ -}}
 {{- $connectSrc := slice "'self'" -}}

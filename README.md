@@ -271,6 +271,29 @@ Supported environment variables:
 - `PUBLIC_POSTHOG_HOST`
 - `PUBLIC_POSTHOG_UI_HOST`
 
+### Content Security Policy
+
+Ryder emits a `Content-Security-Policy` via `<meta http-equiv>` with secure defaults, extendable per-directive under `[params.csp]`:
+
+```toml
+[params.csp]
+  # disabled = true                             # opt out entirely (e.g. your host sets the header instead)
+  # imgSrc    = "https://cdn.example.com"
+  # scriptSrc = "https://cdn.example.com"
+  # styleSrc  = "https://cdn.example.com"
+  # connectSrc = "https://api.example.com"
+  # fontSrc   = "https://cdn.example.com"
+  frameSrc  = "https://your-embed-host.example.com"   # any additional iframe hosts, verbatim
+  embeds    = ["youtube", "vimeo", "soundcloud", "spotify", "umap"]
+  # extraDirectives = "worker-src 'none';"
+```
+
+By default `default-src 'self'` blocks every iframe, including the theme's own `soundcloud` and `openstreetmap` shortcodes. `frame-src` is assembled from three sources and folded together (deduped), and omitted entirely when none apply:
+
+1. **Auto-detected hosts.** The `soundcloud` and `openstreetmap` shortcodes register their own iframe host automatically whenever they're used on a page — no config needed.
+2. **`embeds` preset.** A list of known embed names — `youtube`, `vimeo`, `soundcloud`, `spotify`, `umap` — mapped to their hosts. Use this for embeds the theme can't auto-detect, such as Hugo's built-in `youtube` and `vimeo` shortcodes.
+3. **`frameSrc`.** Any additional hosts, added verbatim.
+
 ### Logo
 
 By default the logo renders as a two-word text mark built from `logo_firstWord` and `logo_lastWord`. If neither is set the first two words of `title` in your config are used.
