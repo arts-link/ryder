@@ -819,11 +819,50 @@ listCardType = "-super-simple"
 
 ## CSS Development
 
-```bash
-npm run watch-tw    # Watch mode
-npm run build-tw    # Build
-npm run deploy-tw   # Build + minify for production
+### The Tailwind preset
+
+Ryder ships its design tokens as a **preset**, `tailwind.preset.js`. Your site's
+`tailwind.config.js` requires it and supplies its own `content` globs:
+
+```js
+// tailwind.config.js — at your project root
+module.exports = {
+  presets: [require('./themes/ryder/tailwind.preset.js')],
+  content: [
+    './themes/ryder/layouts/**/*.html',
+    './layouts/**/*.html',
+    './content/**/*.md',
+    './hugo_stats.json',
+  ],
+};
 ```
+
+The preset carries `theme`, `darkMode`, and `plugins` — the theme's colours,
+`fontFamily`, custom `screens` (`xs`, `3xl`), background images, `darkMode:
+'class'`, and the typography plugin. Add your own tokens under `theme.extend`
+and they merge on top; set a key under `theme` directly and it replaces the
+preset's.
+
+**The preset deliberately carries no `content`.** Content globs resolve
+relative to wherever Tailwind is invoked, which for your site is your project
+root — a path the theme cannot know. This is also why you must not
+`require('./themes/ryder/tailwind.config.js')`: that file's globs are written
+for *this repository's* directory layout, so from your project root
+`./exampleSite/...` does not exist and `./themes/ryder/layouts/...` resolves to
+`themes/ryder/themes/ryder/layouts/...`. Tailwind finds no classes and emits an
+almost-empty stylesheet, with no error.
+
+> **Upgrading from v0.2.x?** If your `tailwind.config.js` requires the theme's
+> `tailwind.config.js`, switch to the `presets: [...]` form above. This one
+> fails loudly at build time, so you will not miss it.
+
+Note the `fontFamily.titillium` entry resolves through
+`var(--ryder-font-family, "Titillium Web")`, so the `font-titillium` class that
+`baseof.html` puts on `<body>` follows [`[params.fonts]`](#fonts) rather than
+contradicting it. If you replace `fontFamily` wholesale in your own config,
+keep that indirection or set `twClasses.body` to a class of your own.
+
+### Build configuration
 
 **Add this `[build]` block to your own site config** — Hugo merges only a subset of root config sections from themes, and `build` is not one of them, so you do **not** inherit it from Ryder:
 
