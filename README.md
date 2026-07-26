@@ -198,6 +198,40 @@ That resolves to partials such as:
 
 Use this when you want to replace a whole component cleanly without editing `baseof.html` or forking the theme's default partial names.
 
+#### One variant plus `.Param` for the skin
+
+Reach for a `-suffix` variant (above) only when you need a genuinely different
+*structure*. For a cosmetic change — different background, different nav
+treatment — prefer a `.Param` the base partial already reads, so you get the
+one bug fix or feature added to `header.html` in the future for free instead
+of carrying it into a forked copy forever.
+
+`header.html` already reads page-overridable `twClasses.headerBackgroundFrameOuter`,
+`twClasses.headerBackgroundFrameInner`, and `twClasses.headerBackgroundImage`
+for exactly this. It also resolves a nav skin — `navClass` (or the
+`twClasses.nav` convention) — and passes it into the menu partial, so a single
+page or section can restyle just the `<nav>` without forking `header.html`
+into a new `headerType` variant just to change classes:
+
+```toml
++++
+title = "A page with a different nav treatment"
+navClass = "main-menu-nav bg-fuchsia-900/40 rounded-full px-2"
++++
+```
+
+or site-wide:
+
+```toml
+[params.twClasses]
+  nav = "main-menu-nav bg-fuchsia-900/40 rounded-full px-2"
+```
+
+(Keep the base `main-menu-nav` class if you only mean to add to it, not
+replace it — `nav.html`'s own CSS lives on that class.) This is the pattern to
+reach for before writing a new `header-*.html` variant whose only difference
+from `header.html` is a handful of classes.
+
 ### List Layouts
 
 `_default/list.html` always paginates `.Pages` into a card grid. For a section
