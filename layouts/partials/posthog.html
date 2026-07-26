@@ -1,14 +1,37 @@
+{{- /* Hugo's getenv hard-errors the whole build (not a silent empty string)
+       when the var name isn't allowed by [security.funcs] getenv — default
+       allowlist is ^HUGO_ and ^CI$ only, so any PUBLIC_POSTHOG_* var needs an
+       explicit entry. Wrap each call in `try` so a blocked var degrades to
+       "not found" instead of failing the build outright; that also lets us
+       tell "blocked by policy" apart from "genuinely unset" below. */ -}}
 {{- $key := site.Params.posthog_key | default "" -}}
+{{- $keyBlocked := false -}}
 {{- if not $key -}}
-  {{- $key = getenv "PUBLIC_POSTHOG_KEY" -}}
+  {{- $r := try (getenv "PUBLIC_POSTHOG_KEY") -}}
+  {{- if $r.Err -}}
+    {{- $keyBlocked = true -}}
+  {{- else -}}
+    {{- $key = $r.Value | default "" -}}
+  {{- end -}}
+{{- end -}}
+{{- /* Warn only when PostHog is plausibly intended, so sites not using it get
+       no noise. */ -}}
+{{- if and (not $key) (eq (site.Params.analytics_provider | default "") "posthog") -}}
+  {{- if $keyBlocked -}}
+    {{- warnf "PostHog is selected (analytics_provider = \"posthog\") but PUBLIC_POSTHOG_KEY is blocked by Hugo's getenv security allowlist — by default Hugo only allows getenv for vars matching ^HUGO_ or ^CI$. Add [security.funcs] getenv = ['^HUGO_', '^CI$', '^PUBLIC_'] to hugo.toml, or set params.posthog_key directly instead (no allowlist needed)." -}}
+  {{- else -}}
+    {{- warnf "PostHog is selected (analytics_provider = \"posthog\") but no posthog_key was found: params.posthog_key is unset and PUBLIC_POSTHOG_KEY is unset too. Set params.posthog_key in hugo.toml, or set PUBLIC_POSTHOG_KEY and allow it through [security.funcs] getenv = ['^HUGO_', '^CI$', '^PUBLIC_']." -}}
+  {{- end -}}
 {{- end -}}
 {{- $apiHost := site.Params.posthog_host | default "" -}}
 {{- if not $apiHost -}}
-  {{- $apiHost = getenv "PUBLIC_POSTHOG_HOST" -}}
+  {{- $rHost := try (getenv "PUBLIC_POSTHOG_HOST") -}}
+  {{- if not $rHost.Err -}}{{- $apiHost = $rHost.Value | default "" -}}{{- end -}}
 {{- end -}}
 {{- $uiHost := site.Params.posthog_ui_host | default "" -}}
 {{- if not $uiHost -}}
-  {{- $uiHost = getenv "PUBLIC_POSTHOG_UI_HOST" -}}
+  {{- $rUIHost := try (getenv "PUBLIC_POSTHOG_UI_HOST") -}}
+  {{- if not $rUIHost.Err -}}{{- $uiHost = $rUIHost.Value | default "" -}}{{- end -}}
 {{- end -}}
 {{- $uiHost = $uiHost | default "https://us.posthog.com" -}}
 {{- $defaults := site.Params.posthog_defaults | default "2026-01-30" -}}

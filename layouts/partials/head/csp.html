@@ -61,7 +61,12 @@
 {{- $posthogProvider := eq (site.Params.analytics_provider | default "") "posthog" -}}
 {{- $posthogHost := site.Params.posthog_host | default "" -}}
 {{- if and $posthogProvider (not $posthogHost) -}}
-  {{- $posthogHost = getenv "PUBLIC_POSTHOG_HOST" -}}
+  {{- /* getenv hard-errors the whole build if PUBLIC_POSTHOG_HOST isn't
+         allowed by [security.funcs] getenv — see posthog.html, which warns
+         about this same allowlist requirement. try keeps a missing/blocked
+         host from taking down the entire CSP build. */ -}}
+  {{- $rHost := try (getenv "PUBLIC_POSTHOG_HOST") -}}
+  {{- if not $rHost.Err -}}{{- $posthogHost = $rHost.Value | default "" -}}{{- end -}}
 {{- end -}}
 {{- if and $posthogProvider $posthogHost -}}
   {{- /* PostHog's bootstrap snippet is inline, so allow inline scripts when active. */ -}}
