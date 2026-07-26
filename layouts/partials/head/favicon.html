@@ -1,2 +1,42 @@
-<!-- enter any custom favicon here -->
-  <link rel="icon" href="{{ "/favicon.ico?v=4" | relURL }}" type="image/x-icon" />
+{{- /*
+Favicon links. Configurable via [params.favicon] in site config — NOT via
+front matter / .Param: head.html calls this partial through partialCached
+with no explicit cache key, so it renders once and that single render is
+reused verbatim for every page. A per-page override would silently apply to
+every OTHER page too, which is worse than no override at all — so this
+reads site.Params directly rather than .Param, to make that constraint
+impossible to miss by copying the wrong pattern from elsewhere in the theme.
+
+    [params.favicon]
+      ico             = "/favicon.ico"                 # default; theme ships this file
+      version         = "4"                             # cache-busting ?v= suffix; "" to omit
+      svg             = "/images/favicon.svg"            # default; theme ships this file
+      appleTouchIcon  = "/images/apple-touch-icon.png"   # default; theme ships this file
+      webmanifest     = ""                               # no default; theme ships no manifest file
+
+Set any of these to "" explicitly to omit that tag entirely.
+*/ -}}
+{{- $favicon := site.Params.favicon | default dict -}}
+{{- $icoPath := $favicon.ico -}}
+{{- if not (isset $favicon "ico") -}}{{- $icoPath = "/favicon.ico" -}}{{- end -}}
+{{- $version := $favicon.version -}}
+{{- if not (isset $favicon "version") -}}{{- $version = "4" -}}{{- end -}}
+{{- $svgPath := $favicon.svg -}}
+{{- if not (isset $favicon "svg") -}}{{- $svgPath = "/images/favicon.svg" -}}{{- end -}}
+{{- $appleTouchIcon := $favicon.appleTouchIcon -}}
+{{- if not (isset $favicon "appleTouchIcon") -}}{{- $appleTouchIcon = "/images/apple-touch-icon.png" -}}{{- end -}}
+{{- $webmanifest := $favicon.webmanifest -}}
+{{- with $icoPath -}}
+  {{- $icoURL := . | relURL -}}
+  {{- with $version -}}{{- $icoURL = printf "%s?v=%s" $icoURL . -}}{{- end -}}
+  <link rel="icon" href="{{ $icoURL }}" type="image/x-icon" />
+{{- end -}}
+{{- with $svgPath -}}
+<link rel="icon" href="{{ . | relURL }}" type="image/svg+xml" />
+{{- end -}}
+{{- with $appleTouchIcon -}}
+<link rel="apple-touch-icon" href="{{ . | relURL }}" />
+{{- end -}}
+{{- with $webmanifest -}}
+<link rel="manifest" href="{{ . | relURL }}" />
+{{- end -}}

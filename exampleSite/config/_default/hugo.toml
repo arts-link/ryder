@@ -88,6 +88,14 @@ themesDir= "../../"
     email = 'you@example.com'
     name = 'Ben Strawbridge'
 
+  # ico/svg/appleTouchIcon default to the files the theme already ships
+  # (favicon.ico, images/favicon.svg, images/apple-touch-icon.png) — only
+  # webmanifest has no default, since the theme ships no manifest file.
+  # Site-level only: head.html loads this partial via partialCached with no
+  # explicit cache key, so it cannot vary per page.
+  [params.favicon]
+    webmanifest = "/site.webmanifest"
+
   [params.twClasses]
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
     headerBackgroundFrameInner = "h-[240px] sm:h-[400px] bg-cover bg-center sm:bg-[center_30%]"

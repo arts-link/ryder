@@ -454,6 +454,32 @@ explicitly — it always wins over the default:
   logo_wrapperClass = "bg-white/80 rounded-lg p-2"
 ```
 
+### Favicon
+
+`head/favicon.html` used to pin a single hardcoded `/favicon.ico?v=4` with no
+way to change the path, cache-busting version, or add an apple-touch-icon /
+web manifest link short of overriding the whole partial. Configure it under
+`[params.favicon]`:
+
+```toml
+[params.favicon]
+  ico            = "/favicon.ico"                 # default; the theme ships this file
+  version        = "4"                            # cache-busting ?v= suffix; set "" to omit
+  svg            = "/images/favicon.svg"          # default; the theme ships this file
+  appleTouchIcon = "/images/apple-touch-icon.png"  # default; the theme ships this file
+  webmanifest    = ""                              # no default; the theme ships no manifest file
+```
+
+Every key defaults to the file the theme already ships (except
+`webmanifest`, which has none) — set a key to `""` explicitly to omit that
+tag entirely, or to a different path to replace it.
+
+**Site-level only, not page-overridable.** `head.html` loads this partial via
+`partialCached` with no explicit cache key, so it renders once and that
+single render is reused for every page — a per-page override would silently
+leak onto every other page too. Read `site.Params` directly, in
+`config/_default/hugo.toml` (or equivalent), not front matter.
+
 ### Menus
 
 Ryder supports two-level menus on desktop and mobile. Parent items with children can use one of two submenu trigger modes:
