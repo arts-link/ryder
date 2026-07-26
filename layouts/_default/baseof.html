@@ -4,11 +4,25 @@
   {{ partial "head.html" . }}
 </head>
 {{- $darkMode := partial "utils/dark-mode.html" . -}}
-<body class="bg-neutral-100 text-neutral-900{{ if ne $darkMode "off" }} dark:bg-neutral-900 dark:text-neutral-100{{ end }} font-titillium">
-  {{ if not hugo.IsProduction }}
-    {{ partial "tw-size-indicator.html" . }}
-  {{ end }}
-  <div class="min-h-lvh flex w-full flex-col">
+{{- /* Body classes are configurable so a site can change the background, text
+       colour, or font without overriding this template. The dark: variants stay
+       gated on params.darkMode: a site with darkMode = "off" must never receive
+       them, and overriding twClasses.body must not quietly switch dark mode off
+       (or back on), so the two are separate params. */ -}}
+{{- $bodyClasses := .Param "twClasses.body" | default "bg-neutral-100 text-neutral-900 font-titillium" -}}
+{{- if ne $darkMode "off" -}}
+  {{- $bodyDark := .Param "twClasses.bodyDark" | default "dark:bg-neutral-900 dark:text-neutral-100" -}}
+  {{- $bodyClasses = printf "%s %s" $bodyClasses $bodyDark -}}
+{{- end -}}
+<body class="{{ $bodyClasses }}">
+  {{/* site-shell is a stable hook for site CSS, and is positioned (see
+       assets/css/main.css) so descendants can be absolutely positioned against
+       the shell rather than the viewport. tw-size-indicator lives inside it so
+       that <body> has exactly one element child in every environment. */}}
+  <div class="site-shell min-h-lvh flex w-full flex-col">
+    {{ if not hugo.IsProduction }}
+      {{ partial "tw-size-indicator.html" . }}
+    {{ end }}
     {{ $headerType := .Param "headerType" | default "" }}
     {{ $headerPartial := printf "header%s.html" $headerType }}
     {{- if templates.Exists (printf "partials/%s" $headerPartial) }}

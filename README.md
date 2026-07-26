@@ -131,6 +131,8 @@ Full example in [`exampleSite/config/_default/hugo.toml`](https://github.com/art
   excludedtags = ["sample", "test"]
 
 [params.twClasses]
+  body = ""                      # <body> classes; default "bg-neutral-100 text-neutral-900 font-titillium"
+  bodyDark = ""                  # <body> dark: classes; only emitted when darkMode != "off"
   headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 text-neutral-100"
   headerBackgroundFrameInner = "bg-cover h-[300px]"
   footerBackground = ""          # Falls back to headerBackgroundFrameOuter
