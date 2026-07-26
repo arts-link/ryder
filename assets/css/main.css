@@ -33,6 +33,14 @@
 
 
 @layer components {
+  /* The single wrapper element inside <body> (see layouts/_default/baseof.html).
+     It is a stable hook for site CSS that would otherwise have to select
+     `body > div`, and it is positioned so absolutely-positioned descendants
+     resolve against the shell instead of the viewport. */
+  .site-shell {
+    position: relative;
+  }
+
   .article-header {
     @apply w-full md:col-span-12 mb-4;
   }

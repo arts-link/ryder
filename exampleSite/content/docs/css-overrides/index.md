@@ -26,6 +26,47 @@ All overrides live under `[params.twClasses]` in your `hugo.toml`.
 
 ---
 
+## Page shell
+
+### `body` and `bodyDark`
+
+The `<body>` classes are configurable, so you can change the page background,
+text color, or font without overriding `baseof.html`:
+
+```toml
+[params.twClasses]
+  body = "bg-amber-50 text-stone-800 font-sans"
+  bodyDark = "dark:bg-stone-950 dark:text-amber-50"
+```
+
+| Param | Default | Notes |
+|---|---|---|
+| `body` | `bg-neutral-100 text-neutral-900 font-titillium` | Replaces the base classes outright |
+| `bodyDark` | `dark:bg-neutral-900 dark:text-neutral-100` | Only emitted when `darkMode` is not `"off"` |
+
+They are two params rather than one so that changing your body font can't
+silently switch dark mode off — and so a site with `darkMode = "off"` never
+receives `dark:` variants no matter what it sets here.
+
+### The `site-shell` hook
+
+`<body>` contains exactly one element child: a wrapper `<div>` carrying the
+`site-shell` class. Target it from your own CSS instead of writing brittle
+selectors against `body`'s children:
+
+```css
+/* do this */
+.site-shell { … }
+
+/* not this */
+body > div:first-child { … }
+```
+
+`site-shell` is `position: relative`, so absolutely-positioned descendants
+resolve against the shell rather than the viewport.
+
+---
+
 ## Header appearance
 
 The header uses two layers: an outer frame (background color, border, text color) and an inner frame (optional background image with height and position).
