@@ -643,8 +643,8 @@ Ryder ships with a complete search and AI optimisation stack — no plugins, no 
 | `<meta name="description">` | Page snippet for search results — from `description` front matter, then summary, then site description |
 | Open Graph tags | Social link previews (Facebook, LinkedIn, Slack, Discord) |
 | Twitter / X Cards | `summary_large_image` when a featured image is present, `summary` otherwise |
-| JSON-LD `BlogPosting` | Article authorship, dates, keywords, and full text for Google rich results and AI crawlers |
-| JSON-LD `WebPage` + `Organization` | Homepage entity signals |
+| JSON-LD `BlogPosting` | Article authorship, dates, and keywords for Google rich results and AI crawlers |
+| JSON-LD `WebPage` + site entity | Homepage entity signals — entity type set by `params.schema.type` |
 | JSON-LD `BreadcrumbList` | Section and category navigation trails for rich-result breadcrumbs |
 | JSON-LD `Recipe` | Full recipe structured data (ingredients, steps, nutrition) when `recipe = true` |
 | Dynamic OG image | Auto-generated Open Graph image with title text when no page image exists |
@@ -672,7 +672,83 @@ Most SEO metadata is automatic. A few optional settings unlock additional featur
   fontColor = "#085624"                          # Title text colour on generated OG images
   x = 50                                         # Text x position (px from left)
   y = 430                                        # Text y position (px from top)
+
+[params.schema]
+  type = "Organization"                          # Site-wide JSON-LD entity on the home page
 ```
+
+### Structured Data (JSON-LD)
+
+Every JSON-LD block Ryder emits is built as a Hugo `dict` and serialised with
+`jsonify`. That is a deliberate constraint, not a style preference: JSON
+hand-written as template text fails **silently**. A stray comment, an unset
+optional value leaving a dangling `"key": ,`, or a trailing comma produces a
+block no consumer can parse, and nothing in the Hugo build reports it. If you
+extend Ryder's structured data, build a dict — never write JSON punctuation
+that reaches the output.
+
+#### `params.schema.type` — change the site-wide entity
+
+The home page carries one site-wide entity alongside its `WebPage` block.
+It defaults to `Organization`. Set any schema.org type instead:
+
+```toml
+[params.schema]
+  type = "MusicGroup"     # or Person, LocalBusiness, NGO, …
+```
+
+`Person` receives an `image` rather than a `logo`, since schema.org gives
+`logo` to `Organization` and its subtypes only. Otherwise the entity is built
+from `title`, `params.author.email`, and `params.logo_png`.
+
+#### `head/schema-extra.html` — add types without losing the built-in ones
+
+To emit **additional** types — `MusicEvent`, `Product`, `FAQPage` — do **not**
+override `layouts/partials/head/schema.html`. Overriding it silently drops
+`WebPage`, `BlogPosting`, the site entity, and both `BreadcrumbList` blocks,
+with no build error and correct-looking HTML. That trap is the reason this hook
+exists.
+
+Instead, create:
+
+```
+layouts/partials/head/schema-extra.html
+```
+
+It is an empty no-op in the theme, called from `head-seo.html` immediately
+after `head/schema.html`, and it shadows cleanly through Hugo's union
+filesystem — the same pattern as `extend_head.html`. It receives the page as
+its context.
+
+```go-html-template
+{{ if .IsHome }}
+  {{ $band := dict
+       "@context" "https://schema.org"
+       "@type" "MusicGroup"
+       "name" site.Title
+       "url" site.BaseURL
+       "genre" (slice "indie" "shoegaze")
+  }}
+  <script type="application/ld+json">{{ $band | jsonify | safeJS }}</script>
+{{ end }}
+```
+
+#### `extend_head.html` — inject anything else into `<head>`
+
+`layouts/partials/extend_head.html` is an empty partial called as the last line
+of `head.html`. Shadow it to add verification meta tags, a third-party
+`<script src>`, preload hints, or any other head content, without touching
+`head.html`:
+
+```go-html-template
+<meta name="google-site-verification" content="…">
+<link rel="preconnect" href="https://cdn.example.com">
+```
+
+It runs after the CSP meta tag is emitted, so anything you add here still has
+to satisfy the policy — see [Content Security Policy](#content-security-policy).
+Prefer `head/schema-extra.html` for structured data specifically, so the two
+concerns stay separable.
 
 ### Front Matter That Feeds Schema
 

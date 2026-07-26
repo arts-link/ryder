@@ -8,5 +8,9 @@
 {{/*  {{- template "_internal/schema.html" . -}}  */}}
 {{- partial "head/schema.html" . -}}
 {{- partial "head/schema-recipe.html" . }}
+{{- /* Site-supplied extra JSON-LD. No-op in the theme; shadow
+       layouts/partials/head/schema-extra.html to add types without
+       replacing (and silently dropping) the blocks above. */ -}}
+{{- partial "head/schema-extra.html" . -}}
 <!-- Twitter (X) meta tags -->
 {{- partial "common-partials/opengraph/twitter_cards.html" . -}}

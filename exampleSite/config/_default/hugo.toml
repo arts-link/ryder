@@ -88,6 +88,14 @@ themesDir= "../../"
     email = 'you@example.com'
     name = 'Ben Strawbridge'
 
+  # The site-wide JSON-LD entity emitted on the home page. Defaults to
+  # "Organization"; set it to MusicGroup, Person, LocalBusiness, or any other
+  # schema.org type to change the entity without overriding head/schema.html.
+  # To ADD types rather than change this one, shadow
+  # layouts/partials/head/schema-extra.html.
+  [params.schema]
+    type = 'Organization'
+
   # ico/svg/appleTouchIcon default to the files the theme already ships
   # (favicon.ico, images/favicon.svg, images/apple-touch-icon.png) — only
   # webmanifest has no default, since the theme ships no manifest file.

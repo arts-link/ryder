@@ -1,160 +1,169 @@
-<!-- Schema.org JSON-LD -->
-{{- $featured := partial "common-partials/opengraph/get-featured-image.html" . }}
-{{- if eq .Title .Site.Title }}
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org/",
-      "@type": "WebPage",
-      "name": "{{ .Title }}",
-      "url": "{{ .Site.BaseURL }}",
-      {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
-      "inLanguage": {{ .Site.LanguageCode }},
-      "isFamilyFriendly": "true",
-      "copyrightYear": "{{ .PublishDate.Format "2006" }}",
-      "copyrightHolder": "{{ .Site.Params.author.name }}",
-      "accountablePerson": {
-        "@type": "Person",
-        "name": "{{ .Site.Params.author.name }}",
-        "email": "{{ .Site.Params.author.email }}",
-        "url": "{{.Site.BaseURL}}"
-      },
-      "author": {
-        "@type": "Person",
-        "name": "{{ .Site.Params.author.name }}",
-        "email": "{{ .Site.Params.author.email }}",
-        "url": "{{.Site.BaseURL}}"
-      },
-      "creator": {
-        "@type": "Person",
-        "name": "{{ .Site.Params.author.name }}",
-        "email": "{{ .Site.Params.author.email }}",
-        "url": "{{.Site.BaseURL}}"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "{{ .Site.Params.author.name }}",
-        "email": "{{ .Site.Params.author.email }}",
-        "url": "{{.Site.BaseURL}}",
-        "logo": "{{ .Site.Params.logo_png | absURL }}"
-      }
-    }
-  </script>
-  {{- else }}
-  <script type="application/ld+json">
-    {
-      "@context":"http://schema.org",
-      "@type": "BlogPosting",
-      "mainEntityOfPage": { "@type": "WebPage" },
-      "headline": {{ .Title | truncate 110 }},
-      {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
-      "url": {{ .Permalink }},
-      "datePublished": {{ .PublishDate }},
-      "dateModified": {{ .Lastmod }},
-      "inLanguage": {{ .Site.LanguageCode }},
-      "isFamilyFriendly": "true",
-      "copyrightYear": "{{ .PublishDate.Format "2006" }}",
-      "copyrightHolder": "{{ .Site.Params.author.name }}",
-      "accountablePerson": {
-        "@type": "Person",
-        "name": "{{ .Site.Params.author.name }}",
-        "email": "{{ .Site.Params.author.email }}",
-        "url": "{{.Site.BaseURL}}"
-      },
-      "author": {
-        "@type": "Person",
-        "name": "{{ .Site.Params.author.name }}",
-        "email": "{{ .Site.Params.author.email }}",
-        "url": "{{.Site.BaseURL}}"
-      },
-      "creator": {
-        "@type": "Person",
-        "name": "{{ .Site.Params.author.name }}",
-        "email": "{{ .Site.Params.author.email }}",
-        "url": "{{.Site.BaseURL}}"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "{{ .Site.Params.author.name }}",
-        "email": "{{ .Site.Params.author.email }}",
-        "url": "{{.Site.BaseURL}}",
-        "logo": "{{ .Site.Params.logo_png | absURL }}"
-      },
-      "articleBody": "{{ .Content | safeJS | htmlUnescape | plainify }}",
-      "description": "{{ with .Description }}{{ . | plainify }}{{ else }}{{if .IsPage}}{{ .Summary | plainify | safeHTML }}{{ else }}{{ with .Site.Params.description }}{{ . | plainify }}{{ end }}{{ end }}{{ end }}",
-      "keywords": [{{ range $i, $e := .Params.tags }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}]
-    }
-  </script>
-{{- end }}
-{{- if .IsHome }}
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "url": "{{ .Site.BaseURL }}",
-      "logo": "{{ .Site.Params.logo_png | absURL }}",
-      {{ with .Site.Title }}"name": "{{ . }}",{{ end }}
-      {{ with .Site.Params.author.email }}"email": {{ . }}{{ end }}
-    }
-  </script>
-{{- end }}
-      
-{{- if ne .Title .Site.Title }}
-  <script type="application/ld+json">
-    {{ if .Params.categories }}
-        [{
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [{
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "{{.Site.BaseURL}}"
-        },
-        {{/*  This won't really work with multple categories...  */}}
-        {{ $counter := 1 }}
-        {{ range $i, $e := .Params.categories }}
-        {{ $counter = add $counter 1 }}
-        {
-            "@type": "ListItem",
-            "position": {{ $counter }},
-            "name": {{ $e }},
-            "item": "{{ $.Site.BaseURL }}categories/{{ $e | urlize }}"
-        },
-        {{ end }}
-        {
-            "@type": "ListItem",
-            "position": {{ add $counter 1 }},
-            "name": {{.Title}},
-            "item": "{{ .Permalink }}"
-        }]
-        },
-    {{ end }}
-        {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [{
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "{{.Site.BaseURL}}"
-        },
-        {{ $counter := 2 }}
-        {{ range after 1 .Ancestors.Reverse }}
-        {
-          "@type": "ListItem",
-          "position": {{ $counter }},
-          "name": {{ .Title }},
-          "item": "{{ .Permalink }}"
-        },
-        {{ $counter = add $counter 1 }}
-        {{ end }}
-        {
-            "@type": "ListItem",
-            "position": {{ $counter }},
-            "name": {{.Title}},
-            "item": "{{ .Permalink }}"
-        }]
-        }
-    {{ if .Params.categories }} ]{{ end }}
-  </script>
-  {{- end }}
+{{- /*
+  Schema.org JSON-LD.
+
+  Every block on this page is built as a Hugo `dict` and rendered with
+  `jsonify`. That is deliberate and load-bearing: the previous version of this
+  file hand-wrote JSON as template text, which meant a stray comment, a
+  trailing comma, or an unquoted value produced a block that no consumer could
+  parse — and nothing in the build ever said so. Structured data failing
+  silently is the single worst failure mode in this file, so the format is now
+  produced by a serializer rather than by careful typing.
+
+  Rule for anyone editing this file: never write a `{`, a `"` or a `,` that is
+  meant to reach the output. Build a dict, `merge` optional keys in with
+  `with`, and hand it to `jsonify`.
+
+  Emitted per page:
+    • home     — WebPage, plus the site-wide entity (see params.schema.type)
+    • non-home — BlogPosting, plus a BreadcrumbList for the section path and,
+                 when the page has categories, a second one for the taxonomy
+                 path.
+
+  To ADD types (MusicGroup, Event, Product, …) do NOT override this file —
+  overriding it silently drops everything above. Use the no-op
+  `head/schema-extra.html` hook instead, which is called right after this
+  partial and shadows cleanly from a site's own layouts/.
+
+  Config:
+    [params.schema]
+      type = "Organization"   # or MusicGroup, Person, LocalBusiness, …
+*/ -}}
+
+{{- $featured := partial "common-partials/opengraph/get-featured-image.html" . -}}
+
+{{- /* ── shared entity fragments ──────────────────────────────────────── */ -}}
+{{- $author := site.Params.author | default dict -}}
+{{- $authorName := $author.name | default site.Title -}}
+{{- $authorEmail := $author.email | default "" -}}
+{{- $logo := "" -}}
+{{- with site.Params.logo_png -}}{{- $logo = . | absURL -}}{{- end -}}
+
+{{- $person := dict "@type" "Person" "name" $authorName "url" site.BaseURL -}}
+{{- with $authorEmail -}}{{- $person = merge $person (dict "email" .) -}}{{- end -}}
+
+{{- $publisher := dict "@type" "Organization" "name" $authorName "url" site.BaseURL -}}
+{{- with $authorEmail -}}{{- $publisher = merge $publisher (dict "email" .) -}}{{- end -}}
+{{- with $logo -}}{{- $publisher = merge $publisher (dict "logo" .) -}}{{- end -}}
+
+{{- /* Keys every page-level block shares. */ -}}
+{{- $common := dict
+      "isFamilyFriendly" true
+      "copyrightHolder" $authorName
+      "accountablePerson" $person
+      "author" $person
+      "creator" $person
+      "publisher" $publisher
+-}}
+{{- with site.LanguageCode -}}{{- $common = merge $common (dict "inLanguage" .) -}}{{- end -}}
+{{- if not .PublishDate.IsZero -}}
+  {{- $common = merge $common (dict "copyrightYear" (.PublishDate.Format "2006")) -}}
+{{- end -}}
+{{- with $featured -}}{{- $common = merge $common (dict "image" .Permalink) -}}{{- end -}}
+
+{{- /* ── page-level block ─────────────────────────────────────────────── */ -}}
+{{- /* .IsHome is the only homepage test used in this file. The previous
+       version mixed `eq .Title .Site.Title` and `ne .Title .Site.Title` in
+       with it, which handed homepage schema to any page that happened to
+       share the site's title. */ -}}
+{{- if .IsHome -}}
+  {{- $page := merge $common (dict
+        "@context" "https://schema.org"
+        "@type" "WebPage"
+        "name" .Title
+        "url" site.BaseURL
+  ) -}}
+  <script type="application/ld+json">{{ $page | jsonify (dict "indent" "  ") | safeJS }}</script>
+{{- else -}}
+  {{- /* description: front matter, then summary, then the site description. */ -}}
+  {{- $description := "" -}}
+  {{- with .Description -}}
+    {{- $description = . | plainify | htmlUnescape | chomp -}}
+  {{- else -}}
+    {{- with .Summary -}}
+      {{- $description = . | plainify | htmlUnescape | chomp -}}
+    {{- else -}}
+      {{- with site.Params.description -}}{{- $description = . | plainify | chomp -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $page := merge $common (dict
+        "@context" "https://schema.org"
+        "@type" "BlogPosting"
+        "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+        "headline" (.Title | truncate 110)
+        "url" .Permalink
+  ) -}}
+  {{- /* Dates as RFC 3339. Go's default time rendering ("2006-01-02 15:04:05
+         -0700 MST") is not a valid schema.org Date. */ -}}
+  {{- if not .PublishDate.IsZero -}}
+    {{- $page = merge $page (dict "datePublished" (.PublishDate.Format "2006-01-02T15:04:05Z07:00")) -}}
+  {{- end -}}
+  {{- if not .Lastmod.IsZero -}}
+    {{- $page = merge $page (dict "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")) -}}
+  {{- end -}}
+  {{- with $description -}}{{- $page = merge $page (dict "description" .) -}}{{- end -}}
+  {{- with .Params.tags -}}{{- $page = merge $page (dict "keywords" .) -}}{{- end -}}
+  {{- /* No articleBody. The previous version inlined the entire rendered page
+         body into every BlogPosting block, which inflated the HTML of every
+         page on the site for a property Google does not consume. */ -}}
+  <script type="application/ld+json">{{ $page | jsonify (dict "indent" "  ") | safeJS }}</script>
+{{- end -}}
+
+{{- /* ── site-wide entity (home only) ─────────────────────────────────── */ -}}
+{{- if .IsHome -}}
+  {{- $schemaParams := site.Params.schema | default dict -}}
+  {{- $entityType := $schemaParams.type | default "Organization" -}}
+  {{- $entity := dict "@context" "https://schema.org" "@type" $entityType "url" site.BaseURL -}}
+  {{- with site.Title -}}{{- $entity = merge $entity (dict "name" .) -}}{{- end -}}
+  {{- with $authorEmail -}}{{- $entity = merge $entity (dict "email" .) -}}{{- end -}}
+  {{- /* schema.org gives `logo` to Organization and its subtypes only; Person
+         carries an image instead. */ -}}
+  {{- with $logo -}}
+    {{- if eq $entityType "Person" -}}
+      {{- $entity = merge $entity (dict "image" .) -}}
+    {{- else -}}
+      {{- $entity = merge $entity (dict "logo" .) -}}
+    {{- end -}}
+  {{- end -}}
+  <script type="application/ld+json">{{ $entity | jsonify (dict "indent" "  ") | safeJS }}</script>
+{{- end -}}
+
+{{- /* ── breadcrumbs (non-home) ───────────────────────────────────────── */ -}}
+{{- /* Emitted as separate script blocks rather than one array, so each one is
+       independently valid and a change to either cannot corrupt the other. */ -}}
+{{- if not .IsHome -}}
+  {{- $homeCrumb := dict "@type" "ListItem" "position" 1 "name" "Home" "item" site.BaseURL -}}
+
+  {{- /* Section path: Home → ancestors → this page. `after 1` drops the home
+         page, which .Ancestors.Reverse puts first and $homeCrumb already
+         covers. */ -}}
+  {{- $items := slice $homeCrumb -}}
+  {{- $pos := 1 -}}
+  {{- range after 1 .Ancestors.Reverse -}}
+    {{- $pos = add $pos 1 -}}
+    {{- $items = $items | append (dict "@type" "ListItem" "position" $pos "name" .Title "item" .Permalink) -}}
+  {{- end -}}
+  {{- $pos = add $pos 1 -}}
+  {{- $items = $items | append (dict "@type" "ListItem" "position" $pos "name" .Title "item" .Permalink) -}}
+  {{- $crumbs := dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $items -}}
+  <script type="application/ld+json">{{ $crumbs | jsonify (dict "indent" "  ") | safeJS }}</script>
+
+  {{- /* Taxonomy path: Home → each category → this page. */ -}}
+  {{- with .Params.categories -}}
+    {{- $catItems := slice $homeCrumb -}}
+    {{- $catPos := 1 -}}
+    {{- range . -}}
+      {{- $catPos = add $catPos 1 -}}
+      {{- $catItems = $catItems | append (dict
+            "@type" "ListItem"
+            "position" $catPos
+            "name" .
+            "item" (printf "categories/%s/" (. | urlize) | absURL)
+      ) -}}
+    {{- end -}}
+    {{- $catPos = add $catPos 1 -}}
+    {{- $catItems = $catItems | append (dict "@type" "ListItem" "position" $catPos "name" $.Title "item" $.Permalink) -}}
+    {{- $catCrumbs := dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $catItems -}}
+  <script type="application/ld+json">{{ $catCrumbs | jsonify (dict "indent" "  ") | safeJS }}</script>
+  {{- end -}}
+{{- end -}}

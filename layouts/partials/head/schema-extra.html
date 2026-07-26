@@ -1,0 +1,34 @@
+{{- /*
+  Schema.org JSON-LD extension hook — intentionally empty.
+
+  This is the sanctioned seam for ADDING structured data types without losing
+  the ones Ryder already emits. Shadow it from your own site:
+
+      layouts/partials/head/schema-extra.html
+
+  and it wins over this file through Hugo's union filesystem, exactly like
+  `partials/extend_head.html`. `head/schema.html` still runs, so WebPage,
+  BlogPosting, the site-wide entity, and BreadcrumbList all survive.
+
+  Overriding `head/schema.html` itself is the trap this hook exists to close:
+  it silently drops every block the theme emits, with no build error and
+  correct-looking HTML.
+
+  Build a dict and jsonify it — never hand-write JSON:
+
+      {{ if .IsHome }}
+        {{ $band := dict
+             "@context" "https://schema.org"
+             "@type" "MusicGroup"
+             "name" site.Title
+             "url" site.BaseURL
+             "genre" (slice "indie" "shoegaze")
+        }}
+        <script type="application/ld+json">{{ $band | jsonify | safeJS }}</script>
+      {{ end }}
+
+  For the *site-wide entity type* alone (Organization → MusicGroup, Person,
+  LocalBusiness, …) you do not need this hook at all — set params.schema.type.
+
+  Receives the page as its context.
+*/ -}}
