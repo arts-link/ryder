@@ -228,7 +228,7 @@ or site-wide:
 ```
 
 (Keep the base `main-menu-nav` class if you only mean to add to it, not
-replace it — `nav.html`'s own CSS lives on that class.) This is the pattern to
+replace it — `main.css`'s nav styling lives on that class.) This is the pattern to
 reach for before writing a new `header-*.html` variant whose only difference
 from `header.html` is a handful of classes.
 
