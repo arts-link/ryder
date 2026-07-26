@@ -29,10 +29,14 @@
   }
 </style>
 
+<div class="share-module">
+  <div class="share-module-label">Share</div>
+  <div class="share-module-list">
+
 {{ if in $networks "disqus" }}
 {{ $linkPrefix = "" }}
 <!-- Sharingbutton Comments -->
-<div class="inline resp-sharing-button--disqus resp-sharing-button" style="padding-top:15px;padding-bottom:15px;margin-right:8px;">
+<div class="share-module-comments">
 
 <a class="resp-sharing-button__link" href="{{ .Permalink }}#disqus_container" rel="noopener" aria-label="" title="Comments">
   <div class="resp-sharing-button--disqus resp-sharing-button--{{ $buttonSize }}"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--{{ $icon }}">
@@ -203,5 +207,7 @@
 </a>
 {{ end }}
 
+  </div>
+</div>
 
 {{ end }}
