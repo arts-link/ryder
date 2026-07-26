@@ -916,8 +916,13 @@ invokes PostCSS from your project root, so that is the only `node_modules` it
 consults):
 
 ```bash
-npm i -D tailwindcss postcss postcss-cli autoprefixer @tailwindcss/typography
+npm i -D "tailwindcss@^3.4.0" postcss postcss-cli autoprefixer @tailwindcss/typography
 ```
+
+**Pin Tailwind to v3.** Ryder is a Tailwind v3 theme: `tailwind.preset.js` uses
+v3 config syntax, and v4 cannot be used as a PostCSS plugin directly. A bare
+`npm i -D tailwindcss` installs v4 today and the build fails with *"It looks
+like you're trying to use `tailwindcss` directly as a PostCSS plugin"*.
 
 plus a `postcss.config.js`:
 
