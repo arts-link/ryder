@@ -36,18 +36,18 @@ or `menuType` — which pick a *partial* included from within one fixed entry
 template — Hugo has no other way to choose between two candidate top-level
 list templates.
 
-The [Press](../../press/) section on this exampleSite uses it: a page with no
-children, its content sourced from `data/press.json`.
+The [Releases](../../releases/) section on this exampleSite uses it: a page with no
+children, its content sourced from `data/releases.json`.
 
 ## `utils/data-items.html`
 
 The "does this data file have anything in it" check —
-`.Site.Data.press.items | default slice` — is easy to end up hand-rolling at
+`.Site.Data.releases.items | default slice` — is easy to end up hand-rolling at
 every call site that reads a `data/*.json` file shaped `{"items": [...]}`.
 `utils/data-items.html` is a returning partial for it:
 
 ```go-html-template
-{{ $items := partial "utils/data-items.html" "press" }}
+{{ $items := partial "utils/data-items.html" "releases" }}
 {{ if gt (len $items) 0 }}
   ...
 {{ end }}
@@ -58,4 +58,4 @@ when the data file or its `items` key doesn't exist — callers check `len()`
 rather than testing for existence directly.
 
 [Conditional menu entries](../menus/) reuse this exact partial: the Press nav
-link above only renders because `data/press.json` has items.
+link above only renders because `data/releases.json` has items.

@@ -179,21 +179,23 @@ themesDir= "../../"
     weight = 9990
 # Conditional menu entries: hideIfEmptyData names a data/*.json file (shaped
 # {"items": [...]}) that must be non-empty for the entry to render — see
-# README > Menus and exampleSite/content/docs/list-layouts. "Press" shows
-# because data/press.json has items; "Merch" stays hidden because
+# README > Menus and exampleSite/content/docs/list-layouts. "Releases" shows
+# because data/releases.json has items; "Merch" stays hidden because
 # data/merch.json does not exist (an empty items array behaves the same way).
 [[menus.main]]
-    name = 'Press'
-    pageRef = '/press'
+    name = 'Releases'
+    pageRef = '/releases'
     weight = 45
     [menus.main.params]
-      hideIfEmptyData = 'press'
+      hideIfEmptyData = 'releases'
+# Merch is the opposite choice: NOT gated, so the entry stays even with no
+# data/merch.json, and content/merch/_index.md renders emptyDataMessage
+# instead. "Disappears" and "stays and explains" are both valid; see
+# layouts/_default/list-plain.html.
 [[menus.main]]
     name = 'Merch'
-    url = '/merch/'
+    pageRef = '/merch'
     weight = 46
-    [menus.main.params]
-      hideIfEmptyData = 'merch'
 [[menus.footer]]
     name = 'File a Bug or Feature Request'
     url = 'https://github.com/arts-link/ryder/issues/new/choose'

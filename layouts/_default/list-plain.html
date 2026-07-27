@@ -24,6 +24,35 @@ layout's pages typically need:
     {{ $items := partial "utils/data-items.html" "about" }}
     {{ if gt (len $items) 0 }}...{{ end }}
 
+EMPTY SECTIONS — two different behaviors, pick per section:
+
+ 1. The section should DISAPPEAR when it has no data. A "Press" nav entry
+    with no press behind it is a dead link. Gate the *menu entry* instead:
+
+        [[menus.main]]
+          name = 'Press'
+          pageRef = '/press'
+          [menus.main.params]
+            hideIfEmptyData = 'press'
+
+ 2. The section should STAY and explain itself. A "Merch" nav entry that
+    vanishes looks like the shop was removed, when the truth is "nothing for
+    sale yet". Leave the menu entry ungated and set these two here instead:
+
+        +++
+        title = "Merch"
+        layout = "list-plain"
+        dataSource = "merch"
+        emptyDataMessage = "Nothing for sale yet — check back soon."
+        +++
+
+    When data/merch.json has items the page renders normally; when it does
+    not, emptyDataMessage renders in their place. Without dataSource this is
+    inert, so pages that do not need it pay nothing.
+
+The two are independent and can be combined, though combining them means the
+message is only ever visible to someone who reaches the page by direct URL.
+
 @example content/about/_index.md front matter: layout = "list-plain"
 */ -}}
 {{- define "main" -}}
@@ -38,6 +67,16 @@ layout's pages typically need:
   </header>
   <div class="mt-2 prose w-full max-w-max-screen-xl min-w-full lg:prose-lg dark:prose-invert">
     {{- .Content -}}
+    {{- /* Empty-state messaging for a section that stays in the nav rather
+           than being hidden by the menu's hideIfEmptyData — see the header
+           comment. Inert unless dataSource is set. */ -}}
+    {{- with .Param "dataSource" -}}
+      {{- if eq (len (partial "utils/data-items.html" .)) 0 -}}
+        {{- with $.Param "emptyDataMessage" -}}
+        <p class="ryder-empty-data italic opacity-75">{{ . }}</p>
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
   </div>
 </div>
 {{- end -}}
