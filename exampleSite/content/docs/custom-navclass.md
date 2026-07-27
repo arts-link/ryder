@@ -4,7 +4,12 @@ date = 2026-07-26
 description = 'Restyle the nav on a single page with navClass, without forking header.html into a new headerType variant.'
 categories = ['docs']
 tags = ['css', 'hugo']
+homeFeatureIcon = "fa-solid fa-wand-magic-sparkles"
 navClass = "main-menu-nav bg-fuchsia-900/40 rounded-full px-3"
+[menu]
+ [menu.main]
+  weight = 51
+  parent = 'docs'
 +++
 
 **This page sets `navClass` in its own front matter.** The nav above sits in a translucent fuchsia pill, on this page only. Navigate anywhere else and it returns to normal.

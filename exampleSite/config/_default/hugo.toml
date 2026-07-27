@@ -172,30 +172,23 @@ themesDir= "../../"
   minCount = 3
 
 [menus]
+# Negative coverage for hideIfEmptyData, and the reason it is invisible: this
+# entry is gated on data/nonexistent.json, which does not exist, so it must
+# never render. If the gate ever breaks it appears under Docs, and
+# tests/e2e/menuConditional.spec.js fails. An assertion that a gated entry
+# SHOWS when its data exists cannot catch a gate that never hides anything.
+[[menus.main]]
+    name = 'Never Rendered'
+    pageRef = '/docs/showcase'
+    weight = 9999
+    parent = 'docs'
+    [menus.main.params]
+      hideIfEmptyData = 'nonexistent'
 [[menus.main]]
     name = 'Tags'
     pageRef = '/tags'
     parent = 'docs'
     weight = 9990
-# Conditional menu entries: hideIfEmptyData names a data/*.json file (shaped
-# {"items": [...]}) that must be non-empty for the entry to render — see
-# README > Menus and exampleSite/content/docs/list-layouts. "Releases" shows
-# because data/releases.json has items; "Merch" stays hidden because
-# data/merch.json does not exist (an empty items array behaves the same way).
-[[menus.main]]
-    name = 'Releases'
-    pageRef = '/releases'
-    weight = 45
-    [menus.main.params]
-      hideIfEmptyData = 'releases'
-# Merch is the opposite choice: NOT gated, so the entry stays even with no
-# data/merch.json, and content/merch/_index.md renders emptyDataMessage
-# instead. "Disappears" and "stays and explains" are both valid; see
-# layouts/_default/list-plain.html.
-[[menus.main]]
-    name = 'Merch'
-    pageRef = '/merch'
-    weight = 46
 [[menus.footer]]
     name = 'File a Bug or Feature Request'
     url = 'https://github.com/arts-link/ryder/issues/new/choose'

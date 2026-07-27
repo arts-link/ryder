@@ -12,19 +12,22 @@ const BASE = '/ryder'
 //      data/releases.json has items, so it renders.
 //
 //   2. STAY AND EXPLAIN — dataSource + emptyDataMessage in the section's front
-//      matter, with the menu entry left ungated. A vanishing "Merch" link looks
-//      like the shop was removed; the truth is "nothing for sale yet".
-//      exampleSite has no data/merch.json, so the entry stays and the page says so.
+//      matter, with the menu entry left ungated. A vanishing "Showcase" link looks
+//      like the feature was removed; the truth is "nothing listed yet".
+//      exampleSite has no data/showcase.json, so the entry stays and the page says so.
 
 test('a menu entry gated on non-empty data renders', async ({ page }) => {
   await page.goto(`${BASE}/`)
+  // Structural locator, not getByRole: these entries live in the Docs
+  // submenu, which is aria-hidden while collapsed, so the accessibility tree
+  // does not expose them until it is opened.
   await expect(
-    page.locator('#nav-menu').getByRole('link', { name: 'Releases' })
-  ).toBeAttached()
+    page.locator('#nav-menu a[href$="/docs/releases/"]')
+  ).toHaveCount(1)
 })
 
 test('the gated section itself renders via list-plain, sourced from data', async ({ page }) => {
-  await page.goto(`${BASE}/releases/`)
+  await page.goto(`${BASE}/docs/releases/`)
   await expect(page.locator('main h1')).toHaveText('Releases')
   await expect(page.locator('main')).toContainText('v0.3.0')
   // list-plain has no pagination controls
@@ -34,19 +37,27 @@ test('the gated section itself renders via list-plain, sourced from data', async
 test('an ungated section keeps its nav entry even with no data', async ({ page }) => {
   await page.goto(`${BASE}/`)
   await expect(
-    page.locator('#nav-menu').getByRole('link', { name: 'Merch' })
-  ).toBeAttached()
+    page.locator('#nav-menu a[href$="/docs/showcase/"]')
+  ).toHaveCount(1)
 })
 
 test('an ungated empty section renders emptyDataMessage instead of nothing', async ({ page }) => {
-  await page.goto(`${BASE}/merch/`)
-  await expect(page.locator('main h1')).toHaveText('Merch')
+  await page.goto(`${BASE}/docs/showcase/`)
+  await expect(page.locator('main h1')).toHaveText('Showcase')
   await expect(page.locator('main .ryder-empty-data')).toHaveText(
-    'Nothing for sale yet — check back soon.'
+    'No sites listed yet — open a PR to add yours.'
   )
 })
 
 test('emptyDataMessage does not render when the data has items', async ({ page }) => {
-  await page.goto(`${BASE}/releases/`)
+  await page.goto(`${BASE}/docs/releases/`)
   await expect(page.locator('main .ryder-empty-data')).toHaveCount(0)
+})
+
+// Negative coverage: exampleSite declares a "Never Rendered" entry gated on
+// data/nonexistent.json. An assertion that a gated entry SHOWS when its data
+// exists does not prove the gate ever hides anything — this one does.
+test('a menu entry gated on missing data does not render at all', async ({ page }) => {
+  await page.goto(`${BASE}/`)
+  await expect(page.locator('#nav-menu')).not.toContainText('Never Rendered')
 })

@@ -36,7 +36,7 @@ or `menuType` — which pick a *partial* included from within one fixed entry
 template — Hugo has no other way to choose between two candidate top-level
 list templates.
 
-The [Releases](../../releases/) section on this exampleSite uses it: a page with no
+The [Releases](../releases/) section on this exampleSite uses it: a page with no
 children, its content sourced from `data/releases.json`.
 
 ## `utils/data-items.html`

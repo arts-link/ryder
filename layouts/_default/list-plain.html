@@ -27,7 +27,16 @@ layout's pages typically need:
 EMPTY SECTIONS — two different behaviors, pick per section:
 
  1. The section should DISAPPEAR when it has no data. A "Press" nav entry
-    with no press behind it is a dead link. Gate the *menu entry* instead:
+    with no press behind it is a dead link. Gate the *menu entry* instead —
+    from the section's own front matter:
+
+        [menu]
+         [menu.main]
+          parent = 'docs'
+          [menu.main.params]
+           hideIfEmptyData = 'releases'
+
+    or equivalently from site config, if the entry is declared there:
 
         [[menus.main]]
           name = 'Press'
@@ -35,18 +44,18 @@ EMPTY SECTIONS — two different behaviors, pick per section:
           [menus.main.params]
             hideIfEmptyData = 'press'
 
- 2. The section should STAY and explain itself. A "Merch" nav entry that
-    vanishes looks like the shop was removed, when the truth is "nothing for
-    sale yet". Leave the menu entry ungated and set these two here instead:
+ 2. The section should STAY and explain itself. A "Showcase" entry that
+    vanishes looks like the feature was removed, when the truth is "nothing
+    listed yet". Leave the menu entry ungated and set these two here instead:
 
         +++
-        title = "Merch"
+        title = "Showcase"
         layout = "list-plain"
-        dataSource = "merch"
-        emptyDataMessage = "Nothing for sale yet — check back soon."
+        dataSource = "showcase"
+        emptyDataMessage = "No sites listed yet — open a PR to add yours."
         +++
 
-    When data/merch.json has items the page renders normally; when it does
+    When data/showcase.json has items the page renders normally; when it does
     not, emptyDataMessage renders in their place. Without dataSource this is
     inert, so pages that do not need it pay nothing.
 
