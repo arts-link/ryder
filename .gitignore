@@ -21,3 +21,11 @@ Desktop.ini
 
 # Test artifacts
 test-results/
+
+# Tailwind class-discovery stats, written by [build] writeStats on every build.
+# Untracked as of v0.3.0: it changed on every build, so any local `hugo server`
+# run dirtied the tree and blocked the next `git pull`. See AGENTS.md for the
+# one consequence (a cold first build drops dynamically-assembled classes until
+# the file exists).
+hugo_stats.json
+exampleSite/hugo_stats.json

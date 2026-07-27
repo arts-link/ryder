@@ -1013,7 +1013,9 @@ keep that indirection or set `twClasses.body` to a class of your own.
     target = "css"
 ```
 
-`writeStats` produces `hugo_stats.json` at your project root, which `tailwind.config.js` globs for class discovery; the cachebusters make `hugo server` pick up CSS/JS rebuilds. Without the block, Tailwind silently falls back to the `layouts/**/*.html` globs — most classes are still found, so nothing appears broken, but any class assembled dynamically in a template is purged from the CSS. Add `hugo_stats.json` to `.gitignore`, or track it deliberately if you need reproducible class discovery across clones.
+`writeStats` produces `hugo_stats.json` at your project root, which `tailwind.config.js` globs for class discovery; the cachebusters make `hugo server` pick up CSS/JS rebuilds. Without the block, Tailwind silently falls back to the `layouts/**/*.html` globs — most classes are still found, so nothing appears broken, but any class assembled dynamically in a template is purged from the CSS. **Add `hugo_stats.json` to your `.gitignore`.** Hugo rewrites it on every build, so tracking it means every `hugo server` run dirties your working tree and blocks the next `git pull`. This theme tracked it until v0.3.0 and untracked it for exactly that reason.
+
+The tradeoff is small and worth stating precisely: on a *cold* clone with no prior build, the first CSS compile is missing any class that exists only in the stats file — classes assembled dynamically in a template rather than written literally, such as `resp-sharing-button--small` built from `[params.shareButtons] size`. In this theme's own exampleSite that is 3 classes out of 726. Every later build has them. **If you build release artifacts from a fresh clone in CI, build twice**, or commit the file deliberately and accept the pull friction.
 
 > **v0.2.4 note.** That release moved this block into the theme's own config on the assumption that consumers would inherit it. They don't. If you upgraded to v0.2.4 and deleted your `[build]` block, put it back.
 

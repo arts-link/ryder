@@ -55,6 +55,13 @@ see `docs/specs/v0.3.md` for the staged path.
   site's own inline scripts. The policy ships as a `<meta http-equiv>` tag and
   a meta-delivered CSP cannot carry a nonce, so hashes are the only way to
   permit one inline script without permitting all of them.
+- **Repo hygiene** — `hugo_stats.json` (root and `exampleSite/`) is now
+  gitignored. It was tracked so that a clean build had a stats file to glob,
+  but Hugo rewrites it on every build, so running `hugo server` dirtied the
+  tree and aborted the next `git pull`. Measured cost of untracking it: on a
+  cold clone the first CSS compile is missing 3 dynamically-assembled classes
+  out of 726, all `resp-sharing-button` modifiers; every later build has them.
+  Build twice if you produce release artifacts from a fresh clone.
 - **exampleSite** — The recipe demo page declared `recipe = true` and every
   other recipe key *after* its `[menu]` table, so TOML absorbed them all into
   `menu.main`. `.Params.recipe` was nil: the page rendered "No ingredients
