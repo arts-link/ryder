@@ -80,8 +80,24 @@ for (const page_path of ['/', '/docs/', '/docs/leaflet-maps/', '/docs/rich-conte
         /violates the following Content Security Policy directive/i.test(text)
       if (blocked) violations.push(text)
     })
-    await page.goto(`${BASE}${page_path}`)
-    await page.waitForLoadState('networkidle')
+    // Drop third-party requests. /docs/rich-content/ embeds YouTube, Spotify,
+    // SoundCloud and uMap; letting those load makes the test depend on four
+    // external services being reachable, and they hold connections open long
+    // enough that 'networkidle' never settles on a machine with real network
+    // access. Aborting them cannot mask what this test asserts: CSP blocking
+    // happens in the renderer BEFORE the request is issued, so a "Refused to
+    // load/frame" console message still fires for anything the policy rejects.
+    await page.route('**/*', (route) => {
+      const host = new URL(route.request().url()).hostname
+      return host === '127.0.0.1' || host === 'localhost'
+        ? route.continue()
+        : route.abort()
+    })
+    await page.goto(`${BASE}${page_path}`, { waitUntil: 'load' })
+    // Violations are emitted as the parser and scripts run, but a few land just
+    // after 'load'. Bounded settle rather than 'networkidle', which is not
+    // deterministic here.
+    await page.waitForTimeout(750)
     expect(violations, violations.join('\n')).toHaveLength(0)
   })
 }
