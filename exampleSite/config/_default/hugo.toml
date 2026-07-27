@@ -123,10 +123,31 @@ themesDir= "../../"
     size = "32x32"
     href = "/images/favicon.svg"
 
+  # Font family, v0.2.5 item #3. Set to the theme's own defaults so exampleSite
+  # looks unchanged while still exercising the params — `family` drives the
+  # --ryder-font-family custom property that assets/css/main.css reads, and
+  # `googleFontsFamily` is the family= query value head/fonts.html requests.
+  # Change both together to re-point the site at a different face.
+  [params.fonts]
+    family            = "Titillium Web"
+    googleFontsFamily = "Titillium+Web:wght@400;600;700"
+
   [params.twClasses]
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
     headerBackgroundFrameInner = "h-[240px] sm:h-[400px] bg-cover bg-center sm:bg-[center_30%]"
     headerBackgroundImage = "images/hyder_theme_header.webp"
+    # Body classes, v0.2.5 item 2.7. Stated explicitly here rather than left to
+    # the default, so the seam is visible in the reference implementation.
+    # `body` and `bodyDark` are separate on purpose: bodyDark is only read when
+    # darkMode != "off", so customizing the body font cannot silently disable
+    # dark mode. Overriding `body` alone keeps dark mode intact.
+    body     = "bg-neutral-100 text-neutral-900 font-titillium"
+    bodyDark = "dark:bg-neutral-900 dark:text-neutral-100"
+    # Nav skin, v0.2.5 item 2.5. Page-overridable via a `navClass` param in
+    # front matter, so one page can restyle the nav without forking header.html
+    # into a whole new headerType variant. menu.html defaults this to
+    # "main-menu-nav" when unset.
+    nav = "main-menu-nav"
 
 [[params.alphaAlert]]
   weight = 1
