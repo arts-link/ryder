@@ -76,8 +76,11 @@
 {{- $plausibleDomain := site.Params.plausible_domain -}}
 {{- if $plausibleDomain -}}
   {{- $scriptSrc = $scriptSrc | append "https://plausible.io" -}}
-  {{- /* SHA-256 hashes for Plausible advanced-mode inline scripts */ -}}
-  {{- if site.Params.plausible_advanced -}}
+  {{- /* SHA-256 hashes for Plausible advanced-mode inline scripts.
+         Production only — see the note on scriptSrcHashes below: a hash in
+         script-src makes 'unsafe-inline' inert, which would break the
+         development allowance (and LiveReload with it). */ -}}
+  {{- if and site.Params.plausible_advanced hugo.IsProduction -}}
     {{- $scriptSrc = $scriptSrc | append "'sha256-/6SBPqW+GW+//4nlXX6Y1nR9dWlh0gsQJ6KK71djH6A='" -}}
     {{- $scriptSrc = $scriptSrc | append "'sha256-RqYEbQ5LE8+gxvgfBOWbOoYTcxVwtSabsMrOzsDyWuQ='" -}}
   {{- end -}}
@@ -114,12 +117,27 @@
        script without permitting all of them. Quotes are added if the site
        omitted them, since 'sha256-…' must be single-quoted in a CSP and
        writing it unquoted in TOML is the obvious mistake. */ -}}
-{{- range $cspParams.scriptSrcHashes | default slice -}}
-  {{- $hash := . | strings.TrimPrefix "'" | strings.TrimSuffix "'" -}}
-  {{- if not (or (hasPrefix $hash "sha256-") (hasPrefix $hash "sha384-") (hasPrefix $hash "sha512-")) -}}
-    {{- warnf "params.csp.scriptSrcHashes: %q does not look like a CSP hash — expected sha256-, sha384-, or sha512- followed by base64. Emitting it anyway; the browser will reject it if it is wrong." $hash -}}
+{{- /* PRODUCTION ONLY, and this is load-bearing rather than an optimization.
+       Per CSP Level 2+, as soon as script-src contains any hash or nonce
+       source, the browser IGNORES 'unsafe-inline' in that directive. The
+       development branch above adds 'unsafe-inline' so LiveReload and any
+       inline script work while you iterate; emitting hashes there would
+       silently neutralize it and break the dev server for exactly the sites
+       that configured this param.
+
+       It also spares a real trap: a hash covers exact bytes, and `hugo
+       --minify` changes those bytes. A hash computed from a production build
+       does not match the same script served unminified by `hugo server`, so
+       a site that got this right for production would look broken in dev.
+       Compute hashes from a production build; they only apply there. */ -}}
+{{- if hugo.IsProduction -}}
+  {{- range $cspParams.scriptSrcHashes | default slice -}}
+    {{- $hash := . | strings.TrimPrefix "'" | strings.TrimSuffix "'" -}}
+    {{- if not (or (hasPrefix $hash "sha256-") (hasPrefix $hash "sha384-") (hasPrefix $hash "sha512-")) -}}
+      {{- warnf "params.csp.scriptSrcHashes: %q does not look like a CSP hash — expected sha256-, sha384-, or sha512- followed by base64. Emitting it anyway; the browser will reject it if it is wrong." $hash -}}
+    {{- end -}}
+    {{- $scriptSrc = $scriptSrc | append (printf "'%s'" $hash) -}}
   {{- end -}}
-  {{- $scriptSrc = $scriptSrc | append (printf "'%s'" $hash) -}}
 {{- end -}}
 
 {{- with $cspParams.scriptSrc -}}

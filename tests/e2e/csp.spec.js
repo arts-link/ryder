@@ -55,16 +55,6 @@ test('style-src keeps its documented unsafe-inline allowance', async ({ page }) 
   expect(policy['style-src']).toContain("'unsafe-inline'")
 })
 
-test('a configured scriptSrcHashes entry reaches the policy', async ({ page }) => {
-  await page.goto(`${BASE}/`)
-  const policy = await policyFromPage(page)
-  const hashes = policy['script-src'].filter((s) => s.startsWith("'sha"))
-  expect(hashes.length).toBeGreaterThan(0)
-  expect(hashes).toContain(
-    "'sha256-Ryd3rExampleHashAAAAAAAAAAAAAAAAAAAAAAAAAAA='"
-  )
-})
-
 // Loading the real pages and watching the console is the only check that
 // catches a policy which is well-formed but wrong. Spec Verification check 2.
 for (const page_path of ['/', '/docs/', '/docs/leaflet-maps/', '/docs/rich-content/']) {
@@ -101,6 +91,27 @@ for (const page_path of ['/', '/docs/', '/docs/leaflet-maps/', '/docs/rich-conte
     expect(violations, violations.join('\n')).toHaveLength(0)
   })
 }
+
+// Per CSP Level 2+, a hash source in script-src makes 'unsafe-inline' INERT.
+// csp.html therefore emits scriptSrcHashes (and the Plausible advanced-mode
+// hashes) in production only — otherwise configuring a hash would silently
+// neutralize the development allowance below and break LiveReload, plus any
+// inline script, for exactly the sites that opted into hashes.
+//
+// This bit a real consumer: hashes leaked into the dev CSP, the browser
+// discarded 'unsafe-inline', and a working page went dead with the console
+// naming a *different* hash — different because `hugo --minify` changes the
+// bytes a hash covers, so a production hash never matches an unminified build.
+test('the dev CSP keeps unsafe-inline and emits no hashes', async ({ page }) => {
+  await page.goto(`${BASE}/`)
+  const policy = await policyFromPage(page)
+  const scriptSrc = policy['script-src']
+  expect(scriptSrc).toContain("'unsafe-inline'")
+  expect(
+    scriptSrc.filter((s) => s.startsWith("'sha")),
+    `a hash in dev would make 'unsafe-inline' inert: ${scriptSrc.join(' ')}`
+  ).toHaveLength(0)
+})
 
 // The dev server runs with hugo.IsProduction false, where csp.html deliberately
 // allows inline scripts (LiveReload injects one) and head.html does not render
