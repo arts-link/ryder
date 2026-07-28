@@ -1,13 +1,10 @@
 {
   "name": "ryder",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "A barebones Hugo theme built with TailwindCSS and Alpine.js",
   "author": "Ben Strawbridge",
   "license": "MIT",
   "scripts": {
-    "build-tw": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/style.css",
-    "deploy-tw": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/style.css --minify",
-    "watch-tw": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/style.css -w",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",

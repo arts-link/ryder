@@ -1,58 +1,101 @@
-{{- if .Params.recipe }}
-{{- $images := .Resources.ByType "image" -}}
-{{- $featured := ($images.GetMatch (.Params.featured_image | default "*feature*")) | default (resources.Get .Site.Params.og_image_default) }}
-<script type="application/ld+json">
-  // schema for recipes
-  {
-    "@context": "https://schema.org/",
-    "@type": "Recipe",
-    "mainEntityOfPage": { "@type": "WebPage" },
-    "name": {{ .Title }},
-    {{ if $featured }}"image": {{ $featured.Permalink }},{{ end }}
-    "author": {
-      "@type": "Person",
-      "name": {{ .Site.Params.author.name }},
-      "email": {{ .Site.Params.author.email }}
-    },
-    "datePublished": {{ .PublishDate }},
-    "dateModified": {{ .Lastmod }},
-    "description": {{ .Summary }},
-    "recipeCuisine": {{ .Params.recipeCuisine }},
-    "prepTime": {{ .Params.prepTime }},
-    "cookTime": {{ .Params.cookTime }},
-    "totalTime": {{ .Params.totalTime }},
-    "keywords": {{ .Params.tags }},
-    "recipeYield": [
-      {{ .Params.recipeYield }}
-    ],
-    "recipeCategory": {{ range last 1 .Params.categories }}{{ . }}{{ end }},
-    "nutrition": {
-      "@type": "NutritionInformation",
-      "calories": {{ .Params.calories }}
-    },
-    {{/*  "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "5",
-      "ratingCount": "0"
-    },  */}}
-    "recipeIngredient": [{{ $len := len .Params.recipeIngredients }}{{ range $index, $ingredient := .Params.recipeIngredients }}{{ if not (strings.HasPrefix $ingredient "**") }}"{{ $ingredient }}"{{ if ne $index (sub $len 1) }},{{ end }}{{ end }}{{ end }}],
-    "recipeInstructions": [
-      {{- $link := .Permalink }}
-      {{- $len := len .Params.recipeInstructions }}
-      {{- $lastIndex := sub $len 1 }}
-      {{- range $index, $instruction := .Params.recipeInstructions }}
-      {{ if findRE "^\\*\\*" $instruction.name }}
-        {{ continue }}
-      {{ end }}
-      {
-        "@type": "HowToStep",
-        "name": "{{ $instruction.name }}",
-        {{- if $instruction.featured }}"image": "{{ $instruction.featured.Permalink }}",{{ end }}
-        "text": "{{ $instruction.text }}",
-        "url": "{{ $link }}#{{ $instruction.name }}"
-      }{{ if ne $index $lastIndex }},{{ end }}
-      {{- end }}
-    ]
-  }
-</script> 
-{{- end}}
+{{- /*
+  Schema.org Recipe JSON-LD, emitted when a page sets `recipe = true`.
+
+  Built as dicts and rendered with `jsonify`, for the same reason as
+  `head/schema.html`: hand-written JSON in a template fails silently. This file
+  previously carried a `// schema for recipes` comment inside the script tag —
+  JSON has no comment syntax, so the whole block was discarded by every
+  consumer — plus several comma-dependent emissions that produced a trailing
+  comma whenever an optional field was unset or the last list entry was a
+  `**`-prefixed section header.
+
+  Rule: never write a `{`, a `"` or a `,` meant to reach the output.
+*/ -}}
+{{- if .Params.recipe -}}
+  {{- $images := .Resources.ByType "image" -}}
+  {{- $featured := ($images.GetMatch (.Params.featured_image | default "*feature*")) -}}
+  {{- if not $featured -}}
+    {{- with site.Params.og_image_default -}}
+      {{- $featured = resources.Get (strings.TrimPrefix "/" .) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $author := site.Params.author | default dict -}}
+  {{- $person := dict "@type" "Person" "name" ($author.name | default site.Title) -}}
+  {{- with $author.email -}}{{- $person = merge $person (dict "email" .) -}}{{- end -}}
+
+  {{- $recipe := dict
+        "@context" "https://schema.org"
+        "@type" "Recipe"
+        "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+        "name" .Title
+        "author" $person
+  -}}
+  {{- with $featured -}}{{- $recipe = merge $recipe (dict "image" .Permalink) -}}{{- end -}}
+  {{- if not .PublishDate.IsZero -}}
+    {{- $recipe = merge $recipe (dict "datePublished" (.PublishDate.Format "2006-01-02T15:04:05Z07:00")) -}}
+  {{- end -}}
+  {{- if not .Lastmod.IsZero -}}
+    {{- $recipe = merge $recipe (dict "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")) -}}
+  {{- end -}}
+  {{- with .Summary -}}
+    {{- $recipe = merge $recipe (dict "description" (. | plainify | htmlUnescape | chomp)) -}}
+  {{- end -}}
+
+  {{- /* Optional scalars — omitted entirely when unset, rather than emitting an
+         empty value after a colon. */ -}}
+  {{- with .Params.recipeCuisine -}}{{- $recipe = merge $recipe (dict "recipeCuisine" .) -}}{{- end -}}
+  {{- with .Params.prepTime -}}{{- $recipe = merge $recipe (dict "prepTime" .) -}}{{- end -}}
+  {{- with .Params.cookTime -}}{{- $recipe = merge $recipe (dict "cookTime" .) -}}{{- end -}}
+  {{- with .Params.totalTime -}}{{- $recipe = merge $recipe (dict "totalTime" .) -}}{{- end -}}
+  {{- with .Params.tags -}}{{- $recipe = merge $recipe (dict "keywords" (delimit . ", ")) -}}{{- end -}}
+  {{- with .Params.recipeYield -}}{{- $recipe = merge $recipe (dict "recipeYield" .) -}}{{- end -}}
+  {{- with .Params.categories -}}
+    {{- $recipe = merge $recipe (dict "recipeCategory" (index (last 1 .) 0)) -}}
+  {{- end -}}
+  {{- with .Params.calories -}}
+    {{- $recipe = merge $recipe (dict "nutrition" (dict
+          "@type" "NutritionInformation"
+          "calories" (printf "%v calories" .)
+    )) -}}
+  {{- end -}}
+
+  {{- /* Ingredients and instructions. Entries whose text/name begins with `**`
+         are section headers emitted by the recipe shortcodes, not real steps —
+         skip them. Building a slice makes that skip safe; the old comma-driven
+         version emitted a trailing comma whenever the skipped entry was the
+         last one. */ -}}
+  {{- $ingredients := slice -}}
+  {{- range .Params.recipeIngredients -}}
+    {{- if not (hasPrefix . "**") -}}
+      {{- $ingredients = $ingredients | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $ingredients -}}{{- $recipe = merge $recipe (dict "recipeIngredient" .) -}}{{- end -}}
+
+  {{- $steps := slice -}}
+  {{- $link := .Permalink -}}
+  {{- $page := . -}}
+  {{- range .Params.recipeInstructions -}}
+    {{- if not (hasPrefix (.name | default "") "**") -}}
+      {{- $step := dict
+            "@type" "HowToStep"
+            "name" .name
+            "text" .text
+            "url" (printf "%s#%s" $link (.name | urlize))
+      -}}
+      {{- with .image | default .featured -}}
+        {{- /* A page-bundle resource name, or any URL, used as-is. */ -}}
+        {{- with $page.Resources.GetMatch . -}}
+          {{- $step = merge $step (dict "image" .Permalink) -}}
+        {{- else -}}
+          {{- $step = merge $step (dict "image" .) -}}
+        {{- end -}}
+      {{- end -}}
+      {{- $steps = $steps | append $step -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $steps -}}{{- $recipe = merge $recipe (dict "recipeInstructions" .) -}}{{- end -}}
+
+  <script type="application/ld+json">{{ $recipe | jsonify (dict "indent" "  ") | safeJS }}</script>
+{{- end -}}

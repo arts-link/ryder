@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "title": "v0.3.0",
+      "summary": "Schema rebuilt from dicts, Tailwind preset, CSP script hashes. Four breaking changes.",
+      "link": "https://github.com/arts-link/ryder/releases/tag/v0.3.0"
+    },
+    {
+      "title": "v0.2.5",
+      "summary": "CSP-safe Alpine components, configurable page shell, embed shortcodes, favicon and font params.",
+      "link": "https://github.com/arts-link/ryder/releases/tag/v0.2.5"
+    },
+    {
+      "title": "v0.2.4",
+      "summary": "Silent-failure fixes: valid JSON-LD, guarded OG resolver, params.darkMode, CSP frame-src for embeds.",
+      "link": "https://github.com/arts-link/ryder/releases/tag/v0.2.4"
+    },
+    {
+      "title": "v0.2.3",
+      "summary": "PostHog cookie domain setting, Leaflet stylesheet loading fix.",
+      "link": "https://github.com/arts-link/ryder/releases/tag/v0.2.3"
+    }
+  ]
+}

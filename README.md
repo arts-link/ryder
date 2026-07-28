@@ -393,8 +393,59 @@ Ryder emits a `Content-Security-Policy` via `<meta http-equiv>` with secure defa
   # fontSrc   = "https://cdn.example.com"
   frameSrc  = "https://your-embed-host.example.com"   # any additional iframe hosts, verbatim
   embeds    = ["youtube", "vimeo", "soundcloud", "spotify", "umap"]
+  # scriptSrcHashes = ["sha256-…"]                    # SHA-256 of each of your inline <script>s
   # extraDirectives = "worker-src 'none';"
 ```
+
+#### `script-src` does not allow inline scripts
+
+Every script Ryder emits — `main.js`, `themeBoot.js`, the dev linter, and the
+PostHog bootstrap — is a real asset served from `'self'` with a Subresource
+Integrity hash, so `script-src 'self'` covers all of them. **`'unsafe-inline'`
+is never added to `script-src` in production**, and turning on analytics no
+longer adds it for you.
+
+> **Changed in v0.3.0 — this can break an existing site silently.** Before
+> v0.3.0, enabling PostHog appended `'unsafe-inline'` to `script-src` for the
+> whole site, because `posthog.html` inlined its bootstrap snippet. Any inline
+> `<script>` of your own was being permitted by that side effect. It no longer
+> is. CSP violations do not fail the build — they fail in the visitor's
+> browser — so grep your templates for `<script>` without a `src` before
+> upgrading, and verify with a production build and a browser console showing
+> zero violations rather than by reading the config.
+
+If your site has an inline script of its own, you have two options.
+
+**Preferred — list its hash.** The policy ships as a `<meta http-equiv>` tag,
+and a meta-delivered CSP cannot carry a nonce (nonces must be generated per
+response, which a static site never gets to do). Hashes are the alternative:
+
+```toml
+[params.csp]
+  scriptSrcHashes = ["sha256-Ki9lqrTGVaMOtvJBiJhb3D2Cu5g0S4XLNJfDmxvGvBM="]
+```
+
+Load the page and read the hash out of the CSP violation message in the
+browser console — it names the exact value the blocked script needs. Quotes
+are added for you if you leave them off. This is the same mechanism Ryder
+already used for Plausible's advanced-mode inline scripts.
+
+**Escape hatch — turn script CSP off.** Still supported, but now something
+you say deliberately rather than something analytics does to you:
+
+```toml
+[params.csp]
+  scriptSrc = "'unsafe-inline'"
+```
+
+A third option is usually better than both: move the code into
+[`assets/js/extended.js`](#assetsjsextendedjs--the-custom-js-hook), where it
+is bundled into `main.js` and needs no CSP allowance at all.
+
+Note that **`style-src` does keep `'unsafe-inline'`**, and that is deliberate:
+Alpine's `x-show` sets `display:none` as an inline style, so removing it would
+break every collapsible element in the theme. `head/csp.html` documents both
+decisions inline.
 
 By default `default-src 'self'` blocks every iframe, including the theme's own `soundcloud` and `openstreetmap` shortcodes. `frame-src` is assembled from three sources and folded together (deduped), and omitted entirely when none apply:
 
@@ -643,11 +694,45 @@ Ryder ships with a complete search and AI optimisation stack — no plugins, no 
 | `<meta name="description">` | Page snippet for search results — from `description` front matter, then summary, then site description |
 | Open Graph tags | Social link previews (Facebook, LinkedIn, Slack, Discord) |
 | Twitter / X Cards | `summary_large_image` when a featured image is present, `summary` otherwise |
-| JSON-LD `BlogPosting` | Article authorship, dates, keywords, and full text for Google rich results and AI crawlers |
-| JSON-LD `WebPage` + `Organization` | Homepage entity signals |
+| JSON-LD `BlogPosting` | Article authorship, dates, and keywords for Google rich results and AI crawlers |
+| JSON-LD `WebPage` + site entity | Homepage entity signals — entity type set by `params.schema.type` |
 | JSON-LD `BreadcrumbList` | Section and category navigation trails for rich-result breadcrumbs |
 | JSON-LD `Recipe` | Full recipe structured data (ingredients, steps, nutrition) when `recipe = true` |
 | Dynamic OG image | Auto-generated Open Graph image with title text when no page image exists |
+
+### `llms.txt` — you must declare `[outputs]` yourself
+
+Ryder defines an `LLMSTxt` output format and ships the
+`_default/home.llmstxt.txt` template that renders it: a plain-text index of
+your site for AI crawlers, served at `/llms.txt`.
+
+**The format definition is inherited from the theme. The `[outputs]` block is
+not.** Add this to your own site config, or no `llms.txt` is ever written:
+
+```toml
+[outputs]
+  home = ["HTML", "RSS", "LLMSTxt"]
+```
+
+You do **not** need to redeclare `[outputFormats.LLMSTxt]` — Hugo does merge a
+theme's `outputFormats` into the site's, so naming `"LLMSTxt"` above is enough.
+It is specifically `outputs` that does not propagate, the same way `build`
+does not (see [Build configuration](#build-configuration)).
+
+Verified against a scratch consumer site whose entire config was `baseURL`,
+`title`, and `theme = "ryder"`:
+
+| Consumer config | `hugo config` reports | `/llms.txt` |
+|---|---|---|
+| no `[outputs]` | `home = ['html', 'rss']` — Hugo's stock default | not written |
+| `home = ["HTML", "RSS", "LLMSTxt"]` | as written | written |
+
+In both runs `[outputformats.llmstxt]` was present in the merged config, which
+is what makes the one-line block above sufficient.
+
+> If you are reading older guidance that calls this block redundant because
+> "theme config merges into the site's" — it isn't, and it doesn't. Hugo merges
+> only a subset of root config sections from a theme.
 
 ### What Is GEO?
 
@@ -672,7 +757,83 @@ Most SEO metadata is automatic. A few optional settings unlock additional featur
   fontColor = "#085624"                          # Title text colour on generated OG images
   x = 50                                         # Text x position (px from left)
   y = 430                                        # Text y position (px from top)
+
+[params.schema]
+  type = "Organization"                          # Site-wide JSON-LD entity on the home page
 ```
+
+### Structured Data (JSON-LD)
+
+Every JSON-LD block Ryder emits is built as a Hugo `dict` and serialised with
+`jsonify`. That is a deliberate constraint, not a style preference: JSON
+hand-written as template text fails **silently**. A stray comment, an unset
+optional value leaving a dangling `"key": ,`, or a trailing comma produces a
+block no consumer can parse, and nothing in the Hugo build reports it. If you
+extend Ryder's structured data, build a dict — never write JSON punctuation
+that reaches the output.
+
+#### `params.schema.type` — change the site-wide entity
+
+The home page carries one site-wide entity alongside its `WebPage` block.
+It defaults to `Organization`. Set any schema.org type instead:
+
+```toml
+[params.schema]
+  type = "MusicGroup"     # or Person, LocalBusiness, NGO, …
+```
+
+`Person` receives an `image` rather than a `logo`, since schema.org gives
+`logo` to `Organization` and its subtypes only. Otherwise the entity is built
+from `title`, `params.author.email`, and `params.logo_png`.
+
+#### `head/schema-extra.html` — add types without losing the built-in ones
+
+To emit **additional** types — `MusicEvent`, `Product`, `FAQPage` — do **not**
+override `layouts/partials/head/schema.html`. Overriding it silently drops
+`WebPage`, `BlogPosting`, the site entity, and both `BreadcrumbList` blocks,
+with no build error and correct-looking HTML. That trap is the reason this hook
+exists.
+
+Instead, create:
+
+```
+layouts/partials/head/schema-extra.html
+```
+
+It is an empty no-op in the theme, called from `head-seo.html` immediately
+after `head/schema.html`, and it shadows cleanly through Hugo's union
+filesystem — the same pattern as `extend_head.html`. It receives the page as
+its context.
+
+```go-html-template
+{{ if .IsHome }}
+  {{ $band := dict
+       "@context" "https://schema.org"
+       "@type" "MusicGroup"
+       "name" site.Title
+       "url" site.BaseURL
+       "genre" (slice "indie" "shoegaze")
+  }}
+  <script type="application/ld+json">{{ $band | jsonify | safeJS }}</script>
+{{ end }}
+```
+
+#### `extend_head.html` — inject anything else into `<head>`
+
+`layouts/partials/extend_head.html` is an empty partial called as the last line
+of `head.html`. Shadow it to add verification meta tags, a third-party
+`<script src>`, preload hints, or any other head content, without touching
+`head.html`:
+
+```go-html-template
+<meta name="google-site-verification" content="…">
+<link rel="preconnect" href="https://cdn.example.com">
+```
+
+It runs after the CSP meta tag is emitted, so anything you add here still has
+to satisfy the policy — see [Content Security Policy](#content-security-policy).
+Prefer `head/schema-extra.html` for structured data specifically, so the two
+concerns stay separable.
 
 ### Front Matter That Feeds Schema
 
@@ -743,11 +904,98 @@ listCardType = "-super-simple"
 
 ## CSS Development
 
+### There is no separate CSS build step
+
+**`hugo server` and `hugo --minify` are the whole workflow.** Tailwind compiles
+*inside* the Hugo build: `head/css.html` pipes `assets/css/main.css` through
+`css.PostCSS`, which runs your `postcss.config.js`, which runs Tailwind. There
+is no watcher to start in a second terminal and no artifact to commit.
+
+What that requires at your **project root** (not in `themes/ryder/` — Hugo
+invokes PostCSS from your project root, so that is the only `node_modules` it
+consults):
+
 ```bash
-npm run watch-tw    # Watch mode
-npm run build-tw    # Build
-npm run deploy-tw   # Build + minify for production
+npm i -D "tailwindcss@^3.4.0" postcss postcss-cli autoprefixer @tailwindcss/typography
 ```
+
+**Pin Tailwind to v3.** Ryder is a Tailwind v3 theme: `tailwind.preset.js` uses
+v3 config syntax, and v4 cannot be used as a PostCSS plugin directly. A bare
+`npm i -D tailwindcss` installs v4 today and the build fails with *"It looks
+like you're trying to use `tailwindcss` directly as a PostCSS plugin"*.
+
+plus a `postcss.config.js`:
+
+```js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+```
+
+and a `tailwind.config.js` requiring the theme's preset (see below). With those
+in place:
+
+```bash
+hugo server        # dev, with live CSS rebuilds
+hugo --minify      # production
+```
+
+> **Removed in v0.3.0: `npm run build-tw`, `watch-tw`, and `deploy-tw`.** They
+> ran the Tailwind CLI to write `themes/ryder/assets/css/style.css`, a file no
+> template ever read, and earlier versions of this README presented them as
+> *the* build workflow — which pushed consuming sites into a two-terminal dev
+> loop that was never required. If any CI, Vercel, or Netlify build command
+> runs `npm run build-tw && hugo --minify`, drop the first half; it will now
+> fail on a missing script. Confirm `hugo --minify` alone works before you
+> upgrade.
+
+### The Tailwind preset
+
+Ryder ships its design tokens as a **preset**, `tailwind.preset.js`. Your site's
+`tailwind.config.js` requires it and supplies its own `content` globs:
+
+```js
+// tailwind.config.js — at your project root
+module.exports = {
+  presets: [require('./themes/ryder/tailwind.preset.js')],
+  content: [
+    './themes/ryder/layouts/**/*.html',
+    './layouts/**/*.html',
+    './content/**/*.md',
+    './hugo_stats.json',
+  ],
+};
+```
+
+The preset carries `theme`, `darkMode`, and `plugins` — the theme's colours,
+`fontFamily`, custom `screens` (`xs`, `3xl`), background images, `darkMode:
+'class'`, and the typography plugin. Add your own tokens under `theme.extend`
+and they merge on top; set a key under `theme` directly and it replaces the
+preset's.
+
+**The preset deliberately carries no `content`.** Content globs resolve
+relative to wherever Tailwind is invoked, which for your site is your project
+root — a path the theme cannot know. This is also why you must not
+`require('./themes/ryder/tailwind.config.js')`: that file's globs are written
+for *this repository's* directory layout, so from your project root
+`./exampleSite/...` does not exist and `./themes/ryder/layouts/...` resolves to
+`themes/ryder/themes/ryder/layouts/...`. Tailwind finds no classes and emits an
+almost-empty stylesheet, with no error.
+
+> **Upgrading from v0.2.x?** If your `tailwind.config.js` requires the theme's
+> `tailwind.config.js`, switch to the `presets: [...]` form above. This one
+> fails loudly at build time, so you will not miss it.
+
+Note the `fontFamily.titillium` entry resolves through
+`var(--ryder-font-family, "Titillium Web")`, so the `font-titillium` class that
+`baseof.html` puts on `<body>` follows [`[params.fonts]`](#fonts) rather than
+contradicting it. If you replace `fontFamily` wholesale in your own config,
+keep that indirection or set `twClasses.body` to a class of your own.
+
+### Build configuration
 
 **Add this `[build]` block to your own site config** — Hugo merges only a subset of root config sections from themes, and `build` is not one of them, so you do **not** inherit it from Ryder:
 
@@ -765,7 +1013,9 @@ npm run deploy-tw   # Build + minify for production
     target = "css"
 ```
 
-`writeStats` produces `hugo_stats.json` at your project root, which `tailwind.config.js` globs for class discovery; the cachebusters make `hugo server` pick up CSS/JS rebuilds. Without the block, Tailwind silently falls back to the `layouts/**/*.html` globs — most classes are still found, so nothing appears broken, but any class assembled dynamically in a template is purged from the CSS. Add `hugo_stats.json` to `.gitignore`, or track it deliberately if you need reproducible class discovery across clones.
+`writeStats` produces `hugo_stats.json` at your project root, which `tailwind.config.js` globs for class discovery; the cachebusters make `hugo server` pick up CSS/JS rebuilds. Without the block, Tailwind silently falls back to the `layouts/**/*.html` globs — most classes are still found, so nothing appears broken, but any class assembled dynamically in a template is purged from the CSS. **Add `hugo_stats.json` to your `.gitignore`.** Hugo rewrites it on every build, so tracking it means every `hugo server` run dirties your working tree and blocks the next `git pull`. This theme tracked it until v0.3.0 and untracked it for exactly that reason.
+
+The tradeoff is small and worth stating precisely: on a *cold* clone with no prior build, the first CSS compile is missing any class that exists only in the stats file — classes assembled dynamically in a template rather than written literally, such as `resp-sharing-button--small` built from `[params.shareButtons] size`. In this theme's own exampleSite that is 3 classes out of 726. Every later build has them. **If you build release artifacts from a fresh clone in CI, build twice**, or commit the file deliberately and accept the pull friction.
 
 > **v0.2.4 note.** That release moved this block into the theme's own config on the assumption that consumers would inherit it. They don't. If you upgraded to v0.2.4 and deleted your `[build]` block, put it back.
 

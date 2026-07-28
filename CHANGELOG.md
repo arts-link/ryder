@@ -2,6 +2,151 @@
 
 All notable changes to the Ryder Hugo theme are documented in this file.
 
+## v0.3.0
+
+The breaking release. Four breaking changes, listed under **Breaking** below
+with what each one asks of you. Upgrade from v0.2.5, not from further back —
+see `docs/specs/v0.3.md` for the staged path.
+
+- **2.2** — `head/schema.html` is rebuilt to construct Hugo `dict`s and
+  `jsonify` them instead of hand-writing JSON as template text. v0.2.4's item
+  1.2 fixed that bug class by deleting three stray `//` comments; this removes
+  the technique that made them possible. Along the way: the file's three
+  different homepage tests (`eq .Title .Site.Title`, `.IsHome`,
+  `ne .Title .Site.Title`) collapse to `.IsHome`; `articleBody`, which inlined
+  the entire rendered page body into every `BlogPosting`, is gone; dates are
+  emitted as RFC 3339 rather than Go's default time format; and breadcrumbs are
+  separate script blocks instead of one conditionally-nested array.
+- **2.2** — New `layouts/partials/head/schema-extra.html`, a no-op hook called
+  from `head-seo.html` and shadowed from your own `layouts/`, mirroring
+  `extend_head.html`. Add JSON-LD types without overriding `head/schema.html`,
+  which silently drops every block the theme emits.
+- **2.2** — New `params.schema.type` (default `"Organization"`) sets the
+  site-wide entity on the home page, so `MusicGroup`, `Person`,
+  `LocalBusiness`, etc. need no template override at all. `Person` receives an
+  `image` rather than a `logo`, per schema.org.
+- **2.2** — `head/schema-recipe.html` gets the same dict-based rewrite. It
+  carried its own `// schema for recipes` comment inside the script tag, so
+  the `Recipe` block never parsed either, and several comma-dependent
+  emissions produced trailing commas when an optional field was unset or the
+  last list entry was a `**` section header.
+- **3.1** — New `tailwind.preset.js` carrying `theme`, `darkMode`, and
+  `plugins`, and deliberately no `content`. `tailwind.config.js` becomes a thin
+  wrapper holding only this repo's own dev globs. See **Breaking**.
+- **3.1** — `fontFamily.titillium` now resolves through
+  `var(--ryder-font-family, "Titillium Web")`, so the `font-titillium` class on
+  `<body>` follows `[params.fonts]` instead of contradicting it. Third of the
+  four hardcoded Titillium sites named in issue #3.
+- **3.2** — `assets/css/style.css` is deleted. See **Breaking**.
+- **3.3** — The `build-tw`, `watch-tw`, and `deploy-tw` npm scripts are
+  deleted, and the README section that presented them as the build workflow is
+  rewritten. See **Breaking**.
+- **3.4** — Documented that a consuming site **must** declare `[outputs]`
+  itself to get `llms.txt`. The v0.3 spec called the site's block a redundant
+  duplicate on the grounds that theme config merges into the site's; that was
+  tested against a scratch consumer and is false. `outputFormats` **is**
+  inherited (so you need not redefine the `LLMSTxt` format), `outputs` is not.
+  Deleting the block, as the spec advised, would have silently removed
+  `llms.txt` from every Ryder site.
+- **4.3** — PostHog's bootstrap is compiled with `resources.FromString |
+  js.Build | fingerprint` and loaded via `src` + `integrity` instead of being
+  inlined. See **Breaking**.
+- **4.3** — New `params.csp.scriptSrcHashes`, a list of SHA-256 hashes for a
+  site's own inline scripts. The policy ships as a `<meta http-equiv>` tag and
+  a meta-delivered CSP cannot carry a nonce, so hashes are the only way to
+  permit one inline script without permitting all of them.
+- **Repo hygiene** — `hugo_stats.json` (root and `exampleSite/`) is now
+  gitignored. It was tracked so that a clean build had a stats file to glob,
+  but Hugo rewrites it on every build, so running `hugo server` dirtied the
+  tree and aborted the next `git pull`. Measured cost of untracking it: on a
+  cold clone the first CSS compile is missing 3 dynamically-assembled classes
+  out of 726, all `resp-sharing-button` modifiers; every later build has them.
+  Build twice if you produce release artifacts from a fresh clone.
+- **exampleSite** — The recipe demo page declared `recipe = true` and every
+  other recipe key *after* its `[menu]` table, so TOML absorbed them all into
+  `menu.main`. `.Params.recipe` was nil: the page rendered "No ingredients
+  listed." and emitted no `Recipe` JSON-LD at all. The theme's own reference
+  implementation of the recipe feature had been dead. Fixed by moving `[menu]`
+  last.
+- **exampleSite** — `tailwind.config.js` converted to the consumer preset
+  pattern it is meant to demonstrate; it had drifted a duplicate copy of the
+  theme's tokens, missing the `xs` and `3xl` screens and with `'2xl': '1280'`
+  missing its unit.
+- **Tests** — New `tests/e2e/schema.spec.js` (8 cases) and
+  `tests/e2e/csp.spec.js` (10 cases, including a production fixture build for
+  the PostHog assertions the dev server cannot make).
+
+### Breaking
+
+**1. The `*-tw` npm scripts are deleted (3.3). This breaks build commands, not
+rendering.** Any CI, Vercel, or Netlify command running
+`npm run build-tw && hugo --minify` will now fail on a missing script.
+
+*What to do:* drop the `npm run build-tw &&` half. Tailwind already compiles
+inside the Hugo build via `head/css.html`'s `css.PostCSS`, so `hugo --minify`
+alone is sufficient — and always was. Confirm `tailwindcss`, `postcss`,
+`postcss-cli`, and `autoprefixer` are installed at your **project root** (not
+in `themes/ryder/` — Hugo invokes PostCSS from your project root and consults
+only that `node_modules`) alongside a `postcss.config.js`. If your docs
+prescribe a two-terminal watch loop, delete that too; it was never required.
+
+**2. `script-src` no longer carries `'unsafe-inline'` (4.3). This fails in the
+visitor's browser, not in your build.** Before v0.3.0, enabling PostHog
+appended `'unsafe-inline'` to `script-src` for the whole site, because the
+bootstrap snippet was inline. Any inline `<script>` of your own was being
+permitted by that side effect and will now be blocked. CSP violations do not
+fail the build.
+
+*What to do:* grep your templates for `<script>` without a `src`. For each,
+either add its SHA-256 to the new `params.csp.scriptSrcHashes`, move the code
+into `assets/js/extended.js` (bundled into `main.js`, needs no allowance), or
+set `params.csp.scriptSrc = "'unsafe-inline'"` explicitly — the point of the
+change is that widening becomes a decision rather than a default. Verify with
+a production build and a browser console showing zero violations, not by
+reading the config. `style-src` keeps its `'unsafe-inline'` deliberately;
+Alpine's `x-show` writes inline styles.
+
+**3. JSON-LD output changes shape (2.2).**
+
+*What to do:* if you override `head/schema.html`, delete the override and move
+your additions into `head/schema-extra.html`, setting `params.schema.type` for
+the site-wide entity — an override silently costs you `WebPage`,
+`BlogPosting`, the site entity, and both `BreadcrumbList` blocks. If you do
+not override it, revalidate at Google's Rich Results Test. Practical risk is
+low, since per v0.2.4's item 1.2 the old output never parsed at all, but
+verify rather than assume.
+
+**4. The Tailwind config becomes a preset (3.1).** Any site whose
+`tailwind.config.js` does `require('./themes/ryder/tailwind.config.js')` gets
+that file's dev globs, which match nothing from your project root.
+
+*What to do:* switch to the preset form. This one fails loudly and immediately
+at build time, so it is the least dangerous of the four.
+
+```js
+module.exports = {
+  presets: [require('./themes/ryder/tailwind.preset.js')],
+  content: [
+    './themes/ryder/layouts/**/*.html',
+    './layouts/**/*.html',
+    './content/**/*.md',
+    './hugo_stats.json',
+  ],
+};
+```
+
+Sites also inherit **3.2**: `themes/ryder/assets/css/style.css` no longer
+exists. It was a committed 125 KB build artifact that no template read. If
+anything in your site resolves it by hand, remove that.
+
+### Not a change, but worth knowing
+
+`[outputs]` is **not** inherited from a theme (3.4). If you have been carrying
+`home = ["HTML", "RSS", "LLMSTxt"]` in your own config and were told it was a
+redundant duplicate of the theme's, keep it — it is what produces `llms.txt`.
+The `LLMSTxt` *output format* definition does come from the theme, which is why
+that one line is all you need.
+
 ## v0.2.5
 
 - **2.7** — Make the page shell configurable and hookable. `<body>`'s classes

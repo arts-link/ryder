@@ -13,12 +13,13 @@ tags = [
 homeFeature = true
 homeFeatureIcon = "fa-solid fa-bowl-food"
 og_image = "granola_fini_lemon_chia_seed.webp" # demonstrates the og_image front-matter escape hatch (see README > Dynamic OG Image)
-[menu]
- [menu.main]
-  weight = 150
-  parent = 'docs'
 featured_image = "granola_fini_lemon_chia_seed.webp"
 
+# TOML: every top-level key must appear BEFORE the first [table] header, or it
+# is silently absorbed into that table. These recipe keys used to sit after
+# [menu.main], which made them menu.main.recipe etc. — so `recipe = true` never
+# reached .Params.recipe, the shortcodes rendered "No ingredients listed.", and
+# the Recipe JSON-LD block was never emitted. Keep [menu] last.
 recipe = true
 recipeCuisine = "Breakfast"
 prepTime = "PT10M"
@@ -57,6 +58,11 @@ recipeIngredients = [
 [[recipeInstructions]]
   name = "cool"
   text = "Let cool completely in the pan, then break apart into clumps."
+
+[menu]
+ [menu.main]
+  weight = 150
+  parent = 'docs'
 +++
 
 ## Overview

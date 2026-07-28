@@ -21,7 +21,17 @@
       fontSrc   = "https://cdn.example.com"
       frameSrc  = "https://your-embed-host.example.com"
       embeds    = ["youtube", "vimeo", "soundcloud", "spotify", "umap"]
+      scriptSrcHashes = ["sha256-BASE64…"]
       extraDirectives = "worker-src 'none';"
+
+  scriptSrcHashes exists because this policy ships as a <meta http-equiv>
+  tag (see the bottom of this file), and a meta-delivered CSP cannot carry a
+  nonce — nonces have to be generated per response, which a static site has
+  no opportunity to do.  Without hashes, a site with a single inline <script>
+  of its own had exactly one option: scriptSrc = "'unsafe-inline'", disabling
+  script CSP for the whole site to permit one snippet.  List the SHA-256 of
+  each inline script instead.  Get the value from the browser console: a CSP
+  violation report names the hash the script would need.
 
   frame-src is assembled from three sources, folded together and deduped:
     1. Hosts the theme's own embed shortcodes (soundcloud, openstreetmap)
@@ -41,6 +51,22 @@
 {{- if not $cspParams.disabled -}}
 
 {{- /* ── script-src ─────────────────────────────────────────────────────── */ -}}
+{{- /* Unlike style-src below, script-src does NOT carry 'unsafe-inline' in
+       production, and adding it is always a deliberate act by the site.
+       Every script the theme itself emits — main.js, themeBoot.js, cspLint.js,
+       the PostHog bootstrap — is a real asset served from 'self' with a
+       Subresource Integrity hash, so 'self' alone covers all of them.
+
+       In development it is still added: Hugo's LiveReload injects an inline
+       script, and `hugo server` is not a threat model.
+
+       A site with an inline script of its own has two options, in order of
+       preference:
+         1. params.csp.scriptSrcHashes — list the script's SHA-256. Handled
+            below, and the same mechanism Plausible advanced mode uses.
+         2. params.csp.scriptSrc = "'unsafe-inline'" — turns script CSP off
+            site-wide. Still available, but it is now something a site says
+            out loud rather than something analytics turns on for it. */ -}}
 {{- $scriptSrc := slice "'self'" -}}
 {{- if not hugo.IsProduction -}}
   {{- $scriptSrc = $scriptSrc | append "'unsafe-inline'" "http://localhost:*" "http://127.0.0.1:*" -}}
@@ -50,8 +76,11 @@
 {{- $plausibleDomain := site.Params.plausible_domain -}}
 {{- if $plausibleDomain -}}
   {{- $scriptSrc = $scriptSrc | append "https://plausible.io" -}}
-  {{- /* SHA-256 hashes for Plausible advanced-mode inline scripts */ -}}
-  {{- if site.Params.plausible_advanced -}}
+  {{- /* SHA-256 hashes for Plausible advanced-mode inline scripts.
+         Production only — see the note on scriptSrcHashes below: a hash in
+         script-src makes 'unsafe-inline' inert, which would break the
+         development allowance (and LiveReload with it). */ -}}
+  {{- if and site.Params.plausible_advanced hugo.IsProduction -}}
     {{- $scriptSrc = $scriptSrc | append "'sha256-/6SBPqW+GW+//4nlXX6Y1nR9dWlh0gsQJ6KK71djH6A='" -}}
     {{- $scriptSrc = $scriptSrc | append "'sha256-RqYEbQ5LE8+gxvgfBOWbOoYTcxVwtSabsMrOzsDyWuQ='" -}}
   {{- end -}}
@@ -69,8 +98,11 @@
   {{- if not $rHost.Err -}}{{- $posthogHost = $rHost.Value | default "" -}}{{- end -}}
 {{- end -}}
 {{- if and $posthogProvider $posthogHost -}}
-  {{- /* PostHog's bootstrap snippet is inline, so allow inline scripts when active. */ -}}
-  {{- $scriptSrc = $scriptSrc | append "'unsafe-inline'" -}}
+  {{- /* The bootstrap itself is served from 'self' with an integrity hash
+         (see posthog.html), so no inline allowance is needed — this used to
+         append 'unsafe-inline' here and that was the single largest hole in
+         the default policy. Only PostHog's own asset host is required, which
+         is where the bootstrap loads array.js from. */ -}}
   {{- $scriptSrc = $scriptSrc | append (replace $posthogHost ".i.posthog.com" "-assets.i.posthog.com") -}}
 {{- end -}}
 
@@ -79,9 +111,39 @@
   {{- $scriptSrc = $scriptSrc | append "https://www.googletagmanager.com" -}}
 {{- end -}}
 
+{{- /* Site-declared hashes for its own inline scripts. Same mechanism as the
+       Plausible advanced-mode hashes above, generalized: a meta-delivered CSP
+       cannot use nonces, so hashes are the only way to permit one inline
+       script without permitting all of them. Quotes are added if the site
+       omitted them, since 'sha256-…' must be single-quoted in a CSP and
+       writing it unquoted in TOML is the obvious mistake. */ -}}
+{{- /* PRODUCTION ONLY, and this is load-bearing rather than an optimization.
+       Per CSP Level 2+, as soon as script-src contains any hash or nonce
+       source, the browser IGNORES 'unsafe-inline' in that directive. The
+       development branch above adds 'unsafe-inline' so LiveReload and any
+       inline script work while you iterate; emitting hashes there would
+       silently neutralize it and break the dev server for exactly the sites
+       that configured this param.
+
+       It also spares a real trap: a hash covers exact bytes, and `hugo
+       --minify` changes those bytes. A hash computed from a production build
+       does not match the same script served unminified by `hugo server`, so
+       a site that got this right for production would look broken in dev.
+       Compute hashes from a production build; they only apply there. */ -}}
+{{- if hugo.IsProduction -}}
+  {{- range $cspParams.scriptSrcHashes | default slice -}}
+    {{- $hash := . | strings.TrimPrefix "'" | strings.TrimSuffix "'" -}}
+    {{- if not (or (hasPrefix $hash "sha256-") (hasPrefix $hash "sha384-") (hasPrefix $hash "sha512-")) -}}
+      {{- warnf "params.csp.scriptSrcHashes: %q does not look like a CSP hash — expected sha256-, sha384-, or sha512- followed by base64. Emitting it anyway; the browser will reject it if it is wrong." $hash -}}
+    {{- end -}}
+    {{- $scriptSrc = $scriptSrc | append (printf "'%s'" $hash) -}}
+  {{- end -}}
+{{- end -}}
+
 {{- with $cspParams.scriptSrc -}}
   {{- $scriptSrc = $scriptSrc | append . -}}
 {{- end -}}
+{{- $scriptSrc = $scriptSrc | uniq -}}
 
 {{- /* ── style-src ─────────────────────────────────────────────────────── */ -}}
 {{- /* 'unsafe-inline' is required by Alpine.js (x-show adds display:none

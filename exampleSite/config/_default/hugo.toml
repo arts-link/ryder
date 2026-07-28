@@ -71,6 +71,14 @@ themesDir= "../../"
     # connectSrc = "https://api.example.com"      # extra connect hosts
     # frameSrc = "https://your-embed-host.example.com" # any additional embed hosts, verbatim
     embeds = ["youtube", "vimeo", "soundcloud", "umap"] # known embed-host presets; folded into frame-src alongside auto-detected shortcode hosts
+    # SHA-256 of each inline <script> your site emits. A meta-delivered CSP
+    # cannot carry a nonce, so hashes are the only way to permit one inline
+    # script without permitting all of them via scriptSrc = "'unsafe-inline'".
+    # The entry below is a placeholder with no matching script — it is here so
+    # the shape is visible, and so tests/e2e/csp.spec.js can assert that a
+    # configured hash actually reaches the policy. Replace it with your own;
+    # the browser console names the hash a blocked script needs.
+    scriptSrcHashes = ["sha256-Ryd3rExampleHashAAAAAAAAAAAAAAAAAAAAAAAAAAA="]
     # extraDirectives = "worker-src 'none';"      # append any additional directives
 
   [params.shareButtons]
@@ -87,6 +95,14 @@ themesDir= "../../"
   [params.author]
     email = 'you@example.com'
     name = 'Ben Strawbridge'
+
+  # The site-wide JSON-LD entity emitted on the home page. Defaults to
+  # "Organization"; set it to MusicGroup, Person, LocalBusiness, or any other
+  # schema.org type to change the entity without overriding head/schema.html.
+  # To ADD types rather than change this one, shadow
+  # layouts/partials/head/schema-extra.html.
+  [params.schema]
+    type = 'Organization'
 
   # ico/svg/appleTouchIcon default to the files the theme already ships
   # (favicon.ico, images/favicon.svg, images/apple-touch-icon.png) — only
@@ -107,10 +123,31 @@ themesDir= "../../"
     size = "32x32"
     href = "/images/favicon.svg"
 
+  # Font family, v0.2.5 item #3. Set to the theme's own defaults so exampleSite
+  # looks unchanged while still exercising the params — `family` drives the
+  # --ryder-font-family custom property that assets/css/main.css reads, and
+  # `googleFontsFamily` is the family= query value head/fonts.html requests.
+  # Change both together to re-point the site at a different face.
+  [params.fonts]
+    family            = "Titillium Web"
+    googleFontsFamily = "Titillium+Web:wght@400;600;700"
+
   [params.twClasses]
     headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
     headerBackgroundFrameInner = "h-[240px] sm:h-[400px] bg-cover bg-center sm:bg-[center_30%]"
     headerBackgroundImage = "images/hyder_theme_header.webp"
+    # Body classes, v0.2.5 item 2.7. Stated explicitly here rather than left to
+    # the default, so the seam is visible in the reference implementation.
+    # `body` and `bodyDark` are separate on purpose: bodyDark is only read when
+    # darkMode != "off", so customizing the body font cannot silently disable
+    # dark mode. Overriding `body` alone keeps dark mode intact.
+    body     = "bg-neutral-100 text-neutral-900 font-titillium"
+    bodyDark = "dark:bg-neutral-900 dark:text-neutral-100"
+    # Nav skin, v0.2.5 item 2.5. Page-overridable via a `navClass` param in
+    # front matter, so one page can restyle the nav without forking header.html
+    # into a whole new headerType variant. menu.html defaults this to
+    # "main-menu-nav" when unset.
+    nav = "main-menu-nav"
 
 [[params.alphaAlert]]
   weight = 1
@@ -135,28 +172,23 @@ themesDir= "../../"
   minCount = 3
 
 [menus]
+# Negative coverage for hideIfEmptyData, and the reason it is invisible: this
+# entry is gated on data/nonexistent.json, which does not exist, so it must
+# never render. If the gate ever breaks it appears under Docs, and
+# tests/e2e/menuConditional.spec.js fails. An assertion that a gated entry
+# SHOWS when its data exists cannot catch a gate that never hides anything.
+[[menus.main]]
+    name = 'Never Rendered'
+    pageRef = '/docs/showcase'
+    weight = 9999
+    parent = 'docs'
+    [menus.main.params]
+      hideIfEmptyData = 'nonexistent'
 [[menus.main]]
     name = 'Tags'
     pageRef = '/tags'
     parent = 'docs'
     weight = 9990
-# Conditional menu entries: hideIfEmptyData names a data/*.json file (shaped
-# {"items": [...]}) that must be non-empty for the entry to render — see
-# README > Menus and exampleSite/content/docs/list-layouts. "Press" shows
-# because data/press.json has items; "Merch" stays hidden because
-# data/merch.json does not exist (an empty items array behaves the same way).
-[[menus.main]]
-    name = 'Press'
-    pageRef = '/press'
-    weight = 45
-    [menus.main.params]
-      hideIfEmptyData = 'press'
-[[menus.main]]
-    name = 'Merch'
-    url = '/merch/'
-    weight = 46
-    [menus.main.params]
-      hideIfEmptyData = 'merch'
 [[menus.footer]]
     name = 'File a Bug or Feature Request'
     url = 'https://github.com/arts-link/ryder/issues/new/choose'
@@ -166,6 +198,10 @@ themesDir= "../../"
     pageRef = '/contact'
     weight = 10
 
+# REQUIRED, not redundant. The theme defines the LLMSTxt *output format* and
+# that definition IS inherited — but Hugo does not merge a theme's [outputs]
+# into a site's, so without this block the home page renders HTML and RSS only
+# and no llms.txt is written. See README > llms.txt.
 [outputs]
   home = ["HTML", "RSS", "LLMSTxt"]
 

@@ -1,0 +1,22 @@
+{{- /*
+  Reference implementation of the head/schema-extra.html hook.
+
+  This shadows the theme's empty no-op. The theme's head/schema.html still
+  runs, so WebPage, BlogPosting, the site entity, and both BreadcrumbList
+  blocks are all still emitted — that is the entire point of the hook, versus
+  overriding head/schema.html and silently losing them.
+
+  Built as a dict and jsonified, never as hand-written JSON text.
+*/ -}}
+{{- if .IsHome -}}
+  {{- $extra := dict
+        "@context" "https://schema.org"
+        "@type" "SoftwareSourceCode"
+        "name" site.Title
+        "url" site.BaseURL
+        "codeRepository" "https://github.com/arts-link/ryder"
+        "programmingLanguage" "Go HTML Template"
+        "license" "https://opensource.org/licenses/MIT"
+  -}}
+  <script type="application/ld+json">{{ $extra | jsonify (dict "indent" "  ") | safeJS }}</script>
+{{- end -}}
