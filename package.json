@@ -1,9 +1,12 @@
 {
   "name": "ryder",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A barebones Hugo theme built with TailwindCSS and Alpine.js",
   "author": "Ben Strawbridge",
   "license": "MIT",
+  "engines": {
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+  },
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",

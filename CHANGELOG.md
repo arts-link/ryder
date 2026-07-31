@@ -2,6 +2,16 @@
 
 All notable changes to the Ryder Hugo theme are documented in this file.
 
+## v0.3.1
+
+- **Dependencies** — Update `jsdom` from 29.1.1 to 30.0.1 and the example
+  site's `postcss` from 8.5.23 to 8.5.25.
+- **CI** — Update `actions/deploy-pages` from v4 to v5,
+  `actions/setup-node` from v6 to v7, and `actions/configure-pages` from v4 to
+  v6.
+- **Development** — Move the test workflow to Node.js 24 and declare the
+  supported Node.js range required by `jsdom` 30.
+
 ## v0.3.0
 
 The breaking release. Four breaking changes, listed under **Breaking** below

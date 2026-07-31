@@ -1,6 +1,11 @@
 {
   "items": [
     {
+      "title": "v0.3.1",
+      "summary": "Development dependency and GitHub Actions updates, with tests moved to Node.js 24.",
+      "link": "https://github.com/arts-link/ryder/releases/tag/v0.3.1"
+    },
+    {
       "title": "v0.3.0",
       "summary": "Schema rebuilt from dicts, Tailwind preset, CSP script hashes. Four breaking changes.",
       "link": "https://github.com/arts-link/ryder/releases/tag/v0.3.0"
