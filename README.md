@@ -10,6 +10,19 @@ Named after a late Rhodesian Ridgeback/Mastiff companion.
 
 > An open source project by **[Arts-Link](https://www.arts-link.com)**, maintained by **[Ben Strawbridge](https://www.benstrawbridge.com)**.
 
+> **Current release: [Ryder v0.3.0](https://github.com/arts-link/ryder/releases/tag/v0.3.0)** — released July 27, 2026. This is a breaking upgrade from v0.2.5; existing sites should follow the [v0.3.0 migration guide](docs/migration/v0.3.0.md) and review the [changelog](CHANGELOG.md) before upgrading.
+
+---
+
+## What's New in v0.3.0
+
+- **Safe, extensible structured data** — JSON-LD is built from Hugo dictionaries and serialized with `jsonify`; use `params.schema.type` and `head/schema-extra.html` to extend it without replacing Ryder's built-in schema.
+- **One CSS build workflow** — Ryder now ships a reusable `tailwind.preset.js`; `hugo server` and `hugo --minify` compile Tailwind through PostCSS, so the old `build-tw`, `watch-tw`, and `deploy-tw` scripts are gone.
+- **Stricter Content Security Policy** — the PostHog bootstrap is a fingerprinted external asset, `script-src` no longer gains `'unsafe-inline'`, and sites can allow individual inline scripts with `params.csp.scriptSrcHashes`.
+- **Consumer-owned build configuration** — sites must keep their own `[build]` settings for Hugo stats and cachebusters, and their own `[outputs]` entry to generate `/llms.txt`; neither section is inherited from the theme.
+
+New installations can continue with [Quick Start](#quick-start). Sites upgrading from v0.2.5 should use the [migration guide](docs/migration/v0.3.0.md) for the four breaking changes.
+
 ---
 
 ## Quick Start
@@ -60,7 +73,7 @@ The copied config is a starter configuration from the theme demo. Before buildin
 - **Featured grid** — promote any page to the homepage featured grid via front matter
 - **Shortcodes** — alerts, maps, recipe schema, media embeds, CTAs, photo gallery, and more
 - **Image galleries** — page-bundle gallery layout or shortcode-driven gallery with lightbox
-- **Schema markup** — structured data for recipes (Schema.org/Recipe JSON-LD)
+- **Structured data** — WebPage, configurable site entity, BlogPosting, breadcrumbs, Recipe JSON-LD, and a `head/schema-extra.html` extension hook
 - **Privacy-friendly analytics** — pluggable Plausible or PostHog integration
 - **CSP-safe Alpine** — runs without `'unsafe-eval'`, with `ryderTrack`/`ryderForm` components, a custom-JS hook, and a dev-only linter (see [CSP-Safe Alpine](#csp-safe-alpine))
 - **SEO & GEO built-in** — full JSON-LD structured data, Open Graph, Twitter Cards, and dynamic OG image generation on every page (see [SEO & GEO](#seo--geo))
