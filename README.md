@@ -10,7 +10,7 @@ Named after a late Rhodesian Ridgeback/Mastiff companion.
 
 > An open source project by **[Arts-Link](https://www.arts-link.com)**, maintained by **[Ben Strawbridge](https://www.benstrawbridge.com)**.
 
-> **Current release: [Ryder v0.3.0](https://github.com/arts-link/ryder/releases/tag/v0.3.0)** — released July 27, 2026. This is a breaking upgrade from v0.2.5; existing sites should follow the [v0.3.0 migration guide](docs/migration/v0.3.0.md) and review the [changelog](CHANGELOG.md) before upgrading.
+> **Current release: [Ryder v0.3.1](https://github.com/arts-link/ryder/releases/tag/v0.3.1)** — released July 31, 2026. This patch updates development dependencies and GitHub Actions. Sites upgrading from v0.2.5 should still follow the [v0.3.0 migration guide](docs/migration/v0.3.0.md) and review the [changelog](CHANGELOG.md) before upgrading.
 
 ---
 
@@ -62,6 +62,8 @@ The copied config is a starter configuration from the theme demo. Before buildin
 
 - Hugo 0.146+ (**extended** recommended; **required** if any Open Graph / processed image — including `og_image_default` — is a WebP)
 - Node.js / npm
+
+Theme development and tests require Node.js `^22.22.2`, `^24.15.0`, or 26+.
 
 ---
 
