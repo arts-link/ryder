@@ -1,0 +1,28 @@
+{{- /*
+Wraps a Markdown table in a themed, horizontally-scrollable shell.
+
+Why a wrapper at all: @tailwindcss/typography owns table styling inside
+`prose`, and those rules cannot be overridden from within — the wrapper has to
+opt out with `not-prose` and re-state the cell styling, which
+`.ryder-table` in assets/css/main.css does. Markdown generates the <table>, so
+there is nowhere to hang a class; the rules are element selectors under the
+shell.
+
+The inner scroll container is what keeps a wide table from pushing the page
+sideways on a phone: the table scrolls, the body does not.
+
+@example
+  {{< table-wrapper >}}
+  | Param | Default | Notes |
+  |---|---|---|
+  | `showDate` | `true` | Show post dates |
+  {{< /table-wrapper >}}
+
+Called with `{{< >}}`, not `{{% %}}` — the inner Markdown is rendered here so
+the shell markup stays outside Goldmark's paragraph handling.
+*/ -}}
+<div class="ryder-table not-prose my-4">
+  <div class="ryder-table-scroll">
+    {{- .Inner | .Page.RenderString (dict "display" "block") -}}
+  </div>
+</div>

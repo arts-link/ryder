@@ -29,8 +29,17 @@
          {{ $weight := div (sub (math.Log $tagCount) (math.Log $min)) (sub (math.Log $max) (math.Log $min)) }}
          {{ $currentFontSize := (add $smallestFontSize (mul (sub $largestFontSize $smallestFontSize) $weight)) }}
          {{ $baseURL := $.Site.BaseURL }}
+         {{/* The lime gradient stays: it reads as brand-alt, and it is the
+              chip's fill. Only the border/hover/ring move to accent — those
+              were yellow, a sixth accent family with no other use in the
+              theme. `params.colors.legacyAccents = true` restores the yellow;
+              see docs/migration/v0.4.0.md. */}}
          {{ $gradientClass := "bg-gradient-to-r from-lime-400 to-lime-500 text-zinc-900 "}}
-         {{ $classes := "py-2 px-4 rounded-full border-2 border-yellow-500 hover:bg-yellow-500 hover:border-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 no-underline inline-block text-center break-words "}}
+         {{ $chipAccent := "border-ryder-accent-500 hover:bg-ryder-accent-500 hover:border-ryder-accent-600 focus:ring-ryder-accent-300" }}
+         {{ if (site.Params.colors | default dict).legacyAccents }}
+           {{ $chipAccent = "border-yellow-500 hover:bg-yellow-500 hover:border-yellow-600 focus:ring-yellow-300" }}
+         {{ end }}
+         {{ $classes := printf "py-2 px-4 rounded-full border-2 %s focus:outline-none focus:ring-2 no-underline inline-block text-center break-words " $chipAccent }}
          {{ $headerBackgroundFrameOuter := "" }}
          {{ with $.Site.Param "twClasses.headerBackgroundFrameOuter" }}
            {{ $gradientClass = . }}

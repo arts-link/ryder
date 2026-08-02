@@ -1,0 +1,33 @@
+{{- /*
+Rendered by layouts/_default/list.html when a section's paginator yields no
+pages — a section that exists and is reachable, but has nothing in it yet.
+
+This is the third of the theme's three answers to "nothing here", and it is
+worth knowing which one you want:
+
+  1. The *menu entry* disappears — `hideIfEmptyData` under the entry's own
+     [menus.<id>.params]. For a section whose absence is the honest signal
+     (a "Press" link with no press behind it is a dead link). See menu.html.
+  2. The *page* stays and explains itself in prose — `dataSource` plus
+     `emptyDataMessage` on a `list-plain` page. See list-plain.html.
+  3. This: a regular list page whose collection is empty. Nothing was
+     configured, so the theme has to say something sensible on its own.
+
+Strings come from i18n so translations get them for free; there is no new
+param, because a site that wants different words should be setting them for
+every language rather than one.
+
+@context {page} The list page.
+*/ -}}
+<div class="m-2 rounded-xl border border-dashed border-slate-300 p-9 text-center dark:border-slate-600">
+  <i class="fa-solid fa-signs-post mb-3 text-4xl text-ryder-accent-500" aria-hidden="true"></i>
+  <p class="m-0 text-lg font-semibold">{{ i18n "emptyListTitle" }}</p>
+  <p class="mt-1 mb-0 text-slate-500 dark:text-slate-400">{{ i18n "emptyListBody" }}</p>
+  <div class="flex justify-center">
+    {{- partial "cta-button.html" (dict
+      "button_label" (i18n "toHomepage")
+      "button_href" site.Home.RelPermalink
+      "button_icon" "fa-solid fa-house mr-2"
+      "page" .) -}}
+  </div>
+</div>

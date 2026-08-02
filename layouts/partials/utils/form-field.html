@@ -1,0 +1,97 @@
+{{- /*
+A labelled form control, styled to match the theme.
+
+The form *engine* already exists: `ryderForm` in assets/js/main.js handles
+submit, exposes the request state, and swallows the `_gotcha` honeypot — see
+exampleSite/content/docs/forms.md. Only the visual layer was missing, which is
+all this partial is. It emits no Alpine state of its own beyond binding the
+submit button to the engine's `isLoading`.
+
+@context {string}  name         Field name. Required. Also the default id.
+@context {string}  type         Input type: any text-like HTML input type, plus
+                                "textarea" and "submit". Defaults to "text".
+@context {string}  label        Visible label. Defaults to `name`. Ignored for
+                                type "submit", where `label` is the button text.
+@context {string}  placeholder  Optional placeholder.
+@context {bool}    required     Optional; marks the control required and appends
+                                an asterisk to the label.
+@context {string}  id           Optional; defaults to an anchorized `name`.
+@context {string}  value        Optional initial value.
+@context {string}  help         Optional hint rendered under the control.
+@context {string}  autocomplete Optional autocomplete token.
+@context {int}     rows         Textarea rows. Defaults to 4.
+@context {string}  class        Optional extra classes on the control.
+@context {string}  successMessage  type "submit" only; renders an x-show="isSuccess" line.
+@context {string}  errorMessage    type "submit" only; renders an x-show="isError" line.
+                                   Pass "" to bind x-text to the engine's own errorMessage.
+
+@example
+  <form x-data="ryderForm" @submit.prevent="submit"
+        data-form-action="https://api.example.com/subscribe">
+    {{ partial "utils/form-field.html" (dict "name" "email" "type" "email"
+        "label" "Email" "placeholder" "you@example.com" "required" true) }}
+    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"
+           class="hidden" aria-hidden="true">
+    {{ partial "utils/form-field.html" (dict "type" "submit" "label" "Subscribe"
+        "successMessage" "Thanks!") }}
+  </form>
+
+The status bindings are plain property lookups on purpose. Ryder ships the CSP
+build of Alpine, whose evaluator cannot run a comparison like
+`status === 'success'`; `ryderForm` exposes isIdle/isLoading/isSuccess/isError
+as booleans precisely so x-show has something it can read.
+*/ -}}
+{{- $type := .type | default "text" -}}
+{{- $name := .name | default "" -}}
+{{- $id := .id | default (anchorize (or $name $type)) -}}
+{{- $label := .label | default $name -}}
+{{- $required := .required | default false -}}
+
+{{- if eq $type "submit" -}}
+  {{- $submitClass := .class | default (partial "utils/cta-class.html" .) -}}
+  <div class="flex flex-col items-start gap-2">
+    <button type="submit" class="{{ $submitClass }}" :disabled="isLoading">
+      {{- $label | default "Submit" -}}
+    </button>
+    {{- with .successMessage }}
+    <p id="{{ $id }}-success" class="m-0 text-sm text-slate-700 dark:text-slate-200" x-show="isSuccess" x-cloak>{{ . }}</p>
+    {{- end }}
+    {{- /* An empty errorMessage is meaningful — it defers to whatever the
+           engine put in its own errorMessage property — so this tests for the
+           key's presence, not its truthiness. */ -}}
+    {{- if isset . "errorMessage" }}
+    {{- if .errorMessage }}
+    <p id="{{ $id }}-error" class="m-0 text-sm text-ryder-accent-600 dark:text-ryder-accent-400" x-show="isError" x-cloak>{{ .errorMessage }}</p>
+    {{- else }}
+    <p id="{{ $id }}-error" class="m-0 text-sm text-ryder-accent-600 dark:text-ryder-accent-400" x-show="isError" x-cloak x-text="errorMessage"></p>
+    {{- end }}
+    {{- end }}
+  </div>
+{{- else -}}
+  {{- $controlClass := printf "border border-slate-200/80 rounded-lg px-3 py-2.5 text-base bg-neutral-100 focus:outline-2 focus:outline-offset-2 focus:outline-ryder-brand dark:border-slate-700/70 dark:bg-neutral-800 %s" (.class | default "") -}}
+  <div class="flex flex-col gap-1.5">
+    <label for="{{ $id }}" class="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+      {{- $label -}}
+      {{- if $required }}<span aria-hidden="true"> *</span>{{ end -}}
+    </label>
+    {{- if eq $type "textarea" }}
+    <textarea id="{{ $id }}" name="{{ $name }}" rows="{{ .rows | default 4 }}"
+      class="{{ $controlClass }}"
+      {{- with .placeholder }} placeholder="{{ . }}"{{ end }}
+      {{- with .autocomplete }} autocomplete="{{ . }}"{{ end }}
+      {{- if $required }} required{{ end }}
+      {{- with .help }} aria-describedby="{{ $id }}-help"{{ end }}>{{ with .value }}{{ . }}{{ end }}</textarea>
+    {{- else }}
+    <input id="{{ $id }}" name="{{ $name }}" type="{{ $type }}"
+      class="{{ $controlClass }}"
+      {{- with .value }} value="{{ . }}"{{ end }}
+      {{- with .placeholder }} placeholder="{{ . }}"{{ end }}
+      {{- with .autocomplete }} autocomplete="{{ . }}"{{ end }}
+      {{- if $required }} required{{ end }}
+      {{- with .help }} aria-describedby="{{ $id }}-help"{{ end }}>
+    {{- end }}
+    {{- with .help }}
+    <p id="{{ $id }}-help" class="m-0 text-sm text-slate-500 dark:text-slate-400">{{ . }}</p>
+    {{- end }}
+  </div>
+{{- end -}}
