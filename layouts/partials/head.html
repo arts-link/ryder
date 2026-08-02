@@ -30,6 +30,9 @@
   {{- partial "head/csp.html" . }}
 {{- partialCached "head/fonts.html" . }}
 {{- partial "head/css.html" . }}
+{{- /* After head/css.html on purpose: both write :root, and the later block
+       wins. See head/colors.html. */ -}}
+{{- partialCached "head/colors.html" . }}
 {{- partial "head/js.html" . }}
 {{- if hugo.IsProduction -}}
   {{ partial "analytics.html" . }}

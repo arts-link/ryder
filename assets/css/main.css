@@ -2,6 +2,67 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Semantic color tokens — the default values behind the `ryder-*` Tailwind
+   classes declared in tailwind.preset.js. Values are space-separated RGB
+   channels, not hex, so `<alpha-value>` can interpolate and opacity modifiers
+   keep working (see the preset's comment).
+
+   The three families carry a full ramp because the theme's own classes span
+   most of it; the step matching each family's canonical shade points back at
+   the headline token, so setting only `--ryder-accent` retints both
+   `ryder-accent` and `ryder-accent-500`.
+
+   A site overrides these from [params.colors] via head/colors.html, which
+   emits its <style> AFTER this stylesheet so the override wins. Do not move
+   that partial ahead of head/css.html. */
+:root {
+  /* brand — sky */
+  --ryder-brand:         7 89 133;    /* sky-800  #075985 */
+  --ryder-brand-50:      240 249 255; /* #f0f9ff */
+  --ryder-brand-100:     224 242 254; /* #e0f2fe */
+  --ryder-brand-200:     186 230 253; /* #bae6fd */
+  --ryder-brand-300:     125 211 252; /* #7dd3fc */
+  --ryder-brand-400:     56 189 248;  /* #38bdf8 */
+  --ryder-brand-500:     14 165 233;  /* #0ea5e9 */
+  --ryder-brand-600:     2 132 199;   /* #0284c7 */
+  --ryder-brand-700:     3 105 161;   /* #0369a1 */
+  --ryder-brand-800:     var(--ryder-brand);
+  --ryder-brand-900:     12 74 110;   /* #0c4a6e */
+  --ryder-brand-950:     8 47 73;     /* #082f49 */
+
+  /* brand-alt — lime */
+  --ryder-brand-alt:     63 98 18;    /* lime-800 #3f6212 */
+  --ryder-brand-alt-50:  247 254 231; /* #f7fee7 */
+  --ryder-brand-alt-100: 236 252 203; /* #ecfccb */
+  --ryder-brand-alt-200: 217 249 157; /* #d9f99d */
+  --ryder-brand-alt-300: 190 242 100; /* #bef264 */
+  --ryder-brand-alt-400: 163 230 53;  /* #a3e635 */
+  --ryder-brand-alt-500: 132 204 22;  /* #84cc16 */
+  --ryder-brand-alt-600: 101 163 13;  /* #65a30d */
+  --ryder-brand-alt-700: 77 124 15;   /* #4d7c0f */
+  --ryder-brand-alt-800: var(--ryder-brand-alt);
+  --ryder-brand-alt-900: 54 83 20;    /* #365314 */
+  --ryder-brand-alt-950: 26 46 5;     /* #1a2e05 */
+
+  /* accent — rose */
+  --ryder-accent:        244 63 94;   /* rose-500 #f43f5e */
+  --ryder-accent-50:     255 241 242; /* #fff1f2 */
+  --ryder-accent-100:    255 228 230; /* #ffe4e6 */
+  --ryder-accent-200:    254 205 211; /* #fecdd3 */
+  --ryder-accent-300:    253 164 175; /* #fda4af */
+  --ryder-accent-400:    251 113 133; /* #fb7185 */
+  --ryder-accent-500:    var(--ryder-accent);
+  --ryder-accent-600:    225 29 72;   /* #e11d48 */
+  --ryder-accent-700:    190 18 60;   /* #be123c */
+  --ryder-accent-800:    159 18 57;   /* #9f1239 */
+  --ryder-accent-900:    136 19 55;   /* #881337 */
+  --ryder-accent-950:    76 5 25;     /* #4c0519 */
+
+  /* chrome — the header/footer gradient endpoints */
+  --ryder-chrome-from:   15 23 42;    /* slate-900 #0f172a */
+  --ryder-chrome-to:     51 65 85;    /* slate-700 #334155 */
+}
+
 .pagination {
   @apply flex list-none;
 }
@@ -80,7 +141,7 @@
   }
 
   .article-header-meta-icon {
-    @apply shrink-0 text-sm text-sky-700 dark:text-sky-300;
+    @apply shrink-0 text-sm text-ryder-brand-700 dark:text-ryder-brand-300;
   }
 
   .article-header-meta-label {
@@ -102,7 +163,7 @@
   }
 
   .aside-taxonomy-icon {
-    @apply text-rose-500;
+    @apply text-ryder-accent-500;
   }
 
   .aside-taxonomy-links {
@@ -110,9 +171,9 @@
   }
 
   .aside-taxonomy-link {
-    @apply inline-flex items-center rounded-md border border-rose-300/80 bg-rose-50 px-2.5 py-1 text-sm text-slate-700;
-    @apply transition-colors duration-150 ease-in-out hover:border-rose-400 hover:bg-rose-100 hover:text-slate-900;
-    @apply dark:border-rose-900/70 dark:bg-rose-950/40 dark:text-slate-200 dark:hover:border-rose-700 dark:hover:bg-rose-900/50;
+    @apply inline-flex items-center rounded-md border border-ryder-accent-300/80 bg-ryder-accent-50 px-2.5 py-1 text-sm text-slate-700;
+    @apply transition-colors duration-150 ease-in-out hover:border-ryder-accent-400 hover:bg-ryder-accent-100 hover:text-slate-900;
+    @apply dark:border-ryder-accent-900/70 dark:bg-ryder-accent-950/40 dark:text-slate-200 dark:hover:border-ryder-accent-700 dark:hover:bg-ryder-accent-900/50;
   }
 
   .aside-toc-group {
@@ -126,7 +187,7 @@
   }
 
   .aside-toc-icon {
-    @apply text-rose-500;
+    @apply text-ryder-accent-500;
   }
 
   .aside-toc-links {
@@ -148,7 +209,7 @@
 
   .aside-toc-links a {
     @apply block rounded-md px-2 py-1.5 text-sm text-slate-700 no-underline transition-colors duration-150 ease-in-out;
-    @apply hover:bg-rose-50 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-rose-950/40 dark:hover:text-white;
+    @apply hover:bg-ryder-accent-50 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-ryder-accent-950/40 dark:hover:text-white;
   }
 
     /* Share buttons (sharingbuttons.io) --- */
@@ -292,6 +353,42 @@
     @apply shadow-md;
   }
 
+  /* Table wrapper (layouts/shortcodes/table-wrapper.html). The shell carries
+     `not-prose`, because @tailwindcss/typography's table rules cannot be
+     restyled from inside prose — so the cell styling has to be re-stated here
+     rather than layered on top. Markdown emits the table, so these are
+     element selectors: there is nowhere to hang a class. */
+  /* `not-prose` is applied in the shortcode markup, not here: the typography
+     plugin's rule is not something @apply can resolve. */
+  .ryder-table {
+    @apply overflow-hidden rounded-xl border border-slate-200/80;
+    @apply dark:border-slate-700/70;
+  }
+
+  .ryder-table-scroll {
+    @apply w-full overflow-x-auto;
+  }
+
+  .ryder-table table {
+    @apply m-0 w-full border-collapse text-left text-sm;
+  }
+
+  .ryder-table th {
+    @apply bg-neutral-100 px-3.5 py-2.5 font-bold dark:bg-neutral-800;
+  }
+
+  .ryder-table td {
+    @apply px-3.5 py-2.5 align-top;
+  }
+
+  .ryder-table tr {
+    @apply border-b border-slate-200/50 dark:border-slate-700/50;
+  }
+
+  .ryder-table tbody tr:last-child {
+    @apply border-b-0;
+  }
+
   .hpContent h2 {
     @apply flex p-3 items-center mt-0 mb-2 text-3xl uppercase text-neutral-100 bg-gradient-to-r from-slate-700 to-slate-500;
   }
@@ -310,19 +407,19 @@
     }
     .main-menu-ul > li {
       @apply border-b md:border-b-0;
-      @apply border-sky-800 dark:border-sky-600;
-      @apply text-sky-800 dark:text-sky-100;
+      @apply border-ryder-brand-800 dark:border-ryder-brand-600;
+      @apply text-ryder-brand-800 dark:text-ryder-brand-100;
     }
     .main-menu-ul li .active,
     .main-menu-ul li .ancestor  {
-      @apply text-lime-800 dark:text-lime-300;
+      @apply text-ryder-brand-alt-800 dark:text-ryder-brand-alt-300;
     }
     .main-menu-child-ul {
       @apply p-2;
       @apply bg-neutral-100 dark:bg-neutral-700 rounded-lg ring-1 ring-black/5;
     }
     .main-menu-child-ul > li {
-      @apply border-b border-sky-200 dark:border-sky-700;
+      @apply border-b border-ryder-brand-200 dark:border-ryder-brand-700;
       @apply last:border-b-0;
     }
     .child-nav-container {
@@ -350,17 +447,17 @@
     .main-menu-child-ul > li > a {
       @apply transition-colors duration-150 ease-in-out rounded px-2 py-1;
       @apply inline-block w-full;
-      @apply dark:text-sky-100;
+      @apply dark:text-ryder-brand-100;
     }
     .main-menu-ul > li > a:hover,
     .child-nav-label:hover,
     .main-menu-child-ul > li > a:hover {
-      @apply text-sky-600 dark:text-sky-100 bg-neutral-300 dark:bg-neutral-600;
+      @apply text-ryder-brand-600 dark:text-ryder-brand-100 bg-neutral-300 dark:bg-neutral-600;
     }
     .main-menu-ul > li > a:focus-visible,
     .child-nav-label:focus-visible,
     .main-menu-child-ul > li > a:focus-visible {
-      @apply outline-2 outline-offset-2 outline-sky-500;
+      @apply outline-2 outline-offset-2 outline-ryder-brand-500;
     }
   }
   .footer-menu-nav {
@@ -525,8 +622,8 @@ img {
     background-clip: unset;
     -webkit-background-clip: unset;
     color: inherit;
-    @apply border-sky-400 bg-sky-50 text-inherit;
-    @apply dark:border-sky-600 dark:bg-neutral-800;
+    @apply border-ryder-brand-400 bg-ryder-brand-50 text-inherit;
+    @apply dark:border-ryder-brand-600 dark:bg-neutral-800;
     padding: 0.75em 1em;
     margin-top: 1em;
     margin-bottom: 1em;

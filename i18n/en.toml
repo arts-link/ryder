@@ -9,3 +9,9 @@ other = "Home"
 
 [toc]
 other = "Table of Contents"
+
+[emptyListTitle]
+other = "Nothing here yet"
+
+[emptyListBody]
+other = "This section has no posts to show right now. Check back soon."

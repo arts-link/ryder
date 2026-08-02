@@ -9,3 +9,9 @@ other = "Home"
 
 [toc]
 other = "Inhaltsverzeichnis"
+
+[emptyListTitle]
+other = "Hier ist noch nichts"
+
+[emptyListBody]
+other = "In diesem Bereich gibt es derzeit keine Beiträge. Schauen Sie bald wieder vorbei."

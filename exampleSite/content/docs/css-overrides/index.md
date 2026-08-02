@@ -22,7 +22,84 @@ Control the header image, footer background, card colors, and border accents —
 
 The Ryder theme reads TailwindCSS class strings from your config and applies them directly to layout elements. This lets you customize colors, backgrounds, gradients, and spacing using any Tailwind utility class — including [arbitrary values](https://tailwindcss.com/docs/adding-custom-styles#using-arbitrary-values) for things like custom image URLs or pixel measurements.
 
-All overrides live under `[params.twClasses]` in your `hugo.toml`.
+Class-string overrides live under `[params.twClasses]` in your `hugo.toml`. They
+are the escape hatch — total control, one element at a time. For color, reach
+for the token layer below first: it repoints the whole theme at once, including
+the parts no `twClasses` param exposes.
+
+---
+
+## Color tokens
+
+*New in v0.4.0.*
+
+The theme's colors resolve through CSS custom properties, so you can repoint the
+palette without overriding a single class string. Four semantic roles:
+
+| Token | Default | Tailwind | Used by |
+|---|---|---|---|
+| `brand` | `7 89 133` | sky-800 | logo word 1, nav links, article meta icons, blockquote rule |
+| `brand-alt` | `63 98 18` | lime-800 | logo word 2, active nav entry |
+| `accent` | `244 63 94` | rose-500 | aside icons, tag chips, tag cloud, CTA ring |
+| `chrome-from` / `chrome-to` | `15 23 42` / `51 65 85` | slate-900 / slate-700 | header and footer gradient |
+
+```toml
+[params.colors]
+  brand     = "12 74 110"    # sky-900
+  brand-alt = "54 83 20"     # lime-900
+  accent    = "217 70 239"   # fuchsia-500
+```
+
+### Values are RGB channels, not hex
+
+`"244 63 94"`, **not** `"#f43f5e"`. This is not a style preference. A hex value
+inside `var()` works for `text-`, `bg-`, and `border-`, then silently produces
+nothing for every opacity modifier — `border-ryder-accent-300/80`,
+`dark:bg-ryder-accent-950/40` — with no build error to tell you. Space-separated
+channels interpolate with Tailwind's `<alpha-value>` and keep the modifiers
+working. A value in any other format is ignored with a build warning.
+
+To convert: `#f43f5e` → `f4`=244, `3f`=63, `5e`=94 → `"244 63 94"`.
+
+### The ramp
+
+Each of `brand`, `brand-alt`, and `accent` carries a full 50–950 ramp, because
+the theme uses more than one shade of each — the nav alone spans sky-100 through
+sky-800. Setting the bare token moves that family's canonical shade (`brand` is
+sky-800, `accent` is rose-500) along with everything keyed to it. Set individual
+steps when you need the rest to follow:
+
+```toml
+[params.colors]
+  accent     = "217 70 239"   # moves ryder-accent and ryder-accent-500
+  accent-50  = "253 244 255"  # the tag chip's light fill
+  accent-300 = "240 171 252"  # the tag chip's border
+  accent-950 = "74 4 78"      # the tag chip's dark-mode fill
+```
+
+Anything you leave unset keeps the theme default, so a partial override is safe.
+
+### Using the tokens in your own classes
+
+The preset exposes them as ordinary Tailwind colors, usable anywhere a class
+string is accepted — including `twClasses`:
+
+```
+text-ryder-brand        bg-ryder-accent-50    border-ryder-brand-alt-800
+from-ryder-chrome-from  to-ryder-chrome-to    ring-ryder-accent-300/80
+```
+
+Note that `twClasses` values you set are literal strings under your control; the
+theme's own shipped defaults deliberately stay on plain Tailwind classes so a
+config copied from the docs never depends on the token layer.
+
+### What is not tokenized
+
+Surfaces (`neutral-*`), structural greys (`slate-500` labels, `slate-200/80`
+borders), the alert color triples, and the Amazon/Spotify button fills. The
+alert colors carry *meaning* — yellow is "warning", not decoration — and the
+platform fills belong to those platforms. Repointing either would be a bug, not
+a theme.
 
 ---
 
@@ -73,7 +150,7 @@ The header uses two layers: an outer frame (background color, border, text color
 
 ```toml
 [params.twClasses]
-  headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-fuchsia-600 text-neutral-100"
+  headerBackgroundFrameOuter = "bg-gradient-to-r from-slate-900 to-slate-700 border-b border-rose-500 text-neutral-100"
   headerBackgroundFrameInner = "bg-[url('/images/your-header-photo.jpg')] h-[350px] bg-cover bg-[center_40%]"
 ```
 
@@ -85,7 +162,7 @@ Controls the header's outermost wrapper — background color or gradient, border
 |---|---|
 | `bg-slate-900` | Solid dark background |
 | `bg-gradient-to-r from-slate-900 to-slate-700` | Horizontal gradient |
-| `border-b border-fuchsia-600` | Bottom border in accent color |
+| `border-b border-rose-500` | Bottom border in accent color |
 | `text-neutral-100` | Light text for dark backgrounds |
 
 ### `headerBackgroundFrameInner`
@@ -153,10 +230,17 @@ Override on a per-section or per-category basis by adding a `cascade` block to t
 Border colors are set as part of `headerBackgroundFrameOuter`. The `border-b` and `border-{color}` classes together control the bottom border line:
 
 ```toml
-headerBackgroundFrameOuter = "... border-b border-fuchsia-600 ..."
+headerBackgroundFrameOuter = "... border-b border-rose-500 ..."
 ```
 
-Change `border-fuchsia-600` to any Tailwind color class. For no border, omit both `border-b` and the color class.
+Change `border-rose-500` to any Tailwind color class. For no border, omit both `border-b` and the color class.
+
+This was `border-fuchsia-600` through v0.3.x. v0.4.0 moved the header edge onto
+the theme accent — see [Color tokens](#color-tokens) below, and the [v0.4.0
+migration guide](https://github.com/arts-link/ryder/blob/main/docs/migration/v0.4.0.md).
+Because this is your config rather than theme internals, `legacyAccents` does
+not reach it: if you already set `headerBackgroundFrameOuter` yourself, nothing
+changed for you.
 
 ---
 
