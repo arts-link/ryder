@@ -16,7 +16,7 @@ per page.
       brand-alt  = "54 83 20"
       accent     = "217 70 239"   # also moves ryder-accent-500
       accent-600 = "192 38 211"
-      chrome-from = "24 24 27"
+      chrome-from = "24 24 27"    # declared only — see below
       chrome-to   = "63 63 70"
 
 VALUES ARE RGB CHANNELS, not hex: "244 63 94", not "#f43f5e". A hex inside
@@ -28,6 +28,16 @@ rather than half-applied. See README > Color tokens.
 Recognised keys: brand, brand-alt, accent (each optionally suffixed with a ramp
 step 50-950), chrome-from, chrome-to. `legacyAccents` also lives under
 [params.colors] but is a behavior flag, not a color, and is skipped here.
+
+Two things the docs have to keep saying, because neither is guessable:
+
+  - chrome-from/chrome-to are accepted and emitted, but NOTHING in the theme
+    reads them. The header and footer gradients come from twClasses, which
+    stays literal by design. They exist for use in a site's own class strings.
+  - The bare token aliases one ramp step, and which one differs per family
+    (brand -> 800, brand-alt -> 800, accent -> 500). Setting `accent` alone
+    leaves accent-600 and accent-300 — both used by the default CTA — at their
+    defaults.
 */ -}}
 {{- $colors := site.Params.colors | default dict -}}
 {{- $steps := slice "50" "100" "200" "300" "400" "500" "600" "700" "800" "900" "950" -}}

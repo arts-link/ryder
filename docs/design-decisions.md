@@ -25,8 +25,8 @@ Decision: name the roles, keep the values.
 |---|---|---|
 | `--ryder-brand` | sky-800 `#075985` | logo word 1, nav link, meta icons, blockquote rule |
 | `--ryder-brand-alt` | lime-800 `#3f6212` | logo word 2, active nav |
-| `--ryder-accent` | rose-500 `#f43f5e` | aside icons, tag chips, tag cloud, header edge, CTA ring |
-| `--ryder-chrome-from` / `-to` | slate-900 → slate-700 | header and footer gradient |
+| `--ryder-accent` | rose-500 `#f43f5e` | aside icons, tag chips, tag cloud, CTA ring |
+| `--ryder-chrome-from` / `-to` | slate-900 → slate-700 | *declared only* — the header/footer gradients come from `twClasses`, so nothing in the theme reads these |
 
 Rose won the accent slot because it was already doing the job in the one place
 accent colour is structural — the article aside, where `.aside-*-icon` and the
@@ -73,7 +73,12 @@ fork. Colour follows the pattern rather than inventing a second one.
 ## 3. Tokens are for partial internals only
 
 The default `twClasses` strings shipped in `hugo.toml` stay literal
-(`border-b border-fuchsia-600`, not `border-b border-ryder-accent`).
+(`border-b border-rose-500`, not `border-b border-ryder-accent-500`).
+
+The header edge is the one accent role that is therefore **not** token-driven:
+rose-500 is the accent's value, but repointing `--ryder-accent` does not move it.
+That is deliberate, and it is why the §1 table above lists the edge under the
+header rather than the accent.
 
 Those strings are quoted in the docs and have been copied into users' own
 configs. If a shipped default starts referencing `ryder-*` while a user's

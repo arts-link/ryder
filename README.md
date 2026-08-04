@@ -1052,10 +1052,15 @@ element at a time:
 [params.colors]
   brand     = "12 74 110"   # logo word 1, nav links, article meta icons, blockquote
   brand-alt = "54 83 20"    # logo word 2, active nav entry
-  accent    = "217 70 239"  # aside icons, tag chips, tag cloud, CTA ring
-  chrome-from = "24 24 27"  # header/footer gradient start
-  chrome-to   = "63 63 70"  # header/footer gradient end
+  accent    = "217 70 239"  # aside icons, tag chips, tag cloud
 ```
+
+`chrome-from` and `chrome-to` are also declared, but **nothing in the theme
+reads them** — the header and footer gradients come through
+`twClasses.headerBackgroundFrameOuter`, which deliberately stays a literal
+Tailwind string. They exist so you can use `from-ryder-chrome-from` /
+`to-ryder-chrome-to` in class strings of your own; setting them will not retint
+your header.
 
 **Values are RGB channel triplets, not hex** — `"244 63 94"`, not `"#f43f5e"`.
 This is load-bearing, not stylistic: a hex value inside `var()` works for
@@ -1067,11 +1072,16 @@ any other format is ignored, with a build warning naming the key.
 
 Each of `brand`, `brand-alt`, and `accent` also carries a full `50`–`950` ramp,
 because the theme uses more than one shade of each — the nav alone spans
-`brand-100` through `brand-800`. Setting the bare token moves that family's
-canonical shade (`brand` is sky-800, `accent` is rose-500) plus everything keyed
-to it; set individual steps such as `accent-300` when you want the rest to
-follow. Anything left unset keeps the theme default, so a partial override is
-safe.
+`brand-100` through `brand-800`. Setting the bare token moves **only that
+family's canonical step**, and which step that is differs per family: `brand`
+aliases `brand-800`, `brand-alt` aliases `brand-alt-800`, `accent` aliases
+`accent-500`.
+
+This catches people out. The default CTA button uses `accent-600` / `accent-500`
+/ `accent-300` for border, hover, and focus ring — so setting `accent` alone
+moves the hover and leaves the border and ring rose. Set every step a component
+uses; `rg 'ryder-accent-' layouts assets/css` lists them. Anything left unset
+keeps the theme default, so a partial override is safe, just incomplete.
 
 The preset exposes all of them as ordinary Tailwind colors, usable anywhere you
 write a class — including in `twClasses`:
