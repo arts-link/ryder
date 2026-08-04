@@ -41,7 +41,7 @@ palette without overriding a single class string. Four semantic roles:
 | `brand` | `7 89 133` | sky-800 | logo word 1, nav links, article meta icons, blockquote rule |
 | `brand-alt` | `63 98 18` | lime-800 | logo word 2, active nav entry |
 | `accent` | `244 63 94` | rose-500 | aside icons, tag chips, tag cloud, CTA ring |
-| `chrome-from` / `chrome-to` | `15 23 42` / `51 65 85` | slate-900 / slate-700 | header and footer gradient |
+| `chrome-from` / `chrome-to` | `15 23 42` / `51 65 85` | slate-900 / slate-700 | *declared only* — see below |
 
 ```toml
 [params.colors]
@@ -49,6 +49,15 @@ palette without overriding a single class string. Four semantic roles:
   brand-alt = "54 83 20"     # lime-900
   accent    = "217 70 239"   # fuchsia-500
 ```
+
+### `chrome-from` and `chrome-to` are declared, not wired
+
+They exist in the preset so you can use `from-ryder-chrome-from` /
+`to-ryder-chrome-to` in your own class strings. **Nothing in the theme reads
+them.** The header and footer gradients arrive through
+`twClasses.headerBackgroundFrameOuter`, which stays a literal Tailwind string
+for the reason given below — so setting `chrome-from` does not retint your
+header. Change the gradient in `headerBackgroundFrameOuter` itself.
 
 ### Values are RGB channels, not hex
 
@@ -64,20 +73,31 @@ To convert: `#f43f5e` → `f4`=244, `3f`=63, `5e`=94 → `"244 63 94"`.
 ### The ramp
 
 Each of `brand`, `brand-alt`, and `accent` carries a full 50–950 ramp, because
-the theme uses more than one shade of each — the nav alone spans sky-100 through
-sky-800. Setting the bare token moves that family's canonical shade (`brand` is
-sky-800, `accent` is rose-500) along with everything keyed to it. Set individual
-steps when you need the rest to follow:
+the theme uses more than one shade of each — the nav alone spans `brand-100`
+through `brand-800`.
+
+Setting the bare token moves **only that family's canonical step**, and the
+canonical step differs per family: `brand` aliases `brand-800`, `brand-alt`
+aliases `brand-alt-800`, `accent` aliases `accent-500`. Every other step keeps
+its default.
+
+That matters more than it sounds. The default CTA button uses
+`accent-600` / `accent-500` / `accent-300` for its border, hover, and focus
+ring — so setting `accent` alone moves the hover and leaves the border and ring
+rose. **Set every step a component actually uses:**
 
 ```toml
 [params.colors]
-  accent     = "217 70 239"   # moves ryder-accent and ryder-accent-500
-  accent-50  = "253 244 255"  # the tag chip's light fill
-  accent-300 = "240 171 252"  # the tag chip's border
-  accent-950 = "74 4 78"      # the tag chip's dark-mode fill
+  accent     = "217 70 239"   # ryder-accent + ryder-accent-500 (chip hover, aside icons)
+  accent-50  = "253 244 255"  # tag chip light fill
+  accent-300 = "240 171 252"  # tag chip border, CTA focus ring
+  accent-600 = "192 38 211"   # CTA border, tag chip hover border
+  accent-950 = "74 4 78"      # tag chip dark-mode fill
 ```
 
-Anything you leave unset keeps the theme default, so a partial override is safe.
+Anything you leave unset keeps the theme default, so a partial override is safe
+— it just won't be a complete one. Grep the theme for the family you're
+repointing (`rg 'ryder-accent-' layouts assets/css`) to see every step in use.
 
 ### Using the tokens in your own classes
 
