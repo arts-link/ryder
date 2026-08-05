@@ -16,9 +16,10 @@ Named after a late Rhodesian Ridgeback/Mastiff companion.
 
 ## What's New in v0.4.0
 
-- **Semantic color tokens** — the palette resolves through `--ryder-*` custom properties, so `[params.colors]` can repoint brand, brand-alt, accent, and the header/footer chrome without overriding a single class string. See [Color Tokens](#color-tokens).
+- **Semantic color tokens** — the palette resolves through `--ryder-*` custom properties, so `[params.colors]` can repoint brand, brand-alt, and accent without overriding a single class string. See [Color Tokens](#color-tokens).
 - **One accent instead of six** — the tag cloud's yellow border and the CTA button's fuchsia ring both move to the theme accent (rose). `params.colors.legacyAccents = true` restores them.
 - **Three new components** — a themed [form field](#form-fields) partial for the existing `ryderForm` engine, a `table-wrapper` shortcode that keeps wide tables from pushing the page sideways, and an empty state on list pages that no longer renders a blank page with a dead pager.
+- **A design-system page** — [arts-link.github.io/ryder/docs/design-system/](https://arts-link.github.io/ryder/docs/design-system/) documents the tokens, type scale, spacing, and every component, rendered by the live theme rather than screenshots of it.
 
 Sites upgrading from v0.3.x should read the [v0.4.0 migration guide](docs/migration/v0.4.0.md) — the accent change is the only thing that alters an existing site, and it is one config flag to undo. The reasoning behind the system is recorded in [docs/design-decisions.md](docs/design-decisions.md).
 

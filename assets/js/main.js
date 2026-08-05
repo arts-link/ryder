@@ -34,6 +34,7 @@ import {
   faSignsPost,
   faSnowflake,
   faSun,
+  faSwatchbook,
   faTags,
   faTimes,
   faTriangleExclamation,
@@ -64,7 +65,7 @@ library.add(
   faCircleInfo, faCode, faComputer, faDumpsterFire, faDungeon, faGlobe,
   faHouse, faImage, faMapLocationDot, faMoon, faMusic, faOm,
   faPenToSquare,
-  faShieldDog, faSignsPost, faSnowflake, faSun, faTags, faTimes,
+  faShieldDog, faSignsPost, faSnowflake, faSun, faSwatchbook, faTags, faTimes,
   faRss, faSeedling, faTriangleExclamation, faUtensils, faWandMagicSparkles, faXmark,
   // regular
   farEnvelope, farHandPointLeft, farHandPointRight,

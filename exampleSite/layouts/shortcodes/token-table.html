@@ -1,0 +1,46 @@
+{{- /*
+Renders one group from data/design-system.json as a table, wrapped in the
+theme's own table-wrapper styling so the page eats its own cooking.
+
+Column order comes from `_columns` in the data file rather than from the rows
+themselves: Go templates range over a map in sorted key order, so deriving
+headers from a row would alphabetise them and put `name` in the middle.
+
+`index`, not dot access: the data file name contains a hyphen, which a Go
+template would parse as subtraction in `site.Data.design-system`.
+
+@param group  Top-level key in data/design-system.json — color, untokenized,
+              type, radius, shadow, or container. Required.
+
+@example {{< token-table group="radius" >}}
+*/ -}}
+{{- $group := .Get "group" -}}
+{{- $rows := index site.Data "design-system" $group -}}
+{{- if not $rows -}}
+  {{- errorf "token-table: no group %q in data/design-system.json" $group -}}
+{{- else -}}
+{{- $cols := index site.Data "design-system" "_columns" $group -}}
+{{- if not $cols -}}
+  {{- errorf "token-table: group %q has no _columns entry in data/design-system.json" $group -}}
+{{- end -}}
+<div class="ryder-table not-prose my-4">
+  <div class="ryder-table-scroll">
+    <table>
+      <thead>
+        <tr>{{ range $cols }}<th>{{ humanize . }}</th>{{ end }}</tr>
+      </thead>
+      <tbody>
+        {{- range $rows }}
+        {{- $row := . }}
+        <tr>
+          {{- range $cols }}
+          {{- $cell := index $row . }}
+          <td>{{ if $cell }}{{ $cell }}{{ else }}<span class="opacity-50">—</span>{{ end }}</td>
+          {{- end }}
+        </tr>
+        {{- end }}
+      </tbody>
+    </table>
+  </div>
+</div>
+{{- end -}}
