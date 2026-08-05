@@ -20,6 +20,7 @@ Named after a late Rhodesian Ridgeback/Mastiff companion.
 - **One accent instead of six** — the tag cloud's yellow border and the CTA button's fuchsia ring both move to the theme accent (rose). `params.colors.legacyAccents = true` restores them.
 - **Three new components** — a themed [form field](#form-fields) partial for the existing `ryderForm` engine, a `table-wrapper` shortcode that keeps wide tables from pushing the page sideways, and an empty state on list pages that no longer renders a blank page with a dead pager.
 - **A design-system page** — [arts-link.github.io/ryder/docs/design-system/](https://arts-link.github.io/ryder/docs/design-system/) documents the tokens, type scale, spacing, and every component, rendered by the live theme rather than screenshots of it.
+- **Footer taxonomy headings are links** — each group heading now points at its taxonomy root page (`/tags/`, `/categories/`), with a dotted underline so it reads as one. See [Footer Taxonomy Lists](#footer-taxonomy-lists).
 
 Sites upgrading from v0.3.x should read the [v0.4.0 migration guide](docs/migration/v0.4.0.md) — the accent change is the only thing that alters an existing site, and it is one config flag to undo. The reasoning behind the system is recorded in [docs/design-decisions.md](docs/design-decisions.md).
 
@@ -323,6 +324,15 @@ which reuse the same partial.
   title = "Categories"
   minCount = 1
 ```
+
+By default the footer shows **no** taxonomy lists — `params.footer.taxonomies`
+is opt-in. `minCount` hides terms with fewer than that many pages, so a footer
+cloud doesn't fill with one-off tags.
+
+Each group's heading links to that taxonomy's own root page (`/tags/`,
+`/categories/`) and carries a dotted underline to say so. The href resolves
+through `site.GetPage`, so if a site disables the taxonomy kind or renames its
+path the heading falls back to plain text rather than linking to a 404.
 
 ### Social Links
 

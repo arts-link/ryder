@@ -574,6 +574,27 @@
     @apply flex flex-wrap gap-x-3 gap-y-2 text-sm text-neutral-100/85;
   }
 
+  /* The taxonomy group heading, when it links to that taxonomy's root page.
+     The footer's own idiom is underline-on-hover (see .footer-taxonomy-link
+     below), but a heading gives no other signal that it is clickable — so this
+     one carries a dotted underline at rest and firms up on hover, rather than
+     appearing to be a link only once the pointer is already on it. */
+  .footer-section-title-link {
+    @apply inline-flex items-center gap-1.5 rounded-sm;
+    @apply underline decoration-dotted decoration-neutral-100/30 underline-offset-4;
+    @apply transition-colors duration-150 ease-in-out;
+    @apply hover:text-white hover:decoration-neutral-100/80;
+    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60;
+  }
+
+  .footer-section-title-icon {
+    @apply text-[8px] opacity-60;
+  }
+
+  .footer-section-title-link:hover .footer-section-title-icon {
+    @apply opacity-100;
+  }
+
   .footer-taxonomy-link {
     @apply inline-flex items-start gap-1 break-words rounded-sm;
     @apply hover:text-white hover:underline;

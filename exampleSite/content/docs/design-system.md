@@ -312,6 +312,17 @@ their keep, since a hex would break those modifiers.
 meta rail. Its background falls back to `headerBackgroundFrameOuter` unless
 `twClasses.footerBackground` is set.
 
+Taxonomy group headings link to that taxonomy's root page. Scroll down and look
+at "Top Tags" — it is the one place in the footer where a link is not already
+shaped like one, so it carries a dotted underline at rest
+(`decoration-dotted decoration-neutral-100/30 underline-offset-4`) that firms to
+solid on hover, rather than relying on the footer's usual underline-on-hover
+idiom that only appears once you are already pointing at it.
+
+The href resolves through `site.GetPage` rather than string concatenation, so a
+site that disables the taxonomy kind or renames its path gets a plain heading
+instead of a link to a 404.
+
 ---
 
 # Patterns

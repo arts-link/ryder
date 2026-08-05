@@ -9,8 +9,24 @@
     {{- $minCount := .minCount | default 1 }}
     {{- $baseURL := $.Site.BaseURL }}
 
+    {{- /* The heading links to the taxonomy's own root page (/tags/, /categories/)
+           when Hugo generated one. site.GetPage rather than a hand-built URL:
+           a site can disable the taxonomy kind in [outputs] or rename its path,
+           and a string-concatenated href would then point at a 404. When there
+           is no such page the heading stays plain text — a heading that looks
+           like a link and isn't is worse than one that doesn't. */ -}}
+    {{- $taxonomyPage := site.GetPage $taxonomy }}
     <div class="footer-taxonomy-group">
-      <h4 class="footer-section-title">{{ $title }}</h4>
+      <h4 class="footer-section-title">
+        {{- with $taxonomyPage -}}
+        <a href="{{ .RelPermalink }}" class="footer-section-title-link">
+          <span>{{ $title }}</span>
+          <i class="fa-solid fa-angles-right footer-section-title-icon" aria-hidden="true"></i>
+        </a>
+        {{- else -}}
+        {{ $title }}
+        {{- end -}}
+      </h4>
       <div class="footer-taxonomy-links">
       {{- range $name, $taxonomyPage := (index $.Site.Taxonomies $taxonomy) }}
         {{- $tagCount := len $taxonomyPage.Pages }}
