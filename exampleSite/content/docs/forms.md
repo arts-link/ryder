@@ -76,6 +76,44 @@ Add `data-track-event` (and optionally `data-track-props`) to the `<form>` and i
 fires through the same provider path as [`ryderTrack`](../analytics/) once the
 POST succeeds — never on failure.
 
+## Styling the fields
+
+*New in v0.4.0.* Everything above is the **engine**. It has no opinion about
+what a field looks like, which is why the demo below hand-writes its classes.
+
+`utils/form-field.html` is the matching visual layer, so you no longer have to:
+
+```go-html-template
+<form x-data="ryderForm" @submit.prevent="submit"
+      data-form-action="https://api.example.com/subscribe">
+  {{ partial "utils/form-field.html" (dict
+      "name" "email" "type" "email" "label" "Email"
+      "placeholder" "you@example.com" "required" true) }}
+  {{ partial "utils/form-field.html" (dict
+      "name" "message" "type" "textarea" "label" "Message" "rows" 3) }}
+
+  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"
+         class="hidden" aria-hidden="true">
+
+  {{ partial "utils/form-field.html" (dict
+      "type" "submit" "label" "Subscribe" "successMessage" "Thanks!"
+      "errorMessage" "") }}
+</form>
+```
+
+It renders text-like inputs, `textarea`, and a `submit` variant that reuses the
+theme's default CTA class and binds `:disabled` to `isLoading`. Pass
+`successMessage` / `errorMessage` on the submit field to get the status lines
+too — an empty `errorMessage` defers to whatever the engine put in its own
+`errorMessage` property.
+
+The honeypot stays hand-written on purpose: it is one line, and a field partial
+that emitted an invisible input would be a partial that appears to render
+nothing.
+
+Full parameter list, and a live example, on the
+[Design System](/docs/design-system/#form-field) page.
+
 ## Content Security Policy
 
 `fetch` to another origin is blocked unless the action's host is in

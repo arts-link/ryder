@@ -1,0 +1,50 @@
+{{- /*
+A single colour swatch for /docs/design-system/, read from
+data/design-system.json so a value lives in exactly one place.
+
+The chip is painted with an inline `rgb(var(--ryder-*))` rather than a
+`bg-ryder-*` class on purpose, and for two reasons:
+
+  1. It stays live. Override the token from [params.colors] and the swatch
+     moves with the rest of the theme, because it reads the same custom
+     property everything else does.
+  2. A class assembled from data would exist only in hugo_stats.json, which is
+     gitignored — so a cold clone's first build would emit CSS without it. See
+     CLAUDE.md > Release Maintenance for the three classes already in that
+     trap; this does not add a fourth.
+
+Inline styles are permitted by the theme's CSP (style-src carries
+'unsafe-inline' — see head/csp.html).
+
+@param name  Key from data.design-system.color. Required.
+
+@example {{< swatch name="accent" >}}
+*/ -}}
+{{- /* `index`, not dot access: the file name contains a hyphen, which a Go
+       template would parse as subtraction in `site.Data.design-system`. */ -}}
+{{- $name := .Get "name" -}}
+{{- $row := "" -}}
+{{- range index site.Data "design-system" "color" -}}
+  {{- if eq .name $name }}{{ $row = . }}{{ end -}}
+{{- end -}}
+{{- with $row -}}
+<div class="not-prose my-3 flex items-center gap-4 rounded-xl border border-slate-200/80 p-3 dark:border-slate-700/70">
+  {{- /* safeCSS: Go's html/template treats an interpolated value inside a
+         style attribute as untrusted CSS and replaces it with ZgotmplZ, which
+         silently paints nothing. The value is a custom-property name from this
+         repo's own data file. Same treatment head/fonts.html gives
+         --ryder-font-family. */ -}}
+  <div class="ryder-swatch-chip h-14 w-14 shrink-0 rounded-lg border border-black/10 dark:border-white/15"
+       data-token="{{ .token }}"
+       style="{{ printf "background-color: rgb(var(%s));" .token | safeCSS }}"></div>
+  <div class="min-w-0">
+    <p class="m-0 text-base font-bold">{{ .name }}</p>
+    <p class="m-0 text-sm text-slate-500 dark:text-slate-400">
+      <code>{{ .token }}</code> · <code>{{ .channels }}</code> · {{ .hex }} · {{ .tailwind }}
+    </p>
+    <p class="m-0 mt-1 text-sm">{{ .usage }}</p>
+  </div>
+</div>
+{{- else -}}
+  {{- errorf "swatch: no colour named %q in data/design-system.json" $name -}}
+{{- end -}}
