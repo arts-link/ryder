@@ -2,7 +2,7 @@
 
 All notable changes to the Ryder Hugo theme are documented in this file.
 
-## Unreleased
+## v0.3.2
 
 - **Fix** — `picture.html` no longer aborts the build on remote images.
   It read `.Err` on the result of `resources.GetRemote`, a field removed in

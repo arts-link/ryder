@@ -1,6 +1,11 @@
 {
   "items": [
     {
+      "title": "v0.3.2",
+      "summary": "Remote-fetch build fixes: picture.html drops the removed Resource.Err, highlight-github degrades to a link when the GitHub API is unreachable.",
+      "link": "https://github.com/arts-link/ryder/releases/tag/v0.3.2"
+    },
+    {
       "title": "v0.3.1",
       "summary": "Development dependency and GitHub Actions updates, with tests moved to Node.js 24.",
       "link": "https://github.com/arts-link/ryder/releases/tag/v0.3.1"
