@@ -2,6 +2,25 @@
 
 All notable changes to the Ryder Hugo theme are documented in this file.
 
+## Unreleased
+
+- **Fix** — `picture.html` no longer aborts the build on remote images.
+  It read `.Err` on the result of `resources.GetRemote`, a field removed in
+  Hugo v0.141.0 — below the theme's own v0.146.0 floor, so the failure applied
+  to every supported Hugo version. The call now goes through `try`. Only
+  absolute-URL sources were affected, so bundle-resource-only sites never saw
+  it.
+- **Fix** — `highlight-github` degrades to a link instead of killing the
+  build when `api.github.com` is unreachable. Both fetch sites used
+  `with`/`else` around `resources.GetRemote`, which raises a hard template
+  error on a blocked host — so the `else` branch never ran and the build died
+  with a raw internal error. Both now use `try`, warn, and fall back to a link
+  to the file on GitHub. Set `params.highlightGithubStrict = true` to keep the
+  hard failure.
+- **Development** — Both templates raise their in-file minimum Hugo version
+  from 0.125.6 to 0.141.0, the floor for the `try` keyword. The theme already
+  required 0.146.0 in `hugo.toml`.
+
 ## v0.3.1
 
 - **Dependencies** — Update `jsdom` from 29.1.1 to 30.0.1 and the example

@@ -650,6 +650,27 @@ enableGitInfo = true
 | `font-awesome` | Inline Font Awesome icon |
 | `highlight-github` | GitHub-styled syntax highlight block |
 
+#### `highlight-github` and network access
+
+`highlight-github` reads the file through the GitHub API at build time. When
+`api.github.com` is unreachable — a sandboxed CI runner, or an environment that
+routes GitHub traffic through a proxy serving only git operations — the
+shortcode logs a warning and degrades to a plain link to the file on GitHub
+rather than failing the build. The link is rendered even when `showlink=false`,
+since it is the only remaining output.
+
+To treat an unreachable API as a hard build failure instead, set:
+
+```toml
+[params]
+  highlightGithubStrict = true
+```
+
+This is off by default deliberately. Gating the failure on
+`hugo.Environment` would not work: a plain `hugo` build already reports the
+`production` environment, so the strict path would fire in exactly the
+sandboxed CI builds this degradation exists to keep working.
+
 ### Recipe Schema
 
 Set `recipe = true` in front matter to enable Schema.org/Recipe JSON-LD structured data. Ingredients and steps live entirely in front matter:

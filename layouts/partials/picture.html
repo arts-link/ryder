@@ -99,7 +99,8 @@ Add this CSS to your site to remove small gaps between adjacent elements:
 {{- $partialName := "picture" }}
 
 {{- /* Verify minimum required version. */}}
-{{- $minHugoVersion := "0.125.6" }}
+{{- /* 0.141.0 is the floor for the `try` keyword used to fetch remote images. */}}
+{{- $minHugoVersion := "0.141.0" }}
 {{- if lt hugo.Version $minHugoVersion }}
   {{- errorf "The %q partial requires Hugo v%s or later." $partialName $minHugoVersion }}
 {{- end }}
@@ -330,15 +331,23 @@ Add this CSS to your site to remove small gaps between adjacent elements:
   {{- /* Get image resource. */}}
   {{- $r := "" }}
   {{- if $u.IsAbs }}
-    {{- with resources.GetRemote $u.String }}
+    {{- /*
+      `try` is required here: an unreachable host makes resources.GetRemote
+      raise a hard template error rather than return nothing, so a bare
+      `with`/`else` never reaches its `else` branch. Resource.Err was removed
+      in Hugo v0.141.0 and replaced by `try`.
+      @ref https://gohugo.io/functions/go-template/try/
+    */}}
+    {{- with try (resources.GetRemote $u.String) }}
       {{- with .Err }}
         {{- errorf "%s. See %s" . $.contentPath }}
-      {{- else }}
+      {{- else with .Value }}
         {{- /* Destination is a remote resource. */}}
         {{- $r = . }}
+      {{- else }}
+        {{- /* A 404 yields no error and no value. */}}
+        {{- errorf $msg }}
       {{- end }}
-    {{- else }}
-      {{- errorf $msg }}
     {{- end }}
   {{- else }}
     {{- with .page.Resources.Get (strings.TrimPrefix "./" $u.Path) }}

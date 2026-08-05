@@ -54,7 +54,8 @@ Renders highlighted code from a file in a GitHub repository.
 */}}
 
 {{- /* Verify minimum required version. */}}
-{{- $minHugoVersion := "0.125.6" }}
+{{- /* 0.141.0 is the floor for the `try` keyword used to call the GitHub API. */}}
+{{- $minHugoVersion := "0.141.0" }}
 {{- if lt hugo.Version $minHugoVersion }}
   {{- errorf "The %s shortcode requires Hugo v%s or later." .Name $minHugoVersion }}
 {{- end }}
@@ -74,27 +75,62 @@ Renders highlighted code from a file in a GitHub repository.
 
 {{- if and $owner $repo $path }}
 
+  {{- /*
+    Both calls below go through `try`. An unreachable or blocked api.github.com
+    makes resources.GetRemote raise a hard template error rather than return
+    nothing, so a bare `with`/`else` never reaches its `else` branch and the
+    build dies with a raw internal error. This matters in sandboxed CI, and
+    wherever GitHub traffic is routed through a proxy that serves only git
+    operations. When a call fails we warn and degrade to a link to the file on
+    GitHub; set `params.highlightGithubStrict` to fail the build instead.
+    @ref https://gohugo.io/functions/go-template/try/
+  */}}
+  {{- $ok := true }}
+  {{- $strict := site.Params.highlightGithubStrict | default false }}
+
   {{- /* Get branch. */}}
   {{- $apiEndPoint := urls.JoinPath $apiBase "repos" $owner $repo }}
-  {{- $data := "" }}
-  {{- with resources.GetRemote $apiEndPoint }}
-    {{- $data = . | transform.Unmarshal }}
-  {{- else }}
-    {{- errorf "Unable to get remote resource %q" $apiEndPoint }}
+  {{- $data := dict }}
+  {{- with try (resources.GetRemote $apiEndPoint) }}
+    {{- with .Err }}
+      {{- $ok = false }}
+      {{- warnf "The %q shortcode was unable to get %q: %s. See %s" $.Name $apiEndPoint . $.Position }}
+    {{- else with .Value }}
+      {{- $data = . | transform.Unmarshal }}
+    {{- else }}
+      {{- /* A 404 yields no error and no value. */}}
+      {{- $ok = false }}
+      {{- warnf "The %q shortcode was unable to get %q. See %s" $.Name $apiEndPoint $.Position }}
+    {{- end }}
   {{- end }}
-  {{- $branch := or (.Get "branch") $data.default_branch }}
+  {{- $branch := or (.Get "branch") $data.default_branch "HEAD" }}
 
   {{- /* Get content. */}}
-  {{- $apiEndPoint := urls.JoinPath $apiBase "repos" $owner $repo "contents" $path }}
-  {{- $query := querify "ref" $branch }}
-  {{- $apiEndPoint = printf "%s?%s" $apiEndPoint $query }}
-  {{- $data := "" }}
-  {{- with resources.GetRemote $apiEndPoint }}
-    {{- $data = . | transform.Unmarshal }}
-  {{- else }}
-    {{- errorf "Unable to get remote resource %q" $apiEndPoint }}
+  {{- $content := "" }}
+  {{- if $ok }}
+    {{- $apiEndPoint = urls.JoinPath $apiBase "repos" $owner $repo "contents" $path }}
+    {{- $query := querify "ref" $branch }}
+    {{- $apiEndPoint = printf "%s?%s" $apiEndPoint $query }}
+    {{- $data = dict }}
+    {{- with try (resources.GetRemote $apiEndPoint) }}
+      {{- with .Err }}
+        {{- $ok = false }}
+        {{- warnf "The %q shortcode was unable to get %q: %s. See %s" $.Name $apiEndPoint . $.Position }}
+      {{- else with .Value }}
+        {{- $data = . | transform.Unmarshal }}
+      {{- else }}
+        {{- $ok = false }}
+        {{- warnf "The %q shortcode was unable to get %q. See %s" $.Name $apiEndPoint $.Position }}
+      {{- end }}
+    {{- end }}
+    {{- with $data.content }}
+      {{- $content = . | base64Decode }}
+    {{- end }}
   {{- end }}
-  {{- $content := ($data.content | base64Decode) }}
+
+  {{- if and (not $ok) $strict }}
+    {{- errorf "The %q shortcode was unable to get %q. See %s" .Name $apiEndPoint .Position }}
+  {{- end }}
 
   {{- /* Get subset of content if lines parameter is set. */}}
   {{- $lineNoStart := 1 }}
@@ -103,9 +139,12 @@ Renders highlighted code from a file in a GitHub repository.
     {{- if findRE `^\d+-\d+` . }}
       {{- $lineNoStart = index (split . "-") 0 | int }}
       {{- $lineNoEnd = index (split . "-") 1 | int }}
-      {{- $contentLines := split $content "\n" }}
-      {{- $contentLines = $contentLines | after (sub $lineNoStart 1) | first (add 1 (sub $lineNoEnd $lineNoStart ))}}
-      {{- $content = add (delimit $contentLines "\n") "\n" }}
+      {{- /* Parsed even when degraded, so the fallback link keeps its anchor. */}}
+      {{- if $ok }}
+        {{- $contentLines := split $content "\n" }}
+        {{- $contentLines = $contentLines | after (sub $lineNoStart 1) | first (add 1 (sub $lineNoEnd $lineNoStart ))}}
+        {{- $content = add (delimit $contentLines "\n") "\n" }}
+      {{- end }}
     {{- else }}
       {{- errorf "The %q shortcode requires the lines parameter to have the format n-n. See %s" $.Name $.Position }}
     {{- end }}
@@ -141,8 +180,10 @@ Renders highlighted code from a file in a GitHub repository.
   {{- end }}
 
   {{- /* Determine language and highlight the code. */}}
-  {{- $lang := or (.Get "lang") (path.Ext $path | strings.TrimPrefix "." ) "text" }}
-  {{- highlight $content $lang $opts }}
+  {{- if $ok }}
+    {{- $lang := or (.Get "lang") (path.Ext $path | strings.TrimPrefix "." ) "text" }}
+    {{- highlight $content $lang $opts }}
+  {{- end }}
 
   {{- /* Render link to blob. */}}
   {{- $temp := .Get "showlink" }}
@@ -151,7 +192,8 @@ Renders highlighted code from a file in a GitHub repository.
   {{- else if in (slice "true" true 1) $temp }}
     {{- $showLink = true }}
   {{- end }}
-  {{- if $showLink }}
+  {{- /* When degraded the link is the only output, so render it regardless. */}}
+  {{- if or $showLink (not $ok) }}
     {{- $href := urls.JoinPath "https://" $tld $owner $repo "blob" $branch $path }}
     {{- if $lineNoEnd }}
       {{- $href = printf "%s#%s" $href (printf "L%d-L%d" $lineNoStart $lineNoEnd) }}
