@@ -45,11 +45,11 @@
         {{- $lw = split $lw "" -}}
         <h1 class="text-4xl nowrap">
           {{/*  <span class="text-[#17729C]">  */}}
-          <span class="text-sky-800">
+          <span class="text-ryder-brand-800">
             {{- range $k, $v := $fw }}
               {{- $v }}{{- if (eq $k 0) }}<span class="{{- $lettersClass }}" >{{- end }}{{- if (eq $k $fwLen) }}</span >{{- end }}
             {{- end -}}
-          </span ><span class="{{- $lettersClass }}">&nbsp;</span ><span class="text-lime-800">
+          </span ><span class="{{- $lettersClass }}">&nbsp;</span ><span class="text-ryder-brand-alt-800">
             {{- range $k, $v := $lw }}
               {{- $v }}{{- if (eq $k 0) }}<span class="{{- $lettersClass }}" >{{- end }}{{- if (eq $k 10) }}</span >{{- end }}
             {{- end -}}

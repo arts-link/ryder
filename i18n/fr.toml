@@ -9,3 +9,9 @@ other = "Accueil"
 
 [toc]
 other = "Table des matières"
+
+[emptyListTitle]
+other = "Rien ici pour l'instant"
+
+[emptyListBody]
+other = "Cette section ne contient aucun article pour le moment. Revenez bientôt."

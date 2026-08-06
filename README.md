@@ -10,7 +10,19 @@ Named after a late Rhodesian Ridgeback/Mastiff companion.
 
 > An open source project by **[Arts-Link](https://www.arts-link.com)**, maintained by **[Ben Strawbridge](https://www.benstrawbridge.com)**.
 
-> **Current release: [Ryder v0.3.1](https://github.com/arts-link/ryder/releases/tag/v0.3.1)** — released July 31, 2026. This patch updates development dependencies and GitHub Actions. Sites upgrading from v0.2.5 should still follow the [v0.3.0 migration guide](docs/migration/v0.3.0.md) and review the [changelog](CHANGELOG.md) before upgrading.
+> **Current release: [Ryder v0.4.0](https://github.com/arts-link/ryder/releases/tag/v0.4.0)** — released August 6, 2026. Adds a semantic colour token layer, consolidates six accent colours into one, and ships three new components plus a [design-system page](https://arts-link.github.io/ryder/docs/design-system/). One visual change for existing sites, behind a flag — see the [v0.4.0 migration guide](docs/migration/v0.4.0.md). Sites upgrading from v0.2.5 should still follow the [v0.3.0 migration guide](docs/migration/v0.3.0.md) first, and review the [changelog](CHANGELOG.md) before upgrading.
+
+---
+
+## What's New in v0.4.0
+
+- **Semantic color tokens** — the palette resolves through `--ryder-*` custom properties, so `[params.colors]` can repoint brand, brand-alt, and accent without overriding a single class string. See [Color Tokens](#color-tokens).
+- **One accent instead of six** — the tag cloud's yellow border and the CTA button's fuchsia ring both move to the theme accent (rose). `params.colors.legacyAccents = true` restores them.
+- **Three new components** — a themed [form field](#form-fields) partial for the existing `ryderForm` engine, a `table-wrapper` shortcode that keeps wide tables from pushing the page sideways, and an empty state on list pages that no longer renders a blank page with a dead pager.
+- **A design-system page** — [arts-link.github.io/ryder/docs/design-system/](https://arts-link.github.io/ryder/docs/design-system/) documents the tokens, type scale, spacing, and every component, rendered by the live theme rather than screenshots of it.
+- **Footer taxonomy headings are links** — each group heading now points at its taxonomy root page (`/tags/`, `/categories/`), with a dotted underline so it reads as one. See [Footer Taxonomy Lists](#footer-taxonomy-lists).
+
+Sites upgrading from v0.3.x should read the [v0.4.0 migration guide](docs/migration/v0.4.0.md) — the accent change is the only thing that alters an existing site, and it is one config flag to undo. The reasoning behind the system is recorded in [docs/design-decisions.md](docs/design-decisions.md).
 
 ---
 
@@ -312,6 +324,15 @@ which reuse the same partial.
   title = "Categories"
   minCount = 1
 ```
+
+By default the footer shows **no** taxonomy lists — `params.footer.taxonomies`
+is opt-in. `minCount` hides terms with fewer than that many pages, so a footer
+cloud doesn't fill with one-off tags.
+
+Each group's heading links to that taxonomy's own root page (`/tags/`,
+`/categories/`) and carries a dotted underline to say so. The href resolves
+through `site.GetPage`, so if a site disables the taxonomy kind or renames its
+path the heading falls back to plain text rather than linking to a 404.
 
 ### Social Links
 
@@ -649,6 +670,7 @@ enableGitInfo = true
 | `amazon-associate-link` | Affiliate link with disclosure |
 | `font-awesome` | Inline Font Awesome icon |
 | `highlight-github` | GitHub-styled syntax highlight block |
+| `table-wrapper` | Wraps a Markdown table in a themed shell that scrolls horizontally instead of widening the page |
 
 #### `highlight-github` and network access
 
@@ -1031,6 +1053,65 @@ Note the `fontFamily.titillium` entry resolves through
 contradicting it. If you replace `fontFamily` wholesale in your own config,
 keep that indirection or set `twClasses.body` to a class of your own.
 
+### Color Tokens
+
+*New in v0.4.0.* Ryder's colors resolve through CSS custom properties, so you
+can repoint the palette from config instead of overriding class strings one
+element at a time:
+
+```toml
+[params.colors]
+  brand     = "12 74 110"   # logo word 1, nav links, article meta icons, blockquote
+  brand-alt = "54 83 20"    # logo word 2, active nav entry
+  accent    = "217 70 239"  # aside icons, tag chips, tag cloud
+```
+
+`chrome-from` and `chrome-to` are also declared, but **nothing in the theme
+reads them** — the header and footer gradients come through
+`twClasses.headerBackgroundFrameOuter`, which deliberately stays a literal
+Tailwind string. They exist so you can use `from-ryder-chrome-from` /
+`to-ryder-chrome-to` in class strings of your own; setting them will not retint
+your header.
+
+**Values are RGB channel triplets, not hex** — `"244 63 94"`, not `"#f43f5e"`.
+This is load-bearing, not stylistic: a hex value inside `var()` works for
+`text-`, `bg-`, and `border-`, then silently produces *nothing* for every
+opacity modifier, and Ryder uses those throughout (`border-ryder-accent-300/80`,
+`dark:bg-ryder-accent-950/40`, the share-button fills at `/88`). Channels
+interpolate with Tailwind's `<alpha-value>` and keep them working. A value in
+any other format is ignored, with a build warning naming the key.
+
+Each of `brand`, `brand-alt`, and `accent` also carries a full `50`–`950` ramp,
+because the theme uses more than one shade of each — the nav alone spans
+`brand-100` through `brand-800`. Setting the bare token moves **only that
+family's canonical step**, and which step that is differs per family: `brand`
+aliases `brand-800`, `brand-alt` aliases `brand-alt-800`, `accent` aliases
+`accent-500`.
+
+This catches people out. The default CTA button uses `accent-600` / `accent-500`
+/ `accent-300` for border, hover, and focus ring — so setting `accent` alone
+moves the hover and leaves the border and ring rose. Set every step a component
+uses; `rg 'ryder-accent-' layouts assets/css` lists them. Anything left unset
+keeps the theme default, so a partial override is safe, just incomplete.
+
+The preset exposes all of them as ordinary Tailwind colors, usable anywhere you
+write a class — including in `twClasses`:
+
+```
+text-ryder-brand        bg-ryder-accent-50    border-ryder-brand-alt-800
+from-ryder-chrome-from  to-ryder-chrome-to    ring-ryder-accent-300/80
+```
+
+Ryder's own shipped `twClasses` defaults deliberately stay on plain Tailwind
+classes. They get copied into user configs, and a default that references the
+token layer while the copy doesn't leaves you with half a palette. Surfaces
+(`neutral-*`), structural greys, the alert color triples, and the
+Amazon/Spotify button fills are not tokenized either — see
+[docs/design-decisions.md](docs/design-decisions.md) for the reasoning.
+
+Full reference, including which element each token drives:
+`/docs/css-overrides/#color-tokens` on the demo site.
+
 ### Build configuration
 
 **Add this `[build]` block to your own site config** — Hugo merges only a subset of root config sections from themes, and `build` is not one of them, so you do **not** inherit it from Ryder:
@@ -1157,6 +1238,43 @@ or the browser blocks the request:
 ```
 
 Same-origin actions need nothing; `connect-src 'self'` is always present.
+
+#### Form fields
+
+`ryderForm` is the engine; `utils/form-field.html` is the matching visual layer,
+added in v0.4.0 so a themed form no longer means hand-writing the markup above:
+
+```go-html-template
+<form x-data="ryderForm" @submit.prevent="submit"
+      data-form-action="https://api.example.com/subscribe">
+  {{ partial "utils/form-field.html" (dict "name" "email" "type" "email"
+      "label" "Email" "placeholder" "you@example.com" "required" true) }}
+  {{ partial "utils/form-field.html" (dict "name" "message" "type" "textarea"
+      "label" "Message" "help" "Anything else we should know?") }}
+
+  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"
+         class="hidden" aria-hidden="true">
+
+  {{ partial "utils/form-field.html" (dict "type" "submit" "label" "Subscribe"
+      "successMessage" "Thanks!" "errorMessage" "") }}
+</form>
+```
+
+| Key | Meaning |
+|---|---|
+| `name` | Field name, and the default `id`. Required except for `submit` |
+| `type` | Any text-like input type, plus `textarea` and `submit`. Defaults to `text` |
+| `label` | Visible label; the button text when `type` is `submit` |
+| `placeholder`, `value`, `autocomplete`, `rows` | Passed through when set |
+| `required` | Marks the control required and appends `*` to the label |
+| `help` | Hint text under the control, wired up via `aria-describedby` |
+| `id`, `class` | Override the derived id, or append classes to the control |
+| `successMessage` | `submit` only — a line shown on `x-show="isSuccess"` |
+| `errorMessage` | `submit` only — a fixed message, or `""` to show the engine's own |
+
+The submit button reuses the theme's default CTA class, so it follows
+`params.colors.legacyAccents` along with every other CTA. The honeypot stays
+hand-written: it is one line, and it should not look like a field.
 
 ### The dev-only linter
 

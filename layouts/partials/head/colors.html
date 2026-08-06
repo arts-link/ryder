@@ -1,0 +1,65 @@
+{{- /*
+Semantic color token overrides — the [params.colors] half of the token layer
+introduced in v0.4.0. Follows the --ryder-font-family precedent in
+head/fonts.html: the theme ships defaults in assets/css/main.css's :root block,
+and this partial writes a :root override for the keys a site actually sets.
+
+ORDERING: head.html calls this AFTER head/css.html. Both blocks target :root
+with equal specificity, so the later one wins; moving this ahead of the
+stylesheet would let the theme's defaults silently override a site's config.
+
+Site-level only: called via partialCached (see head.html), so this cannot vary
+per page.
+
+    [params.colors]
+      brand      = "12 74 110"    # sky-900 — also moves ryder-brand-800
+      brand-alt  = "54 83 20"
+      accent     = "217 70 239"   # also moves ryder-accent-500
+      accent-600 = "192 38 211"
+      chrome-from = "24 24 27"    # declared only — see below
+      chrome-to   = "63 63 70"
+
+VALUES ARE RGB CHANNELS, not hex: "244 63 94", not "#f43f5e". A hex inside
+var() works for text-/bg-/border- but silently breaks every opacity modifier,
+and the theme uses those throughout. There is deliberately no hex-to-channel
+conversion here — the format is a requirement, and a wrong one is warned about
+rather than half-applied. See README > Color tokens.
+
+Recognised keys: brand, brand-alt, accent (each optionally suffixed with a ramp
+step 50-950), chrome-from, chrome-to. `legacyAccents` also lives under
+[params.colors] but is a behavior flag, not a color, and is skipped here.
+
+Two things the docs have to keep saying, because neither is guessable:
+
+  - chrome-from/chrome-to are accepted and emitted, but NOTHING in the theme
+    reads them. The header and footer gradients come from twClasses, which
+    stays literal by design. They exist for use in a site's own class strings.
+  - The bare token aliases one ramp step, and which one differs per family
+    (brand -> 800, brand-alt -> 800, accent -> 500). Setting `accent` alone
+    leaves accent-600 and accent-300 — both used by the default CTA — at their
+    defaults.
+*/ -}}
+{{- $colors := site.Params.colors | default dict -}}
+{{- $steps := slice "50" "100" "200" "300" "400" "500" "600" "700" "800" "900" "950" -}}
+{{- $allowed := slice "chrome-from" "chrome-to" -}}
+{{- range $family := slice "brand" "brand-alt" "accent" -}}
+  {{- $allowed = $allowed | append $family -}}
+  {{- range $steps -}}
+    {{- $allowed = $allowed | append (printf "%s-%s" $family .) -}}
+  {{- end -}}
+{{- end -}}
+{{- $decls := slice -}}
+{{- range $key, $value := $colors -}}
+  {{- if ne $key "legacyaccents" -}}
+    {{- if not (in $allowed $key) -}}
+      {{- warnf "params.colors: unknown key %q — expected one of brand, brand-alt, accent (optionally -50 through -950), chrome-from, chrome-to, or legacyAccents" $key -}}
+    {{- else if not (findRE `^[0-9]{1,3} [0-9]{1,3} [0-9]{1,3}$` (printf "%v" $value)) -}}
+      {{- warnf "params.colors.%s = %q is not an RGB channel triplet — use %q, not a hex value; ignoring" $key $value "244 63 94" -}}
+    {{- else -}}
+      {{- $decls = $decls | append (printf "--ryder-%s:%v;" $key $value) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- with $decls }}
+<style>:root{ {{- delimit . "" | safeCSS -}} }</style>
+{{- end }}

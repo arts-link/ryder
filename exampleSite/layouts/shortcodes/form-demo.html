@@ -1,0 +1,32 @@
+{{- /*
+A complete, live `ryderForm` built out of the theme's own
+utils/form-field.html partial — the working preview for
+/docs/design-system/#form-field.
+
+This is an exampleSite shortcode, not a theme one. form-field is a *partial*,
+and a partial cannot be called from Markdown; wrapping the whole form here is
+what lets the docs page show the real component rather than a screenshot or a
+hand-copied block of HTML. It stays a demo: the action points at a path that
+does not exist, so submitting lands in the error state on purpose, exactly as
+/docs/forms/ does.
+
+The honeypot stays hand-written. It is one line, and a field partial that
+emitted an invisible input would be a partial that looks like it renders
+nothing.
+*/ -}}
+<form x-data="ryderForm" @submit.prevent="submit"
+      data-form-action="/ryder/api/design-system-demo"
+      data-error-message="No backend on the demo site — this is the error state."
+      class="not-prose my-4 flex max-w-md flex-col gap-4">
+  {{ partial "utils/form-field.html" (dict
+      "name" "email" "type" "email" "label" "Email"
+      "placeholder" "you@example.com" "required" true) }}
+  {{ partial "utils/form-field.html" (dict
+      "name" "message" "type" "textarea" "label" "Message" "rows" 3
+      "help" "Optional — the field partial renders help text when you pass it.") }}
+  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"
+         class="hidden" aria-hidden="true">
+  {{ partial "utils/form-field.html" (dict
+      "type" "submit" "label" "Subscribe"
+      "successMessage" "Thanks!" "errorMessage" "") }}
+</form>

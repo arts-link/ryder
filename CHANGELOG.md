@@ -2,6 +2,60 @@
 
 All notable changes to the Ryder Hugo theme are documented in this file.
 
+## v0.4.0
+
+A semantic colour layer, one accent instead of six, three components the theme
+was missing, and a design-system page that documents all of it by rendering the
+live theme. One visual change for existing sites, behind a flag — see
+`docs/migration/v0.4.0.md`. The reasoning is recorded in
+`docs/design-decisions.md`.
+
+- **Colour tokens** — `tailwind.preset.js` gains a `ryder` colour namespace
+  resolving through `--ryder-*` custom properties, defaulted in
+  `assets/css/main.css`. Sites override them from `[params.colors]`, read by
+  the new `head/colors.html`. Values are space-separated RGB channels rather
+  than hex so Tailwind's `<alpha-value>` can interpolate: a hex inside `var()`
+  works for `text-`/`bg-`/`border-` and then silently breaks every opacity
+  modifier, which the theme uses throughout.
+- **Colour tokens** — `brand`, `brand-alt`, and `accent` each carry a full
+  50–950 ramp, because the theme's own classes span most of it. The step
+  matching a family's canonical shade aliases the headline token
+  (`--ryder-brand-800: var(--ryder-brand)`), so setting one token retints both.
+  `chrome-from`/`chrome-to` are declared for use in your own class strings;
+  nothing in the theme reads them.
+- **Colour tokens** — migrating the theme's internals onto the tokens is a pure
+  rename. Verified by diffing the compiled stylesheets of `a124253` and the
+  release with the token indirection resolved: no selector lost, one
+  declaration changed in notation only.
+- **Breaking-ish** — the tag cloud's yellow border/hover/ring and the default
+  CTA's fuchsia border/hover/ring move to the accent. This is the only change
+  that alters an existing site. `params.colors.legacyAccents = true` restores
+  both. It cannot reach the header's bottom edge, which comes from a site's own
+  `twClasses`.
+- **New** — `layouts/partials/utils/form-field.html`, the visual layer for the
+  existing `ryderForm` engine: text-like inputs, `textarea`, and a `submit`
+  variant bound to the engine's status booleans.
+- **New** — a `table-wrapper` shortcode. `@tailwindcss/typography` owns table
+  styling inside `prose` and cannot be overridden from within, so the wrapper
+  opts out with `not-prose` and scrolls horizontally rather than widening the
+  page.
+- **New** — an empty state on `layouts/_default/list.html`, which previously
+  rendered a blank grid and a pager for a single page of nothing. Wording comes
+  from `i18n/` (`emptyListTitle`, `emptyListBody`).
+- **New** — `/docs/design-system/` on the exampleSite, documenting tokens, type
+  scale, spacing, and every component. Every preview is a live partial or
+  shortcode call, so the page cannot drift when a partial changes; values come
+  from `exampleSite/data/design-system.json` via new `swatch` and `token-table`
+  shortcodes.
+- **Footer** — taxonomy group headings now link to their taxonomy root page,
+  with a dotted underline at rest so they read as links. The href resolves
+  through `site.GetPage`, so a site that disables the taxonomy kind or renames
+  its path gets a plain heading rather than a link to a 404.
+- **Docs** — `docs/design-decisions.md` records why rose is the accent, why
+  tokens are channels, and why shipped `twClasses` defaults stay literal.
+  `docs/migration/v0.4.0.md` covers the accent change and `legacyAccents`.
+- **Tests** — new `designSystem` and `footerTaxonomyLinks` e2e specs, plus
+  coverage for the aside's dark-mode styles. 79 e2e, 14 unit.
 ## v0.3.2
 
 - **Fix** — `picture.html` no longer aborts the build on remote images.
