@@ -2,6 +2,25 @@
 
 All notable changes to the Ryder Hugo theme are documented in this file.
 
+## v0.4.1
+
+- **Dependencies** — Clear six advisories in the exampleSite's dependency tree:
+  `brace-expansion`, `cross-spawn`, `glob`, `minimatch` and `picomatch` (high),
+  and `yaml` (moderate). All were transitive dev-scope packages under the
+  Tailwind/PostCSS build, so nothing shipped to a site visitor or a consuming
+  site, and none was reachable as described — the `glob` advisory needs its CLI's
+  `-c/--cmd` flag, and the rest need attacker-controlled glob patterns where the
+  only patterns are the `content` globs in `tailwind.config.js`. Resolved by
+  `npm audit fix`, which touched the lockfile only: no direct dependency changed
+  version, so this is a transitive dedup rather than an upgrade.
+- **Documentation** — `CLAUDE.md`'s CI section claimed the workflows pin Hugo
+  0.138.0 and warned it was below the theme's 0.146+ floor. Both workflows
+  actually pin 0.146.0, and have for some time. The stale warning mattered more
+  than a normal doc drift: v0.3.2's `picture.html` and `highlight-github.html`
+  use the `try` keyword, which requires Hugo 0.141+, so a runner on 0.138.0
+  would fail on templates the theme itself ships. The section now names both
+  workflows and states the constraint.
+
 ## v0.4.0
 
 A semantic colour layer, one accent instead of six, three components the theme

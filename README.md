@@ -10,7 +10,7 @@ Named after a late Rhodesian Ridgeback/Mastiff companion.
 
 > An open source project by **[Arts-Link](https://www.arts-link.com)**, maintained by **[Ben Strawbridge](https://www.benstrawbridge.com)**.
 
-> **Current release: [Ryder v0.4.0](https://github.com/arts-link/ryder/releases/tag/v0.4.0)** — released August 6, 2026. Adds a semantic colour token layer, consolidates six accent colours into one, and ships three new components plus a [design-system page](https://arts-link.github.io/ryder/docs/design-system/). One visual change for existing sites, behind a flag — see the [v0.4.0 migration guide](docs/migration/v0.4.0.md). Sites upgrading from v0.2.5 should still follow the [v0.3.0 migration guide](docs/migration/v0.3.0.md) first, and review the [changelog](CHANGELOG.md) before upgrading.
+> **Current release: [Ryder v0.4.1](https://github.com/arts-link/ryder/releases/tag/v0.4.1)** — released August 6, 2026. A dependency and documentation patch on top of v0.4.0. The v0.4.0 feature release adds a semantic colour token layer, consolidates six accent colours into one, and ships three new components plus a [design-system page](https://arts-link.github.io/ryder/docs/design-system/) — one visual change for existing sites, behind a flag, see the [v0.4.0 migration guide](docs/migration/v0.4.0.md). Sites upgrading from v0.2.5 should still follow the [v0.3.0 migration guide](docs/migration/v0.3.0.md) first, and review the [changelog](CHANGELOG.md) before upgrading.
 
 ---
 

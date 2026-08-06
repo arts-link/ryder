@@ -273,10 +273,16 @@ When creating new template variants:
 
 ## CI/CD
 
-GitHub Actions (`.github/workflows/hugo.yml`) builds exampleSite and deploys to GitHub Pages on every push to `main`. Check build badge status before merging changes.
+GitHub Actions builds exampleSite and deploys to GitHub Pages on every push to
+`main` (`.github/workflows/hugo.yml`), and runs the unit and e2e suites
+(`.github/workflows/test.yml`). Check build badge status before merging changes.
 
 **Workflow details:**
-- Uses Hugo 0.138.0 (⚠️ lower than the 0.146+ requirement — update when bumping minimum Hugo version)
+- Both workflows pin `HUGO_VERSION: 0.146.0`, matching `theme.toml`'s
+  `min_version`. Keep the three in step — v0.3.2's `picture.html` and
+  `highlight-github.html` use the `try` keyword, which needs Hugo 0.141+, so a
+  runner below that floor fails on templates the theme ships rather than on
+  anything a site wrote.
 - Runs `npm ci` in exampleSite directory
 - Builds with `--minify` flag
 - Deploys to https://arts-link.github.io/ryder/
