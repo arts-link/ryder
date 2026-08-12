@@ -2,7 +2,10 @@
 
 All notable changes to the Ryder Hugo theme are documented in this file.
 
-## Unreleased
+## v0.4.2
+
+A single-bug patch on top of v0.4.1. No configuration changes, no migration:
+cards that relied on Hugo's auto-truncated summary now render it as text.
 
 - **Fix** — `card-category-color.html` rendered `.Summary` as raw HTML. A page
   with no `<!--more-->` marker and no `summary` front-matter key gets a
