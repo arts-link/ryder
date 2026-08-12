@@ -2,6 +2,24 @@
 
 All notable changes to the Ryder Hugo theme are documented in this file.
 
+## Unreleased
+
+- **Fix** — `card-category-color.html` rendered `.Summary` as raw HTML. A page
+  with no `<!--more-->` marker and no `summary` front-matter key gets a
+  `.Summary` that Hugo builds by truncating the *rendered* HTML at
+  `summaryLength` words, and that cut is not guaranteed to land on an element
+  boundary. The browser re-parents everything after an unclosed element, so a
+  single content page could swallow every card that followed it on a feed page —
+  the blast radius was the whole page, not the offending card. The fallback
+  branch now runs through `plainify | htmlUnescape | chomp`, in line with the
+  theme's seven other `.Summary` consumers, which makes the failure impossible
+  to express rather than fixing the one page that happened to trigger it.
+  `homeFeatureSummary` is unchanged and remains the way to write a card blurb
+  yourself. Reproduced on Hugo 0.146.0 and 0.164.0 (issue #86).
+- **Tests** — `tests/e2e/cardSummary.spec.js` pins the invariant on three feed
+  pages: card summaries contain no element markup, and cards stay siblings of
+  one another. The markup assertions fail against the pre-fix partial.
+
 ## v0.4.1
 
 - **Dependencies** — Clear six advisories in the exampleSite's dependency tree:

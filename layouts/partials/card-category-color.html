@@ -23,7 +23,15 @@
         </span>
         {{- end }}
         <div itemprop="articleBody" class="articleBody">
-          {{- or .Params.homeFeatureSummary .Summary }}
+          {{- /* .Summary is sanitized, not rendered raw: with no <!--more--> marker
+                 and no `summary` front-matter key, Hugo builds it by truncating the
+                 RENDERED HTML at summaryLength words, and that cut is not guaranteed
+                 to land on an element boundary. An unclosed wrapper element in one
+                 card re-parents every card after it, so a single content page can
+                 break the layout of a whole feed page. plainify makes that
+                 impossible to express; homeFeatureSummary remains the opt-in escape
+                 hatch for an author-written blurb. See issue #86. */ -}}
+          {{- or .Params.homeFeatureSummary (.Summary | plainify | htmlUnescape | chomp) }}
           {{- if $m.showReadOn }}
             {{- partial "utils/btn-read-on.html" . }}
           {{- end }}

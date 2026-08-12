@@ -6,6 +6,7 @@ homeFeature = true
 # homeFeatureWide = true
 homeFeatureTitle = "Featured Content"
 homeFeatureIcon = "fa-solid fa-om"
+homeFeatureSummary = "Ryder gives you a couple ways to feature content on the home page, and a way to write the card blurb yourself instead of letting Hugo truncate one."
 Weight = 9999
 [menu]
  [menu.main]
@@ -28,7 +29,16 @@ homeFeature = true
 homeFeatureWide = true
 homeFeatureTitle = "Debug Panel"
 homeFeatureIcon = "fa-solid fa-binoculars"
+homeFeatureSummary = "The blurb this card shows, written by you."
 +++
 ```
 
 If you don't have this front matter there, the boxes will not show up at all.  This can be used for both regular pages, `index.md` template, and list page `_index.md` template.
+
+### Writing the card blurb
+
+Without `homeFeatureSummary`, a card falls back to Hugo's `.Summary` — your
+`<!--more-->` excerpt, or an automatic truncation of the page at `summaryLength`
+words when there is no marker. Cards render that as plain text, because an
+automatic truncation can end in the middle of nested markup. Set
+`homeFeatureSummary` when you want to write the blurb yourself; this page does.
