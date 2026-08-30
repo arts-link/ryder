@@ -1,6 +1,6 @@
 {
   "name": "ryder",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "A barebones Hugo theme built with TailwindCSS and Alpine.js",
   "author": "Ben Strawbridge",
   "license": "MIT",
@@ -14,15 +14,15 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "devDependencies": {
-    "@playwright/test": "^1.62.0",
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/typography": "^0.5.20",
     "jsdom": "^30.0.1",
     "tailwindcss": "^3.4.0",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.11"
   },
   "dependencies": {
-    "@alpinejs/csp": "^3.15.12",
-    "@alpinejs/focus": "^3.15.12",
+    "@alpinejs/csp": "^3.16.2",
+    "@alpinejs/focus": "^3.16.2",
     "@fortawesome/fontawesome-svg-core": "^7.3.1",
     "@fortawesome/free-brands-svg-icons": "^7.3.1",
     "@fortawesome/free-regular-svg-icons": "^7.3.1",
