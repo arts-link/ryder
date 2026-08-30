@@ -2,6 +2,43 @@
 
 All notable changes to the Ryder Hugo theme are documented in this file.
 
+## v0.4.3
+
+A dependency-maintenance release: the five open Dependabot updates, merged
+together and verified as one tree. No theme code, template, or configuration
+changed, so there is nothing to migrate — the version bump exists to publish
+the refreshed dependency floor to consuming sites.
+
+- **Dependencies** — `@alpinejs/csp` and `@alpinejs/focus` move from `^3.15.12`
+  to `^3.16.2` in the theme's own manifest (#93, #95), and the exampleSite's
+  copies to `^3.16.1` (#92). These are the only two runtime dependencies in the
+  set; everything else below is dev- or CI-scope. The root lockfile resolves
+  `focus` to 3.16.3, the newest patch the caret admits at merge time, rather
+  than the 3.16.2 Dependabot pinned on its own branch — a consequence of
+  regenerating the lockfile to combine the two Alpine bumps, which land on the
+  same lines of `package.json`.
+- **Dependencies** — `@playwright/test` `^1.62.0` → `^1.62.1` and `vitest`
+  `^4.1.10` → `^4.1.11` in the root dev dependencies (#94). Test tooling only;
+  neither ships to a site.
+- **Dependencies** — the exampleSite's build chain takes `postcss` 8.5.25 →
+  8.5.26 and `postcss-import` `^16.1.1` → `^17.0.0` (#92). The `postcss-import`
+  major raises its floor to Node 22, which the theme already requires through
+  `engines` and CI already runs (Node 24), so the bump costs nothing here. It is
+  dev-scope in the exampleSite's own PostCSS config; the theme's Tailwind
+  compile runs through `css.PostCSS` inside the Hugo build and does not read it.
+- **CI** — `actions/checkout` v6 → v7 across all four workflows: `claude.yml`,
+  `hugo.yml`, `release.yml`, and `test.yml` (#84).
+- **Verification** — the combined tree, not the five branches separately: 14
+  unit tests, all 84 e2e specs, and a clean `hugo --source exampleSite` build on
+  Hugo 0.146.0, the version both workflows pin and the theme's stated floor.
+  Each Dependabot branch was green on its own before the merge; the lockfile
+  conflicts between the two Alpine bumps and the dev-dependency group were
+  resolved by regenerating from the merged manifest, so the checked-in tree is
+  what a fresh install produces rather than a hand-stitched merge.
+- **No screenshot refresh** — `AGENTS.md` ties the Hugo themes submission
+  screenshots to a minor bump or greater. This is a patch, and nothing about it
+  is visible on a rendered page.
+
 ## v0.4.2
 
 A single-bug patch on top of v0.4.1. No configuration changes, no migration:
