@@ -10,7 +10,19 @@ Named after a late Rhodesian Ridgeback/Mastiff companion.
 
 > An open source project by **[Arts-Link](https://www.arts-link.com)**, maintained by **[Ben Strawbridge](https://www.benstrawbridge.com)**.
 
-> **Current release: [Ryder v0.4.3](https://github.com/arts-link/ryder/releases/tag/v0.4.3)** — released August 30, 2026. A dependency-maintenance patch: Alpine.js plugins, test tooling, the exampleSite build chain, and `actions/checkout` all move up, with no theme code change. v0.4.2 fixed card summaries, which rendered Hugo's auto-truncated `.Summary` as raw HTML and could break the layout of a whole feed page. The v0.4.0 feature release adds a semantic colour token layer, consolidates six accent colours into one, and ships three new components plus a [design-system page](https://arts-link.github.io/ryder/docs/design-system/) — one visual change for existing sites, behind a flag, see the [v0.4.0 migration guide](docs/migration/v0.4.0.md). Sites upgrading from v0.2.5 should still follow the [v0.3.0 migration guide](docs/migration/v0.3.0.md) first, and review the [changelog](CHANGELOG.md) before upgrading.
+> **Current release: [Ryder v0.5.0](https://github.com/arts-link/ryder/releases/tag/v0.5.0)** — an SEO and heading-semantics pass. **One behaviour change for every site:** the breadcrumb trail no longer ends in a link to the current page, and a top-level page renders no trail at all — see [Breadcrumbs](#breadcrumbs). The wordmark is no longer an `<h1>`, so pages ship one `<h1>` instead of two; a categorised page emits one `BreadcrumbList` instead of two; and two new params, [`titleShort`](#page-titles--titleshort) and [`taxonomyDescription`](#taxonomy-descriptions), fix truncated SERP titles and duplicate meta descriptions on taxonomy pages. v0.4.3 was a dependency-maintenance patch. The v0.4.0 feature release adds a semantic colour token layer, consolidates six accent colours into one, and ships three new components plus a [design-system page](https://arts-link.github.io/ryder/docs/design-system/) — see the [v0.4.0 migration guide](docs/migration/v0.4.0.md). Sites upgrading from v0.2.5 should still follow the [v0.3.0 migration guide](docs/migration/v0.3.0.md) first, and review the [changelog](CHANGELOG.md) before upgrading.
+
+---
+
+## What's New in v0.5.0
+
+- **Breadcrumbs render Home plus ancestors, and stop there** — the trail no longer ends in a link to the page you are already on, sitting directly above the `<h1>` saying the same words, and a top-level page renders no trail at all. **This changes every site.** See [Breadcrumbs](#breadcrumbs).
+- **One `<h1>` per page** — the wordmark in `logo.html` was an `<h1>` rendered on every page, so any page with its own title shipped two, and the home page's only `<h1>` was the site name. It is a `<span>` now, and the home page title is the `<h1>` (behind `showHomeTitle`).
+- **One `BreadcrumbList` per page** — a categorised page emitted a second, category-derived trail, handing search engines two competing answers for one URL. The JSON-LD also respects `showBreadCrumbs` now, so switching the trail off stops the markup claiming one.
+- **Meta descriptions for taxonomy pages** — term pages have no description and no summary, so they all inherited the one site-wide sentence. `[params.taxonomyDescription]` supplies a per-taxonomy template. See [Taxonomy Descriptions](#taxonomy-descriptions).
+- **Short titles for long site names** — `params.titleShort` sets the `<title>` suffix, so a long legal or marketing site name stops truncating the useful half of every search result. See [Page Titles](#page-titles--titleshort).
+
+Upgrading is a submodule bump — there is no migration guide, because the only change that touches an existing site needs no configuration. Two things to check: CSS or tests keyed to the breadcrumb's old final `<li class="active">` / `aria-current="page"`, and any fork of `logo.html` (the replacement `<span>` carries classes that the `h1` base rule used to supply — the [changelog](CHANGELOG.md) explains why a bare tag swap silently restyles the wordmark).
 
 ---
 
@@ -135,7 +147,8 @@ Full example in [`exampleSite/config/_default/hugo.toml`](https://github.com/art
   showHomeFeed = true            # Paginated feed on home page (page-overridable via .Param, e.g. in the home page's own front matter)
   showDate = true
   showAuthor = true
-  showBreadCrumbs = true
+  showBreadCrumbs = true         # Breadcrumb trail — see Breadcrumbs below
+  showHomeTitle = false          # Render the home page title as its <h1>
   showShareButtons = false       # Social share buttons on single pages
   showCardLinkOverlay = false    # Whole-card click target
   showSummaryMeta = true         # Show meta on card summaries
@@ -152,6 +165,7 @@ Full example in [`exampleSite/config/_default/hugo.toml`](https://github.com/art
 
   og_image_default = "images/og-default.webp"
   repository = "https://github.com/you/your-site"  # Enables footer GitHub links
+  titleShort = "Your Site"       # Short <title> suffix — see SEO & GEO below
 
   excludedSections = ["fineprint"]
   excludedCategories = ["catalog"]
@@ -307,6 +321,46 @@ which reuse the same partial.
   dismissable = true
   weight = 1
 ```
+
+### Breadcrumbs
+
+The trail is **Home plus the page's ancestors**, and it renders only when the
+page has a parent that is not Home. It does not end in the page you are already
+on.
+
+| Page | Ancestors | Trail |
+|---|---|---|
+| `/` | 0 | *none* |
+| `/posts/` | 1 | *none* — nothing above it but Home |
+| `/posts/towers/` | 2 | `Home » Posts` |
+| `/projects/recipes/granola/original-granola/` | 4 | `Home » Projects » Recipes » Granola!` |
+
+> **Behaviour change in v0.5.0.** Before v0.5.0 the trail closed with a link to
+> the current page, sitting directly above the `<h1>` saying the same words, and
+> a top-level page rendered `Home »` plus that self-link. Both are gone. If your
+> site has CSS or tests keyed to the old final `<li class="active">` or its
+> `aria-current="page"`, update them. The list is also an `<ol>` now rather than
+> a `<ul>`, matching the `BreadcrumbList` semantics, and the `»` separator moved
+> outside the `<a>` with `aria-hidden="true"` so it is no longer read out as
+> part of every link's name.
+
+Turn it off site-wide or per page:
+
+```toml
+[params]
+  showBreadCrumbs = false   # default true
+```
+
+The flag does both halves: it hides the visible trail **and** suppresses the
+`BreadcrumbList` JSON-LD, so the markup never claims navigation the page does
+not show.
+
+The JSON-LD is deliberately not identical to the visible trail — it carries the
+current page as a final `ListItem` with a `name` and **no `item`**. That is the
+standard pattern for the page you are on, and it keeps Google rendering a
+breadcrumb under the search result now that nothing visible duplicates the
+`<h1>`. Ancestor items use `.LinkTitle`, matching the visible crumbs; the leaf
+uses `.Title`, matching the `<h1>`.
 
 ### Footer Taxonomy Lists
 
@@ -749,12 +803,12 @@ Ryder ships with a complete search and AI optimisation stack — no plugins, no 
 
 | Output | What It Does |
 |---|---|
-| `<meta name="description">` | Page snippet for search results — from `description` front matter, then summary, then site description |
+| `<meta name="description">` | Page snippet for search results — from `description` front matter, then summary, then `params.taxonomyDescription` on a term page, then site description |
 | Open Graph tags | Social link previews (Facebook, LinkedIn, Slack, Discord) |
 | Twitter / X Cards | `summary_large_image` when a featured image is present, `summary` otherwise |
 | JSON-LD `BlogPosting` | Article authorship, dates, and keywords for Google rich results and AI crawlers |
 | JSON-LD `WebPage` + site entity | Homepage entity signals — entity type set by `params.schema.type` |
-| JSON-LD `BreadcrumbList` | Section and category navigation trails for rich-result breadcrumbs |
+| JSON-LD `BreadcrumbList` | One section trail per page for rich-result breadcrumbs, gated on `showBreadCrumbs` |
 | JSON-LD `Recipe` | Full recipe structured data (ingredients, steps, nutrition) when `recipe = true` |
 | Dynamic OG image | Auto-generated Open Graph image with title text when no page image exists |
 
@@ -803,6 +857,7 @@ Most SEO metadata is automatic. A few optional settings unlock additional featur
 ```toml
 [params]
   og_image_default = "images/og-default.webp"   # Base image for generated OG cards; assets/-relative ONLY (see note below)
+  titleShort = "Your Site"                       # Short <title> suffix — see below
 
 [params.author]
   name  = "Your Name"
@@ -819,6 +874,62 @@ Most SEO metadata is automatic. A few optional settings unlock additional featur
 [params.schema]
   type = "Organization"                          # Site-wide JSON-LD entity on the home page
 ```
+
+### Page Titles — `titleShort`
+
+Every non-home page renders `<title>Page Title | Suffix</title>`. The suffix is
+the first of these that is set:
+
+1. `sectionTitle` in the page's own front matter (or cascaded onto a section)
+2. `params.titleShort`
+3. `site.Title`
+
+`site.Title` is often the long legal or marketing name, and Google truncates a
+SERP title at roughly 60 characters — a 34-character site title leaves almost
+nothing for the part that identifies the page. `titleShort` is the site-wide
+short form:
+
+```toml
+title = "Example Dot Com Consulting Limited"
+
+[params]
+  titleShort = "Example"
+```
+
+`sectionTitle` still wins where it is set, so a per-section suffix keeps
+working; `titleShort` covers everything else, including sections with no
+cascade. Set neither and the suffix stays `site.Title`, exactly as before.
+
+### Taxonomy Descriptions
+
+Taxonomy **term** pages — `/tags/hugo/`, `/categories/recipes/` — have no
+`description` front matter and no summary, so without this they all inherit the
+single site-wide description. A site with a thousand terms ships a thousand
+pages carrying one identical sentence, which is precisely the duplicate-snippet
+signal you do not want.
+
+`params.taxonomyDescription` is a table of `printf` format strings, keyed by the
+taxonomy's **singular** name, rendered with the term's title:
+
+```toml
+[params.taxonomyDescription]
+  tag      = "Everything tagged “%s” on Example — guides, notes, and links."
+  category = "Articles filed under “%s” on Example."
+```
+
+- **Each entry must contain exactly one `%s`.** Go's `printf` appends
+  `%!(EXTRA string=…)` to a format string with no verb, and that lands in your
+  meta description.
+- **Term pages only.** On the taxonomy *index* (`/tags/`) the singular key is
+  also `tag` while the title is "Tags", so one shared template would read
+  "Everything tagged Tags". Index pages keep the site description.
+- **A term's own `description` still wins.** Give `content/tags/hugo/_index.md`
+  a `description` and it overrides the template for that term.
+- **Taxonomies with no entry fall through** to `site.Params.description`, so
+  adding nothing changes nothing.
+
+A format table rather than a generated "42 posts tagged X" sentence: it sidesteps
+pluralisation entirely and leaves the copy under your control.
 
 ### Structured Data (JSON-LD)
 

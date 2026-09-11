@@ -28,6 +28,12 @@
   {{ end }}
   <main>
     <div class="h-lvh flex flex-col items-center justify-center my-5">
+      {{/* This layout calls logo.html directly rather than through header.html,
+           and has no other heading — so the wordmark's <h1> was this page's
+           only one until logo.html became a <span>. Visually hidden: the cover
+           looks unchanged, and the outline names the page rather than the
+           site. */}}
+      <h1 class="sr-only">{{ .Title }}</h1>
       {{- partial "logo.html" . }}
       <div class="w-4/5 h-fit max-h-fit overflow-y-auto md:w-1/2 p-4 m-5 rounded-xl bg-gray-200/75 dark:bg-gray-800/75">
         <p class="prose justify-center dark:prose-invert max-w-none">

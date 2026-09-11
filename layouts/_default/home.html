@@ -1,13 +1,21 @@
 {{- define "main" }}
 <div class="p-2 max-w-screen-lg mx-auto ">
-  {{- if or .Title .Content }}
+  {{- /* The card wrapper is gated on what actually renders inside it, not on
+         `or .Title .Content`. The title needs showHomeTitle as well as a title,
+         so a home page with a title, no body and showHomeTitle unset used to
+         render an empty bordered card. */ -}}
+  {{- $showHomeTitle := and .Title site.Params.showHomeTitle }}
+  {{- if or $showHomeTitle .Content }}
   <div class="my-4 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 shadow-sm overflow-hidden">
-    {{- if and .Title site.Params.showHomeTitle}}
+    {{- if $showHomeTitle }}
     <div class="px-6 pt-6 pb-2 border-b border-neutral-100 dark:border-neutral-700">
-      <h2 itemprop="headline" class="text-2xl font-bold flex items-center gap-3 text-neutral-800 dark:text-neutral-100">
+      {{- /* <h1>, not <h2>: with the wordmark no longer a heading this is the
+             home page's only <h1>. Tag only — the explicit text-2xl font-bold
+             already carried the sizing, so nothing changes visually. */ -}}
+      <h1 itemprop="headline" class="text-2xl font-bold flex items-center gap-3 text-neutral-800 dark:text-neutral-100">
         {{- if .Params.homeFeatureIcon }}<i class="{{ .Params.homeFeatureIcon }} text-2xl opacity-70"></i>{{- end }}
         {{- .Title }}
-      </h2>
+      </h1>
     </div>
     {{- end }}
     {{- if .Content }}

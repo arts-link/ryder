@@ -36,8 +36,39 @@ test('every JSON-LD block on a post parses, with breadcrumbs', async ({ page }) 
   const types = typesOf(blocks)
   expect(types).toContain('BlogPosting')
   expect(types).toContain('BreadcrumbList')
-  // The page has categories, so it gets a taxonomy trail as well as a section one.
-  expect(types.filter((t) => t === 'BreadcrumbList').length).toBe(2)
+  // Exactly ONE, even though the page has categories. There used to be a second,
+  // category-derived trail, so a categorised page shipped two competing
+  // BreadcrumbLists for a single URL.
+  expect(types.filter((t) => t === 'BreadcrumbList').length).toBe(1)
+})
+
+// The visible trail and the JSON-LD are gated on the same rule, so a page whose
+// only ancestor is home renders neither. Emitting a BreadcrumbList here would
+// describe navigation the page does not have.
+test('a top-level page emits no BreadcrumbList', async ({ page }) => {
+  await page.goto(`${BASE}/docs/`)
+  expect(typesOf(await jsonLd(page))).not.toContain('BreadcrumbList')
+})
+
+// The last ListItem is the current page: it carries a name so the trail reads
+// completely, and no `item`, because linking the page you are already on is
+// what the visible trail stopped doing. Ancestors use .LinkTitle, matching the
+// visible crumbs.
+test('the BreadcrumbList trail is Home, ancestors, then an unlinked leaf', async ({ page }) => {
+  await page.goto(`${BASE}/docs/breadcrumbs/three-levels-deep/`)
+  const crumbs = (await jsonLd(page)).find((b) => b['@type'] === 'BreadcrumbList')
+  expect(crumbs).toBeTruthy()
+
+  const items = crumbs.itemListElement
+  expect(items.map((i) => i.name)).toEqual(['Home', 'Docs', 'Breadcrumbs', 'Three Levels Deep'])
+  expect(items.map((i) => i.position)).toEqual([1, 2, 3, 4])
+
+  // Every ancestor is linked...
+  for (const item of items.slice(0, -1)) {
+    expect(item.item).toBeTruthy()
+  }
+  // ...and the leaf is not.
+  expect(items[items.length - 1].item).toBeUndefined()
 })
 
 // The recipe demo page's own front matter used to declare `recipe = true` after

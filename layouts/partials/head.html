@@ -18,7 +18,11 @@
   <meta name="viewport" content="width=device-width" />
   <link rel="canonical" href="{{ .Permalink }}" />
   {{- partialCached "head/favicon.html" . }}
-  {{- $sectionTitle := .Params.sectionTitle | default site.Title }}
+  {{- /* The suffix after "Page Title | ". site.Title is often the long legal
+         or marketing name, which truncates the useful half of a SERP title;
+         params.titleShort is the site-wide short form. Per-page sectionTitle
+         still wins, but it only ever covered sections with a cascade. */ -}}
+  {{- $sectionTitle := .Params.sectionTitle | default site.Params.titleShort | default site.Title }}
   <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title $sectionTitle }}{{ end }}</title>
   {{ hugo.Generator }}
   {{- if hugo.IsProduction | or (eq site.Params.env "production") | and (ne .Params.robotsNoIndex true) }}

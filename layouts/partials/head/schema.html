@@ -15,9 +15,8 @@
 
   Emitted per page:
     • home     — WebPage, plus the site-wide entity (see params.schema.type)
-    • non-home — BlogPosting, plus a BreadcrumbList for the section path and,
-                 when the page has categories, a second one for the taxonomy
-                 path.
+    • non-home — BlogPosting, plus a single BreadcrumbList for the section
+                 path, on pages whose trail has more than just Home.
 
   To ADD types (MusicGroup, Event, Product, …) do NOT override this file —
   overriding it silently drops everything above. Use the no-op
@@ -114,7 +113,11 @@
   {{- $schemaParams := site.Params.schema | default dict -}}
   {{- $entityType := $schemaParams.type | default "Organization" -}}
   {{- $entity := dict "@context" "https://schema.org" "@type" $entityType "url" site.BaseURL -}}
-  {{- with site.Title -}}{{- $entity = merge $entity (dict "name" .) -}}{{- end -}}
+  {{- /* $authorName is params.author.name falling back to site.Title. The
+         entity used to take site.Title directly, which named a Person after
+         the whole site — "Ben Strawbridge Dot Com Consulting" rather than a
+         person. Reuses the value computed at the top of this file. */ -}}
+  {{- with $authorName -}}{{- $entity = merge $entity (dict "name" .) -}}{{- end -}}
   {{- with $authorEmail -}}{{- $entity = merge $entity (dict "email" .) -}}{{- end -}}
   {{- /* schema.org gives `logo` to Organization and its subtypes only; Person
          carries an image instead. */ -}}
@@ -128,42 +131,33 @@
   <script type="application/ld+json">{{ $entity | jsonify (dict "indent" "  ") | safeJS }}</script>
 {{- end -}}
 
-{{- /* ── breadcrumbs (non-home) ───────────────────────────────────────── */ -}}
-{{- /* Emitted as separate script blocks rather than one array, so each one is
-       independently valid and a change to either cannot corrupt the other. */ -}}
-{{- if not .IsHome -}}
-  {{- $homeCrumb := dict "@type" "ListItem" "position" 1 "name" "Home" "item" site.BaseURL -}}
+{{- /* ── breadcrumbs ─────────────────────────────────────────────────── */ -}}
+{{- /* Gated identically to the visible trail in baseof.html and
+       partials/breadcrumb.html — showBreadCrumbs included, and the same
+       `gt (len .Ancestors) 1` depth rule. Turning the visible trail off must
+       stop claiming a breadcrumb in markup, and a top-level page that renders
+       no trail must not describe one either.
 
-  {{- /* Section path: Home → ancestors → this page. `after 1` drops the home
-         page, which .Ancestors.Reverse puts first and $homeCrumb already
-         covers. */ -}}
-  {{- $items := slice $homeCrumb -}}
+       ONE list per page. There used to be a second, category-derived
+       BreadcrumbList on any page with categories, so a categorised page shipped
+       two competing trails for one URL — on a site that cascades
+       `categories = ["posts"]` over a /posts/ section, a near-duplicate of the
+       section trail. Google is handed one answer now.
+
+       The current page stays as the final ListItem but carries NO `item`. That
+       is the standard pattern for the page you are already on, and it keeps
+       Google's SERP breadcrumb rendering even though the visible trail no
+       longer ends in a self-link. Ancestors use .LinkTitle to match the visible
+       crumbs; the leaf uses .Title, which is what the <h1> shows. */ -}}
+{{- $showBreadCrumbs := .Param "showBreadCrumbs" | default true -}}
+{{- if and (not .IsHome) $showBreadCrumbs (gt (len .Ancestors) 1) -}}
+  {{- $items := slice (dict "@type" "ListItem" "position" 1 "name" "Home" "item" site.BaseURL) -}}
   {{- $pos := 1 -}}
   {{- range after 1 .Ancestors.Reverse -}}
     {{- $pos = add $pos 1 -}}
-    {{- $items = $items | append (dict "@type" "ListItem" "position" $pos "name" .Title "item" .Permalink) -}}
+    {{- $items = $items | append (dict "@type" "ListItem" "position" $pos "name" .LinkTitle "item" .Permalink) -}}
   {{- end -}}
-  {{- $pos = add $pos 1 -}}
-  {{- $items = $items | append (dict "@type" "ListItem" "position" $pos "name" .Title "item" .Permalink) -}}
+  {{- $items = $items | append (dict "@type" "ListItem" "position" (add $pos 1) "name" .Title) -}}
   {{- $crumbs := dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $items -}}
   <script type="application/ld+json">{{ $crumbs | jsonify (dict "indent" "  ") | safeJS }}</script>
-
-  {{- /* Taxonomy path: Home → each category → this page. */ -}}
-  {{- with .Params.categories -}}
-    {{- $catItems := slice $homeCrumb -}}
-    {{- $catPos := 1 -}}
-    {{- range . -}}
-      {{- $catPos = add $catPos 1 -}}
-      {{- $catItems = $catItems | append (dict
-            "@type" "ListItem"
-            "position" $catPos
-            "name" .
-            "item" (printf "categories/%s/" (. | urlize) | absURL)
-      ) -}}
-    {{- end -}}
-    {{- $catPos = add $catPos 1 -}}
-    {{- $catItems = $catItems | append (dict "@type" "ListItem" "position" $catPos "name" $.Title "item" $.Permalink) -}}
-    {{- $catCrumbs := dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $catItems -}}
-  <script type="application/ld+json">{{ $catCrumbs | jsonify (dict "indent" "  ") | safeJS }}</script>
-  {{- end -}}
 {{- end -}}

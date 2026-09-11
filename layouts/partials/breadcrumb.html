@@ -1,23 +1,33 @@
+{{- /* Home + ancestors only. The trail deliberately does NOT end in the current
+       page: that crumb was a self-link sitting directly above the <h1> saying
+       the same words, which is a wasted link and a duplicated heading rather
+       than navigation.
+
+       `gt (len .Ancestors) 1` is exactly "has a parent that is not home", so a
+       top-level page (/docs/, /tags/) renders nothing at all instead of a
+       `Home »` stub plus a self-link. .Ancestors excludes the page itself, and
+       `after 1 .Ancestors.Reverse` drops home, which $homeCrumb below covers.
+
+       baseof.html carries the same guard on the wrapper div — keep the two in
+       step, or an empty wrapper ships on every top-level page. The guard is
+       repeated here so the partial is safe when called directly.
+
+       The separator LEADS each ancestor rather than trailing it: trailing would
+       leave a dangling `Home » Docs »` now that the current page is gone. It
+       also sits outside the <a> and is aria-hidden, so it is no longer part of
+       every link's accessible name. */ -}}
+{{ if gt (len .Ancestors) 1 }}
 <nav aria-label="breadcrumb" class="flex items-center justify-between pt-3">
-  <ul class="flex space-x-2 ml-2">
-      <li>
-        <a href="{{ .Site.Home.RelPermalink }}" class="text-md">
-          Home
-          <i class="text-base fa-solid fa-angles-right"></i>
-        </a>
-      </li>
+  <ol class="flex space-x-2 ml-2">
+    <li>
+      <a href="{{ .Site.Home.RelPermalink }}" class="text-md">Home</a>
+    </li>
     {{ range after 1 .Ancestors.Reverse }}
       <li>
-        <a href="{{ .RelPermalink }}" class="text-md">
-          {{ .LinkTitle }}
-          <i class="text-base fa-solid fa-angles-right"></i>
-        </a>
+        <i class="text-base fa-solid fa-angles-right" aria-hidden="true"></i>
+        <a href="{{ .RelPermalink }}" class="text-md">{{ .LinkTitle }}</a>
       </li>
     {{ end }}
-    <li class="active">
-      <a aria-current="page" class="text-md" href="{{ .RelPermalink }}">
-        {{ .LinkTitle }}
-      </a>
-    </li>
-  </ul>
+  </ol>
 </nav>
+{{ end }}

@@ -2,6 +2,123 @@
 
 All notable changes to the Ryder Hugo theme are documented in this file.
 
+## v0.5.0
+
+An SEO and heading-semantics pass. The findings come from building
+benstrawbridge.com — a 1000+ page production site — against v0.4.3 and reading
+the output rather than the templates, so every number below is measured.
+
+**This is a minor release because the breadcrumb default changes for every
+consuming site.** Nothing needs configuring to pick the change up, and nothing
+needs configuring to keep the old look — the old look is gone. Read the first
+entry before upgrading.
+
+- **Breadcrumbs no longer end in the current page, and top-level pages render no
+  trail at all.** *(behaviour change)* The trail was `Home » … » This Page`, with
+  that last crumb a self-link sitting directly above the `<h1>` saying the same
+  words — a duplicated heading and a link to nowhere. On a top-level page the
+  whole thing collapsed to `Home »` plus that self-link. The rule is now Home
+  plus ancestors, rendered only when the page has a parent that is not Home, so
+  `/posts/` renders nothing and `/posts/towers/` renders `Home » Posts`.
+  - The wrapper `<ul>` is an `<ol>`, matching the `BreadcrumbList` semantics.
+  - The `»` separator moved outside the `<a>` and gained `aria-hidden="true"`.
+    It used to sit inside the link text, so it was part of every crumb's
+    accessible name — screen readers read "Home angles right".
+  - The final `<li class="active">` and its `aria-current="page"` are gone.
+    **If your site has CSS or tests keyed to either, update them.**
+  - The depth rule lives in three files that must stay in step:
+    `partials/breadcrumb.html` (which self-guards, so it is safe called
+    directly), the wrapper `<div>` in `_default/baseof.html`, and the JSON-LD in
+    `head/schema.html`. Without the second, an empty wrapper div shipped on
+    every top-level page.
+- **One `BreadcrumbList` per page, not two.** A page with categories used to
+  emit a second, category-derived trail alongside the section one — two
+  competing answers for a single URL. On a site cascading
+  `categories = ["posts"]` over a `/posts/` section, the second trail read
+  `Home » posts » …`, a near-duplicate of the first. The category-derived list
+  is removed.
+- **The breadcrumb JSON-LD now respects `showBreadCrumbs`.** It was gated only
+  on `not .IsHome`, so a site with the visible trail switched off still claimed
+  a breadcrumb in its markup, and top-level pages emitted one for a trail they
+  never rendered. The visible trail and the structured data are now gated
+  identically. The structured data still carries the current page as a final
+  `ListItem` — with a `name` and no `item`, the standard pattern for the page
+  you are on, which keeps Google's SERP breadcrumb rendering. Ancestor items
+  switched from `.Title` to `.LinkTitle` so they match the visible crumbs; the
+  leaf keeps `.Title`, matching the `<h1>`.
+- **The wordmark is no longer an `<h1>`.** `partials/logo.html` wrapped it in
+  one and `header.html` renders it on every page, so every page with its own
+  title shipped **two** `<h1>`s and the home page's only `<h1>` was the site
+  name. It is now a `<span>`.
+  - **The replacement carries `block text-4xl font-bold tracking-tight`, and
+    those classes are load-bearing.** `assets/css/main.css` has
+    `@layer base { h1 { @apply text-2xl font-bold tracking-tight } }`. The
+    `text-4xl` utility already beat `text-2xl`, but `font-bold`,
+    `tracking-tight` and block display came from that base rule and are lost the
+    moment the tag changes. A bare tag swap silently re-renders the wordmark
+    lighter and looser. If you have forked `logo.html`, apply the classes as
+    well as the tag.
+  - `nowrap` is carried across unchanged. It is not a Tailwind class
+    (`whitespace-nowrap` is) and has always been inert; "fixing" it would newly
+    force nowrap and could change the header layout.
+  - `hidden-home/baseof.html` calls `logo.html` directly rather than through
+    `header.html` and has no other heading, so the wordmark's `<h1>` was that
+    layout's only one. It now renders `<h1 class="sr-only">{{ .Title }}</h1>` —
+    the cover page looks identical and its outline names the page.
+- **The home page title is an `<h1>`.** `_default/home.html` rendered it as an
+  `<h2>` — sensible when the wordmark above it was the `<h1>`, wrong now. Tag
+  only; the element already carried explicit `text-2xl font-bold`, so nothing
+  changes visually. It is still gated behind `showHomeTitle`, which is now
+  documented.
+- **The empty bordered card on the home page is fixed.** The card wrapper was
+  gated on `or .Title .Content` while the title inside it additionally required
+  `showHomeTitle`, so a home page with a title, no body and `showHomeTitle`
+  unset rendered an empty bordered box. Both are now gated on what actually
+  renders.
+- **New: `params.taxonomyDescription`.** Taxonomy term pages have neither a
+  `description` nor a summary, so every one of them fell through to the single
+  site-wide description — 1,004 pages sharing one sentence on the site this was
+  measured against. Supply a `printf` template per taxonomy, keyed by its
+  singular name and rendered with the term title:
+
+  ```toml
+  [params.taxonomyDescription]
+    tag      = "Everything tagged “%s” on Example."
+    category = "Articles filed under “%s” on Example."
+  ```
+
+  Each entry needs exactly one `%s`. Term pages only — on `/tags/` the singular
+  key is also `tag` while the title is "Tags", so one shared template would read
+  "Everything tagged Tags". A term's own `description` still wins, and a
+  taxonomy with no entry falls through to the site description, so adding
+  nothing changes nothing.
+- **New: `params.titleShort`.** The `<title>` suffix was `site.Title`, which is
+  often the long legal or marketing name; a 34-character one truncated nearly
+  every SERP title. Precedence is now per-page `sectionTitle`, then
+  `params.titleShort`, then `site.Title` — so existing sites are unaffected, and
+  `sectionTitle` keeps working for the sections that have a cascade.
+- **The site-wide JSON-LD entity is named from `params.author.name`.** It took
+  `site.Title`, so a `Person` entity ended up named after the whole site
+  ("Ben Strawbridge Dot Com Consulting"). Falls back to `site.Title` when
+  `params.author.name` is unset.
+- **Tests** — `tests/e2e/schema.spec.js` asserted a categorised post carries
+  exactly **2** `BreadcrumbList` blocks; that assertion is now 1, plus new cases
+  for a top-level page emitting none and for the unlinked leaf item. Three new
+  suites: `breadcrumb.spec.js` (depth rule, ordered list, separator placement,
+  and `showBreadCrumbs = false` proven against a same-depth sibling),
+  `headings.spec.js` (exactly one `<h1>` per page, and the wordmark's *computed*
+  font size, weight and display — the regression a class-list assertion would
+  miss), and `headSeo.spec.js` (term descriptions, precedence, `titleShort`,
+  entity name).
+- **exampleSite** — sets `showHomeTitle`, `titleShort` and a
+  `[params.taxonomyDescription]` table so the reference implementation exercises
+  them. New `docs/breadcrumbs/` section with a three-levels-deep child and a
+  `showBreadCrumbs = false` sibling: it documents the depth rule and is the
+  fixture the new suites read.
+- **Verification** — 14 unit tests and 108 e2e specs on Hugo 0.146.0, the
+  version both workflows pin and the theme's stated floor, plus a full
+  exampleSite build inspected as HTML rather than as templates.
+
 ## v0.4.3
 
 A dependency-maintenance release: the five open Dependabot updates, merged
