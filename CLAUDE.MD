@@ -154,7 +154,9 @@ Partial translations exist for English (`en`), German (`de`), and French (`fr`) 
   showHomeFeed = true            # Show paginated feed on home page
   showDate = true                # Show post dates
   showAuthor = true              # Show author on posts
-  showBreadCrumbs = true         # Breadcrumb navigation
+  showBreadCrumbs = true         # Breadcrumb trail (see Breadcrumb Depth Rule below)
+  showHomeTitle = false          # Render the home page title as its <h1>
+  titleShort = "..."             # Short <title> suffix; beats site.Title, loses to per-page sectionTitle
   showShareButtons = false       # Social share buttons on single pages
   showSummaryMeta = true         # Show meta on card summaries
   showReadOn = false             # "Read on" link on cards
@@ -175,8 +177,12 @@ Partial translations exist for English (`en`), German (`de`), and French (`fr`) 
   footerBackground = "..."       # Footer background (falls back to headerBackgroundFrameOuter)
 
 [params.author]
-  name = "..."
+  name = "..."                   # Also names the site-wide JSON-LD entity
   email = "..."
+
+[params.taxonomyDescription]     # Meta descriptions for taxonomy TERM pages
+  tag = "Everything tagged \u201c%s\u201d."   # keyed by .Data.Singular; exactly one %s each
+  category = "Filed under \u201c%s\u201d."
 
 [params.shareButtons]
   networks = ["twitter", "email", "reddit", "facebook"]
@@ -229,6 +235,44 @@ Pages with `homeFeature: true` appear in the featured grid (not the paginated fe
 - **Performance impact:** 40-50% slower builds on sites with 1000+ pages
 - **Default:** Disabled for performance
 - Only enable if GitHub footer links are specifically needed
+
+### Breadcrumb Depth Rule
+
+`partials/breadcrumb.html` renders **Home plus ancestors**, never the current
+page, and only when `gt (len .Ancestors) 1` — "has a parent that is not home".
+So `/docs/` renders nothing and `/docs/alerts/` renders `Home » Docs`.
+
+Three places carry that rule and **must stay in step**:
+
+1. `layouts/partials/breadcrumb.html` — self-guards, so it is safe called directly
+2. `layouts/_default/baseof.html` — guards the `max-w-screen-lg` wrapper div;
+   without it an empty div ships on every top-level page
+3. `layouts/partials/head/schema.html` — gates the `BreadcrumbList`, so turning
+   the trail off stops the markup claiming one
+
+The JSON-LD deliberately differs from the visible trail in one way: it keeps the
+current page as a final `ListItem` with a `name` and **no `item`**. That is the
+standard pattern and preserves Google's SERP breadcrumb. Ancestors use
+`.LinkTitle` to match the visible crumbs; the leaf uses `.Title` to match the
+`<h1>`. Exactly **one** `BreadcrumbList` per page — the category-derived second
+one was removed in v0.5.0.
+
+### Heading Semantics
+
+`partials/logo.html` renders the wordmark as a `<span>`, not an `<h1>`, because
+`header.html` puts it on every page. The classes on that span
+(`block text-4xl font-bold tracking-tight`) are **load-bearing**: `main.css` has
+`@layer base { h1 { @apply text-2xl font-bold tracking-tight } }`, so
+`font-bold`, `tracking-tight` and block display came from the base rule and had
+to be restored when the tag changed. Do not tidy them away. `nowrap` is not a
+Tailwind class and has always been inert — leave it alone rather than "fixing"
+it to `whitespace-nowrap`, which would newly force nowrap on the header.
+
+Each layout supplies its own single `<h1>`: `single.html`, `list.html` and
+`list-plain.html` from the page title, `home.html` behind `showHomeTitle`, and
+`hidden-home/baseof.html` as a `sr-only` heading (it calls `logo.html` directly
+rather than through `header.html`, so it has no other heading).
+`tests/e2e/headings.spec.js` asserts one `<h1>` per page.
 
 ### Footer Taxonomies (Opt-in)
 By default, footer shows NO taxonomy lists. Must configure `params.footer.taxonomies` to display tags/categories.

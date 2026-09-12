@@ -1,5 +1,36 @@
 <!-- Setup for SEO -->
-{{- with or (.Description | plainify | htmlUnescape | chomp) (.Summary | plainify | htmlUnescape | chomp) (site.Params.description | plainify | htmlUnescape | chomp) }}
+{{- /* description: front matter, then summary, then — on a taxonomy TERM page —
+       a per-taxonomy template, and only then the site-wide description.
+
+       The term step exists because term pages have neither a .Description nor a
+       .Summary, so every one of them used to collapse onto the single site
+       string. On a real site that was 1,004 pages sharing one sentence.
+
+       params.taxonomyDescription is a table of printf format strings keyed by
+       the taxonomy's SINGULAR name (.Data.Singular — "tag", "category"), each
+       rendered with the term's title:
+
+         [params.taxonomyDescription]
+           tag      = "Everything tagged “%s” on Example."
+           category = "Articles filed under “%s” on Example."
+
+       Each entry must contain exactly one %s; Go's Sprintf appends
+       %!(EXTRA string=…) to a format string with no verb. A format table rather
+       than a generated "N posts" sentence: it sidesteps pluralisation and keeps
+       the copy under site control.
+
+       Term pages only, not taxonomy index pages. On /tags/ the .Data.Singular
+       key is also "tag" but .Title is "Tags", so one shared template would read
+       "Everything tagged Tags"; index pages are a handful per site and keep the
+       site description. A taxonomy with no entry falls through, so a site that
+       sets nothing sees no change. */ -}}
+{{- $description := or (.Description | plainify | htmlUnescape | chomp) (.Summary | plainify | htmlUnescape | chomp) -}}
+{{- if and (not $description) (eq .Kind "term") -}}
+  {{- with index (site.Params.taxonomyDescription | default dict) .Data.Singular -}}
+    {{- $description = printf . $.Title -}}
+  {{- end -}}
+{{- end -}}
+{{- with or $description (site.Params.description | plainify | htmlUnescape | chomp) }}
   <meta name="description" content="{{ . }}" />
 {{- end }}
 <!-- Open Graph Meta Tags -->

@@ -41,20 +41,47 @@
         {{- end -}}
         {{ if $fw }}
         {{- $fw = split $fw "" -}}
-        {{$fwLen := len $fw}}
         {{- $lw = split $lw "" -}}
-        <h1 class="text-4xl nowrap">
+        {{- /* Index of each word's LAST letter. Both loops open a collapsible
+               <span> after the first letter and close it after the last; these
+               are the close conditions, and they used to be wrong — `$fwLen`
+               (the length, never a valid index) and a literal 10 (only reached
+               by an 11-character second word). Neither ever fired for a normal
+               wordmark, so both brand <span>s below were left open and the
+               parent element closed them by force.
+
+               That was invisible while this block was an <h1>: the browser
+               closed every dangling span at </h1> and the tagline below stayed
+               a sibling. Under a <span> wrapper it was not invisible — the
+               still-open brand span swallowed the tagline, moving it from
+               beneath the wordmark to beside it. */ -}}
+        {{- $fwLast := sub (len $fw) 1 -}}
+        {{- $lwLast := sub (len $lw) 1 -}}
+        {{- /* A <span>, not an <h1>. header.html renders this on every page, so
+               the wordmark used to be a second <h1> on every page with its own
+               title — and the home page's only <h1> was the site name.
+
+               The classes are load-bearing, not decoration. assets/css/main.css
+               has `@layer base { h1 { @apply text-2xl font-bold tracking-tight } }`.
+               text-4xl already beat text-2xl, but font-bold, tracking-tight and
+               block display came from that base rule and vanish on a <span>, so
+               they are restored here. Do not "tidy" them away.
+
+               `nowrap` is not a Tailwind class (whitespace-nowrap is) and has
+               always been inert. Carried across unchanged on purpose: fixing it
+               would newly force nowrap and could change the header layout. */ -}}
+        <span class="block text-4xl font-bold tracking-tight nowrap">
           {{/*  <span class="text-[#17729C]">  */}}
           <span class="text-ryder-brand-800">
             {{- range $k, $v := $fw }}
-              {{- $v }}{{- if (eq $k 0) }}<span class="{{- $lettersClass }}" >{{- end }}{{- if (eq $k $fwLen) }}</span >{{- end }}
+              {{- $v }}{{- if (eq $k 0) }}<span class="{{- $lettersClass }}" >{{- end }}{{- if (eq $k $fwLast) }}</span >{{- end }}
             {{- end -}}
           </span ><span class="{{- $lettersClass }}">&nbsp;</span ><span class="text-ryder-brand-alt-800">
             {{- range $k, $v := $lw }}
-              {{- $v }}{{- if (eq $k 0) }}<span class="{{- $lettersClass }}" >{{- end }}{{- if (eq $k 10) }}</span >{{- end }}
+              {{- $v }}{{- if (eq $k 0) }}<span class="{{- $lettersClass }}" >{{- end }}{{- if (eq $k $lwLast) }}</span >{{- end }}
             {{- end -}}
           </span>
-        </h1>
+        </span>
         {{ end }}
         {{- end }}
         {{ with .Param "logo_tagline" }}

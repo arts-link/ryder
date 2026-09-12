@@ -40,6 +40,13 @@ themesDir= "../../"
   showSummaryMeta = false # defaults to true
   showReadOn = true # defaults to false
   showHomeFeed = true # defaults to true 
+  # Renders the home page title as the page's <h1>. Off by default, and with
+  # the wordmark no longer a heading a home page without it has no <h1> at all
+  # — so the reference implementation turns it on.
+  showHomeTitle = true # defaults to false
+  # The suffix in "Page Title | …". site.Title here is short enough already;
+  # set explicitly so the param is exercised rather than only documented.
+  titleShort = 'Ryder'
   loadLeaflet = true # defaults to false
   og_image_default = 'images/ryder-theme-og.webp'
   homePageFeatureHeader = "Features"
@@ -103,6 +110,14 @@ themesDir= "../../"
   # layouts/partials/head/schema-extra.html.
   [params.schema]
     type = 'Organization'
+
+  # Meta descriptions for taxonomy TERM pages (/tags/hugo/, /categories/maps/),
+  # which have no .Description and no .Summary and would otherwise all share the
+  # single site-wide description above. Keyed by the taxonomy's singular name;
+  # each value is a printf format string taking exactly one %s, the term title.
+  [params.taxonomyDescription]
+    tag = 'Every Ryder theme page tagged “%s” — docs, demos, and examples.'
+    category = 'Ryder theme documentation filed under “%s”.'
 
   # ico/svg/appleTouchIcon default to the files the theme already ships
   # (favicon.ico, images/favicon.svg, images/apple-touch-icon.png) — only

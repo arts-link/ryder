@@ -34,7 +34,9 @@
     {{- partial "alphaAlert.html" . }}
     <main class="w-full flex-1">
       {{ $showBreadCrumbs := .Param "showBreadCrumbs" | default true }}
-      {{ if and (not .IsHome) $showBreadCrumbs }}
+      {{/* The depth guard matches partials/breadcrumb.html's own. Without it
+           this wrapper div ships empty on every top-level page. */}}
+      {{ if and (not .IsHome) $showBreadCrumbs (gt (len .Ancestors) 1) }}
       <div class="mx-auto max-w-screen-lg px-3 md:px-8 lg:px-12">
         {{- partial "breadcrumb.html" . }}
       </div>
