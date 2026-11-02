@@ -46,7 +46,7 @@ test('the wordmark is not a heading, and keeps the styling the <h1> used to give
   // The classes below are the point of the change: main.css's `@layer base`
   // h1 rule supplied font-bold, tracking-tight and block display, all of which
   // a bare tag swap would have silently dropped.
-  const mark = logo.locator('span.text-4xl').first()
+  const mark = logo.locator('span.logo-wordmark').first()
   await expect(mark).toHaveClass(/block/)
   await expect(mark).toHaveClass(/font-bold/)
   await expect(mark).toHaveClass(/tracking-tight/)
@@ -57,7 +57,7 @@ test('the wordmark is not a heading, and keeps the styling the <h1> used to give
     const cs = getComputedStyle(el)
     return { size: cs.fontSize, weight: cs.fontWeight, display: cs.display }
   })
-  expect(styles.size).toBe('36px') // text-4xl
+  expect(styles.size).toBe('36px') // text-4xl: .logo-wordmark's cap is 9vw, far above this at desktop width
   expect(styles.weight).toBe('700') // font-bold
   expect(styles.display).toBe('block')
 })
@@ -76,14 +76,14 @@ test('the tagline is a sibling of the wordmark, not nested inside it', async ({ 
   await expect(tagline).toHaveCount(1)
 
   const nestedInWordmark = await tagline.evaluate((el) =>
-    Boolean(el.closest('span.text-4xl')),
+    Boolean(el.closest('span.logo-wordmark')),
   )
   expect(nestedInWordmark).toBe(false)
 
   // Stacked by the flex-col parent, not sitting beside it. Compared against the
   // wordmark's midpoint rather than its bottom edge: the tagline carries
   // mt-[-0.25em], so it deliberately overlaps the line box below it.
-  const mark = await logo.locator('span.text-4xl').first().boundingBox()
+  const mark = await logo.locator('span.logo-wordmark').first().boundingBox()
   const tag = await tagline.boundingBox()
   expect(tag.y).toBeGreaterThan(mark.y + mark.height / 2)
 })

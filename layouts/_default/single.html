@@ -1,6 +1,13 @@
 {{ define "main" }}
-  {{ $showTagsAside := gt (len (.GetTerms "tags")) 0 }}
-  {{ $showTocAside := and .Params.showToc (ne .Params.hideAsideBar true) }}
+  {{- /* hideAsideBar hides the whole aside column, not only the TOC, so the
+         article spans the full width. It used to gate only the TOC: any page
+         with tags kept the column and stayed narrow whatever it set. A page
+         that hides the aside keeps its tags — they move below the article. */ -}}
+  {{ $hideAside := eq .Params.hideAsideBar true }}
+  {{ $hasTags := gt (len (.GetTerms "tags")) 0 }}
+  {{ $showTagsAside := and $hasTags (not $hideAside) }}
+  {{ $showTagsBelow := and $hasTags $hideAside }}
+  {{ $showTocAside := and .Params.showToc (not $hideAside) }}
   {{ $hasAside := or $showTagsAside $showTocAside }}
   <div class="mx-auto max-w-screen-lg px-3 py-2 md:px-8 lg:px-12">
     <div class="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-x-4">
@@ -53,6 +60,11 @@
         <div class="content">
           {{ .Content |  safeHTML }}
         </div>
+        {{- if $showTagsBelow }}
+          <div class="not-prose mt-8">
+            {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+          </div>
+        {{- end }}
         <div class="not-prose mt-8 border-t border-slate-200/80 pt-5 dark:border-slate-700/70 {{- if ne site.Params.showShareButtons true }}hidden{{- end }}">
           {{ partial "share-buttons" . }}
         </div>

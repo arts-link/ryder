@@ -1,30 +1,31 @@
-# Cache policy for Netlify and Cloudflare Pages deployments
+# Cache policy for Netlify and Cloudflare (Pages, and Workers static assets).
 # GitHub Pages does not support custom headers; see README for CDN caching options.
+#
+# Rules must not overlap for the same header. Cloudflare applies every matching
+# rule and joins the values of a header set by more than one, so overlapping
+# rules produce contradictory values like "…immutable, public, max-age=0, …".
+# `:file` matches one path segment only, so /css/:file never matches
+# /css/images/…. Anything not listed gets the host's default for static
+# assets, which revalidates — fine for HTML, so there is no catch-all rule.
+# tests/unit/headers.test.js enforces the no-overlap rule.
 
-# Fingerprinted CSS bundles (content-hashed filenames) — cache for 1 year
-/css/*
+# Fingerprinted (or version-named, e.g. leaflet.1.9.4.*) bundles in production
+# — cache for 1 year.
+/css/:file
   Cache-Control: public, max-age=31536000, immutable
 
-# Fingerprinted JS bundles (content-hashed filenames) — cache for 1 year
-/js/*
+/js/:file
   Cache-Control: public, max-age=31536000, immutable
 
-# Fingerprinted images (content-hashed filenames) — cache for 1 year
-/images/*
-  Cache-Control: public, max-age=31536000, immutable
-
-# Layer-control images served via CSS relative path — cache for 30 days
+# Leaflet layer-control images, referenced by relative path from the CSS
+# — cache for 30 days.
 /css/images/*
   Cache-Control: public, max-age=2592000
 
-# Favicon and other root-level static assets — cache for 7 days
+# Favicon — cache for 7 days.
 /favicon.ico
   Cache-Control: public, max-age=604800
 
-# Feed (may update frequently) — cache for 1 hour
+# Feed (may update frequently) — cache for 1 hour.
 /index.xml
   Cache-Control: public, max-age=3600
-
-# HTML pages — always revalidate
-/*
-  Cache-Control: public, max-age=0, must-revalidate

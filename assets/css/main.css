@@ -152,6 +152,19 @@
     @apply text-sm leading-tight sm:text-[15px];
   }
 
+  /* The wordmark in partials/logo.html: text-4xl (2.25rem / 2.5rem), capped
+     at 9vw so it shrinks on narrow phones and doesn't grow past the screen
+     when the system font size is turned up. At text-4xl a two-word wordmark
+     plus the menu button is wider than a 320px phone, and at a large font
+     size even one word can be. Plain CSS rather than utilities on purpose: a
+     `min-[360px]:` variant is disabled for any site whose Tailwind `screens`
+     contain a value that isn't a plain px length, and a theme can't know a
+     site's screens. */
+  .logo-wordmark {
+    font-size: min(2.25rem, 9vw);
+    line-height: 1.11;
+  }
+
   .aside-taxonomy-group {
     @apply w-full rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm;
     @apply dark:border-slate-700/70 dark:bg-slate-900/70;

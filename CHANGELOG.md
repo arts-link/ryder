@@ -2,6 +2,51 @@
 
 All notable changes to the Ryder Hugo theme are documented in this file.
 
+## v0.5.1
+
+Bug fixes. Nothing needs configuring to pick them up. Two of them change what
+a page looks like, so read those before upgrading.
+
+- **The header no longer pushes the page wider than a phone screen.**
+  *(visible change)* The wordmark couldn't shrink: its words were joined by
+  `&nbsp;` and it was a fixed `text-4xl`. The menu button could shrink, so on
+  a ~320px phone, or a phone with its system font size turned up (Firefox for
+  Android follows it), the button was pushed past the right edge. The page
+  became wider than the viewport and mobile browsers zoomed out to fit it.
+  - The wordmark's size is now `min(2.25rem, 9vw)` from a new `.logo-wordmark`
+    class in `main.css`. That's unchanged from about 400px wide up, and
+    smaller below. It's plain CSS, not a `min-[…]:` utility, because Tailwind
+    turns off arbitrary `min-[…]` variants for any site whose `screens`
+    include a value that isn't a plain px length.
+  - The space between the words is a normal space, so if there still isn't
+    room, the second word moves to its own line.
+  - In `header.html` the logo side is `min-w-0`, the toggler side is
+    `shrink-0`, and the row has `gap-2`.
+  - **If you have forked `logo.html`, keep the `logo-wordmark` class.** Tests
+    and `main.css` find the wordmark by it now, not by `text-4xl`.
+- **`hideAsideBar = true` hides the whole aside, tags included.**
+  *(visible change)* It used to hide only the table of contents, so a tagged
+  page kept the aside column and never went full width. The article now
+  spans the full width, and the page's tags render below it, above the share
+  buttons, using the same `terms.html` card.
+- **The viewport meta sets `initial-scale=1`** (#88). Without it, iOS Safari
+  picks its own initial zoom, most visibly after a rotation. If your site
+  re-declares the viewport in `extend_head.html` as a workaround, you can
+  delete that.
+- **RSS builds on Hugo 0.158+ for sites without `params.author`** (#108,
+  part 2). `rss.xml` fell back to `site.Author`, which Hugo 0.158 removed, and
+  referencing it is a fatal error. The fallback is gone; author fields come
+  from `params.author` only.
+- **`static/_headers` rules no longer overlap** (#115). Cloudflare joins the
+  values of a header set by more than one matching rule, so the catch-all
+  `/*` rule turned fingerprinted CSS into
+  `…immutable, public, max-age=0, must-revalidate`. The catch-all and
+  `/images/*` (which covered unfingerprinted files) are gone, and `/css/*` and
+  `/js/*` are now `/css/:file` and `/js/:file`, so they can't match
+  `/css/images/…`. `tests/unit/headers.test.js` fails if two rules can set
+  the same header on one path. If you shadowed this file with a site copy,
+  you can delete the copy.
+
 ## v0.5.0
 
 An SEO and heading-semantics pass. The findings come from building
