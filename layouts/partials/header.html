@@ -36,11 +36,17 @@ By default it will have a background gradient in cayan.
 {{- end -}}
 <header class="w-full {{ $headerClass }}">
   <div class="mx-auto w-full max-w-screen-xl px-3 py-3 md:px-4">
-    <div class="flex flex-row rounded-lg {{ $headerBackgroundFrameInner }}"{{ with $headerBackgroundStyle }} style="{{ . | safeCSS }}"{{ end }}>
-      <div class="mr-auto relative">
+    {{- /* The logo side is min-w-0 and the toggler side shrink-0 so that, when
+           the row runs out of room (a ~320px phone, or a phone whose system
+           font size is turned up — Firefox for Android follows it), the
+           wordmark wraps instead of shoving the menu button off the right
+           edge. That shove used to widen the whole page, and mobile browsers
+           answer a too-wide page by zooming out. */ -}}
+    <div class="flex flex-row gap-2 rounded-lg {{ $headerBackgroundFrameInner }}"{{ with $headerBackgroundStyle }} style="{{ . | safeCSS }}"{{ end }}>
+      <div class="mr-auto relative min-w-0">
           {{- partial "logo.html" . -}}
       </div>
-      <div class="ml-auto flex items-start z-50" x-data="mobileMenu" @click.away="openMenu = false">
+      <div class="ml-auto flex shrink-0 items-start z-50" x-data="mobileMenu" @click.away="openMenu = false">
           <div class="relative shrink-0">
               <!-- navbar toggler -->
               {{/*  <input id="nav-toggle" type="checkbox" class="hidden" />  */}}

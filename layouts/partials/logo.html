@@ -63,20 +63,25 @@
 
                The classes are load-bearing, not decoration. assets/css/main.css
                has `@layer base { h1 { @apply text-2xl font-bold tracking-tight } }`.
-               text-4xl already beat text-2xl, but font-bold, tracking-tight and
+               The size beat text-2xl even then, but font-bold, tracking-tight and
                block display came from that base rule and vanish on a <span>, so
                they are restored here. Do not "tidy" them away.
 
                `nowrap` is not a Tailwind class (whitespace-nowrap is) and has
-               always been inert. Carried across unchanged on purpose: fixing it
-               would newly force nowrap and could change the header layout. */ -}}
-        <span class="block text-4xl font-bold tracking-tight nowrap">
+               always been inert. Keep it inert: the wordmark has to be able to
+               wrap between its words on a narrow screen (see below). */ -}}
+        {{- /* logo-wordmark sets the size: text-4xl, capped at 9vw on narrow
+               screens (assets/css/main.css says why it isn't a utility). The
+               gap between the words is an ordinary space, not &nbsp;, so if the
+               row is still too narrow (a large system font size) the second
+               word drops to its own line instead of overflowing the page. */ -}}
+        <span class="logo-wordmark block font-bold tracking-tight nowrap">
           {{/*  <span class="text-[#17729C]">  */}}
           <span class="text-ryder-brand-800">
             {{- range $k, $v := $fw }}
               {{- $v }}{{- if (eq $k 0) }}<span class="{{- $lettersClass }}" >{{- end }}{{- if (eq $k $fwLast) }}</span >{{- end }}
             {{- end -}}
-          </span ><span class="{{- $lettersClass }}">&nbsp;</span ><span class="text-ryder-brand-alt-800">
+          </span ><span class="{{- $lettersClass }}"> </span ><span class="text-ryder-brand-alt-800">
             {{- range $k, $v := $lw }}
               {{- $v }}{{- if (eq $k 0) }}<span class="{{- $lettersClass }}" >{{- end }}{{- if (eq $k $lwLast) }}</span >{{- end }}
             {{- end -}}
